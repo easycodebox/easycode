@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<data_pool>  
+
+	<data name="PIC_TYPE">
+		<comment>
+			
+			图片上传路径
+		 	wl(900) ==> 宽度小于等于900px
+	 		wg(900) ==> 宽度大于等于900px
+	 		hl(900) ==> 高度小于等于900px
+	 		hg(900) ==> 高度大于等于900px
+	 		re(0.5) ==> 比例(ratio)等于0.5（宽/高=0.5），容错比例为0.1
+	 		rl(0.5) ==> 比例(ratio)小于等于0.5（宽/高 le 0.5）
+	 		rg(0.5) ==> 比例(ratio)大于等于0.5（宽/高 ge 0.5）
+	 		sl(8)   ==> 大小(size)小于等于8M
+	 		sg(8)   ==> 大小(size)大于等于8M
+	 		type(jpg,png)  ==> 文件格式 只能为jpg,png
+		 	
+		 	==================== 图片生成规则 ================================
+		 	 
+		 	url == http://192.168.1.130:8088/gift/pfq_d268c268a215a1257_r150c150.jpg
+		
+			高清小图 ==	r100c100 （可以用r100c）
+			模糊小图	==	t100c100 （生成的比高清小图速度快，但图片质量下降）
+			裁剪		==	d100c100a50a50, d100c100m50m50
+			等比例缩放裁剪 == td100c100 (首选) 		(gm convert e:/a.jpg -thumbnail "100x100^" -gravity center -extent 100x100 e:/output.jpg)
+				  			 rd100c100				(gm convert e:/a.jpg -resize "100x100^" -gravity center -extent 100x100 e:/output.jpg)
+			等比例缩放填充背景色 == tb100c100	(首选) 	(gm convert e:/a.jpg -thumbnail 100x100 -background white -gravity center -extent 100x100 e:/output.jpg)
+								  rb100c100			(gm convert e:/a.jpg -resize 100x100 -background white -gravity center -extent 100x100 e:/output.jpg)
+			<!--
+			r == -resize	(缩放图片)
+			c == x
+			t == -thumbnail (生成小图)
+			d == -crop		(裁剪图片用的)
+			a == +			(定位图片用的)
+			m == -			(定位图片用的)
+			f == !			(强制图片的宽、高，不进行等比缩放)
+			s == ^			(维持图片的比例)
+			l == <			(仅图片的真实宽和高同时小于期望的宽高，才会调用gm转换，否则图片大小不变)
+			g == >			(仅图片的真实宽或者高大于期望的宽高，才会调用gm转换，否则图片大小不变)
+			 -->
+		</comment>
+		<map>
+			<comment>商铺主图</comment>
+			<entry key="shopMaster" value="shop/master?wg(420)hg(420)" />
+			<comment>菜图</comment>
+			<entry key="food" value="shop/food?wg(200)hg(200)" />
+			
+			<comment>活动主图</comment>
+			<entry key="activity" value="activity/master?wg(50)hg(50)" />
+			<comment>商品</comment>
+			<entry key="product" value="activity/product?wg(200)hg(200)" />
+			
+			<comment>会员头像</comment>
+			<entry key="portrait" value="member/portrait?wg(80)hg(80)" />
+			
+			<comment>相册图片</comment>
+			<entry key="album" value="album?wg(100)hg(100)" />
+			
+			<comment>广告图片</comment>
+			<entry key="ad" value="ad" />
+			
+			<comment>公告点评</comment>
+			<entry key="noticeCmt" value="comment/notice" />
+			<comment>商铺点评</comment>
+			<entry key="shopCmt" value="comment/shop" />
+			
+			<comment>合作商合同</comment>
+			<entry key="partnerContract" value="contract/partner?wg(200)hg(200)" />
+			
+			<comment>优惠券图片</comment>
+			<entry key="coupon" value="shop/coupon" />
+			
+			<comment>工业PDA采集图片</comment>
+			<entry key="industry-pda" value="industry/pda" />
+			
+			<comment>IC新闻图片</comment>
+			<entry key="ic-news" value="is/news" />
+			<comment>IC活动图片</comment>
+			<entry key="ic-activity" value="is/activity" />
+			<comment>IC开发板图片</comment>
+			<entry key="ic-board" value="is/board" />
+			<comment>IC案例图片</comment>
+			<entry key="ic-case" value="is/case" />
+			<comment>IC常见问题</comment>
+			<entry key="ic-usual-issue" value="is/usualissue" />
+			
+		</map>
+	</data>
+
+	<data name="MIX_TYPE">
+		<comment>
+	 		sl(8)   ==> 大小(size)小于等于8M
+	 		sg(8)   ==> 大小(size)大于等于8M
+	 		type(jpg,png)  ==> 文件格式 只能为jpg,png
+		</comment>
+		<map>
+			<comment>资源文件</comment>
+			<entry key="ic-resource" value="ic/resource" />
+		</map>
+	</data>
+</data_pool> 

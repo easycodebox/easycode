@@ -1,0 +1,85 @@
+<table id="loadDialogGenerator" class="table-edit hidden">
+	<tr>
+		<th>
+			<label>策略：</label>
+		</th>
+		<td>
+			{{generator.generatorType.desc}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>初始值：</label>
+		</th>
+		<td>
+			{{generator.initialVal}}
+		</td>
+		<th>
+			<label>当前值：</label>
+		</th>
+		<td>
+			{{generator.currentVal}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>最大值：</label>
+		</th>
+		<td>
+			{{generator.maxVal}}
+		</td>
+		<th>
+			<label>批次容量：</label>
+		</th>
+		<td>
+			{{generator.fetchSize}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>增长值：</label>
+		</th>
+		<td>
+			{{generator.increment}}
+		</td>
+		<th>
+			<label>是否循环：</label>
+		</th>
+		<td>
+			{{generator.isCycle.desc}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>创建人：</label>
+		</th>
+		<td>
+			{{generator.creatorName}}
+		</td>
+		<th>
+			<label>创建时间：</label>
+		</th>
+		<td>
+			{{generator.createTime | date}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>修改人：</label>
+		</th>
+		<td>
+			{{generator.modifierName}}
+		</td>
+		<th>
+			<label>修改时间：</label>
+		</th>
+		<td>
+			{{generator.modifyTime | date}}
+		</td>
+	</tr>
+</table>

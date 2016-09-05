@@ -1,0 +1,113 @@
+body {border: 0 none;height: 100%;width: 100%;position: relative;}
+
+#header{position: relative;width:100%;height:45px;background:url('../imgs/frame/header_bg.png') repeat-x;font-size:14px;overflow: hidden;}
+#header ul{position: absolute; right:20px}
+#header ul li{float:left}
+#header ul li p{margin:15px 20px}
+#header ul li span{color:white}
+#header ul li .m1520{margin:5px 10px}
+#header ul li .m1530{margin:13px 10px}
+
+#menus dl dt.one:hover{background-color:#1b314c;color:#e15151}
+#menus ul li.one:active{background-color:#1b314c}
+.ml20{margin-left:20px}
+
+#main{width:100%;background-color:#f9f9f9;overflow: hidden;position: relative;}
+
+#main #menus{position: absolute;top: 0;left: 0;width:150px;height: 100%;background-color:#253c5a;color:#fff;overflow: auto;}
+#main #menus .one{width:100%;overflow:hidden;cursor: pointer;position:relative;font-weight: bold;}
+#main #menus dl dt.one img{float:left;margin:15px 15px 0}
+#main #menus dl dt.one .nav{float:left;margin:12px 0}
+#main #menus dl dt.one .icon{position: absolute;top:20px;right:10%;background:url('../imgs/frame/menu_li_bg.png') no-repeat;width:6px;height:6px}
+#main #menus .two a{border-top:1px solid #42566e;height:40px;line-height:40px;padding-left:45px;cursor: pointer;background-color:#1b314c;display: block;color: #fff;}
+#main #menus .two a.selected{background-color:#1b314c;color:#e15151;}
+#main #menus .two a.menu-hover{background-color:#1b314c;color:#e15151;}
+
+#main #conent{position: absolute;top: 0;left: 150px;height: 100%;}
+#main #conent h2{height:45px;line-height:45px;margin:0;padding:0;font-size:18px;color:#e15151;background:url('../imgs/frame/index_h_bg.png') no-repeat 15px 10px;padding-left:50px;}
+#main #conent #core-div{margin:0 16px;border:1px solid #ddd;position: absolute;overflow-x: hidden;overflow-y: auto;}
+.control {padding: 0 20px 0 10px;position: absolute;z-index: 10;background-color: #f9f9f9;}
+.control ul {display: inline-block;*display:inline;*zoom:1;letter-spacing: -4px;*letter-spacing: 0;}
+.control ul li{height: 48px;line-height: 48px;display: inline-block;letter-spacing: 0;*display:inline;*zoom:1;}
+.control ul.search .param-li {margin-right: 10px;}
+.control ul.search .param-hidden {display: none;}
+.control ul li label {vertical-align: middle;}
+.control .handle-btns {position: absolute;top: 0;right: 20px;}
+
+.data-div {position: absolute;top: 48px;left: 0;}
+
+.page{position: absolute;left: 0;bottom: 50px;width:100%;height:50px;line-height:50px;}
+#footer {position: absolute;left: 0;bottom: 0;height: 40px;line-height: 40px;border-top: 1px solid #ddd;text-align: center;margin-top: 10px;width: 100%;}
+
+/********* 弹出框查询条件 ******************/
+.control-dialog {background-color: #f9f9f9;}
+.control-dialog ul {display: inline-block;*display:inline;*zoom:1;letter-spacing: -4px;*letter-spacing: 0;width: 100%;}
+.control-dialog ul li{margin-right: 10px;height: 48px;line-height: 48px;display: inline-block;letter-spacing: 0;*display:inline;*zoom:1;}
+
+/********* utils样式 ******************/
+.border-bottom {border-bottom: 1px solid #ddd;}
+
+.septal-table{width:100%;text-align:center;background-color:#f9f9f9;line-height: 30px;}
+.septal-table tr th{border:1px solid #e1e1e1;font-weight: bold;height: 30px;}
+.septal-table tr td{border:1px solid #e1e1e1;}
+
+.header_btn1{width:22px;height:20px;margin:15px 20px;background:url('../imgs/frame/index_header_btn1.png') no-repeat;cursor: pointer;}
+.header_btn1:hover{background:url('../imgs/frame/index_header_btn1_hover.png') no-repeat;}
+.header_btn2{width:22px;height:20px;margin:15px 20px;background:url('../imgs/frame/index_header_btn2.png') no-repeat;cursor: pointer;}
+.header_btn2:hover{background:url('../imgs/frame/index_header_btn2_hover.png') no-repeat;}
+.header_btn3{width:22px;height:20px;margin:15px 20px;background:url('../imgs/frame/index_header_btn3.png') no-repeat;cursor: pointer;}
+.header_btn3:hover{background:url('../imgs/frame/index_header_btn3_hover.png') no-repeat;}
+
+/******** 按钮图标样式   ***********/
+.icon-btn {width:16px;height:16px;cursor: pointer;display: inline-block;vertical-align: middle;margin-left: 8px;}
+.icon-detail{background:url('../imgs/operate/detail_normal.png') no-repeat;}
+.icon-detail:hover{background:url('../imgs/operate/detail_hover.png') no-repeat;}
+.icon-add{background:url('../imgs/operate/add_normal.png') no-repeat;}
+.icon-add:hover{background:url('../imgs/operate/add_hover.png') no-repeat;}
+.icon-del{background:url('../imgs/operate/del_normal.png') no-repeat;}
+.icon-del:hover{background:url('../imgs/operate/del_hover.png') no-repeat;}
+.icon-edit{background:url('../imgs/operate/edit_normal.png') no-repeat;}
+.icon-edit:hover{background:url('../imgs/operate/edit_hover.png') no-repeat;}
+.icon-check{background:url('../imgs/operate/check_normal.png') no-repeat;}
+.icon-check:hover{background:url('../imgs/operate/check_hover.png') no-repeat;}
+.icon-fork{background:url('../imgs/operate/fork_normal.png') no-repeat;}
+.icon-fork:hover{background:url('../imgs/operate/fork_hover.png') no-repeat;}
+.icon-init{background:url('../imgs/operate/init_normal.png') no-repeat;}
+.icon-init:hover{background:url('../imgs/operate/init_hover.png') no-repeat;}
+.icon-bag{background:url('../imgs/operate/bag_normal.png') no-repeat;}
+.icon-bag:hover{background:url('../imgs/operate/bag_hover.png') no-repeat;}
+.icon-online{background:url('../imgs/operate/online.png') no-repeat;}
+.icon-online:hover{background:url('../imgs/operate/offline.png') no-repeat;}
+.icon-cfg{background:url('../imgs/operate/cfg_normal.png') no-repeat;}
+.icon-cfg:hover{background:url('../imgs/operate/cfg_hover.png') no-repeat;}
+.icon-msg{background:url('../imgs/operate/msg_normal.png') no-repeat;}
+.icon-msg:hover{background:url('../imgs/operate/msg_hover.png') no-repeat;}
+
+/******** 新增、修改表格样式   ***********/
+table.table-edit>tbody>tr>th {text-align: right; padding: 8px 0 8px 14px;min-width: 60px;}
+table.table-edit>tbody>tr>td {text-align: left; padding: 8px 14px 8px 10px;width: 140px;}
+table.table-edit>tbody>tr>td.btn-td {text-align: center;}
+table.table-edit textarea {width: 390px;height: 100px;}
+
+.btn{border:1px solid #c9c9c9;cursor: pointer; border-radius: 3px;color: #333;height: 30px;padding:0px 14px;line-height: normal;vertical-align: middle;overflow: visible;margin-left: 10px;*margin-left: 12px;}
+.blue-btn{background:url('../imgs/frame/btn_bg2.png') repeat-x;border-width: 0;color:#fff;}
+/***********   公用      ****************/
+select {width:152px;border: 1px solid #cdcdcd;height: 32px;padding: 3px 5px;line-height: 32px;border-radius: 3px;vertical-align: middle;}
+input[type="text"],input[type="password"] {width: 140px;border: 1px solid #cdcdcd;height: 24px;padding: 3px 5px;line-height: 24px;border-radius: 3px;vertical-align:middle;}
+input[type="checkbox"],input[type="radio"] {vertical-align: middle;}
+.yes{background:url('../imgs/frame/index_table_img1.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
+.no{background:url('../imgs/frame/index_table_img2.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
+
+.required {padding: 0 0 0 6px;background: url('../imgs/util/asterisk.png') no-repeat 0 center;}
+
+.uploaddialog li{margin-bottom:10px}
+.uploaddialog li span{float:left;line-height:32px}
+.uploaddialog li select{float:left; *+margin-top:5px; margin-bottom:5px; margin-left:4px}
+
+/*============ 上传图片样式 ==============*/
+.uploadPicDiv { border: 1px dashed #FF9900; color: #999999; height: 150px; position: relative; width: 150px; }
+.uploadTitle { width: 100%; height: 100%; position: absolute; top: 0; background: url('../imgs/util/upload.png') no-repeat center center; }
+
+/*============ 修改layer样式，因form验证的提示信息不好显示  ==============*/
+.layui-layer-page .layui-layer-content { overflow: visible !important; }
+

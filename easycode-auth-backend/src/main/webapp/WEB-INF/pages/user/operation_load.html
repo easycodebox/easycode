@@ -1,0 +1,108 @@
+<table id="loadDialogOperation" class="table-edit hidden">
+	
+	<tr>
+		<th>
+			<label>上级权限：</label>
+		</th>
+		<td>
+			{{operation.parentName}}
+		</td>
+		<th>
+			<label>项目：</label>
+		</th>
+		<td>
+			{{operation.projectName}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>权限名：</label>
+		</th>
+		<td>
+			{{operation.name}}
+		</td>
+		<th>
+			<label>状态：</label>
+		</th>
+		<td>
+			{{operation.status.desc}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>菜单：</label>
+		</th>
+		<td>
+			{{operation.isMenu.desc}}
+		</td>
+		<th>
+			<label>地址：</label>
+		</th>
+		<td>
+			{{operation.url}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>排序值：</label>
+		</th>
+		<td>
+			{{operation.sort}}
+		</td>
+		<th>
+			<label>图标：</label>
+		</th>
+		<td>
+			{{operation.icon}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>创建人：</label>
+		</th>
+		<td>
+			{{operation.creatorName}}
+		</td>
+		<th>
+			<label>创建时间：</label>
+		</th>
+		<td>
+			{{operation.createTime | date}}
+		</td>
+	</tr>
+	
+	<tr>
+		<th>
+			<label>修改人：</label>
+		</th>
+		<td>
+			{{operation.modifierName}}
+		</td>
+		<th>
+			<label>修改时间：</label>
+		</th>
+		<td>
+			{{operation.modifyTime | date}}
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<label>描述：</label>
+		</th>
+		<td colspan="3">
+			<textarea readonly="readonly">{{operation.description}}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<label>备注：</label>
+		</th>
+		<td colspan="3">
+			<textarea readonly="readonly">{{operation.remark}}</textarea>
+		</td>
+	</tr>
+</table>

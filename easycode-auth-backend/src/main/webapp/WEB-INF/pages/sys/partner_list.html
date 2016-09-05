@@ -1,0 +1,259 @@
+[#include "/WEB-INF/common/core.ftl"/]
+<!DOCTYPE HTML>
+<html>
+<head>
+[#include "/WEB-INF/common/meta.html"/]
+<title>合作商</title>
+[#include "/WEB-INF/common/styles.html"/]
+</head>
+<body>
+
+	[#-- 头部区域  --]
+	[#include "/WEB-INF/common/header.html"/]
+	
+	<div id="main">
+		
+		[#-- 左侧菜单区域  --]
+		[#include "/WEB-INF/common/left.html"/]
+		
+		<div id="conent">
+			
+			[#-- 页面标题  --]
+			<h2>合作商</h2>
+			
+			<div id="core-div">
+				
+				[#-- 查询区域 --]
+				<div class="control">
+					<form action="/partner/list.html" method="post">
+						<ul class="search">
+							
+							<li class="param-li">
+								合作商名：<input type="text" name="name" value="${partner.name}" />
+							</li>
+							
+							<li class="param-li">
+								密钥：<input type="text" name="partnerKey" value="${partner.partnerKey}" />
+							</li>
+							
+							<li class="param-li">
+								网址：<input type="text" name="website" value="${partner.website}" />
+							</li>
+							
+							<li class="param-li">
+								状态：[@e.radioEnum name="status" enumName="CloseStatus" 
+										selectedValue=partner.status exclude="DELETE" /]
+							</li>
+							
+							[#-- 查询按钮 --]
+							<li class="search-btns">
+	                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
+	                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
+							</li>
+	                        
+							[#-- 功能按钮区域 --]
+							<li class="handle-btns">
+								[@permited value="partner/add"]
+	                        		<button type="button" id="addBtn" class="btn">+ 新增</button>
+	                        	[/@permited]
+	                        	[@permited value="partner/remove"]
+	                        		<button type="button" class="btn" onclick="gb.batchRemove('/partner/remove.html')">删除</button>
+	                        	[/@permited]
+	                        	[@permited value="partner/openClose"]
+		                        	<button type="button" class="handler open batch btn">启用</button>
+									<button type="button" class="handler close batch btn">禁用</button>
+								[/@permited]
+							</li>
+						</ul>
+					</form>	
+				</div>
+				
+				[#-- 列表信息区域 --]
+				<div class="data-div">
+					<table class="ui-table">
+						<tr class="th-row">
+							<th width="30" checkbox="true"></th>
+							<th width="40" row-no="true">序号</th>
+							<th width="100">合作商名</th>
+							<th width="100">密钥</th>
+							<th width="100">网址</th>
+							<th width="80" fixed="true" no-tip="true">启动/禁用</th>
+							<th width="100">排序值</th>
+							<th width="100" no-tip="true">合同</th>
+							<th width="100">创建人</th>
+							<th width="100">创建时间</th>
+							<th width="130" fixed="true" no-tip="true">操作</th>
+						</tr>
+						
+						[#list dataPage.data as obj]
+							[#-- trid 方便快速选择某行 --]
+							<tr trid="${obj.id}">
+								<td><input type="checkbox" name="ids" value="${obj.id}" /></td>
+								<td>${obj_index + 1}</td>
+								<td>${obj.name}</td>
+								<td>${obj.partnerKey}</td>
+								<td>${obj.website}</td>
+								<td>
+									[#if obj.status.className == "OPEN"]
+										<div class="handler close yes status" />
+									[#elseif obj.status.className == "CLOSE"]
+										<div class="handler open no status" />
+									[/#if]
+								</td>
+								<td>${obj.sort}</td>
+								<td>
+									[@e.imgUrl url=obj.contract rule="r40c40" /]
+								</td>
+								<td>[@e.convertId cid=obj.creator prop="realname || nickname" /]</td>
+								<td>${obj.createTime?datetime}</td>
+								<td>
+									[@permited value="partner/load"]
+										<a class="loadBtn icon-btn icon-detail" data-id="${obj.id}" title="详情" href="javascript:" > </a>
+									[/@permited]
+									[@permited value="partner/update"]
+										<a class="updBtn icon-btn icon-edit" data-id="${obj.id}" title="修改" href="javascript:" > </a>
+									[/@permited]
+									[@permited value="partner/remove"]
+										<a class="icon-btn icon-del" href="javascript:gb.remove('/partner/remove.html', '${obj.id}');" title="删除" > </a>
+									[/@permited]
+								</td>
+							</tr>
+						[/#list]
+						
+					</table>
+				</div>
+			</div>
+			[#-- 分页区域 --]
+			<div class="page">
+				[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage
+						url="/partner/list.html" showPageNum="5" cssClass="pagnation" /]
+			</div>
+			[#-- 底部区域 --]
+			[#include "/WEB-INF/common/footer.html"/]
+		</div>
+		
+	</div>
+	
+	<!-- 模板页 -->
+	<div id="tmpls">
+		[#include "/WEB-INF/pages/sys/partner_load.html"/]
+		
+		<!-- 新增 -->
+		<form id="addDialog" class="form-validate hidden" action="/partner/add.json" data-suc="新增合作商成功" data-fail="新增合作商失败">
+			<table class="table-edit">
+				<tr>
+					<th>
+						<label class="required">合作商名：</label>
+					</th>
+					<td>
+						<input type="text" name="name" v-model="partner.name" validator="maxlength[128],required,gb.existName" maxlength="128" />
+					</td>
+					<th>
+						<label>网址：</label>
+					</th>
+					<td>
+						<input type="text" name="website" v-model="partner.website" validator="maxlength[512]" maxlength="512" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">状态：</label>
+					</th>
+					<td>
+						[@e.radioEnum name="status" enumName="CloseStatus" exclude="DELETE" 
+								tagAttr='{
+									last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
+									all: "v-model=\'partner.status.className\'"
+								}'/]
+					</td>
+					<th>
+						<label class="required">排序值：</label>
+					</th>
+					<td>
+						<input type="text" name="sort" v-model="partner.sort" validator="num,max[999999999],required" maxlength="9" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>合同：</label>
+					</th>
+					<td>
+						<input type="hidden" id="contractAdd" name="contract" v-model="partner.contract" />
+						<div id="uploadImgsAdd" class="uploadPicDiv">
+							<div id="upImgAdd" class="uploadTitle"></div>
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>备注：</label>
+					</th>
+					<td colspan="3">
+						<textarea name="remark" v-model="partner.remark" validator="maxlength[512]" maxlength="512"> </textarea>
+					</td>
+				</tr>
+			</table>
+		</form>
+		
+		<!-- 修改 -->
+		<form id="updDialog" class="form-validate hidden" action="/partner/update.json" data-suc="更新合作商成功" data-fail="更新合作商失败">
+		
+			<input type="hidden" name="id" v-model="partner.id" />
+			
+			<table class="table-edit">
+				<tr>
+					<th>
+						<label class="required">合作商名：</label>
+					</th>
+					<td>
+						<input type="text" name="name" v-model="partner.name" validator="maxlength[128],required,gb.existName" maxlength="128" />
+					</td>
+					<th>
+						<label>网址：</label>
+					</th>
+					<td>
+						<input type="text" name="website" v-model="partner.website" validator="maxlength[512]" maxlength="512" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">排序值：</label>
+					</th>
+					<td>
+						<input type="text" name="sort" v-model="partner.sort" validator="num,max[999999999],required" maxlength="9" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>合同：</label>
+					</th>
+					<td>
+						<input type="hidden" id="contractUpd" name="contract" v-model="partner.contract" />
+						<div id="uploadImgsUpd" class="uploadPicDiv">
+							<div id="upImgUpd" class="uploadTitle"></div>
+						</div> 
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>备注：</label>
+					</th>
+					<td colspan="3">
+						<textarea name="remark" v-model="partner.remark" validator="maxlength[512]" maxlength="512"></textarea>
+					</td>
+				</tr>
+			</table>
+		</form>
+		
+	</div>
+	
+[#include "/WEB-INF/common/scripts.html"/]
+[@e.script src="/js/??sys/partner.js" /]
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "@class" : "org.jasig.cas.services.RegexRegisteredService",
+  "serviceId" : "^https?://dev.ic",
+  "name" : "IC Dev",
+  "theme" : "ic-dev",
+  "id" : 100302,
+  "description" : "IC Dev",
+  "evaluationOrder" : 1
+}

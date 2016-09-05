@@ -1,0 +1,31 @@
+[#include "/WEB-INF/common/core.ftl"/]
+<!DOCTYPE HTML>
+<html>
+<head>
+[#include "/WEB-INF/common/meta.html"/]
+<title>未授权</title>
+[#include "/WEB-INF/common/styles.html"/]
+</head>
+<body>
+
+	[#-- 头部区域  --]
+	[#include "/WEB-INF/common/header.html"/]
+	
+	<div id="main">
+		
+		[#-- 左侧菜单区域  --]
+		[#include "/WEB-INF/common/left.html"/]
+		
+		<div id="conent">
+			
+			[#-- 页面标题  --]
+			<h2>您没有权限执行此操作</h2>
+			
+			[#-- 底部区域 --]
+			[#include "/WEB-INF/common/footer.html"/]
+		</div>
+		
+	</div>
+[#include "/WEB-INF/common/scripts.html"/]
+</body>
+</html>

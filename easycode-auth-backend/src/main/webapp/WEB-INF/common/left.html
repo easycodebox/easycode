@@ -1,0 +1,19 @@
+<div id="menus">
+	<dl>
+		[#list left_menu as menu1]
+			<dt class="one">
+				<img src="/imgs/icon/${menu1.icon}.png">
+				<div class="nav">${menu1.name}</div>
+				<div class="icon"></div>
+				<div style="clear:both"></div>
+			</dt>
+			<dd>
+				<div class="two hidden">
+					[#list menu1.children as menu2]
+					<div class="menu-bar" menu-id="${menu2.id}" ><a href="/${menu2.url}.html" >${menu2.name}</a></div>
+					[/#list]
+				</div>
+			</dd>
+		[/#list]
+	</dl>
+</div>

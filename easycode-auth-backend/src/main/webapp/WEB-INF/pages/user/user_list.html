@@ -1,0 +1,359 @@
+[#include "/WEB-INF/common/core.ftl"/]
+<!DOCTYPE HTML>
+<html>
+<head>
+[#include "/WEB-INF/common/meta.html"/]
+<title>用户</title>
+[#include "/WEB-INF/common/styles.html"/]
+</head>
+<body>
+
+	[#-- 头部区域  --]
+	[#include "/WEB-INF/common/header.html"/]
+	
+	<div id="main">
+		
+		[#-- 左侧菜单区域  --]
+		[#include "/WEB-INF/common/left.html"/]
+		
+		<div id="conent">
+			
+			[#-- 页面标题  --]
+			<h2>用户</h2>
+			
+			<div id="core-div">
+				
+				[#-- 查询区域 --]
+				<div class="control">
+					<form action="/user/list.html" method="post">
+						<ul class="search">
+							
+							<li class="param-li">
+								用户组名：<input type="text" name="groupName" value="${user.groupName}" />
+							</li>
+							
+							<li class="param-li">
+								员工编号：<input type="text" name="userNo" value="${user.userNo}" />
+							</li>
+							
+							<li class="param-li">
+								用户名：<input type="text" name="username" value="${user.username}" />
+							</li>
+							
+							<li class="param-li">
+								昵称：<input type="text" name="nickname" value="${user.nickname}" />
+							</li>
+							
+							<li class="param-li">
+								真实姓名：<input type="text" name="realname" value="${user.realname}" />
+							</li>
+							
+							<li class="param-li">
+								状态：[@e.radioEnum name="status" enumName="CloseStatus" 
+										selectedValue=user.status exclude="DELETE" /]
+							</li>
+							
+							<li class="param-li">
+								邮箱：<input type="text" name="email" value="${user.email}" />
+							</li>
+							
+							<li class="param-li">
+								手机号：<input type="text" name="mobile" value="${user.mobile}" />
+							</li>
+							
+							[#-- 查询按钮 --]
+							<li class="search-btns">
+								<button type="submit" class="common-submit btn blue-btn">查询</button>
+	                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
+							</li>
+	                        
+							[#-- 功能按钮区域 --]
+							<li class="handle-btns">
+								[@permited value="user/add"]
+		                        	<button type="button" id="addBtn" class="btn">+ 新增</button>
+								[/@permited]
+								[@permited value="user/remove"]
+	                        		<button type="button" class="btn" onclick="gb.batchRemove('/user/remove.html')">删除</button>
+	                        	[/@permited]
+	                        	[@permited value="user/openClose"]
+		                        	<button type="button" class="handler open batch btn">启用</button>
+									<button type="button" class="handler close batch btn">禁用</button>
+								[/@permited]
+							</li>
+						</ul>
+					</form>	
+				</div>
+				
+				[#-- 列表信息区域 --]
+				<div class="data-div">
+					<table class="ui-table">
+						<tr class="th-row">
+							<th width="30" checkbox="true"></th>
+							<th width="40" row-no="true">序号</th>
+							<th width="100">用户组名</th>
+							<th width="100">员工编号</th>
+							<th width="100">用户名</th>
+							<th width="100">昵称</th>
+							<th width="100">真实姓名</th>
+							<th width="80" fixed="true" no-tip="true">启动/禁用</th>
+							<th width="100">排序值</th>
+							<th width="100">邮箱</th>
+							<th width="100">手机号</th>
+							<th width="100">错误登录</th>
+							<th width="100">创建人</th>
+							<th width="100">创建时间</th>
+							<th width="150" fixed="true" no-tip="true">操作</th>
+						</tr>
+						
+						[#list dataPage.data as obj]
+							[#-- trid 方便快速选择某行 --]
+							<tr trid="${obj.id}">
+								<td><input type="checkbox" name="ids" value="${obj.id}" /></td>
+								<td>${obj_index + 1}</td>
+								<td>${obj.groupName}</td>
+								<td>${obj.userNo}</td>
+								<td>${obj.username}</td>
+								<td>${obj.nickname}</td>
+								<td>${obj.realname}</td>
+								<td>
+									[#if obj.status.className == "OPEN"]
+										<div class="handler close yes status" />
+									[#elseif obj.status.className == "CLOSE"]
+										<div class="handler open no status" />
+									[/#if]
+								</td>
+								<td>${obj.sort}</td>
+								<td>${obj.email}</td>
+								<td>${obj.mobile}</td>
+								<td>${obj.loginFail}</td>
+								<td>[@e.convertId cid=obj.creator prop="realname || nickname" /]</td>
+								<td>${obj.createTime?datetime}</td>
+								<td>
+									[@permited value="user/load"]
+										<a class="loadBtn icon-btn icon-detail" data-id="${obj.id}" title="详情" href="javascript:" > </a>
+									[/@permited]
+									[@permited value="user/update"]
+										<a class="updBtn icon-btn icon-edit" data-id="${obj.id}" title="修改" href="javascript:" > </a>
+									[/@permited]
+									[@permited value="user/remove"]
+										<a class="icon-btn icon-del" href="javascript:gb.remove('/user/remove.html', '${obj.id}');" title="删除" > </a>
+									[/@permited]
+									[@permited value="role/cfgByUserId"]
+										<a class="cfgRolesBtn icon-btn icon-cfg" data-id="${obj.id}" title="配置角色" href="javascript:" > </a>
+									[/@permited]
+								</td>
+							</tr>
+						[/#list]
+						
+					</table>
+				</div>
+			</div>
+			[#-- 分页区域 --]
+			<div class="page">
+				[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage
+						url="/user/list.html" showPageNum="5" cssClass="pagnation" /]
+			</div>
+			[#-- 底部区域 --]
+			[#include "/WEB-INF/common/footer.html"/]
+		</div>
+		
+	</div>
+	
+	<!-- 模板页 -->
+	<div id="tmpls">
+		[#include "/WEB-INF/pages/user/user_load.html"/]
+		
+		<!-- 新增 -->
+		<form id="addDialog" class="form-validate hidden" action="/user/add.json" data-suc="新增用户成功" data-fail="新增用户失败">
+			<table class="table-edit">
+				<tr>
+					<th>
+						<label>用户组：</label>
+					</th>
+					<td>
+						<div class="tree-tip-wrap">
+							<input type="text" class="groupName" v-model="user.groupName" readonly />
+							<input type="hidden" class="groupId" name="groupId" v-model="user.groupId" readonly />
+							<div class="tree-tip-div">
+								<ul class="ztree tree-tip"></ul>
+							</div>
+						</div>
+					</td>
+					<th>
+						<label>员工编号：</label>
+					</th>
+					<td>
+						<input type="text" name="userNo" v-model="user.userNo" validator="maxlength[32]" maxlength="32" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">用户名：</label>
+					</th>
+					<td>
+						<input type="text" name="username" v-model="user.username" validator="word,maxlength[32],required,gb.existUsername" maxlength="32" />
+					</td>
+					<th>
+						<label>昵称：</label>
+					</th>
+					<td>
+						<input type="text" name="nickname" v-model="user.nickname" validator="word_zh,maxlength[32],gb.existNickname" maxlength="32" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">密码：</label>
+					</th>
+					<td>
+						<input type="password" id="pwdAdd" name="password" v-model="user.password" validator="maxlength[32],required" maxlength="32" />
+					</td>
+					<th>
+						<label class="required">确认密码：</label>
+					</th>
+					<td>
+						<input type="password" v-model="user.password2" validator="maxlength[32],equalto[pwdAdd],required" maxlength="32" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>真实姓名：</label>
+					</th>
+					<td>
+						<input type="text" name="realname" v-model="user.realname" validator="word_zh,maxlength[32]" maxlength="32" />
+					</td>
+					<th>
+						<label class="required">状态：</label>
+					</th>
+					<td>
+						[@e.radioEnum name="status" enumName="CloseStatus" exclude="DELETE" 
+								tagAttr='{
+									last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
+									all: "v-model=\'user.status.className\'"
+								}'/]
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">排序值：</label>
+					</th>
+					<td>
+						<input type="text" name="sort" v-model="user.sort" validator="num,max[999999999],required" maxlength="9" />
+					</td>
+					<th>
+						<label>手机号：</label>
+					</th>
+					<td>
+						<input type="text" name="mobile" v-model="user.mobile" validator="maxlength[11],mobile" maxlength="11" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>性别：</label>
+					</th>
+					<td>
+						[@e.radioEnum name="gender" enumName="Gender" tagAttr="v-model='user.gender.className'" /]
+					</td>
+					<th>
+						<label>邮箱：</label>
+					</th>
+					<td>
+						<input type="text" name="email" v-model="user.email" validator="maxlength[512],email" maxlength="512" />
+					</td>
+				</tr>
+			</table>
+		</form>
+		
+		<!-- 修改 -->
+		<form id="updDialog" class="form-validate hidden" action="/user/update.json" data-suc="更新用户成功" data-fail="更新用户失败">
+		
+			<input type="hidden" name="id" v-model="user.id" />
+			
+			<table class="table-edit">
+				<tr>
+					<th>
+						<label>用户组：</label>
+					</th>
+					<td>
+						<div class="tree-tip-wrap">
+							<input type="text" class="groupName" v-model="user.groupName" readonly />
+							<input type="hidden" class="groupId" name="groupId" v-model="user.groupId" readonly />
+							<div class="tree-tip-div">
+								<ul class="ztree tree-tip"></ul>
+							</div>
+						</div>
+					</td>
+					<th>
+						<label>员工编号：</label>
+					</th>
+					<td>
+						<input type="text" name="userNo" v-model="user.userNo" validator="maxlength[32]" maxlength="32" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">用户名：</label>
+					</th>
+					<td>
+						<input type="text" name="username" v-model="user.username" validator="word,maxlength[32],required,gb.existUsername" maxlength="32" />
+					</td>
+					<th>
+						<label>昵称：</label>
+					</th>
+					<td>
+						<input type="text" name="nickname" v-model="user.nickname" validator="word_zh,maxlength[32],gb.existNickname" maxlength="32" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>真实姓名：</label>
+					</th>
+					<td>
+						<input type="text" name="realname" v-model="user.realname" validator="word_zh,maxlength[32]" maxlength="32" />
+					</td>
+					<th>
+						<label class="required">排序值：</label>
+					</th>
+					<td>
+						<input type="text" name="sort" v-model="user.sort" validator="num,max[999999999],required" maxlength="9" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>手机号：</label>
+					</th>
+					<td>
+						<input type="text" name="mobile" v-model="user.mobile" validator="maxlength[11],mobile" maxlength="11" />
+					</td>
+					<th>
+						<label>邮箱：</label>
+					</th>
+					<td>
+						<input type="text" name="email" v-model="user.email" validator="maxlength[512],email" maxlength="512" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>性别：</label>
+					</th>
+					<td>
+						[@e.radioEnum name="gender" enumName="Gender" tagAttr="v-model='user.gender.className'" /]
+					</td>
+				</tr>
+			</table>
+		</form>
+		
+	</div>
+	
+[#include "/WEB-INF/common/scripts.html"/]
+[@e.script src="/js/??user/user.js" /]
+</body>
+</html>

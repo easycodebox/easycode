@@ -1,0 +1,146 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr,
+address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var,
+b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot,
+thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header,
+hgroup, menu, nav, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+body { line-height: 1; }
+nav ul { list-style: none; }
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+a { margin: 0; padding: 0; font-size: 100%; vertical-align: baseline; background: transparent; }
+ins { background-color: #ff9; color: #000; text-decoration: none; }
+mark { background-color: #ff9; color: #000; font-style: italic; font-weight: bold; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom: 1px dotted; cursor: help; }
+table { border-collapse: collapse; border-spacing: 0; }
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #cccccc; margin: 1em 0; padding: 0; }
+input, select { vertical-align: middle; }
+body { font-family: Verdana, sans-serif; font-size: 11px; line-height: 1.4em; background: #eee; }
+
+#container { width: 960px; margin: 0 auto; }
+
+@media only screen and (max-width: 960px) {
+    #container { width: 100%; }
+    #content {
+        -webkit-border-bottom-right-radius: 0px;
+        -webkit-border-bottom-left-radius: 0px;
+        -moz-border-radius-bottomright: 0px;
+        -moz-border-radius-bottomleft: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+}
+
+body {
+    background: #153e50; /* Old browsers */
+    
+}
+
+a:link, a:visited {
+    color: #257bb2;
+}
+
+a:hover {
+    color: #a0b757;
+}
+
+p {
+    margin-bottom: 1.4em;
+}
+
+@media only screen and (max-width: 960px) {
+    header { padding: 20px; }
+    #container { width: 100%; }
+    #content {
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
+    }
+}
+
+@media only screen and (max-width: 855px) {
+    #logo { display: none; }
+    header h1 { font-size: 1em; width: 70px; height: 40px; background-size: 70px 40px; }
+    #login { float: none; width: 100%; }
+    #fm1 .row input[type=text],
+    #fm1 .row input[type=password] { width: 100%; padding: 10px; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; }
+    #fm1 .row .btn-submit { outline: none; -webkit-appearance: none; -webkit-border-radius: 0; border: 0; background: #70ba61; color: white; font-weight: bold; width: 100%; padding: 10px 20px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+    #fm1 .row .btn-reset { display: none; }
+    #sidebar { margin-top: 20px; }
+    #sidebar .sidebar-content { padding: 0; }
+}
+
+
+/**登录form*/
+.login_form{width: 296px;padding-left:20px;}
+.login_form div{padding: 2px 0;float: left;}
+
+.errors{width: 296px;overflow: hidden;color: #d70000;margin-top: -24px}
+/**登录信息*/
+.login_form .input-box{height: 37px;width: 269px;background: url(../imgs/input-box.png) no-repeat;}
+.input-box input{width:220px;padding:6px 0;border: 0;outline: 0;vertical-align:middle;line-height:normal;color: #666666}
+.input-box.input-focus {background-image: url(../imgs/input-focus.png);}
+
+/**登录框图片*/
+.icon-wrapper{vertical-align: middle;line-height: 0;margin:0 8px;}
+.icon_login{vertical-align: middle;width: 24px;height: 24px;margin: 0 auto;background: transparent url(../imgs/login_icon.png) no-repeat center center;}
+.icon_login.un{background-position:0 0;}
+.icon_login.pwd{background-position:-26px 0;}
+
+.login_operate{width:295px;margin-top: 10px;}
+/**登录按钮*/
+.login_operate .login_subdiv{float: left;width: 97px;}
+.login_subdiv .login_submit{width:97px;height:37px;border:0;background: url(../imgs/login.png) no-repeat;cursor: pointer;}
+/**忘记密码*/
+.login_operate .forget_pwd{float: left;width: 173px;line-height: 37px;color: #b6b6b6}
+.forget_pwd input{margin-left: 20px}
+.forget_pwd a{text-decoration: none;float:right;color: #b6b6b6}
+.forget_pwd a:hover{color:#45bbff;text-decoration: underline;}
+
+/**注册*/
+.register{float: left;width: 295px;margin-top: 50px}
+.register p{float: left;width:120px;color: #45bbff}
+.register a{color: #45bbff;}
+.register a:hover{cursor:pointer;text-decoration: underline;}
+
+
+body {margin:0; padding:0; background:#eee url(../imgs/bg.jpg) repeat scroll center center; font-family:"微软雅黑";}
+.main-cont {width:100%; height:520px; margin:9% auto 9.5%; position:relative}
+.mailogo {width:477px; height:57px; margin:0 auto 51px;}
+.mailogo img {border:0}
+.maforms {width:100%; height:412px;}
+.formain {width:790px; height:412px; margin:0 auto; padding-top:28px; font-family:"微软雅黑";}
+.fohead {font-size:18px; color:#444444; letter-spacing:2px;}
+.forminfo {width:546px; height:412px; background:url("../imgs/index-kuang.png") no-repeat; margin:0 auto; position:absolute; top:88px;left: 50%;margin-left: -272px;}
+.formimgs img {width:100%; height:412px}
+.loginmain {width:346px; height:300px; margin:0 auto;padding-left:30px;padding-top:50px; font-size:14px;}
+.loginmain ul {margin:0; padding:0; width:100%}
+.loginmain li {list-style:none; margin-bottom:20px;}
+.account {border-radius: 4px; color: #666666; display: block; height: 30px; line-height: 20px; margin-top: 8px; padding: 3px 10px; width: 318px; border-bottom:1px solid #c8c8c8; border-top:1px solid #a7a7a7; border-left:1px solid #b6b6b6; border-right:1px solid #b7b7b7;}
+.username {background:url("../imgs/user.png") no-repeat scroll 10px 10px rgba(0, 0, 0, 0);}
+.password {background:url("../imgs/psd.png") no-repeat scroll 10px 15px rgba(0, 0, 0, 0);}
+.fobutom {width:346px; height:56px; margin:20px auto}
+.forbutom {width:272px; height:44px; border:none; color:#FFF; font-size:18px; font-weight:bold; background:url("../imgs/login_bg.png") no-repeat; cursor:pointer}
+.forbutom:active {background:url("../imgs/index_hover_03.png");}
+.maifoot {width:100%; height:80px; background:#464646; position:relative}
+.maifoot p {width:400px; height:20px; margin:30px 0; left:50%; margin-left: -200px; color:#b8b8b8; font-family:"宋体"; font-size:14px; padding-left:30px; background:url("../imgs/register_09.png") no-repeat; position:absolute}
+.errors {color: #f64b08; font-size: 12px; height: 20px;}
+.errors span {background: url("../imgs/warning_03.png") no-repeat scroll 0 2px rgba(0, 0, 0, 0); padding-left: 20px; display:none}
+.foot{color:#fefefe;}
+.foot a{color:#fefefe;text-decoration: none;}
+.foot a:hover{color:#fff600;cursor: pointer}
+
+.mailogo {
+	text-align: center;
+	font-size: 30px;
+	letter-spacing: 0.2em;
+	line-height: 57px;
+}
