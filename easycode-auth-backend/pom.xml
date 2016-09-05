@@ -54,7 +54,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
-					<warName>easycode-auth-backend</warName>
+					<!-- <warName>easycode-auth-backend</warName> -->
 				</configuration>
 			</plugin>
 			<plugin>

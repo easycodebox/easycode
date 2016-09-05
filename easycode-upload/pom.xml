@@ -62,7 +62,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
-					<warName>easycode-upload</warName>
+					<!-- <warName>easycode-upload</warName> -->
 				</configuration>
 			</plugin>
 			<plugin>

@@ -32,7 +32,6 @@ public class BaseTest<T> extends LocateLogger {
 				if (ApplicationContextFactory.newInstance() == null) {
 					try{
 						new ClassPathXmlApplicationContext("core.xml");
-						System.out.println("-===========================-");
 					}catch (Exception e) {
 						LOG.error("run error!!!", e);
 					}
