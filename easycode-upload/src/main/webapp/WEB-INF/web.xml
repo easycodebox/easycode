@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+	
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>web_upload</param-value>
+	</context-param>
+	
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>com.easycodebox.common.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>errorContextFilter</filter-name>
+		<filter-class>com.easycodebox.common.filter.ErrorContextFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>errorContextFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<servlet>
+		<servlet-name>show</servlet-name>
+		<jsp-file>/WEB-INF/jsp/upload.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>show</servlet-name>
+		<url-pattern>/show</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>upload</servlet-name>
+		<servlet-class>com.depsemi.upload.servlet.UploadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>upload</servlet-name>
+		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>delete</servlet-name>
+		<servlet-class>com.depsemi.upload.servlet.DeleteServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>delete</servlet-name>
+		<url-pattern>/delete</url-pattern>
+	</servlet-mapping>
+
+	<listener>
+		<listener-class>com.easycodebox.common.log.LogConfigListener</listener-class>
+	</listener>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.do</welcome-file>
+		<welcome-file>index.action</welcome-file>
+	</welcome-file-list>
+	
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<!-- 内部服务器错误 -->
+	<error-page>
+		<error-code>500</error-code>
+		<location>/errors/500.html</location>
+	</error-page>
+	<!-- 禁止访问 -->
+	<error-page>
+		<error-code>403</error-code>
+		<location>/errors/403.html</location>
+	</error-page>
+	<!-- 找不到页面 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errors/404.html</location>
+	</error-page>
+
+</web-app>

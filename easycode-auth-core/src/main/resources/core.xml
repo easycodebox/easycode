@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-lazy-init="true">
+
+	<!-- 注解 -->
+	<context:annotation-config />
+	<!-- 组件扫描 -->
+	<context:component-scan base-package="com.easycodebox">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<!-- 启用AOP，建议不用加proxy-target-class="true" -->
+	<aop:aspectj-autoproxy />
+	<!-- 使用注解事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<!-- 导入cache配置 -->
+	<import resource="core-cache.xml" />
+	
+	<!-- =================================== 【配置文件 - START】  ============================================== -->
+	<!-- ++++++++++++ 配置信息保存ZooKeeper中 ++++++++++++
+		ZooKeeper client
+		<bean id="curatorFramework" class="com.easycodebox.common.zookeeper.curator.DefaultCuratorFrameworkFactory"
+			p:connectString="192.168.1.101:2181,192.168.1.102:2181,192.168.1.103:2181/conf/easycode/auth" />
+		
+		节点名制造器
+		<bean id="zkLatentIpNodeNameMaker" class="com.easycodebox.common.zookeeper.curator.CuratorLatentIpNodeNameMaker"
+			p:client-ref="curatorFramework" p:defaultIpDataNode="DEV" p:child="core.properties" />
+			
+		zookeeper数据反序列化
+		<bean id="zkPropertiesDeserializer" class="com.easycodebox.common.zookeeper.ZkPropertiesDeserializer" />
+		
+		节点
+		<bean id="cfgNode" class="com.easycodebox.common.zookeeper.curator.CuratorNode"
+			p:debug="true" p:client-ref="curatorFramework" p:maker-ref="zkLatentIpNodeNameMaker"
+			p:deserializer-ref="zkPropertiesDeserializer" />
+			
+		获取节点数据
+		<bean id="cfgProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+			p:targetObject-ref="cfgNode" p:targetMethod="load" />
+	++++++++++++ -->    	
+	
+	<!-- 配置常量 -->
+	<bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean"
+		p:ignoreResourceNotFound="true">
+		<property name="locations">
+			<list>
+				<value>classpath:core.properties</value>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:url.properties</value>
+				<value>classpath:mail.properties</value>
+				<value>classpath:login.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- ===================================== 【配置文件 - END】  ================================================== -->
+	<!-- 计算属性值中的值引用。例：cas.login=${cas.url}/login -->
+	<bean id="exePropertyPlaceholder" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+		depends-on="properties" lazy-init="false"
+		p:targetClass="com.easycodebox.common.file.PropertiesUtils"
+		p:targetMethod="processPlaceholder">
+		<property name="arguments">
+			<array>
+				<ref bean="properties"/>
+				<value>true</value>
+			</array>
+		</property>
+	</bean>
+	<!-- 处理类的静态变量 ，当properties文件中没有配置值且Class类中已初始化，则值会反刷进properties中 -->
+	<bean id="staticValueProcessor" class="com.easycodebox.common.processor.StaticValueProcessor" 
+		init-method="process" lazy-init="false" depends-on="exePropertyPlaceholder">
+		<property name="properties" ref="properties" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.easycodebox.auth.core.bo</value>
+			</list>
+		</property>
+		<property name="classes">
+			<list>
+				<value>com.easycodebox.auth.core.util.Constants</value>
+				<value>com.easycodebox.common.freemarker.ConfigurationFactory</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="placeholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		depends-on="staticValueProcessor"
+		p:properties-ref="properties">
+		<property name="ignoreResourceNotFound" value="true" />
+	</bean>
+	<!-- 属性刷到PropertiesPool中 -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+		depends-on="staticValueProcessor"
+		p:targetClass="com.easycodebox.common.file.PropertiesPool"
+		p:targetMethod="addProperties"
+		p:arguments-ref="properties" />
+	
+	<!-- 配置日志 -->
+	<bean id="logAspect" class="com.easycodebox.auth.core.util.aop.log.LogAspect" />
+
+	<!-- 配置枚举类型工厂 -->
+	<bean id="enumClassFactory" class="com.easycodebox.common.enums.EnumClassFactory"
+		lazy-init="false">
+		<property name="packagesToScan">
+			<list>
+				<value>com.easycodebox.auth.core.enums</value>
+				<value>com.easycodebox.auth.core.util.mybatis</value>
+				<value>com.easycodebox.common.enums.entity</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="annotatedConfig" class="com.easycodebox.common.jdbc.ConfigPojoBean"
+		lazy-init="false" p:packagesToScan="com.easycodebox.auth.core.pojo" />
+
+	<!-- 数据源配置 -->
+	<!--
+		initialSize/minIdle/maxActive ==> 配置初始化大小、最小、最大
+		maxWait ==> 配置获取连接等待超时的时间
+		timeBetweenEvictionRunsMillis ==> 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+		minEvictableIdleTimeMillis ==> 配置一个连接在池中最小生存的时间，单位是毫秒
+		poolPreparedStatements/maxPoolPreparedStatementPerConnectionSize ==> 打开PSCache，并且指定每个连接上PSCache的大小
+		filters ==> 配置监控统计拦截的filters
+		connectionProperties ==> config.decrypt用于解密数据库密码
+	 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close"
+		p:url="${jdbc.url}"
+		p:username="${jdbc.username}"
+		p:password="${jdbc.password}"
+		p:initialSize="${pool.initialSize}"
+		p:minIdle="${pool.minIdle}"
+		p:maxActive="${pool.maxActive}"
+		p:maxWait="${pool.maxWait}"
+		p:timeBetweenEvictionRunsMillis="${pool.timeBetweenEvictionRunsMillis}"
+		p:minEvictableIdleTimeMillis="${pool.minEvictableIdleTimeMillis}"
+		
+		p:validationQuery="${pool.validationQuery}"
+		p:testWhileIdle="${pool.testWhileIdle}"
+		p:testOnBorrow="${pool.testOnBorrow}"
+		p:testOnReturn="${pool.testOnReturn}"
+		
+		p:poolPreparedStatements="${pool.poolPreparedStatements}"
+		p:maxPoolPreparedStatementPerConnectionSize="${pool.maxPoolPreparedStatementPerConnectionSize}"
+		
+		p:filters="${pool.filters}"
+		p:connectionProperties="config.decrypt=true" />
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="dataSource" />
+
+	<bean id="sqlSessionFactory" class="com.easycodebox.common.mybatis.MyBatisSqlSessionFactoryBean"
+		p:dataSource-ref="dataSource"
+		p:configLocation="classpath:mybatis-config.xml" />
+
+	<bean id="sqlSessionTemplate" class="com.easycodebox.common.mybatis.DefaultSqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+		p:basePackage="com.easycodebox.auth.core.dao" />
+	<!-- 在insert、update时修改自动设置操作人、操作时间 -->
+	<bean id="jdbcPreHandler" class="com.easycodebox.common.jdbc.support.DefaultJdbcPreHandler" />
+
+	<!-- 持有spring上下文的bean -->
+	<bean class="com.easycodebox.common.spring.ApplicationContextFactory"
+		lazy-init="false" />
+
+	<!-- =================================== 【ID转换器 - START】  ============================================== -->
+	<bean id="userIdConverter" class="com.easycodebox.auth.core.idconverter.UserIdConverter" />
+	<bean id="converterMap" class="com.easycodebox.common.tag.ConvertIdTag.DefaultIdConverterMap">
+		<property name="defaultModule" value="user" />
+		<property name="converterMap">
+			<map>
+				<entry key="user" value-ref="userIdConverter" />
+			</map>
+		</property>
+	</bean>
+	<!-- =================================== 【ID转换器 - END】  ============================================== -->
+
+</beans>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cross-domain-policy>
+
+	<allow-access-from domain="*.easycodebox.com" />
+	<allow-access-from domain="*.easycodebox.cn" />
+	
+	<!-- 
+		只试用于开发环境
+		<allow-access-from domain="*" />
+	 -->
+
+</cross-domain-policy>

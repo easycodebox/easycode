@@ -1,0 +1,8 @@
+{
+  "@class" : "org.jasig.cas.services.RegexRegisteredService",
+  "serviceId" : "^https?://(data|auth|shop)\\.easycodebox",
+  "name" : "dining",
+  "id" : 100101,
+  "description" : "This service definition dining application.",
+  "evaluationOrder" : 100
+}

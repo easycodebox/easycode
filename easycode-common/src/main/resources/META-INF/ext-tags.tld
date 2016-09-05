@@ -1,0 +1,1472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+		version="2.0">
+		
+	<tlib-version>1.0.1</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>e</short-name>
+	<uri>/ext-tags</uri>
+	<display-name>Free Tags</display-name>
+	<description><![CDATA[项目中使用到的一些标签，方便表现层的显示]]></description>
+
+	<tag>
+		<name>showEnum</name>
+		<tag-class>com.easycodebox.common.tag.ShowEnum</tag-class>
+		<body-content>empty</body-content>
+		<description><![CDATA[显示枚举类的信息]]></description>
+		<attribute>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[枚举用很么类型的方法转换出需要的值，1.valToDesc 2.objToVal 3.objToDesc 4.descToVal]]></description>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[1.valToDesc 时value为Enum的value字段值 2.objToVal 时value为Enum对象名 
+						3.objToDesc 时value为Enum对象名 4.descToVal 时value为Enum的desc字段名]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>enumName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[枚举类类型]]>
+			</description>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>iteratorEnum</name>
+		<tag-class>com.easycodebox.common.tag.IteratorEnum</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Iterate over a iterable Enum value,添加include==>过滤exclude==>过滤begin-end]]></description>
+		<attribute>
+			<name>begin</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[begin index of IteratorEnum]]></description>
+		</attribute>
+		<attribute>
+			<name>end</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[end index of IteratorEnum]]></description>
+		</attribute>
+		<attribute>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>enumName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>status</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>step</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>exclude</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+			  <![CDATA[排除的枚举值，例如：ABC,ICBC]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>include</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+			  <![CDATA[需要的枚举值，例如：ABC,ICBC]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description><![CDATA[If tag]]></description>
+		<name>ifEnum</name>
+		<tag-class>com.easycodebox.common.tag.IfEnum</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>test</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[被比较的表达式]]></description>
+		</attribute>
+		<attribute>
+			<name>enumValue</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[已知枚举的值，例：OpenClose.OPEN]]></description>
+		</attribute>
+		<attribute>
+			<name>enumProperty</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[比较枚举值的某个属性，null值代表比较枚举对象本身]]></description>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	<tag>
+		<description><![CDATA[Elseif tag]]></description>
+		<name>elseIfEnum</name>
+		<tag-class>com.easycodebox.common.tag.ElseIfEnum</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>test</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[被比较的表达式]]></description>
+		</attribute>
+		<attribute>
+			<name>enumValue</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[已知枚举的值，例：OpenClose.OPEN]]></description>
+		</attribute>
+		<attribute>
+			<name>enumProperty</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[比较枚举值的某个属性，null值代表比较枚举对象本身]]></description>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	<tag>
+		<description><![CDATA[Else tag]]></description>
+		<name>elseEnum</name>
+		<tag-class>com.easycodebox.common.tag.ElseEnum</tag-class>
+		<body-content>JSP</body-content>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	<tag>
+		<description><![CDATA[Render a formatted number.]]></description>
+		<name>number</name>
+		<tag-class>com.easycodebox.common.tag.Number</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description><![CDATA[The number value to format]]></description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Type of number formatter (currency, integer, number or percent, DecimalFormat pattern. default is 0.##)]]></description>
+			<name>pattern</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Maximum fraction digits]]></description>
+			<name>maxFractionDigits</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Maximum integer digits]]></description>
+			<name>maxIntDigits</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Minimum fraction digits]]></description>
+			<name>minFractionDigits</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Maximum integer digits]]></description>
+			<name>minIntDigits</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Whether grouping is used, default is false]]></description>
+			<name>groupUsed</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[groupingSize]]></description>
+			<name>groupSize</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Parse integer only]]></description>
+			<name>onlyInt</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[默认是DOWN（直接舍去多余的小数位，不四舍五入）。UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN ]]></description>
+			<name>roundingMode</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	<tag>
+		<description><![CDATA[Convert ID to expected value.]]></description>
+		<name>convertId</name>
+		<tag-class>com.easycodebox.common.tag.ConvertIdTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description><![CDATA[Need to convert value.]]></description>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The module of ID]]></description>
+			<name>module</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The property name of corresponding ID object.]]></description>
+			<name>prop</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	<tag>
+		<name>textCut</name>
+		<tag-class>com.easycodebox.common.tag.TextCut</tag-class>
+		<body-content>empty</body-content>
+		<description><![CDATA[截断字符串，并且可以在截断后的字符串后添加...等符号。建议使用CSS3的text-overflow功能]]></description>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[需要被截断的数据]]></description>
+		</attribute>
+		<attribute>
+			<name>cutPattern</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[是否需要去除样式，默认为false]]></description>
+		</attribute>
+		<attribute>
+			<name>remainNum</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[保留的字符数，默认为50]]></description>
+		</attribute>
+		<attribute>
+			<name>symbol</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[在被截断后的字符串后添加的符号标记，如...]]></description>
+		</attribute>
+		<attribute>
+			<name>arraySeparator</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[如果被截取的数据时数组，则数组拼装成字符窜的分隔符为arraySeparator，默认为空格]]></description>
+		</attribute>
+		<attribute>
+			<name>wrap</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[包裹数据的html标签，例：<span title="{value}">{remainValue}</span>，value为传入的参数值]]></description>
+		</attribute>
+		<attribute>
+			<name>key</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[对象的属性名，显示的数据为此属性对应的值，用此属性时value必须是对象]]></description>
+		</attribute>
+		<attribute>
+			<name>escape</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[ Whether to escape HTML，默认为false]]></description>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description><![CDATA[]]></description>
+		<name>checkboxEnum</name>
+		<tag-class>com.easycodebox.common.tag.CheckboxEnum</tag-class>
+		<body-content>empty</body-content>
+		<description><![CDATA[添加include==>过滤exclude==>过滤begin-end]]></description>
+		<attribute>
+			<description><![CDATA[HTML id attribute]]></description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name to set for element]]></description>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[生成radio中value的类型，两种选择 1.NAME 
+					例：OPEN(0, "开启") 指的是OPEN。 2.VALUE 例：OPEN(0, "开启") 指的是0。
+					默认dataType为 NAME]]></description>
+			<name>dataType</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html title attribute on rendered html element]]></description>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[.]]></description>
+			<name>enumName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Preset the value of input element.]]></description>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[]]></description>
+			<name>begin</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[]]></description>
+			<name>end</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[]]></description>
+			<name>exclude</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>include</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+			  <![CDATA[需要的枚举值，例如：ABC,ICBC]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>tagAttr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[html标签的属性值。
+					1）单字符窜格式： 多个属性用空格隔开tagAttr='name="name" age="age"'
+					2）JSON格式：tagAttr='{first: "name='a'", last: "name='b'", 0: "name='c'"}'
+						JSON的key值可以是first、last、索引值
+				]]>
+			</description>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css class to use for element]]></description>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css class to use for label]]></description>
+			<name>labelClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css style definitions for label to use]]></description>
+			<name>labelStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[ Set the html onblur attribute on rendered html element]]></description>
+			<name>onblur</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onchange attribute on rendered html element]]></description>
+			<name>onchange</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onclick attribute on rendered html element]]></description>
+			<name>onclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html ondblclick attribute on rendered html element]]></description>
+			<name>ondblclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onfocus attribute on rendered html element]]></description>
+			<name>onfocus</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeydown attribute on rendered html element]]></description>
+			<name>onkeydown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeypress attribute on rendered html element]]></description>
+			<name>onkeypress</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeyup attribute on rendered html element]]></description>
+			<name>onkeyup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousedown attribute on rendered html element]]></description>
+			<name>onmousedown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousemove attribute on rendered html element]]></description>
+			<name>onmousemove</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseout attribute on rendered html element]]></description>
+			<name>onmouseout</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseover attribute on rendered html element]]></description>
+			<name>onmouseover</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseup attribute on rendered html element]]></description>
+			<name>onmouseup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onselect attribute on rendered html element]]></description>
+			<name>onselect</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	<tag>
+		<description><![CDATA[]]></description>
+		<name>selectEnum</name>
+		<tag-class>com.easycodebox.common.tag.SelectEnum</tag-class>
+		<body-content>empty</body-content>
+		<description><![CDATA[添加include==>过滤exclude==>过滤begin-end]]></description>
+		<attribute>
+			<description><![CDATA[HTML id attribute]]></description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name to set for element]]></description>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[生成radio中value的类型，两种选择 1.NAME 
+					例：OPEN(0, "开启") 指的是OPEN。 2.VALUE 例：OPEN(0, "开启") 指的是0。
+					默认dataType为 NAME]]></description>
+			<name>dataType</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html title attribute on rendered html element]]></description>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[.]]></description>
+			<name>enumName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Preset the value of input element.]]></description>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[.]]></description>
+			<name>headerKey</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[.]]></description>
+			<name>headerValue</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[]]></description>
+			<name>begin</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[]]></description>
+			<name>end</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[]]></description>
+			<name>exclude</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>include</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+			  <![CDATA[需要的枚举值，例如：ABC,ICBC]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>tagAttr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[html标签的属性值, 可以是多个属性，已空格隔开(name="name" age="age")]]></description>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css class to use for element]]></description>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[ Set the html onblur attribute on rendered html element]]></description>
+			<name>onblur</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onchange attribute on rendered html element]]></description>
+			<name>onchange</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onclick attribute on rendered html element]]></description>
+			<name>onclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html ondblclick attribute on rendered html element]]></description>
+			<name>ondblclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onfocus attribute on rendered html element]]></description>
+			<name>onfocus</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeydown attribute on rendered html element]]></description>
+			<name>onkeydown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeypress attribute on rendered html element]]></description>
+			<name>onkeypress</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeyup attribute on rendered html element]]></description>
+			<name>onkeyup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousedown attribute on rendered html element]]></description>
+			<name>onmousedown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousemove attribute on rendered html element]]></description>
+			<name>onmousemove</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseout attribute on rendered html element]]></description>
+			<name>onmouseout</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseover attribute on rendered html element]]></description>
+			<name>onmouseover</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseup attribute on rendered html element]]></description>
+			<name>onmouseup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onselect attribute on rendered html element]]></description>
+			<name>onselect</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	<tag>
+		<description><![CDATA[Renders a radio button input field]]></description>
+		<name>radioEnum</name>
+		<tag-class>com.easycodebox.common.tag.RadioEnum</tag-class>
+		<body-content>empty</body-content>
+		<description><![CDATA[添加include==>过滤exclude==>过滤begin-end]]></description>
+		<attribute>
+			<description><![CDATA[HTML id attribute]]></description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name to set for element]]></description>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[生成radio中value的类型，两种选择 1.NAME 
+					例：OPEN(0, "开启") 指的是OPEN。 2.VALUE 例：OPEN(0, "开启") 指的是0。
+					默认dataType为 NAME]]></description>
+			<name>dataType</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html title attribute on rendered html element]]></description>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[.]]></description>
+			<name>enumName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Preset the value of input element.]]></description>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[]]></description>
+			<name>begin</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[]]></description>
+			<name>end</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[]]></description>
+			<name>exclude</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>include</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+			  <![CDATA[需要的枚举值，例如：ABC,ICBC]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>tagAttr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[html标签的属性值。
+					1）单字符窜格式： 多个属性用空格隔开tagAttr='name="name" age="age"'
+					2）JSON格式：tagAttr='{first: "name='a'", last: "name='b'", 0: "name='c'"}'
+						JSON的key值可以是first、last、索引值
+				]]>
+			</description>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css class to use for element]]></description>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css class to use for label]]></description>
+			<name>labelClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css style definitions for label to use]]></description>
+			<name>labelStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[ Set the html onblur attribute on rendered html element]]></description>
+			<name>onblur</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onchange attribute on rendered html element]]></description>
+			<name>onchange</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onclick attribute on rendered html element]]></description>
+			<name>onclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html ondblclick attribute on rendered html element]]></description>
+			<name>ondblclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onfocus attribute on rendered html element]]></description>
+			<name>onfocus</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeydown attribute on rendered html element]]></description>
+			<name>onkeydown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeypress attribute on rendered html element]]></description>
+			<name>onkeypress</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeyup attribute on rendered html element]]></description>
+			<name>onkeyup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousedown attribute on rendered html element]]></description>
+			<name>onmousedown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousemove attribute on rendered html element]]></description>
+			<name>onmousemove</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseout attribute on rendered html element]]></description>
+			<name>onmouseout</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseover attribute on rendered html element]]></description>
+			<name>onmouseover</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseup attribute on rendered html element]]></description>
+			<name>onmouseup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onselect attribute on rendered html element]]></description>
+			<name>onselect</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	<tag>
+		<description><![CDATA[format img url.]]></description>
+		<name>imgUrl</name>
+		<tag-class>com.easycodebox.common.tag.ImgUrl</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description><![CDATA[The relative url of img]]></description>
+			<name>url</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[formatter mode (ADD , REMOVE). Default is ADD]]></description>
+			<name>mode</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[格式化规则，多个以,号隔开. Example: r150c150]]></description>
+			<name>rule</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[图片的根路径]]></description>
+			<name>root</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[是否连同img标签一起输出，默认为true]]></description>
+			<name>imgTag</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[图片是否懒加载，默认为false]]></description>
+			<name>lazy</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML id attribute]]></description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html title attribute on rendered html element]]></description>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>tagAttr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[html标签的属性值, 可以是多个属性，已空格隔开(name="name" age="age")]]></description>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css class to use for element]]></description>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[ Set the html onblur attribute on rendered html element]]></description>
+			<name>onblur</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onchange attribute on rendered html element]]></description>
+			<name>onchange</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onclick attribute on rendered html element]]></description>
+			<name>onclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html ondblclick attribute on rendered html element]]></description>
+			<name>ondblclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onfocus attribute on rendered html element]]></description>
+			<name>onfocus</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeydown attribute on rendered html element]]></description>
+			<name>onkeydown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeypress attribute on rendered html element]]></description>
+			<name>onkeypress</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeyup attribute on rendered html element]]></description>
+			<name>onkeyup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousedown attribute on rendered html element]]></description>
+			<name>onmousedown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousemove attribute on rendered html element]]></description>
+			<name>onmousemove</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseout attribute on rendered html element]]></description>
+			<name>onmouseout</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseover attribute on rendered html element]]></description>
+			<name>onmouseover</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseup attribute on rendered html element]]></description>
+			<name>onmouseup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	
+	<tag>
+		<description><![CDATA[format script tag.]]></description>
+		<name>script</name>
+		<tag-class>com.easycodebox.common.tag.ScriptTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description><![CDATA[The src attr of script tag.]]></description>
+			<name>src</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The type attr of script tag. Default value:"text/javascript"]]></description>
+			<name>type</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The charset attr of script tag.]]></description>
+			<name>charset</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The async attr of script tag. Valid value: "async", "true"]]></description>
+			<name>async</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The defer attr of script tag. Valid value: "defer", "true"]]></description>
+			<name>defer</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		
+		<attribute>
+			<description><![CDATA[HTML id attribute]]></description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html title attribute on rendered html element]]></description>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>tagAttr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[html标签的属性值, 可以是多个属性，已空格隔开(name="name" age="age")]]></description>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css class to use for element]]></description>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[ Set the html onblur attribute on rendered html element]]></description>
+			<name>onblur</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onchange attribute on rendered html element]]></description>
+			<name>onchange</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onclick attribute on rendered html element]]></description>
+			<name>onclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html ondblclick attribute on rendered html element]]></description>
+			<name>ondblclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onfocus attribute on rendered html element]]></description>
+			<name>onfocus</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeydown attribute on rendered html element]]></description>
+			<name>onkeydown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeypress attribute on rendered html element]]></description>
+			<name>onkeypress</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeyup attribute on rendered html element]]></description>
+			<name>onkeyup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousedown attribute on rendered html element]]></description>
+			<name>onmousedown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousemove attribute on rendered html element]]></description>
+			<name>onmousemove</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseout attribute on rendered html element]]></description>
+			<name>onmouseout</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseover attribute on rendered html element]]></description>
+			<name>onmouseover</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseup attribute on rendered html element]]></description>
+			<name>onmouseup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	
+	<tag>
+		<description><![CDATA[format link tag.]]></description>
+		<name>link</name>
+		<tag-class>com.easycodebox.common.tag.LinkTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description><![CDATA[The href attr of link tag.]]></description>
+			<name>href</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The rel attr of link tag. Default value:"stylesheet"]]></description>
+			<name>rel</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The type attr of link tag. Default value:"text/css"]]></description>
+			<name>type</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The media attr of link tag.]]></description>
+			<name>media</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The sizes attr of link tag.]]></description>
+			<name>sizes</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		
+		<attribute>
+			<description><![CDATA[HTML id attribute]]></description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html title attribute on rendered html element]]></description>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>tagAttr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[html标签的属性值, 可以是多个属性，已空格隔开(name="name" age="age")]]></description>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css class to use for element]]></description>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[ Set the html onblur attribute on rendered html element]]></description>
+			<name>onblur</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onchange attribute on rendered html element]]></description>
+			<name>onchange</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onclick attribute on rendered html element]]></description>
+			<name>onclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html ondblclick attribute on rendered html element]]></description>
+			<name>ondblclick</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onfocus attribute on rendered html element]]></description>
+			<name>onfocus</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeydown attribute on rendered html element]]></description>
+			<name>onkeydown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeypress attribute on rendered html element]]></description>
+			<name>onkeypress</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onkeyup attribute on rendered html element]]></description>
+			<name>onkeyup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousedown attribute on rendered html element]]></description>
+			<name>onmousedown</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmousemove attribute on rendered html element]]></description>
+			<name>onmousemove</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseout attribute on rendered html element]]></description>
+			<name>onmouseout</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseover attribute on rendered html element]]></description>
+			<name>onmouseover</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Set the html onmouseup attribute on rendered html element]]></description>
+			<name>onmouseup</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	<tag>
+		<name>page</name>
+		<tag-class>com.easycodebox.common.tag.Page</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[分页标签，只负责显示分页]]></description>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[分页标签的标识，当在同一个页面上有多个标签是用于区分不同的标签]]></description>
+		</attribute>
+		<attribute>
+			<name>pageNo</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[分页显示的时候，用来确定当前页]]></description>
+		</attribute>
+		<attribute>
+			<name>totalPage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[总的页数，需要在action方法中设置]]></description>
+		</attribute>
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[请求的url地址]]></description>
+		</attribute>
+		<attribute>
+			<name>showPageNum</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[分页时需要显示的数字页码个数]]></description>
+		</attribute>
+		<attribute>
+			<name>antoAddParam</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[自动增加上次分页请求的参数，默认为true]]></description>
+		</attribute>
+		<attribute>
+			<name>tagAttr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[html标签的属性值, 可以是多个属性，已空格隔开(name="name" age="age")]]></description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[CSS的样式类名]]></description>
+		</attribute>
+		<attribute>
+			<name>firstPage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[标签的一个属性，返回至第一页时的提示信息]]></description>
+		</attribute>
+		<attribute>
+			<name>endPage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[标签的一个属性，返回至最后页时的提示信息]]></description>
+		</attribute>
+		<attribute>
+			<name>prePage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[标签的一个属性，跳至下一页时的提示信息]]></description>
+		</attribute>
+		<attribute>
+			<name>nextPage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[标签的一个属性，跳至上一页时的提示信息]]></description>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>cacheUrl</name>
+		<tag-class>com.easycodebox.common.tag.CacheUrl</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[缓存当前的URL]]></description>
+		<attribute>
+			<name>condition</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[仅当condition==false时，不缓存URL]]></description>
+		</attribute>
+		<attribute>
+			<name>content</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>
+				<![CDATA[此标签生成的HTML内容]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>excludeParams</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[生成的url需要排除的参数]]>
+			</description>
+		</attribute>
+	</tag>
+	
+</taglib>

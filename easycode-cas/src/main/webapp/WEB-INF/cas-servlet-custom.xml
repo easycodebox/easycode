@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:webflow="http://www.springframework.org/schema/webflow-config"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.3.xsd">
+
+	<!-- 默认locale为简体中文。如果想按照request的请求头信息作为依据，则删除p:defaultLocale属性即可。 -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
+		p:defaultLocale="zh_CN" />
+
+	<!-- Theme Resolver 配置主题，提供http请求来更换主题 -->
+	<bean id="themeResolver" class="com.easycodebox.cas.web.CustomServiceThemeResolver"
+		p:defaultThemeName="${cas.themeResolver.defaultThemeName}"
+		p:themeNamePrefix="${cas.themeResolver.themeNamePrefix}"
+		p:servicesManager-ref="servicesManager">
+		<property name="mobileBrowsers">
+			<util:map>
+				<entry key=".*iPhone.*" value="iphone" />
+				<entry key=".*Android.*" value="iphone" />
+				<entry key=".*Safari.*Pre.*" value="iphone" />
+				<entry key=".*Nokia.*AppleWebKit.*" value="iphone" />
+			</util:map>
+		</property>
+	</bean>
+	  
+	<!-- 修改主题的具体html页面 -->
+	<bean id="internalViewResolver" class="com.easycodebox.cas.web.CustomRegisteredServiceThemeBasedViewResolver" 
+        c:defaultThemeId="default"
+	    c:servicesManager-ref="servicesManager"
+	    p:useRequestParam="true"
+	    p:pathPrefix="/WEB-INF/view/jsp"
+	    p:suffix=".jsp"
+	    p:order="3" />
+        
+</beans>

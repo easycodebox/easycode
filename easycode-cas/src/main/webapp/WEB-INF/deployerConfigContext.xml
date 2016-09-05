@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+| deployerConfigContext.xml centralizes into one file some of the declarative configuration that
+| all CAS deployers will need to modify.
+|
+| This file declares some of the Spring-managed JavaBeans that make up a CAS deployment.
+| The beans declared in this file are instantiated at context initialization time by the Spring
+| ContextLoaderListener declared in web.xml.  It finds this file because this
+| file is among those declared in the context parameter "contextConfigLocation".
+|
+| By far the most common change you will need to make in this file is to change the last bean
+| declaration to replace the default authentication handler with
+| one implementing your approach for authenticating usernames and passwords.
++-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+       | The authentication manager defines security policy for authentication by specifying at a minimum
+       | the authentication handlers that will be used to authenticate credential. While the AuthenticationManager
+       | interface supports plugging in another implementation, the default PolicyBasedAuthenticationManager should
+       | be sufficient in most cases.
+       +-->
+    <bean id="authenticationManager" class="org.jasig.cas.authentication.PolicyBasedAuthenticationManager">
+        <constructor-arg>
+            <map>
+                <!--
+                   | IMPORTANT
+                   | Every handler requires a unique name.
+                   | If more than one instance of the same handler class is configured, you must explicitly
+                   | set its name to something other than its default name (typically the simple class name).
+                   -->
+                <entry key-ref="proxyAuthenticationHandler" value-ref="proxyPrincipalResolver" />
+                <!--
+			       | 不是用<entry key-ref="primaryAuthenticationHandler" value-ref="primaryPrincipalResolver" />配置的原因是：
+			       | 我需要登录验证后返回的信息不只是username，我还需要返回userId，而改写后的attributeRepository是从数据库或文件系统中获取数据，
+			       | primaryAuthenticationHandler已经取过一次数据了，再取就浪费了性能，还不如把primaryAuthenticationHandler取出的
+			       | 数据作为Principal的属性存储起来。所以这里primaryPrincipalResolverz置为null
+			       +-->
+                <entry key-ref="primaryAuthenticationHandler" ><null /></entry>
+            </map>
+        </constructor-arg>
+
+        <!-- Uncomment the metadata populator to capture the password.
+        <property name="authenticationMetaDataPopulators">
+           <util:list>
+               <bean class="org.jasig.cas.authentication.CacheCredentialsMetaDataPopulator"/>
+           </util:list>
+        </property>
+        -->
+
+        <!--
+           | Defines the security policy around authentication. Some alternative policies that ship with CAS:
+           |
+           | * NotPreventedAuthenticationPolicy - all credential must either pass or fail authentication
+           | * AllAuthenticationPolicy - all presented credential must be authenticated successfully
+           | * RequiredHandlerAuthenticationPolicy - specifies a handler that must authenticate its credential to pass
+           -->
+        <property name="authenticationPolicy">
+            <bean class="org.jasig.cas.authentication.AnyAuthenticationPolicy" />
+        </property>
+    </bean>
+
+    <!-- Required for proxy ticket mechanism. -->
+    <bean id="proxyAuthenticationHandler"
+          class="org.jasig.cas.authentication.handler.support.HttpBasedServiceCredentialsAuthenticationHandler"
+          p:httpClient-ref="supportsTrustStoreSslSocketFactoryHttpClient" />
+
+    <!--
+       | TODO: Replace this component with one suitable for your enviroment.
+       |
+       | This component provides authentication for the kind of credential used in your environment. In most cases
+       | credential is a username/password pair that lives in a system of record like an LDAP directory.
+       | The most common authentication handler beans:
+       |
+       | * org.jasig.cas.authentication.LdapAuthenticationHandler
+       | * org.jasig.cas.adaptors.jdbc.QueryDatabaseAuthenticationHandler
+       | * org.jasig.cas.adaptors.x509.authentication.handler.support.X509CredentialsAuthenticationHandler
+       | * org.jasig.cas.support.spnego.authentication.handler.support.JCIFSSpnegoAuthenticationHandler
+       -->
+    <!-- <bean id="primaryAuthenticationHandler"
+          class="org.jasig.cas.authentication.AcceptUsersAuthenticationHandler">
+        <property name="users">
+            <map>
+                <entry key="casuser" value="Mellon"/>
+            </map>
+        </property>
+    </bean> -->
+    <bean id="primaryAuthenticationHandler"
+          class="com.easycodebox.cas.jdbc.JdbcUsernamePasswordAuthenticationHandler">
+        <!-- ===== 配置数据库相关配置 ===== -->
+        <property name="dataSource" ref="dataSource" />
+	    <property name="maxLoginFail" value="${max.login.fail}" />
+	    <property name="verifySql" value="SELECT id, password, status, loginFail FROM u_user WHERE username=? AND status != 9 " />
+	    <property name="loginFailSql" value="UPDATE u_user SET loginFail = loginFail + 1 WHERE username=? AND status != 9 " />
+	    <property name="resetFailSql" value="UPDATE u_user SET loginFail = 0 WHERE username=? AND status != 9 " />
+	    <property name="closeUser" value="UPDATE u_user SET loginFail = loginFail + 1, status = 1 WHERE username=? AND status != 9 " />
+	    <property name="passwordEncoder" ref="passwordEncoder" />
+	    <!-- ===== 配置清除缓存策略，当user的loginFail、status字段修改后需要清除相应的user缓存  ===== -->
+        <property name="clearUserCache" ref="urlClearUserCache" />
+    </bean>
+    
+    <bean id="urlClearUserCache" class="com.easycodebox.cas.cache.UrlClearUserCache"
+    	p:url="${clear.user.cache.url}" p:httpClient-ref="noRedirectHttpClient"/>
+
+    <!-- Required for proxy ticket mechanism -->
+    <bean id="proxyPrincipalResolver"
+          class="org.jasig.cas.authentication.principal.BasicPrincipalResolver" />
+
+    <!--
+       | Resolves a principal from a credential using an attribute repository that is configured to resolve
+       | against a deployer-specific store (e.g. LDAP).
+       -->
+    <!-- 此功能已废弃，因为还会从数据库再次查找数据，降低了性能。 -->
+    <bean id="primaryPrincipalResolver"
+          class="org.jasig.cas.authentication.principal.PersonDirectoryPrincipalResolver"
+          p:principalFactory-ref="principalFactory"
+          p:attributeRepository-ref="attributeRepository" />
+
+	<!-- 此功能已废弃，因为还会从数据库再次查找数据，降低了性能。 -->
+	<bean id="attributeRepository"
+		class="org.jasig.services.persondir.support.jdbc.SingleRowJdbcPersonAttributeDao">
+		<constructor-arg index="0" ref="dataSource" />
+		<constructor-arg index="1"
+			value="SELECT * FROM u_user WHERE {0}" />
+		<property name="queryAttributeMapping">
+			<map>
+				<entry key="username" value="username" />
+			</map>
+		</property>
+		<property name="resultAttributeMapping">
+			<map>
+				<entry key="id" value="id" />
+			</map>
+		</property>
+	</bean>
+
+    <bean id="serviceRegistryDao" class="org.jasig.cas.services.JsonServiceRegistryDao"
+          c:configDirectory="${service.registry.config.location:classpath:services}" />
+
+    <bean id="auditTrailManager" class="org.jasig.inspektr.audit.support.Slf4jLoggingAuditTrailManager" />
+
+    <bean id="healthCheckMonitor" class="org.jasig.cas.monitor.HealthCheckMonitor" p:monitors-ref="monitorsList" />
+
+    <util:list id="monitorsList">
+        <bean class="org.jasig.cas.monitor.MemoryMonitor" p:freeMemoryWarnThreshold="10" />
+        <!--
+          NOTE
+          The following ticket registries support SessionMonitor:
+            * DefaultTicketRegistry
+            * JpaTicketRegistry
+          Remove this monitor if you use an unsupported registry.
+        -->
+        <bean class="org.jasig.cas.monitor.SessionMonitor"
+              p:ticketRegistry-ref="ticketRegistry"
+              p:serviceTicketCountWarnThreshold="5000"
+              p:sessionCountWarnThreshold="100000" />
+    </util:list>
+    
+    
+    
+    <!-- ================================  自定义配置    =========================================== -->
+    <bean id="passwordEncoder"
+	      class="org.jasig.cas.authentication.handler.DefaultPasswordEncoder"
+	      c:encodingAlgorithm="MD5"
+	      p:characterEncoding="UTF-8" />
+    
+    <!-- 数据源配置 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${pool.initialSize}" />
+		<property name="minIdle" value="${pool.minIdle}" />
+		<property name="maxActive" value="${pool.maxActive}" />
+	
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${pool.maxWait}" />
+	
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${pool.timeBetweenEvictionRunsMillis}" />
+	
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${pool.minEvictableIdleTimeMillis}" />
+	
+		<property name="validationQuery" value="${pool.validationQuery}" />
+		<property name="testWhileIdle" value="${pool.testWhileIdle}" />
+		<property name="testOnBorrow" value="${pool.testOnBorrow}" />
+		<property name="testOnReturn" value="${pool.testOnReturn}" />
+	
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${pool.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${pool.maxPoolPreparedStatementPerConnectionSize}" />
+	
+		<!-- 配置监控统计拦截的filters -->
+		<property name="filters" value="${pool.filters}" />
+		<!-- config.decrypt用于解密数据库密码 -->
+		<property name="connectionProperties" value="config.decrypt=true" />
+	</bean>
+    
+</beans>

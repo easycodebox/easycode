@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.easycodebox.auth.core.dao.user.RoleMapper">
+
+	<sql id="openedByUserId">
+		FROM u_role r 
+		WHERE r.status = %{CloseStatus.OPEN} AND ( EXISTS (SELECT ur.roleId FROM u_user_role ur WHERE r.id = ur.roleId AND ur.userId = #{userId} ) 
+		OR EXISTS ( SELECT gr.roleId FROM u_group_role gr INNER JOIN u_user u ON u.groupId = gr.groupId WHERE u.id = #{userId} AND r.id = gr.roleId ) )
+		ORDER BY r.sort DESC, r.createTime DESC
+	</sql>
+
+	<select id="listOpenedByUserId" resultType="Role">
+		SELECT r.id, r.name, r.sort, r.status <include refid="openedByUserId"/>
+	</select>
+	
+	<select id="listOpenedRoleIdsByUserId" resultType="int">
+		SELECT r.id <include refid="openedByUserId"/>
+	</select>
+	
+	<select id="listOpenedByGroupId" resultType="Role">
+		SELECT r.id, r.name, r.sort, r.status FROM u_role r 
+		LEFT JOIN u_group_role gr ON r.id = gr.roleId
+		WHERE r.status = %{CloseStatus.OPEN} AND gr.groupId = #{groupId}
+		ORDER BY r.sort DESC, r.createTime DESC
+	</select>
+	
+	
+</mapper>
+

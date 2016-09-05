@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.easycodebox.auth.core.dao.user.OperationMapper">
+
+	<select id="load" resultType="Operation">
+		SELECT o.*, pa.name AS parentName, p.name AS projectName
+		FROM u_operation o 
+		LEFT JOIN sys_project p ON o.projectId = p.id
+		LEFT JOIN u_operation pa ON o.parentId = pa.id
+		WHERE o.status != %{CloseStatus.DELETE}
+		<if test="id != null">
+			AND o.id = #{id}
+		</if>
+		<if test="projectId != null">
+			AND o.projectId = #{projectId}
+		</if>
+		<if test="url != null">
+			AND o.url = #{url}
+		</if>
+	</select>
+	
+	<sql id="pageSql">
+		FROM u_operation o 
+		LEFT JOIN sys_project p ON o.projectId = p.id
+		LEFT JOIN u_operation pa ON o.parentId = pa.id
+		WHERE o.status != %{CloseStatus.DELETE}
+		<if test="parentName != null">
+			AND pa.name LIKE #{parentName}
+		</if>
+		<if test="projectName != null">
+			AND p.name LIKE #{projectName}
+		</if>
+		<if test="operationName != null">
+			AND o.name LIKE #{operationName}
+		</if>
+		<if test="url != null">
+			AND o.url LIKE #{url}
+		</if>
+		<if test="isMenu != null">
+			AND o.isMenu = #{isMenu}
+		</if>
+		<if test="status != null">
+			AND o.status = #{status}
+		</if>
+	</sql>
+	<select id="page" resultType="Operation">
+		SELECT o.id, o.parentId, o.projectId, o.name, o.status, o.isMenu,
+		o.url, o.sort, o.icon, o.remark, o.creator, o.createTime,
+		pa.name AS parentName, p.name AS projectName
+		<include refid="pageSql"/>
+		ORDER BY o.sort DESC, o.createTime DESC
+		<include refid="easycode-common.limtSql"/>
+	</select>
+	<select id="pageTotalCount" resultType="long">
+		SELECT count(1) <include refid="pageSql"/>
+	</select>
+	
+	<select id="listOperationsOfRoles" resultType="Operation">
+		SELECT * FROM u_operation o 
+		WHERE o.status = %{CloseStatus.OPEN}
+		<if test="projectId != null">
+			AND o.projectId = #{projectId}
+		</if>
+		<if test="isMenu != null">
+			AND o.isMenu = #{isMenu}
+		</if>
+		<if test="roleIds != null">
+			AND EXISTS ( SELECT * FROM u_role_operation ro WHERE ro.operationId = o.id 
+				AND ro.roleId IN 
+				<foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+					#{roleId}
+				</foreach>
+			 )
+		</if>
+		ORDER BY o.isMenu DESC, o.sort DESC, o.createTime DESC
+	</select>
+	
+</mapper>
+
