@@ -1,20 +1,9 @@
 package com.easycodebox.login;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.error.CodeMsg.CodeMsgUtils;
-import com.easycodebox.common.jackson.Jacksons;
-import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.common.log.logback.LocateLogger;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class TestClass extends LocateLogger {
 	
@@ -27,9 +16,8 @@ public class TestClass extends LocateLogger {
     public void testCase() {
     	
     }
-	
-	public static void main(String[] args) throws JsonProcessingException, IOException {
-		
+	/*
+	public static void main(String[] args) {
 		List<UserInfo> list = new ArrayList<UserInfo>();
 		UserInfo user = new UserInfo();
 		user.setRealname("realname1");
@@ -61,5 +49,5 @@ public class TestClass extends LocateLogger {
 				new TypeReference<List<UserInfo>>() {}).toString());
 		
 	}
-    
+    */
 }

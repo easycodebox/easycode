@@ -2,9 +2,7 @@ package com.easycodebox.auth.core.service.user;
 
 import org.junit.Test;
 
-import com.alibaba.druid.filter.config.ConfigTools;
 import com.easycodebox.auth.core.pojo.user.Role;
-import com.easycodebox.auth.core.service.user.RoleService;
 import com.easycodebox.auth.core.util.test.BaseTest;
 import com.easycodebox.common.enums.entity.status.CloseStatus;
 
@@ -26,8 +24,9 @@ public class RoleServiceTest extends BaseTest<RoleService> {
 		LOG.info(bean.update(role));
 	}
 	
+	/*
 	public static void main(String[] args) throws Exception {
 		System.out.println(ConfigTools.encrypt("root"));
 	}
-	
+	*/
 }

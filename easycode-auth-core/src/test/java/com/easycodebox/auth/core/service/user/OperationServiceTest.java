@@ -19,8 +19,7 @@ public class OperationServiceTest extends BaseTest<OperationService> {
 	
 	@Test
 	public void testListOperationIds() {
-		LOG.info("==============================================");
-		LOG.info(bean.listOperationIds("a15p2", null));
+		//LOG.info(bean.listOperationIds("a15p2", null));
 	}
 	
 	@Test
