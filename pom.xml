@@ -30,6 +30,11 @@
         </license>
     </licenses>
     
+    <issueManagement>
+		<system>EasyCode Issue</system>
+		<url>https://github.com/easycodebox/easycode/issues</url>
+	</issueManagement>
+
 	<developers>
 		<developer>
 			<name>WangXiaoJin</name>
@@ -553,7 +558,8 @@
 						<id>attach-javadocs</id>
 						<phase>verify</phase>
 						<goals>
-							<goal>aggregate-jar</goal>
+							<!-- <goal>aggregate-jar</goal> -->
+							<goal>jar</goal>
 						</goals>
 						<configuration>
 							<additionalparam>-Xdoclint:none</additionalparam>
