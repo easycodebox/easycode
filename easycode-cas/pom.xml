@@ -2,52 +2,46 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>com.easycodebox</groupId>
+	<parent>
+		<groupId>com.easycodebox</groupId>
+		<artifactId>easycode-parent</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+	
 	<artifactId>easycode-cas</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>easycode-cas Maven Webapp</name>
 	
 	<properties>
-		<jdk.version>1.7</jdk.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<cas.version>4.1.5</cas.version>
 	</properties>
 	
 	<dependencies>
+		<!-- 项目jar包 -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-			<scope>test</scope>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>easycode-common</artifactId>
 		</dependency>
+		<!-- 第三方jar包 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>2.2</version>
-			<scope>provided</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.0.14</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.jasig.cas</groupId>
@@ -91,28 +85,6 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>${jdk.version}</source>  
-			        <target>${jdk.version}</target>  
-			        <encoding>${project.build.sourceEncoding}</encoding>
-					<compilerArguments>  
-	                     <verbose />  
-	                     <bootclasspath>${java.home}/lib/rt.jar</bootclasspath>  
-	                </compilerArguments>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
@@ -146,13 +118,10 @@
 			 <plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.3.11.v20160721</version>
 				<configuration>
 					<httpConnector>
 						<port>7081</port>
 					</httpConnector>
-					<scanIntervalSeconds>2</scanIntervalSeconds>
-					<reload>manual</reload>
 				</configuration>
 			</plugin>
 		</plugins>
