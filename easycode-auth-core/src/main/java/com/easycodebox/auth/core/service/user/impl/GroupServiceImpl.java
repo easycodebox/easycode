@@ -175,8 +175,8 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 		groupName = groupName == null || StringUtils.isBlank(groupName) ? null 
 				: Symbol.PERCENT.concat(groupName.trim()).concat(Symbol.PERCENT);
 		
-		 List<Group> data = groupMapper.page(parentName, groupName, status, pageNo, pageSize);
-		 long totalCount = groupMapper.pageTotalCount(parentName, groupName, status);
+		List<Group> data = groupMapper.page(parentName, groupName, status, pageNo, pageSize);
+		long totalCount = groupMapper.pageTotalCount(parentName, groupName, status);
 		return new DataPage<Group>(pageNo, pageSize, totalCount, data);
 	}
 	
