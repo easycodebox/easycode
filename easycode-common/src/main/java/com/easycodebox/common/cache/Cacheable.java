@@ -6,9 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.easycodebox.common.lang.dto.Entity;
-
-
 /**
  * 建议改用spring提供的cache功能
  * @author WangXiaoJin
@@ -20,7 +17,7 @@ import com.easycodebox.common.lang.dto.Entity;
 @Deprecated
 public @interface Cacheable {
 
-	Class<? extends Entity> group();
+	Class<?> group();
 	
 	CacheOperation cacheOperation() default CacheOperation.NOP;
 	
@@ -28,6 +25,6 @@ public @interface Cacheable {
 	 * 当CacheOperation = FLUSH_CACHE 时，除了清除group()的数据还要清除flushGroup()的数据
 	 * @return
 	 */
-	Class<? extends Entity>[] flushGroup() default {};
+	Class<?>[] flushGroup() default {};
 	
 }

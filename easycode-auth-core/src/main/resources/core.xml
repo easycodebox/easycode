@@ -116,7 +116,7 @@
 		</property>
 	</bean>
 
-	<bean id="annotatedConfig" class="com.easycodebox.common.jdbc.ConfigPojoBean"
+	<bean id="annotatedConfig" class="com.easycodebox.jdbc.config.ConfigPojoBean"
 		lazy-init="false" p:packagesToScan="com.easycodebox.auth.core.pojo" />
 
 	<!-- 数据源配置 -->
@@ -155,18 +155,21 @@
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 		p:dataSource-ref="dataSource" />
 
-	<bean id="sqlSessionFactory" class="com.easycodebox.common.mybatis.MyBatisSqlSessionFactoryBean"
+	<bean id="sqlSessionFactory" class="com.easycodebox.jdbc.mybatis.spring.MyBatisSqlSessionFactoryBean"
 		p:dataSource-ref="dataSource"
 		p:configLocation="classpath:mybatis-config.xml" />
 
-	<bean id="sqlSessionTemplate" class="com.easycodebox.common.mybatis.DefaultSqlSessionTemplate">
+	<bean id="sqlSessionTemplate" class="com.easycodebox.jdbc.mybatis.spring.DefaultSqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
 		p:basePackage="com.easycodebox.auth.core.dao" />
 	<!-- 在insert、update时修改自动设置操作人、操作时间 -->
-	<bean id="jdbcPreHandler" class="com.easycodebox.common.jdbc.support.DefaultJdbcPreHandler" />
+	<bean id="jdbcPreHandler" class="com.easycodebox.jdbc.support.DefaultJdbcPreHandler" />
+	<!-- jdbc处理器，实际处理sql的类 -->
+	<bean id="jdbcProcessor" class="com.easycodebox.jdbc.mybatis.MybatisJdbcProcessor"
+		p:sqlSessionTemplate-ref="sqlSessionTemplate" />
 
 	<!-- 持有spring上下文的bean -->
 	<bean class="com.easycodebox.common.spring.ApplicationContextFactory"

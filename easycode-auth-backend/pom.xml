@@ -23,10 +23,10 @@
 			<artifactId>easycode-login</artifactId>
 		</dependency>
 		<!-- 第三方jar包 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>

@@ -2,16 +2,13 @@ package com.easycodebox.auth.core.pojo.user;
 
 import java.util.List;
 
+import javax.persistence.*;
+
 import com.easycodebox.auth.core.util.mybatis.GeneratedValue;
 import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.enums.entity.status.CloseStatus;
-import com.easycodebox.common.jpa.Entity;
-import com.easycodebox.common.jpa.Id;
-import com.easycodebox.common.jpa.OneToMany;
-import com.easycodebox.common.jpa.Table;
-import com.easycodebox.common.jpa.Transient;
-import com.easycodebox.common.lang.dto.AbstractOperateEntity;
+import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
 /**
  * 角色 - 角色

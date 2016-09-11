@@ -34,7 +34,7 @@ public class StaticValueProcessor implements Processor {
 	private Properties properties;
 	
 	@Override
-	public void process() {
+	public Object process() {
 		Assert.notNull(properties);
 		try {
 			List<Class<?>> pkgClasses = Resources.scanClass(packagesToScan);
@@ -49,6 +49,7 @@ public class StaticValueProcessor implements Processor {
 		} catch (Exception e) {
 			throw new BaseException(e);
 		}
+		return null;
 	}
 	
 	private void processStaticValue(Class<?> clazz) throws IllegalAccessException {

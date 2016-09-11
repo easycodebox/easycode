@@ -1,9 +1,9 @@
 package com.easycodebox.auth.core.util;
 
-import static com.easycodebox.common.jdbc.Property.instance;
+import static com.easycodebox.jdbc.Property.instance;
 
-import com.easycodebox.common.jdbc.Property;
-import com.easycodebox.common.lang.dto.Entity;
+import com.easycodebox.jdbc.Property;
+import com.easycodebox.jdbc.entity.Entity;
 
 /**
  * 	如果是Entity类，则需要加上private static final Class<? extends Entity> entity = com.easycodebox.core.pojo.xxx.xxx.class;

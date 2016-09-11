@@ -15,8 +15,8 @@ import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.common.enums.entity.status.CloseStatus;
-import com.easycodebox.common.jdbc.support.AbstractService;
 import com.easycodebox.common.validate.Assert;
+import com.easycodebox.jdbc.support.AbstractService;
 
 /**
  * @author WangXiaoJin

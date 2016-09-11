@@ -13,9 +13,9 @@ import com.easycodebox.auth.core.pojo.sys.Log;
 import com.easycodebox.auth.core.service.sys.LogService;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.common.enums.entity.LogLevel;
-import com.easycodebox.common.jdbc.support.AbstractService;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
+import com.easycodebox.jdbc.support.AbstractService;
 
 /**
  * @author WangXiaoJin

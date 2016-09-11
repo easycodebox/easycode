@@ -15,17 +15,13 @@
 		<!-- 项目jar包 -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>easycode-common</artifactId>
+			<artifactId>easycode-jdbc-mybatis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>easycode-login</artifactId>
 		</dependency>
 		<!-- 第三方jar包 -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
@@ -119,18 +115,6 @@
 		
 	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.xml</include>
-					<include>**/*.ftl</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

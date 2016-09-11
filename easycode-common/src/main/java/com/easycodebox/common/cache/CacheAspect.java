@@ -16,7 +16,6 @@ import org.springframework.core.io.Resource;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.lang.dto.Entity;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 
@@ -129,7 +128,7 @@ public final class CacheAspect implements Ordered, InitializingBean {
 	        }
 		}else if(cacheable.cacheOperation() == CacheOperation.FLUSH_CACHE) {
 	        result = pjp.proceed();
-	        for(Class<? extends Entity> clazz : cacheable.flushGroup()) {
+	        for(Class<?> clazz : cacheable.flushGroup()) {
 	        	String groupName = clazz.getName();
 	        	if(!groupName.equals(group)) {
 	        		LOG.info("删除缓存组{0}所有的缓存对象。", groupName);

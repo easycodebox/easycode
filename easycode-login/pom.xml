@@ -15,17 +15,17 @@
 		<!-- 项目jar包 -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>easycode-common</artifactId>
+			<artifactId>easycode-jdbc</artifactId>
 		</dependency>
 		<!-- 第三方jar包 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
        		<artifactId>logback-classic</artifactId>

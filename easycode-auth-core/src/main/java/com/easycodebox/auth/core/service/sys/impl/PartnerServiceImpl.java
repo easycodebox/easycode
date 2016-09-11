@@ -20,9 +20,9 @@ import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.status.CloseStatus;
 import com.easycodebox.common.generator.Generators;
-import com.easycodebox.common.jdbc.support.AbstractService;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
+import com.easycodebox.jdbc.support.AbstractService;
 
 /**
  * @author WangXiaoJin

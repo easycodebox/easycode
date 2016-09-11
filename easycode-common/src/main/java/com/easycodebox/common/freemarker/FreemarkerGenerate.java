@@ -57,7 +57,7 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware, Servl
 	private Properties properties;
 	
 	@Override
-	public void process() {
+	public Object process() {
 		Assert.notBlank(ftlPath);
 		Assert.notBlank(outputPath);
 		Writer out = null;
@@ -74,6 +74,7 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware, Servl
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
+		return null;
 	}
 	
 	@Override

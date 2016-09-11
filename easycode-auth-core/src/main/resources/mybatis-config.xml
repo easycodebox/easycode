@@ -21,7 +21,7 @@
 	</typeHandlers>
 	
 	<mappers>
-		<mapper resource="com/easycodebox/common/mybatis/CommonMapper.xml"/>
+		<mapper resource="CommonMapper.xml"/>
 	</mappers>
 	
 	

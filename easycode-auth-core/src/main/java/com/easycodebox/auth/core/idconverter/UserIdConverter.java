@@ -10,8 +10,8 @@ import org.apache.commons.lang.StringUtils;
 import com.easycodebox.auth.core.pojo.user.User;
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.jdbc.support.DefaultJdbcPreHandler;
 import com.easycodebox.common.tag.IdConverter;
+import com.easycodebox.jdbc.support.DefaultJdbcPreHandler;
 
 /**
  * 用户ID转换器

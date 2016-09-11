@@ -1,13 +1,12 @@
 package com.easycodebox.auth.core.pojo.sys;
 
+import javax.persistence.*;
+
 import com.easycodebox.auth.core.enums.ModuleType;
 import com.easycodebox.auth.core.util.mybatis.GeneratedValue;
 import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.LogLevel;
-import com.easycodebox.common.jpa.Entity;
-import com.easycodebox.common.jpa.Id;
-import com.easycodebox.common.jpa.Table;
-import com.easycodebox.common.lang.dto.AbstractCreateEntity;
+import com.easycodebox.jdbc.entity.AbstractCreateEntity;
 
 /**
  * 日志 - 记录系统日志

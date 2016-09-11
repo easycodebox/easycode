@@ -3,7 +3,7 @@ package com.easycodebox.login.ws.bo;
 import com.easycodebox.common.enums.entity.Gender;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.enums.entity.status.CloseStatus;
-import com.easycodebox.common.lang.dto.AbstractOperateEntity;
+import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
 public class UserWsBo extends AbstractOperateEntity {
 

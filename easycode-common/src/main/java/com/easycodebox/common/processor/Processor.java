@@ -6,6 +6,6 @@ package com.easycodebox.common.processor;
  */
 public interface Processor {
 	
-	void process();
+	Object process();
 
 }

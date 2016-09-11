@@ -22,9 +22,8 @@ import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.AbstractGenerator;
 import com.easycodebox.common.generator.GeneratorType;
-import com.easycodebox.common.jdbc.LockMode;
-import com.easycodebox.common.jdbc.SqlGrammar;
-import com.easycodebox.common.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.LockMode;
+import com.easycodebox.jdbc.support.AbstractService;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.lang.reflect.FieldUtils;
@@ -155,7 +154,7 @@ public class GeneratorServiceImpl extends AbstractService<Generator> implements 
 			Object nextBatchStart = ag.nextStepVal(g.getCurrentVal());
 			//nextBatchStart 返回下批数据的起始值。返回null则不更新数据库的CurrentVal，例：生成uuid只依据自己的规则，所以返回null
 			if(nextBatchStart != null) {
-				this.update(SqlGrammar.instance(Generator.class)
+				this.update(sql()
 						.update(R.Generator.currentVal, nextBatchStart.toString())
 						.eq(R.Generator.generatorType, generatorType));
 			}

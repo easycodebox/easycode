@@ -3,9 +3,7 @@ package com.easycodebox.login;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.easycodebox.common.log.logback.LocateLogger;
-
-public class TestClass extends LocateLogger {
+public class TestClass {
 	
 	@Before
 	public void beforeTest() {

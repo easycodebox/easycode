@@ -2,7 +2,7 @@ package com.easycodebox.login.ws.bo;
 
 import java.util.List;
 
-import com.easycodebox.common.lang.dto.AbstractEntity;
+import com.easycodebox.jdbc.entity.AbstractEntity;
 
 /**
  * 权限 - 权限

@@ -1,12 +1,9 @@
 package com.easycodebox.auth.core.pojo.user;
 
+import javax.persistence.*;
+
 import com.easycodebox.auth.core.pojo.sys.Project;
-import com.easycodebox.common.jpa.Entity;
-import com.easycodebox.common.jpa.Id;
-import com.easycodebox.common.jpa.JoinColumn;
-import com.easycodebox.common.jpa.ManyToOne;
-import com.easycodebox.common.jpa.Table;
-import com.easycodebox.common.lang.dto.AbstractCreateEntity;
+import com.easycodebox.jdbc.entity.AbstractCreateEntity;
 
 /**
  * 角色项目 - 角色与项目的对应关系

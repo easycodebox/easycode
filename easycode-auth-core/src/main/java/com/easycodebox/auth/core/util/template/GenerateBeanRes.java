@@ -22,7 +22,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 import com.easycodebox.common.freemarker.ConfigurationFactory;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.lang.dto.Entity;
+import com.easycodebox.jdbc.entity.Entity;
 import com.easycodebox.common.lang.reflect.ClassUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;

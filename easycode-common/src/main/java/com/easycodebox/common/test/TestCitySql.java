@@ -10,7 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Iterator;
 
-import com.easycodebox.common.jdbc.JdbcUtils;
+import org.springframework.jdbc.support.JdbcUtils;
+
 import com.easycodebox.common.net.HttpUtils;
 
 import net.sf.json.JSONArray;
@@ -92,7 +93,7 @@ public class TestCitySql {
 				}
 			}
 		} finally {
-			JdbcUtils.closeQuietly(statement);
+			JdbcUtils.closeStatement(statement);
 		}
 	}
 	
@@ -103,7 +104,8 @@ public class TestCitySql {
 		PreparedStatement statement = null;
         
 		try {
-			connection = JdbcUtils.connect(driverClass, jdbcUrl, user, password);
+			Class.forName(driverClass).newInstance();
+			connection = java.sql.DriverManager.getConnection(jdbcUrl, user, password);
 			connection.setAutoCommit(false);
 			//插入省市区
 			//recursion(0, "1");
@@ -148,9 +150,9 @@ public class TestCitySql {
 			
 			connection.commit(); 
 		}finally {
-			JdbcUtils.closeQuietly(resultSet);
-			JdbcUtils.closeQuietly(connection);
-			JdbcUtils.closeQuietly(statement);
+			JdbcUtils.closeResultSet(resultSet);
+			JdbcUtils.closeConnection(connection);
+			JdbcUtils.closeStatement(statement);
 		}
 		
 	}
