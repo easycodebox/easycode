@@ -166,137 +166,105 @@ window.gb = {
  */
 $(function() {
 	
-	//渲染页面
-	window.renderPage = function() {
-		
-		$("table.ui-table").UI_table();
-		
-		if(!utils.bindedEvent($(window), 'resize', "frame")) {
-			//设置主题结构的宽、高
-			var resizeContent = function(){
-				
-				var $main = $('#main'),
-					$header = $("#header"),
-					$conent = $("#conent"),
-					$menus = $("#menus"),
-					$coreDiv = $("#core-div"),
-					$control = $(".control"),
-					$search = $("ul.search"),
-					$paramLi = $search.children(".param-li"),
-					$dataDiv = $(".data-div"),
-					$page = $(".page"),
-					$footer = $("#footer");
-				
-				$main.height($(window).height() - $header.outerHeight(true));
-				$conent.outerWidth($(window).width() - $menus.outerWidth(true));
-				
-				if($coreDiv.length == 0) return;
-				
-				$coreDiv.width($conent.width() - ($coreDiv.outerWidth(true) - $coreDiv.width()));
-				$control.width($coreDiv.width() - ($control.outerWidth(true) - $control.width()));
-				
-				//计算查询条件的显示/影藏
-				var searchWidth = $control.width() - $(".search-btns").outerWidth(true) - ($(".handle-btns").outerWidth(true) || 0),
-					hideParam = false;
-				$paramLi.each(function(){
-					var hide = true;
-					if(searchWidth > 0) {
-						searchWidth -= $(this).outerWidth(true);
-						hide = searchWidth < 0 ? true : false;
-					}
-					if(hide) {
-						$(this).addClass("param-hidden").attr("param-hidden", "true");
-						hideParam = true;
-					}else
-						$(this).removeClass("param-hidden").removeAttr("param-hidden");
-				});
-				$search.width("100%");
-				if(hideParam) {
-					var hiding = true;
-					$paramLi.off(".frame").on("mouseenter.frame", function(){
-						if(hiding) {
-							$(".param-li[param-hidden]").removeClass("param-hidden");
-							$(".control .handle-btns").hide();
-							$control.addClass("border-bottom");
-							hiding = false;
-						}
-					});
-					$control.off(".frame").on({
-						"mouseleave.frame": function() {
-							if(!hiding) {
-								$(".param-li[param-hidden]").addClass("param-hidden");
-								$(".control .handle-btns").show();
-								$control.removeClass("border-bottom");
-								hiding = true;
-							}
-						}
-					});
-				}else {
-					$control.off(".frame");
-				}
-				
-				var coreDivExtra = $coreDiv.outerHeight(true) - $coreDiv.height(),
-					shiftyHeight = ($page.position() || $footer.position()).top - $coreDiv.position().top - coreDivExtra,
-					dataHeight = shiftyHeight - ($dataDiv.position() ? $dataDiv.position().top : 0);
-				$coreDiv.height(shiftyHeight);
-				$dataDiv.outerWidth($coreDiv.width()).outerHeight(dataHeight);
-				$.UI_table.resize($("table.ui-table"), $coreDiv.width(), dataHeight);
-			};
-			resizeContent();
-			//设置主题结构的宽、高
-			$(window).off(".frame").on("resize.frame", utils.debounce(resizeContent));
-		}
-		
-	};
-	
 	/************  左侧菜单  *****************/
 	(function() {
-		$('.one').off(".init-page").on("click.init-page", function() {
+		$(".treeview").off(".frame").on("click.frame", function() {
 			var $this = $(this),
-				$two = $this.next().children(".two");
-			if($two.hasClass('show')) {
-				$this.find(".icon").css(
-					'background-image',
-					'url(/imgs/frame/menu_li_bg.png)');
-				$two.removeClass('show').addClass('hidden');
-			}else {
-				$(".one .icon").css(
-						'background-image',
-						'url(/imgs/frame/menu_li_bg.png)');
-				$this.find(".icon").css(
-						'background-image',
-						'url(/imgs/frame/menu_li_bg_down.png)');
-				$('.two').removeClass('show').addClass('hidden');
-				$two.removeClass('hidden').addClass('show');
+				url = $this.children("a").attr("href");
+			if (!url || url == "#" || url.startsWith("javascript:")) {
+				return;
 			}
-		});
-		$(".menu-bar").hover(
-			function() {
-				$(this).find("a").addClass("menu-hover");
-			},
-			function() {
-				$(this).find("a").removeClass("menu-hover");
-			}
-		).click(function(){
-			$(".menu-bar").find("a").removeClass("selected");
-			$(this).find("a").addClass("selected");
-			var menuId = $(this).attr("menu-id"),
-				memus = $.cookie(BaseData.menus) ? JSON.parse($.cookie(BaseData.menus)) : {};
+			var menuId = $this.data("menuId"),
+				memus = localStorage[BaseData.menus] ? JSON.parse(localStorage[BaseData.menus]) : {};
 			memus[BaseData.path] = menuId;
-			$.cookie(BaseData.menus, JSON.stringify(memus), {path: '/'});
+			localStorage[BaseData.menus] = JSON.stringify(memus);
 		});
 		//初始化菜单的显示
-		var memus = $.cookie(BaseData.menus) ? JSON.parse($.cookie(BaseData.menus)) : {};
-			menuId = memus[BaseData.path],
-			$menu_li = $(".menu-bar[menu-id=" + menuId + "]");
-		if(menuId && $menu_li.length > 0) {
-			$menu_li.closest("dd").prev("dt").click();
-			$menu_li.find("a").addClass("selected");
+		var memus = localStorage[BaseData.menus] ? JSON.parse(localStorage[BaseData.menus]) : {};
+			menuId = memus[BaseData.path];
+		if (menuId) {
+			$(".treeview[data-menu-id=" + menuId + "]").parents(".treeview").andSelf().addClass("active");
 		}
 	})();
+	
+	/************  右侧面板菜单  *****************/
+	(function(AdminLTE) {
+		function changeLayout(cls) {
+			$("body").toggleClass(cls);
+			AdminLTE.layout.fixSidebar();
+			//Fix the problem with right sidebar and layout boxed
+			if (cls == "layout-boxed")
+				AdminLTE.controlSidebar._fix($(".control-sidebar-bg"));
+			if ($('body').hasClass('fixed') && cls == 'fixed') {
+				AdminLTE.pushMenu.expandOnHover();
+				AdminLTE.layout.activate();
+			}
+			AdminLTE.controlSidebar._fix($(".control-sidebar-bg"));
+			AdminLTE.controlSidebar._fix($(".control-sidebar"));
+		}
+
+		function changeSkin(cls) {
+			var $body = $("body"),
+				rawClass = $body.attr("class").replace(/skin-\w+/g, "");
+			$body.attr("class", rawClass + " " + cls);
+			localStorage.setItem('skin', cls);
+		}
 		
-	window.initPage = function() {
-		
+		var $body = $("body"),
+			tmp = localStorage.getItem('skin');
+		if (tmp) changeSkin(tmp);
+
+		$("[data-skin]").off(".frame").on("click.frame", function(e) {
+			if ($(this).hasClass('knob'))
+				return;
+			e.preventDefault();
+			changeSkin($(this).data('skin'));
+		});
+
+		$("[data-layout]").off(".frame").on("click.frame", function() {
+			changeLayout($(this).data('layout'));
+		});
+
+		$("[data-controlsidebar]").off(".frame").on("click.frame", function() {
+			changeLayout($(this).data('controlsidebar'));
+			var slide = !AdminLTE.options.controlSidebarOptions.slide;
+			AdminLTE.options.controlSidebarOptions.slide = slide;
+			if (!slide)
+				$('.control-sidebar').removeClass('control-sidebar-open');
+		});
+
+		$("[data-sidebarskin='toggle']").off(".frame").on("click.frame", function() {
+			var sidebar = $(".control-sidebar");
+			if (sidebar.hasClass("control-sidebar-dark")) {
+				sidebar.removeClass("control-sidebar-dark")
+				sidebar.addClass("control-sidebar-light")
+			} else {
+				sidebar.removeClass("control-sidebar-light")
+				sidebar.addClass("control-sidebar-dark")
+			}
+		});
+
+		$("[data-enable='expandOnHover']").off(".frame").on("click.frame", function() {
+			$(this).attr('disabled', true);
+			AdminLTE.pushMenu.expandOnHover();
+			if (!$('body').hasClass('sidebar-collapse'))
+				$("[data-layout='sidebar-collapse']").click();
+		});
+
+		// Reset options
+		if ($body.hasClass('fixed')) {
+			$("[data-layout='fixed']").attr('checked', 'checked');
+		}
+		if ($body.hasClass('layout-boxed')) {
+			$("[data-layout='layout-boxed']").attr('checked', 'checked');
+		}
+		if ($body.hasClass('sidebar-collapse')) {
+			$("[data-layout='sidebar-collapse']").attr('checked', 'checked');
+		}
+	})($.AdminLTE);
+	
+	/************  绑定事件  *****************/
+	(function() {
 		//清空form表单的数据,如果想不清空指定的对象，则加上class="not-reset"
 		$(".reset-btn").off(".init-page").on("click.init-page", function() {
 			gb.resetForm($(this).closest("form"));
@@ -325,12 +293,7 @@ $(function() {
 		//绑定表单验证
 		$(".form-validate").bValidator();
 		
-	};
-	
-	//渲染页面
-	renderPage();
-	//初始化页面
-	initPage();
+	})();
 	
 });
 

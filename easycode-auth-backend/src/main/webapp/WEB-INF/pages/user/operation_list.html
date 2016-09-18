@@ -3,159 +3,170 @@
 <html>
 <head>
 [#include "/WEB-INF/common/meta.html"/]
-<title>权限</title>
+<title>EasyCode | 权限</title>
 [#include "/WEB-INF/common/styles.html"/]
 </head>
-<body>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
 
-	[#-- 头部区域  --]
 	[#include "/WEB-INF/common/header.html"/]
 	
-	<div id="main">
-		
-		[#-- 左侧菜单区域  --]
-		[#include "/WEB-INF/common/left.html"/]
-		
-		<div id="conent">
-			
-			[#-- 页面标题  --]
-			<h2>权限</h2>
-			
-			<div id="core-div">
-				
-				[#-- 查询区域 --]
-				<div class="control">
-					<form action="/operation/list.html" method="post">
-						<ul class="search">
-							
-							<li class="param-li">
-								上级权限：<input type="text" name="parentName" value="${operation.parentName}" />
-							</li>
-							
-							<li class="param-li">
-								项目名：<input type="text" name="projectName" value="${operation.projectName}" />
-							</li>
-							
-							<li class="param-li">
-								权限名：<input type="text" name="name" value="${operation.name}" />
-							</li>
-							
-							<li class="param-li">
-								状态：[@e.radioEnum name="status" enumName="CloseStatus" 
-										selectedValue=operation.status exclude="DELETE" /]
-							</li>
-							
-							<li class="param-li">
-								菜单：[@e.radioEnum name="isMenu" enumName="YesNo" 
-										selectedValue=operation.isMenu /]
-							</li>
-							
-							<li class="param-li">
-								地址：<input type="text" name="url" value="${operation.url}" />
-							</li>
-							
-							[#-- 查询按钮 --]
-							<li class="search-btns">
-	                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
-	                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
-							</li>
-	                        
-							[#-- 功能按钮区域 --]
-							<li class="handle-btns">
-								[@permited value="operation/add"]
-	                        		<button type="button" id="addBtn" class="btn">+ 新增</button>
-	                        	[/@permited]
-	                        	[@permited value="operation/remove"]
-	                        		<button type="button" class="btn" onclick="gb.batchRemove('/operation/remove.html')">删除</button>
-	                        	[/@permited]
-	                        	[@permited value="operation/openClose"]
-	                        		<button type="button" class="handler open batch btn">启用</button>
-									<button type="button" class="handler close batch btn">禁用</button>
-								[/@permited]
-	                        	[@permited value="operation/imports"]
-									<button type="button" class="btn" id="importsOper">导入</button>
-								[/@permited]
-	                        	[@permited value="operation/exports"]
-									<button type="button" class="btn" id="exportsOper">导出</button>
-								[/@permited]
-							</li>
-						</ul>
-					</form>	
-				</div>
-				
-				[#-- 列表信息区域 --]
-				<div class="data-div">
-					<table class="ui-table">
-						<tr class="th-row">
-							<th width="30" checkbox="true"></th>
-							<th width="40" row-no="true">序号</th>
-							<th width="100">上级权限</th>
-							<th width="100">项目ID</th>
-							<th width="100" check-row="true">权限名</th>
-							<th width="80" fixed="true" no-tip="true">启动/禁用</th>
-							<th width="80" fixed="true" no-tip="true">菜单</th>
-							<th width="60">图标</th>
-							<th width="100">地址</th>
-							<th width="40">排序值</th>
-							<th width="100">创建人</th>
-							<th width="100">创建时间</th>
-							<th width="130" fixed="true" no-tip="true">操作</th>
-						</tr>
+	[#include "/WEB-INF/common/left.html"/]
+	
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>
+				权限 <small>权限</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li><a href="#">Tables</a></li>
+				<li class="active">Simple</li>
+			</ol>
+		</section>
+
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					
+					<div id="core-div">
+						[#-- 查询区域 --]
+						<div class="control">
+							<form action="/operation/list.html" method="post">
+								<ul class="search">
+									
+									<li class="param-li">
+										上级权限：<input type="text" name="parentName" value="${operation.parentName}" />
+									</li>
+									
+									<li class="param-li">
+										项目名：<input type="text" name="projectName" value="${operation.projectName}" />
+									</li>
+									
+									<li class="param-li">
+										权限名：<input type="text" name="name" value="${operation.name}" />
+									</li>
+									
+									<li class="param-li">
+										状态：[@e.radioEnum name="status" enumName="CloseStatus" 
+												selectedValue=operation.status exclude="DELETE" /]
+									</li>
+									
+									<li class="param-li">
+										菜单：[@e.radioEnum name="isMenu" enumName="YesNo" 
+												selectedValue=operation.isMenu /]
+									</li>
+									
+									<li class="param-li">
+										地址：<input type="text" name="url" value="${operation.url}" />
+									</li>
+									
+									[#-- 查询按钮 --]
+									<li class="search-btns">
+			                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
+			                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
+									</li>
+			                        
+									[#-- 功能按钮区域 --]
+									<li class="handle-btns">
+										[@permited value="operation/add"]
+			                        		<button type="button" id="addBtn" class="btn">+ 新增</button>
+			                        	[/@permited]
+			                        	[@permited value="operation/remove"]
+			                        		<button type="button" class="btn" onclick="gb.batchRemove('/operation/remove.html')">删除</button>
+			                        	[/@permited]
+			                        	[@permited value="operation/openClose"]
+			                        		<button type="button" class="handler open batch btn">启用</button>
+											<button type="button" class="handler close batch btn">禁用</button>
+										[/@permited]
+			                        	[@permited value="operation/imports"]
+											<button type="button" class="btn" id="importsOper">导入</button>
+										[/@permited]
+			                        	[@permited value="operation/exports"]
+											<button type="button" class="btn" id="exportsOper">导出</button>
+										[/@permited]
+									</li>
+								</ul>
+							</form>	
+						</div>
 						
-						[#list dataPage.data as obj]
-							[#-- trid 方便快速选择某行 --]
-							<tr trid="${obj.id}">
-								<td><input type="checkbox" name="ids" value="${obj.id}" /></td>
-								<td>${obj_index + 1}</td>
-								<td>${obj.parentName}</td>
-								<td>${obj.projectName}</td>
-								<td>${obj.name}</td>
-								<td>
-									[#if obj.status.className == "OPEN"]
-										<div class="handler close yes status" />
-									[#elseif obj.status.className == "CLOSE"]
-										<div class="handler open no status" />
-									[/#if]
-								</td>
-								<td>
-									[#if obj.isMenu.className == "YES"]
-										<div class="handlerIsMenu close yes isMenu" />
-									[#elseif obj.isMenu.className == "NO"]
-										<div class="handlerIsMenu open no isMenu" />
-									[/#if]
-								</td>
-								<td>${obj.icon}</td>
-								<td>${obj.url}</td>
-								<td>${obj.sort}</td>
-								<td>[@e.convertId cid=obj.creator prop="realname || nickname" /]</td>
-								<td>${obj.createTime?datetime}</td>
-								<td>
-									[@permited value="operation/load"]
-										<a class="loadBtn icon-btn icon-detail" data-id="${obj.id}" title="详情" href="javascript:" > </a>
-									[/@permited]
-									[@permited value="operation/update"]
-										<a class="updBtn icon-btn icon-edit" data-id="${obj.id}" title="修改" href="javascript:" > </a>
-									[/@permited]
-									[@permited value="operation/remove"]
-										<a class="icon-btn icon-del" href="javascript:gb.remove('/operation/remove.html', '${obj.id}');" title="删除" > </a>
-									[/@permited]
-								</td>
-							</tr>
-						[/#list]
-						
-					</table>
+						[#-- 列表信息区域 --]
+						<div class="data-div">
+							<table class="ui-table">
+								<tr class="th-row">
+									<th width="30" checkbox="true"></th>
+									<th width="40" row-no="true">序号</th>
+									<th width="100">上级权限</th>
+									<th width="100">项目ID</th>
+									<th width="100" check-row="true">权限名</th>
+									<th width="80" fixed="true" no-tip="true">启动/禁用</th>
+									<th width="80" fixed="true" no-tip="true">菜单</th>
+									<th width="60">图标</th>
+									<th width="100">地址</th>
+									<th width="40">排序值</th>
+									<th width="100">创建人</th>
+									<th width="100">创建时间</th>
+									<th width="130" fixed="true" no-tip="true">操作</th>
+								</tr>
+								
+								[#list dataPage.data as obj]
+									[#-- trid 方便快速选择某行 --]
+									<tr trid="${obj.id}">
+										<td><input type="checkbox" name="ids" value="${obj.id}" /></td>
+										<td>${obj_index + 1}</td>
+										<td>${obj.parentName}</td>
+										<td>${obj.projectName}</td>
+										<td>${obj.name}</td>
+										<td>
+											[#if obj.status.className == "OPEN"]
+												<div class="handler close yes status" />
+											[#elseif obj.status.className == "CLOSE"]
+												<div class="handler open no status" />
+											[/#if]
+										</td>
+										<td>
+											[#if obj.isMenu.className == "YES"]
+												<div class="handlerIsMenu close yes isMenu" />
+											[#elseif obj.isMenu.className == "NO"]
+												<div class="handlerIsMenu open no isMenu" />
+											[/#if]
+										</td>
+										<td>${obj.icon}</td>
+										<td>${obj.url}</td>
+										<td>${obj.sort}</td>
+										<td>[@e.convertId cid=obj.creator prop="realname || nickname" /]</td>
+										<td>${obj.createTime?datetime}</td>
+										<td>
+											[@permited value="operation/load"]
+												<a class="loadBtn icon-btn icon-detail" data-id="${obj.id}" title="详情" href="javascript:" > </a>
+											[/@permited]
+											[@permited value="operation/update"]
+												<a class="updBtn icon-btn icon-edit" data-id="${obj.id}" title="修改" href="javascript:" > </a>
+											[/@permited]
+											[@permited value="operation/remove"]
+												<a class="icon-btn icon-del" href="javascript:gb.remove('/operation/remove.html', '${obj.id}');" title="删除" > </a>
+											[/@permited]
+										</td>
+									</tr>
+								[/#list]
+								
+							</table>
+						</div>
+					</div>
+					[#-- 分页区域 --]
+					<div class="page">
+						[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage
+								url="/operation/list.html" showPageNum="5" cssClass="pagnation" /]
+					</div>
+					
 				</div>
 			</div>
-			[#-- 分页区域 --]
-			<div class="page">
-				[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage
-						url="/operation/list.html" showPageNum="5" cssClass="pagnation" /]
-			</div>
-			[#-- 底部区域 --]
-			[#include "/WEB-INF/common/footer.html"/]
-		</div>
-		
+		</section>
 	</div>
+	
+	[#include "/WEB-INF/common/footer.html"/]
+	
+	[#include "/WEB-INF/common/control-sidebar.html"/]
 	
 	<!-- 模板页 -->
 	<div id="tmpls">
@@ -355,6 +366,7 @@
 			</table>
 		</form>
 	</div>
+</div>
 	
 [#include "/WEB-INF/common/scripts.html"/]
 [@e.script src="/js/??user/operation.js" /]

@@ -3,30 +3,42 @@
 <html>
 <head>
 [#include "/WEB-INF/common/meta.html"/]
-<title>权限系统</title>
+<title>EasyCode | 主页</title>
 [#include "/WEB-INF/common/styles.html"/]
 </head>
-<body>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
 
-	[#-- 头部区域  --]
 	[#include "/WEB-INF/common/header.html"/]
 	
-	<div id="main">
-		
-		[#-- 左侧菜单区域  --]
-		[#include "/WEB-INF/common/left.html"/]
-		
-		<div id="conent">
-			
-			<div id="core-div">
-				欢迎页面！！！！！！！！！！
+	[#include "/WEB-INF/common/left.html"/]
+	
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>
+				Home <small>欢迎页面</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li><a href="#">Tables</a></li>
+				<li class="active">Simple</li>
+			</ol>
+		</section>
+
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					欢饮页面
+				</div>
 			</div>
-			
-			[#-- 底部区域 --]
-			[#include "/WEB-INF/common/footer.html"/]
-		</div>
-		
+		</section>
 	</div>
+	
+	[#include "/WEB-INF/common/footer.html"/]
+	
+	[#include "/WEB-INF/common/control-sidebar.html"/]
+	
+</div>
 [#include "/WEB-INF/common/scripts.html"/]
 </body>
 </html>

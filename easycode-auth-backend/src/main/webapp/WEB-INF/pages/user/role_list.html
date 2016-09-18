@@ -3,125 +3,136 @@
 <html>
 <head>
 [#include "/WEB-INF/common/meta.html"/]
-<title>角色</title>
+<title>EasyCode | 角色</title>
 [#include "/WEB-INF/common/styles.html"/]
 </head>
-<body>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
 
-	[#-- 头部区域  --]
 	[#include "/WEB-INF/common/header.html"/]
 	
-	<div id="main">
-		
-		[#-- 左侧菜单区域  --]
-		[#include "/WEB-INF/common/left.html"/]
-		
-		<div id="conent">
+	[#include "/WEB-INF/common/left.html"/]
+	
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>
+				角色 <small>角色</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li><a href="#">Tables</a></li>
+				<li class="active">Simple</li>
+			</ol>
+		</section>
+
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div id="core-div">
 			
-			[#-- 页面标题  --]
-			<h2>角色</h2>
-			
-			<div id="core-div">
-				
-				[#-- 查询区域 --]
-				<div class="control">
-					<form action="/role/list.html" method="post">
-						<ul class="search">
-							
-							<li class="param-li">
-								角色名：<input type="text" name="name" value="${role.name}" />
-							</li>
-							
-							<li class="param-li">
-								状态：[@e.radioEnum name="status" enumName="CloseStatus" 
-										selectedValue=role.status exclude="DELETE" /]
-							</li>
-	                        
-							[#-- 查询按钮 --]
-							<li class="search-btns">
-	                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
-	                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
-							</li>
-	                        
-							[#-- 功能按钮区域 --]
-							<li class="handle-btns">
-								[@permited value="role/add"]
-	                        		<button type="button" id="addBtn" class="btn">+ 新增</button>
-	                        	[/@permited]
-	                        	[@permited value="role/remove"]
-	                        		<button type="button" class="btn" onclick="gb.batchRemove('/role/remove.html')">删除</button>
-	                        	[/@permited]
-	                        	[@permited value="role/openClose"]
-		                        	<button type="button" class="handler open batch btn">启用</button>
-									<button type="button" class="handler close batch btn">禁用</button>
-								[/@permited]
-							</li>
-						</ul>
-					</form>	
-				</div>
-				
-				[#-- 列表信息区域 --]
-				<div class="data-div">
-					<table class="ui-table">
-						<tr class="th-row">
-							<th width="30" checkbox="true"></th>
-							<th width="40" row-no="true">序号</th>
-							<th width="100">角色名</th>
-							<th width="40">排序值</th>
-							<th width="80" fixed="true" no-tip="true">启动/禁用</th>
-							<th width="100">描述</th>
-							<th width="100">创建人</th>
-							<th width="100">创建时间</th>
-							<th width="150" fixed="true" no-tip="true">操作</th>
-						</tr>
+						[#-- 查询区域 --]
+						<div class="control">
+							<form action="/role/list.html" method="post">
+								<ul class="search">
+									
+									<li class="param-li">
+										角色名：<input type="text" name="name" value="${role.name}" />
+									</li>
+									
+									<li class="param-li">
+										状态：[@e.radioEnum name="status" enumName="CloseStatus" 
+												selectedValue=role.status exclude="DELETE" /]
+									</li>
+			                        
+									[#-- 查询按钮 --]
+									<li class="search-btns">
+			                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
+			                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
+									</li>
+			                        
+									[#-- 功能按钮区域 --]
+									<li class="handle-btns">
+										[@permited value="role/add"]
+			                        		<button type="button" id="addBtn" class="btn">+ 新增</button>
+			                        	[/@permited]
+			                        	[@permited value="role/remove"]
+			                        		<button type="button" class="btn" onclick="gb.batchRemove('/role/remove.html')">删除</button>
+			                        	[/@permited]
+			                        	[@permited value="role/openClose"]
+				                        	<button type="button" class="handler open batch btn">启用</button>
+											<button type="button" class="handler close batch btn">禁用</button>
+										[/@permited]
+									</li>
+								</ul>
+							</form>	
+						</div>
 						
-						[#list dataPage.data as obj]
-							[#-- trid 方便快速选择某行 --]
-							<tr trid="${obj.id}">
-								<td><input type="checkbox" name="ids" value="${obj.id}" /></td>
-								<td>${obj_index + 1}</td>
-								<td>${obj.name}</td>
-								<td>${obj.sort}</td>
-								<td>
-									[#if obj.status.className == "OPEN"]
-										<div class="handler close yes status" />
-									[#elseif obj.status.className == "CLOSE"]
-										<div class="handler open no status" />
-									[/#if]
-								</td>
-								<td>${obj.description}</td>
-								<td>[@e.convertId cid=obj.creator prop="realname || nickname" /]</td>
-								<td>${obj.createTime?datetime}</td>
-								<td>
-									[@permited value="role/load"]
-										<a class="loadBtn icon-btn icon-detail" data-id="${obj.id}" title="详情" href="javascript:" > </a>
-									[/@permited]
-									[@permited value="role/update"]
-										<a class="updBtn icon-btn icon-edit" data-id="${obj.id}" title="修改" href="javascript:" > </a>
-									[/@permited]
-									[@permited value="role/remove"]
-										<a class="icon-btn icon-del" href="javascript:gb.remove('/role/remove.html', '${obj.id}');" title="删除" > </a>
-									[/@permited]
-									[@permited value="operation/addOperationsOfRole"]
-										<a class="cfgOpsBtn icon-btn icon-cfg" data-id="${obj.id}" title="配置权限" href="javascript:" > </a>
-									[/@permited]
-								</td>
-							</tr>
-						[/#list]
-						
-					</table>
+						[#-- 列表信息区域 --]
+						<div class="data-div">
+							<table class="ui-table">
+								<tr class="th-row">
+									<th width="30" checkbox="true"></th>
+									<th width="40" row-no="true">序号</th>
+									<th width="100">角色名</th>
+									<th width="40">排序值</th>
+									<th width="80" fixed="true" no-tip="true">启动/禁用</th>
+									<th width="100">描述</th>
+									<th width="100">创建人</th>
+									<th width="100">创建时间</th>
+									<th width="150" fixed="true" no-tip="true">操作</th>
+								</tr>
+								
+								[#list dataPage.data as obj]
+									[#-- trid 方便快速选择某行 --]
+									<tr trid="${obj.id}">
+										<td><input type="checkbox" name="ids" value="${obj.id}" /></td>
+										<td>${obj_index + 1}</td>
+										<td>${obj.name}</td>
+										<td>${obj.sort}</td>
+										<td>
+											[#if obj.status.className == "OPEN"]
+												<div class="handler close yes status" />
+											[#elseif obj.status.className == "CLOSE"]
+												<div class="handler open no status" />
+											[/#if]
+										</td>
+										<td>${obj.description}</td>
+										<td>[@e.convertId cid=obj.creator prop="realname || nickname" /]</td>
+										<td>${obj.createTime?datetime}</td>
+										<td>
+											[@permited value="role/load"]
+												<a class="loadBtn icon-btn icon-detail" data-id="${obj.id}" title="详情" href="javascript:" > </a>
+											[/@permited]
+											[@permited value="role/update"]
+												<a class="updBtn icon-btn icon-edit" data-id="${obj.id}" title="修改" href="javascript:" > </a>
+											[/@permited]
+											[@permited value="role/remove"]
+												<a class="icon-btn icon-del" href="javascript:gb.remove('/role/remove.html', '${obj.id}');" title="删除" > </a>
+											[/@permited]
+											[@permited value="operation/addOperationsOfRole"]
+												<a class="cfgOpsBtn icon-btn icon-cfg" data-id="${obj.id}" title="配置权限" href="javascript:" > </a>
+											[/@permited]
+										</td>
+									</tr>
+								[/#list]
+								
+							</table>
+						</div>
+					</div>
+					[#-- 分页区域 --]
+					<div class="page">
+						[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage
+								url="/role/list.html" showPageNum="5" cssClass="pagnation" /]
+					</div>
+					
 				</div>
 			</div>
-			[#-- 分页区域 --]
-			<div class="page">
-				[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage
-						url="/role/list.html" showPageNum="5" cssClass="pagnation" /]
-			</div>
-			[#-- 底部区域 --]
-			[#include "/WEB-INF/common/footer.html"/]
-		</div>
-		
+		</section>
 	</div>
+	
+	[#include "/WEB-INF/common/footer.html"/]
+	
+	[#include "/WEB-INF/common/control-sidebar.html"/]
 	
 	<!-- 模板页 -->
 	<div id="tmpls">
@@ -220,6 +231,7 @@
 		</form>
 		
 	</div>
+</div>
 	
 [#include "/WEB-INF/common/scripts.html"/]
 [@e.script src="/js/??user/role.js" /]
