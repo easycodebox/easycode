@@ -412,7 +412,9 @@ public class HttpUtils {
 			HttpServletResponse response) {
 		if(!StringUtils.isEmpty(value)){
 			try {
-				value = URLEncoder.encode(value, "UTF-8");
+				//URLEncoder.encode会把空格换成'+'，所以需要转义下，不然前端JS decodeURIComponent会显示'+'号
+				//或者直接可以使用Spring提供的工具类UriUtils.encode来进行处理，这个工具类不会把空格替换成'+'号
+				value = URLEncoder.encode(value, "UTF-8").replace(Symbol.PLUS, "%20");
 			} catch (UnsupportedEncodingException e) {
 				LOG.error("HttpUtil class addCookie method error.",e);
 			}

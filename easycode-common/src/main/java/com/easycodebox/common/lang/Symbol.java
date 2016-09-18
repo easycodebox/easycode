@@ -22,20 +22,21 @@ public class Symbol {
 	public static final String ASTERISK = "*";
 	public static final String MINUS = "-";
 	public static final String BOTTOM_LINE = "_";
+	public static final String PLUS = "+";
 	public static final String EQ = "=";
 	public static final String NE = "!=";
 	public static final String GT = ">";
 	public static final String GE = ">=";
 	public static final String LT = "<";
 	public static final String LE = "<=";
+	public static final String PLUS_EQ = "+=";
+	public static final String MINUS_EQ = "-=";
 	public static final String L_PARENTHESIS = "(";
 	public static final String R_PARENTHESIS = ")";
 	public static final String L_BRACKET = "[";
 	public static final String R_BRACKET = "]";
 	public static final String L_BRACE = "{";
 	public static final String R_BRACE = "}";
-	public static final String INCREASE_EQ = "+=";
-	public static final String DECREASE_EQ = "-=";
 	
 	public static final String PERIOD_CN = "。";
 	public static final String COLON_CN = "：";
