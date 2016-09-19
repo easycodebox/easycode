@@ -2,6 +2,7 @@
 <configuration>
 
 	<property resource="mail.properties" />
+	<property resource="core.properties" />
 	<property name="appRoot" value="${auth_backend}" />
 
 	<contextName>${appRoot}</contextName>
@@ -92,13 +93,20 @@
 	
 	<!-- <logger name="druid.sql" level="INFO" /> -->
 	
-	<root level="INFO">
-		<appender-ref ref="STDOUT" />
-
-		<!-- <appender-ref ref="INFO" />
-		<appender-ref ref="WARN" />
-		<appender-ref ref="ERROR" />
-		<appender-ref ref="ERROR_MAIL" /> -->
-	</root>
-
+	<if condition='property("project_env").equals("DEV")'>
+		<then>
+			<root level="INFO">
+				<appender-ref ref="STDOUT" />
+			</root>
+		</then>
+		<else>
+			<root level="INFO">
+				<appender-ref ref="INFO" />
+				<appender-ref ref="WARN" />
+				<appender-ref ref="ERROR" />
+				<appender-ref ref="ERROR_MAIL" />
+			</root>
+		</else>
+	</if>
+  
 </configuration>
