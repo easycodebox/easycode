@@ -6,10 +6,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.management.modelmbean.XMLParseException;
-
-import org.dom4j.DocumentException;
-
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
@@ -114,7 +110,7 @@ public class PropertiesPool {
 						PropertiesUtils.loadAbsoluteXmlFile(propertyFile, resource);
 					else
 						PropertiesUtils.loadXmlFile(propertyFile, resource);
-				} catch (IOException | DocumentException | XMLParseException e) {
+				} catch (Exception e) {
 					LOG.error("Load xml file ({0}) to Properties error!!", e, resource);
 				}
 				if(!contains)

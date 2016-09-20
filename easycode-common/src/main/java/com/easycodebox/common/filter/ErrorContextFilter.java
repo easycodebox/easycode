@@ -1,6 +1,9 @@
 package com.easycodebox.common.filter;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,6 +20,8 @@ import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.lang.reflect.ClassUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.HttpUtils;
@@ -24,6 +29,7 @@ import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 /**
+ * 
  * @author WangXiaoJin
  * 
  */
@@ -31,17 +37,79 @@ public class ErrorContextFilter implements Filter {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ErrorContextFilter.class);
 
+	private static final String REDIRECT_FLAG = "redirect:";
+	
 	private final String errorKey = "CODE_MSG";
 	
-	private String errorPage;
+	/**
+	 * 检查异常类型的嵌套层次数。因为某些框架会把抛出的异常封装进cause属性中。
+	 */
+	private int depth = 2;
+	
+	private String defaultPage;
+	
+	private int defaultStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+	
+	/**
+	 * 格式：com.xxx.SpecificException = redirect:/errors/500.html, com.xxx.AuthException = /errors/403.html <br>
+	 * 分隔符可以是 <b>,</b> 或者 <b>\n</b> 
+	 */
+	private Map<Class<?>, String> exceptionMappings = Collections.emptyMap();
+	
+	/**
+	 * 格式：/errors/500.html = 500, /errors/403.html = 403 <br>
+	 * key对应exceptionMappings的value（page页面）<br>
+	 * value对应http的status值 <br>
+	 * 分隔符可以是 <b>,</b> 或者 <b>\n</b> 
+	 */
+	private Map<String, Integer> statusMappings = Collections.emptyMap();
+	
 	private boolean storeException = false;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		this.errorPage = filterConfig.getInitParameter("errorPage");
-		String store = filterConfig.getInitParameter("storeException");
+		String defaultPage = filterConfig.getInitParameter("defaultPage"),
+				defaultStatus = filterConfig.getInitParameter("defaultStatus"),
+				exceptionMappings = filterConfig.getInitParameter("exceptionMappings"),
+				statusMappings = filterConfig.getInitParameter("statusMappings"),
+				store = filterConfig.getInitParameter("storeException");
+		
+		if (StringUtils.isNotBlank(defaultPage)) {
+			this.defaultPage = defaultPage.trim();
+		}
+		if (StringUtils.isNotBlank(defaultStatus)) {
+			this.defaultStatus = Integer.parseInt(defaultStatus.trim());
+		}
+		if (StringUtils.isNotBlank(exceptionMappings)) {
+			this.exceptionMappings = new HashMap<>(4);
+			String[] frags = exceptionMappings.split("[,\n]");
+			for (String frag : frags) {
+				if (StringUtils.isNotBlank(frag)) {
+					String[] vals = frag.trim().split(Symbol.EQ);
+					if (vals.length == 2) {
+						try {
+							this.exceptionMappings.put(ClassUtils.getClass(vals[0].trim()), vals[1].trim());
+						} catch (ClassNotFoundException e) {
+							LOG.error("Class not find.", e);
+						}
+					}
+				}
+			}
+		}
+		if (StringUtils.isNotBlank(statusMappings)) {
+			this.statusMappings = new HashMap<>(4);
+			String[] frags = statusMappings.split("[,\n]");
+			for (String frag : frags) {
+				if (StringUtils.isNotBlank(frag)) {
+					String[] vals = frag.trim().split(Symbol.EQ);
+					if (vals.length == 2) {
+						this.statusMappings.put(vals[0].trim(), Integer.parseInt(vals[1].trim()));
+					}
+				}
+			}
+		}
 		if (StringUtils.isNotBlank(store)) {
-			storeException = Boolean.parseBoolean(store);
+			storeException = Boolean.parseBoolean(store.trim());
 		}
 	}
 	
@@ -49,18 +117,43 @@ public class ErrorContextFilter implements Filter {
 	public void destroy() {
 		
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	private <T> T spyException(Throwable ex, Class<T> clazz) {
+		Throwable th = ex;
+		for (int i = 0; i < this.depth; i++) {
+			if (clazz.isAssignableFrom(th.getClass())) {
+				return (T)th;
+			}
+			th = ex.getCause();
+		}
+		return null;
+	}
+	
+	/**
+	 * 根据异常获取对应的错误页面
+	 * @param ex
+	 * @return
+	 */
+	private String obtainErrorPage(Throwable ex) {
+		for (Class<?> clazz : exceptionMappings.keySet()) {
+			if (spyException(ex, clazz) != null) {
+				return exceptionMappings.get(clazz);
+			}
+		}
+		return this.defaultPage;
+	}
+	
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
-		try{
+		try {
 			chain.doFilter(req, res);
-		}catch(Throwable ex) {
+		} catch(Throwable ex) {
 			HttpServletRequest request = (HttpServletRequest)req; 
 			HttpServletResponse response = (HttpServletResponse)res;
 			
-			ErrorContext ec = ex instanceof ErrorContext ? (ErrorContext)ex
-					: ex.getCause() instanceof ErrorContext ? (ErrorContext)ex.getCause() : null;
+			ErrorContext ec = spyException(ex, ErrorContext.class);
 					
 			if(ec != null) {
 				ec.log(LOG, ec.getMessage(), ec);
@@ -102,11 +195,28 @@ public class ErrorContextFilter implements Filter {
 				if(request.getParameter(BaseConstants.DIALOG_REQ) != null) {
 					
 					Callbacks.callback(Callbacks.none(error), null, response);
-				} else if (StringUtils.isNotBlank(errorPage)) {
-					response.setContentType("text/html;charset=UTF-8");
-					String codeMsgStr = Jacksons.NON_NULL.toJson(error);
-					HttpUtils.addCookie(errorKey, codeMsgStr, response);
-					request.getRequestDispatcher(errorPage).forward(request, response);
+				} else {
+					//检索出异常页面
+					String errorPage = obtainErrorPage(ex);
+					if (StringUtils.isNotBlank(errorPage)) {
+						if (errorPage.startsWith(REDIRECT_FLAG)) {
+							//执行页面跳转
+							response.sendRedirect(errorPage.replace(REDIRECT_FLAG, Symbol.EMPTY));
+						} else {
+							//相应错误页面
+							response.setContentType("text/html;charset=UTF-8");
+							String codeMsgStr = Jacksons.NON_NULL.toJson(error);
+							HttpUtils.addCookie(errorKey, codeMsgStr, response);
+							//设置status code
+							Integer status = statusMappings.get(errorPage) == null ? defaultStatus : statusMappings.get(errorPage);
+							response.setStatus(status);
+							
+							request.getRequestDispatcher(errorPage).forward(request, response);
+						}
+					} else {
+						//没有合适的处理逻辑，抛出原有异常
+						throw ex;
+					}
 				}
 			}
 		} finally {
