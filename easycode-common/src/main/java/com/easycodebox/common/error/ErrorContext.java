@@ -2,24 +2,19 @@ package com.easycodebox.common.error;
 
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.CodeMsg.Code;
-import com.easycodebox.common.log.slf4j.Logger;
-
+import com.easycodebox.common.filter.LogLevelException;
 
 /**
  * @author WangXiaoJin
  *
  */
-public class ErrorContext extends RuntimeException {
+public class ErrorContext extends LogLevelException {
 	
 	private static final long serialVersionUID = 1053969252838403620L;
 
 	private static final ThreadLocal<ErrorContext> LOCAL = new ThreadLocal<ErrorContext>();
 	
 	private CodeMsg error;
-	/**
-	 * 输出的日志级别
-	 */
-	private LogLevel logLevel = LogLevel.ERROR;
 	
 	protected ErrorContext(CodeMsg error, Throwable cause) {
 		super(error == null ? null : error.getMsg(), cause);
@@ -69,66 +64,25 @@ public class ErrorContext extends RuntimeException {
 		return LOCAL.get() != null;
 	}
 	
-	/**
-	 * 打印日志
-	 * @return
-	 */
-	public void log(Logger log, Object msg, Object... args) {
-		this.log(log, msg, (Throwable)null, args);
-	}
-	
-	/**
-	 * 打印日志
-	 * @return
-	 */
-	public void log(Logger log, Object msg, Throwable t, Object... args) {
-		switch(this.logLevel) {
-			
-		case TRACE: 
-			log.trace(msg, t, args);
-			break;
-		case DEBUG: 
-			log.debug(msg, t, args);
-			break;
-		case INFO:
-			log.info(msg, t, args);
-			break;
-		case WARN:
-			log.warn(msg, t, args);
-			break;
-		case ERROR:
-			log.error(msg, t, args);
-			break;
-		default: 
-			log.error(msg, t, args);
-			break;
-			
-		}
-	}
-	
 	public ErrorContext error(CodeMsg error) {
 		this.error = error;
 		return this;
 	}
 	
 	public ErrorContext logLevel(LogLevel logLevel) {
-		this.logLevel = logLevel;
+		getLogLevelConfig().setLogLevel(logLevel);
 		return this;
 	}
 	
 	public ErrorContext reset() {
+		super.reset();
 		this.error = null;
-		this.logLevel = LogLevel.ERROR;
 		LOCAL.remove();
 		return this;
 	}
 
 	public CodeMsg getError() {
 		return error;
-	}
-
-	public LogLevel getLogLevel() {
-		return logLevel;
 	}
 
 }

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.enums.Enums;
+import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
@@ -22,6 +24,7 @@ import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.log.slf4j.LogLevelConfig;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.HttpUtils;
@@ -38,6 +41,7 @@ public class ErrorContextFilter implements Filter {
 	private static final Logger LOG = LoggerFactory.getLogger(ErrorContextFilter.class);
 
 	private static final String REDIRECT_FLAG = "redirect:";
+	private static final String SEPARATOR_PATTERN = "[,\n]";
 	
 	private final String errorKey = "CODE_MSG";
 	
@@ -64,6 +68,23 @@ public class ErrorContextFilter implements Filter {
 	 */
 	private Map<String, Integer> statusMappings = Collections.emptyMap();
 	
+	/**
+	 * 判断是否需要打印指定的异常信息 <br>
+	 * 格式：com.xxx.SpecificException = true, com.xxx.AuthException = false <br>
+	 * 分隔符可以是 <b>,</b> 或者 <b>\n</b> 
+	 */
+	private Map<Class<?>, Boolean> logMappings = Collections.emptyMap();
+	
+	/**
+	 * 是否打印捕获的异常信息
+	 */
+	private boolean isLog = true;
+	
+	/**
+	 * 打印捕获的异常日志的日志级别，默认为ERROR
+	 */
+	private LogLevelConfig logLevelConfig = new LogLevelConfig();
+	
 	private boolean storeException = false;
 
 	@Override
@@ -72,6 +93,9 @@ public class ErrorContextFilter implements Filter {
 				defaultStatus = filterConfig.getInitParameter("defaultStatus"),
 				exceptionMappings = filterConfig.getInitParameter("exceptionMappings"),
 				statusMappings = filterConfig.getInitParameter("statusMappings"),
+				logMappings = filterConfig.getInitParameter("logMappings"),
+				isLog = filterConfig.getInitParameter("isLog"),
+				logLevel = filterConfig.getInitParameter("logLevel"),
 				store = filterConfig.getInitParameter("storeException");
 		
 		if (StringUtils.isNotBlank(defaultPage)) {
@@ -82,7 +106,7 @@ public class ErrorContextFilter implements Filter {
 		}
 		if (StringUtils.isNotBlank(exceptionMappings)) {
 			this.exceptionMappings = new HashMap<>(4);
-			String[] frags = exceptionMappings.split("[,\n]");
+			String[] frags = exceptionMappings.split(SEPARATOR_PATTERN);
 			for (String frag : frags) {
 				if (StringUtils.isNotBlank(frag)) {
 					String[] vals = frag.trim().split(Symbol.EQ);
@@ -98,7 +122,7 @@ public class ErrorContextFilter implements Filter {
 		}
 		if (StringUtils.isNotBlank(statusMappings)) {
 			this.statusMappings = new HashMap<>(4);
-			String[] frags = statusMappings.split("[,\n]");
+			String[] frags = statusMappings.split(SEPARATOR_PATTERN);
 			for (String frag : frags) {
 				if (StringUtils.isNotBlank(frag)) {
 					String[] vals = frag.trim().split(Symbol.EQ);
@@ -108,8 +132,33 @@ public class ErrorContextFilter implements Filter {
 				}
 			}
 		}
+		if (StringUtils.isNotBlank(logMappings)) {
+			this.logMappings = new HashMap<>(4);
+			String[] frags = logMappings.split(SEPARATOR_PATTERN);
+			for (String frag : frags) {
+				if (StringUtils.isNotBlank(frag)) {
+					String[] vals = frag.trim().split(Symbol.EQ);
+					if (vals.length == 2) {
+						try {
+							this.logMappings.put(ClassUtils.getClass(vals[0].trim()), Boolean.parseBoolean(vals[1].trim()));
+						} catch (ClassNotFoundException e) {
+							LOG.error("Class not find.", e);
+						}
+					}
+				}
+			}
+		}
+		if (StringUtils.isNotBlank(isLog)) {
+			this.isLog = Boolean.parseBoolean(isLog.trim());
+		}
+		if (StringUtils.isNotBlank(logLevel)) {
+			LogLevel logLevelEnum = Enums.deserialize(LogLevel.class, logLevel, false);
+			if (logLevelEnum != null) {
+				logLevelConfig.setLogLevel(logLevelEnum);
+			}
+		}
 		if (StringUtils.isNotBlank(store)) {
-			storeException = Boolean.parseBoolean(store.trim());
+			this.storeException = Boolean.parseBoolean(store.trim());
 		}
 	}
 	
@@ -144,6 +193,19 @@ public class ErrorContextFilter implements Filter {
 		return this.defaultPage;
 	}
 	
+	/**
+	 * 判断是否需要打印日志
+	 * @return
+	 */
+	public boolean judgeLog(Throwable ex) {
+		for (Class<?> clazz : logMappings.keySet()) {
+			if (spyException(ex, clazz) != null) {
+				return logMappings.get(clazz);
+			}
+		}
+		return this.isLog;
+	}
+	
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
@@ -153,15 +215,17 @@ public class ErrorContextFilter implements Filter {
 			HttpServletRequest request = (HttpServletRequest)req; 
 			HttpServletResponse response = (HttpServletResponse)res;
 			
-			ErrorContext ec = spyException(ex, ErrorContext.class);
-					
-			if(ec != null) {
-				ec.log(LOG, ec.getMessage(), ec);
-			}else {
-				//如果此异常不是ValidateError则打印ERROR
-				LOG.error(ex.getMessage(), ex);
+			if (judgeLog(ex)) {
+				LogLevelException lle = spyException(ex, LogLevelException.class);
+				if (lle != null) {
+					//用户自定义log level打印日志
+					lle.getLogLevelConfig().log(LOG, lle.getMessage(), lle);
+				} else {
+					logLevelConfig.log(LOG, ex.getMessage(), ex);
+				}
 			}
 			
+			ErrorContext ec = spyException(ex, ErrorContext.class);
 			CodeMsg error = null;
 			if(ec != null) {
 				error = ec.getError();
@@ -171,7 +235,7 @@ public class ErrorContextFilter implements Filter {
 				//因为前段JS需要首要显示服务器端返回的错误信息，如果此处设值，则错误信息始终显示Error.FAIL_MSG_INFO， 而不会显示JS定义的信息
 				/*if(isBlank(error.getMsg()))
 					error.msg(Error.FAIL_MSG_INFO);*/
-			}else {
+			} else {
 				error = CodeMsg.FAIL;
 			}
 			
