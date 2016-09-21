@@ -2,6 +2,7 @@
 <configuration>
 
 	<property resource="mail.properties" />
+	<property resource="upload.properties" />
 	<property name="appRoot" value="${web_upload}" />
 
 	<contextName>${appRoot}</contextName>
@@ -89,13 +90,20 @@
 		</layout>
 	</appender>
 	
-	<root level="INFO">
-		<appender-ref ref="STDOUT" />
-
-		<!-- <appender-ref ref="INFO" />
-		<appender-ref ref="WARN" />
-		<appender-ref ref="ERROR" />
-		<appender-ref ref="ERROR_MAIL" /> -->
-	</root>
+	<if condition='property("project_env").equals("DEV")'>
+		<then>
+			<root level="INFO">
+				<appender-ref ref="STDOUT" />
+			</root>
+		</then>
+		<else>
+			<root level="INFO">
+				<appender-ref ref="INFO" />
+				<appender-ref ref="WARN" />
+				<appender-ref ref="ERROR" />
+				<appender-ref ref="ERROR_MAIL" />
+			</root>
+		</else>
+	</if>
 
 </configuration>
