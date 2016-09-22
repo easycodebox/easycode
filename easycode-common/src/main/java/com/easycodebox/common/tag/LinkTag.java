@@ -6,6 +6,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
 import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.enums.Enums;
 import com.easycodebox.common.enums.entity.ProjectEnv;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
@@ -24,10 +25,22 @@ public class LinkTag extends AbstractHtmlTag {
 	private String media;
 	private String sizes;
 	
+	/**
+	 * 该标签的运行环境
+	 */
+	private ProjectEnv env;
+	/**
+	 * 是否把该标签的url添加.min后缀（转换成压缩后的url）<br>
+	 * DEV 环境会忽略此属性
+	 */
+	private boolean min;
+	
 	@Override
 	protected void init() {
 		rel = "stylesheet";
 		type = "text/css";
+		env = BaseConstants.projectEnv;
+		min = BaseConstants.transMinJsCss;
 		super.init();
 	}
 	
@@ -41,11 +54,11 @@ public class LinkTag extends AbstractHtmlTag {
 			sb.append("type=\"").append(type).append("\" ");
 		if(href != null) {
 			href = href.replaceAll("\\s*", "");
-			if(BaseConstants.projectEnv != ProjectEnv.DEV && BaseConstants.transMinJsCss) {
+			if(env != ProjectEnv.DEV && min) {
 				//自动转换成压缩后的min.css
 				href = href.replaceAll("(?<!\\.min)\\.css(?=,|\\?|$)", ".min.css");
 			}
-			sb.append("href=\"").append(BaseConstants.projectEnv == ProjectEnv.DEV ? "{0}" : href).append("\" ");
+			sb.append("href=\"").append(env == ProjectEnv.DEV ? "{0}" : href).append("\" ");
 		}
 		if(media != null)
 			sb.append("media=\"").append(media).append("\" ");
@@ -55,7 +68,7 @@ public class LinkTag extends AbstractHtmlTag {
 		
 		try {
 			JspWriter write = pageContext.getOut();
-			if(BaseConstants.projectEnv == ProjectEnv.DEV) {
+			if(env == ProjectEnv.DEV) {
 				String tag = sb.toString();
 				String[] srcFrags = href.split("\\?\\?");
 				if(srcFrags.length == 1) {
@@ -94,6 +107,18 @@ public class LinkTag extends AbstractHtmlTag {
 
 	public void setSizes(String sizes) {
 		this.sizes = sizes;
+	}
+
+	public void setEnv(String env) {
+		if (StringUtils.isNotBlank(env)) {
+			this.env = Enums.deserialize(ProjectEnv.class, env, false);
+		}
+	}
+
+	public void setMin(String min) {
+		if (StringUtils.isNotBlank(min)) {
+			this.min = Boolean.parseBoolean(min);
+		}
 	}
 
 }
