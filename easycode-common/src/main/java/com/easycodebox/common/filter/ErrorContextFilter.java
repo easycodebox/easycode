@@ -191,7 +191,7 @@ public class ErrorContextFilter implements Filter {
 	@SuppressWarnings("unchecked")
 	private <T> T spyException(Throwable ex, Class<T> clazz) {
 		Throwable th = ex;
-		for (int i = 0; i < this.depth; i++) {
+		for (int i = 0; i < this.depth && th != null; i++) {
 			if (clazz.isAssignableFrom(th.getClass())) {
 				return (T)th;
 			}
