@@ -29,62 +29,62 @@
 			<div class="row">
 				<div class="col-xs-12">
 					
-					<div id="core-div">
-						[#-- 查询区域 --]
-						<div class="control">
-							<form action="/log/list.html" method="post">
-								<ul class="search">
-									
-									<li class="param-li">
-										标题：<input type="text" name="title" value="${log.title}" />
-									</li>
-									
-									<li class="param-li">
-										请求地址：<input type="text" name="url" value="${log.url}" />
-									</li>
-									
-									<li class="param-li">
-										请求参数：<input type="text" name="params" value="${log.params}" />
-									</li>
-									
-									<li class="param-li">
-										模块类型：[@e.selectEnum name="moduleType" enumName="ModuleType" 
-													headerKey="" headerValue="--请选择--"
-													selectedValue=log.moduleType /]
-									</li>
-									
-									<li class="param-li">
-										日志级别：[@e.selectEnum name="logLevel" enumName="LogLevel" 
-													headerKey="" headerValue="--请选择--"
-													selectedValue=log.logLevel /]
-									</li>
-									
-									<li class="param-li">
-										返回数据：<input type="text" name="result" value="${log.result}" />
-									</li>
-									
-									<li class="param-li">
-										客户端IP：<input type="text" name="clientIp" value="${log.clientIp}" />
-									</li>
-									
-									[#-- 查询按钮 --]
-									<li class="search-btns">
-			                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
-			                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
-									</li>
-			                        
-									[#-- 功能按钮区域 --]
-									<li class="handle-btns">
-										[@permited value="log/remove"]
-			                        		<button type="button" class="btn" onclick="gb.batchRemove('/log/removePhy.html')">删除</button>
-										[/@permited]
-									</li>
-								</ul>
-							</form>	
+					<form class="form-inline search words5" action="/log/list.html" method="post">
+					
+						<div class="form-group">
+							<label>标题：</label>
+							<input type="text" class="form-control" name="title" value="${log.title}" />
 						</div>
 						
-						[#-- 列表信息区域 --]
-						<div class="data-div">
+						<div class="form-group">
+							<label>请求地址：</label>
+							<input type="text" class="form-control" name="url" value="${log.url}" />
+						</div>
+						
+						<div class="form-group">
+							<label>请求参数：</label>
+							<input type="text" class="form-control" name="params" value="${log.params}" />
+						</div>
+						
+						<div class="form-group">
+							<label>模块类型：</label>
+							[@e.selectEnum cssClass="form-control" name="moduleType" enumName="ModuleType" 
+												headerKey="" headerValue="--请选择--"
+												selectedValue=log.moduleType /]
+						</div>
+						
+						<div class="form-group">
+							<label>日志级别：</label>
+							[@e.selectEnum cssClass="form-control" name="logLevel" enumName="LogLevel" 
+									headerKey="" headerValue="--请选择--"
+									selectedValue=log.logLevel /]
+						</div>
+						
+						<div class="form-group">
+							<label>返回数据：</label>
+							<input type="text" class="form-control" name="result" value="${log.result}" />
+						</div>
+						
+						<div class="form-group">
+							<label>客户端IP：</label>
+							<input type="text" class="form-control" name="clientIp" value="${log.clientIp}" />
+						</div>
+						
+						<div class="form-btns">
+							<button type="button" class="toggle-icon hidden">展开/收起</button>
+							<button type="submit" class="btn btn-default">查询</button>
+	                       	<button type="reset" class="reset-btn btn btn-default">清空</button>
+						</div>
+                       	
+                       	<div class="fun-btns">
+                       		[@permited value="log/remove"]
+                        		<button type="button" class="btn btn-default" onclick="gb.batchRemove('/log/removePhy.html')">删除</button>
+							[/@permited]
+                       	</div>
+					</form>
+					
+					[#-- 列表信息区域 --]
+					<div class="data-div">
 							<table class="ui-table">
 								<tr class="th-row">
 									<th width="30" checkbox="true"></th>
@@ -130,7 +130,7 @@
 								
 							</table>
 						</div>
-					</div>
+					
 					[#-- 分页区域 --]
 					<div class="page">
 						[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage

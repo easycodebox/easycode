@@ -156,25 +156,25 @@ $(function(){
 	});
 	
 	//启用、禁用 功能
-	$(".handler").changeHandler({
+	$(".handler").UI_switch({
 		//操作成功后修改的目标对象
 		targetClass: "status",
 		url: "/operation/openClose.json"
 	});
 	
 	//是否是菜单 功能
-	$(".handlerIsMenu").changeHandler({
+	$(".handlerIsMenu").UI_switch({
 		//操作成功后修改的目标对象
 		targetClass: "isMenu",
 		idsKey: "id",
 		url: "/operation/changeIsMenu.json",
 		change: {
-			open: {
+			"switch-open": {
 				confirmMsg	: "设置为菜单？",
 		 		failMsg		: "设置为菜单失败!",
 		 		data: {isMenu: "YES"}
 			},
-			close: {
+			"switch-close": {
 				confirmMsg	: "设置为'非'菜单？",
 		 		failMsg		: "设置为'非'菜单失败!",
 		 		data: {isMenu: "NO"}

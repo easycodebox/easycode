@@ -63,7 +63,7 @@ $(function(){
 	gb.init();
 	
 	//启用、禁用 功能
-	$(".handler").changeHandler({
+	$(".handler").UI_switch({
 		//操作成功后修改的目标对象
 		targetClass: "status",
 		url: "/project/openClose.json"

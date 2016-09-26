@@ -29,35 +29,31 @@
 			<div class="row">
 				<div class="col-xs-12">
 					
-					<div id="core-div">
-						[#-- 查询区域 --]
-						<div class="control">
-							<form action="/generator/list.html" method="post">
-								<ul class="search">
-									
-									<li class="param-li">
-										生成策略类型：[@e.selectEnum name="generatorType" enumName="GeneratorEnum" 
-													headerKey="" headerValue="--请选择--"
-													selectedValue=generator.generatorType /]
-									</li>
-									
-									<li class="param-li">
-										是否循环：[@e.radioEnum name="isCycle" enumName="YesNo" 
-													selectedValue=generator.isCycle /]
-									</li>
-									
-									[#-- 查询按钮 --]
-									<li class="search-btns">
-			                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
-			                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
-									</li>
-			                        
-								</ul>
-							</form>	
+					<form class="form-inline search words5" action="/generator/list.html" method="post">
+					
+						<div class="form-group">
+							<label>生成策略：</label>
+							[@e.selectEnum cssClass="form-control" name="generatorType" enumName="GeneratorEnum" 
+									headerKey="" headerValue="--请选择--"
+									selectedValue=generator.generatorType /]
 						</div>
 						
-						[#-- 列表信息区域 --]
-						<div class="data-div">
+						<div class="form-group">
+							<label>是否循环：</label>
+							[@e.radioEnum labelClass="radio-inline" name="isCycle" enumName="YesNo" 
+									selectedValue=generator.isCycle /]
+						</div>
+						
+						<div class="form-btns">
+							<button type="button" class="toggle-icon hidden">展开/收起</button>
+							<button type="submit" class="btn btn-default">查询</button>
+	                       	<button type="reset" class="reset-btn btn btn-default">清空</button>
+						</div>
+                       	
+					</form>
+					
+					[#-- 列表信息区域 --]
+					<div class="data-div">
 							<table class="ui-table">
 								<tr class="th-row">
 									<th width="30" checkbox="true"></th>
@@ -87,9 +83,9 @@
 										<td>${obj.increment}</td>
 										<td>
 											[#if obj.isCycle.className == "YES"]
-												<div class="handler isCycle close yes" />
+												<div class="handler isCycle switch-close yes" />
 											[#elseif obj.isCycle.className == "NO"]
-												<div class="handler isCycle open no" />
+												<div class="handler isCycle switch-open no" />
 											[/#if]
 										</td>
 										<td>[@e.convertId cid=obj.creator prop="realname || nickname" /]</td>
@@ -107,7 +103,7 @@
 								
 							</table>
 						</div>
-					</div>
+					
 					[#-- 分页区域 --]
 					<div class="page">
 						[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage

@@ -28,71 +28,74 @@
 		<section class="content">
 			<div class="row">
 				<div class="col-xs-12">
-					<div id="core-div">
-			
-						[#-- 查询区域 --]
-						<div class="control">
-							<form action="/user/list.html" method="post">
-								<ul class="search">
-									
-									<li class="param-li">
-										用户组名：<input type="text" name="groupName" value="${user.groupName}" />
-									</li>
-									
-									<li class="param-li">
-										员工编号：<input type="text" name="userNo" value="${user.userNo}" />
-									</li>
-									
-									<li class="param-li">
-										用户名：<input type="text" name="username" value="${user.username}" />
-									</li>
-									
-									<li class="param-li">
-										昵称：<input type="text" name="nickname" value="${user.nickname}" />
-									</li>
-									
-									<li class="param-li">
-										真实姓名：<input type="text" name="realname" value="${user.realname}" />
-									</li>
-									
-									<li class="param-li">
-										状态：[@e.radioEnum name="status" enumName="CloseStatus" 
-												selectedValue=user.status exclude="DELETE" /]
-									</li>
-									
-									<li class="param-li">
-										邮箱：<input type="text" name="email" value="${user.email}" />
-									</li>
-									
-									<li class="param-li">
-										手机号：<input type="text" name="mobile" value="${user.mobile}" />
-									</li>
-									
-									[#-- 查询按钮 --]
-									<li class="search-btns">
-										<button type="submit" class="common-submit btn blue-btn">查询</button>
-			                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
-									</li>
-			                        
-									[#-- 功能按钮区域 --]
-									<li class="handle-btns">
-										[@permited value="user/add"]
-				                        	<button type="button" id="addBtn" class="btn">+ 新增</button>
-										[/@permited]
-										[@permited value="user/remove"]
-			                        		<button type="button" class="btn" onclick="gb.batchRemove('/user/remove.html')">删除</button>
-			                        	[/@permited]
-			                        	[@permited value="user/openClose"]
-				                        	<button type="button" class="handler open batch btn">启用</button>
-											<button type="button" class="handler close batch btn">禁用</button>
-										[/@permited]
-									</li>
-								</ul>
-							</form>	
+					
+					<form class="form-inline search words5" action="/user/list.html" method="post">
+					
+						<div class="form-group">
+							<label>用户组名：</label>
+							<input type="text" class="form-control" name="groupName" value="${user.groupName}" />
 						</div>
 						
-						[#-- 列表信息区域 --]
-						<div class="data-div">
+						<div class="form-group">
+							<label>员工编号：</label>
+							<input type="text" class="form-control" name="userNo" value="${user.userNo}" />
+						</div>
+						
+						<div class="form-group">
+							<label>用户名：</label>
+							<input type="text" class="form-control" name="username" value="${user.username}" />
+						</div>
+						
+						<div class="form-group">
+							<label>昵称：</label>
+							<input type="text" class="form-control" name="nickname" value="${user.nickname}" />
+						</div>
+						
+						<div class="form-group">
+							<label>真实姓名：</label>
+							<input type="text" class="form-control" name="realname" value="${user.realname}" />
+						</div>
+						
+						<div class="form-group">
+							<label>状态：</label>
+							[@e.radioEnum labelClass="radio-inline" name="status" enumName="CloseStatus" 
+									selectedValue=user.status exclude="DELETE" /]
+						</div>
+						
+						<div class="form-group">
+							<label>邮箱：</label>
+							<input type="text" class="form-control" name="email" value="${user.email}" />
+						</div>
+						
+						<div class="form-group">
+							<label>手机号：</label>
+							<input type="text" class="form-control" name="mobile" value="${user.mobile}" />
+						</div>
+						
+						<div class="form-btns">
+							<button type="button" class="toggle-icon hidden">展开/收起</button>
+							<button type="submit" class="btn btn-default">查询</button>
+	                       	<button type="reset" class="reset-btn btn btn-default">清空</button>
+						</div>
+                       	
+                       	<div class="fun-btns">
+                       		[@permited value="user/add"]
+	                        	<button type="button" id="addBtn" class="btn btn-default">+ 新增</button>
+							[/@permited]
+							[@permited value="user/remove"]
+                        		<button type="button" class="btn btn-default" onclick="gb.batchRemove('/user/remove.html')">删除</button>
+                        	[/@permited]
+                        	[@permited value="user/openClose"]
+                        		<div class="btn-group">
+		                        	<button type="button" class="handler switch-open batch btn btn-default">启用</button>
+									<button type="button" class="handler switch-close batch btn btn-default">禁用</button>
+								</div>
+							[/@permited]
+                       	</div>
+					</form>
+					
+					[#-- 列表信息区域 --]
+					<div class="data-div">
 							<table class="ui-table">
 								<tr class="th-row">
 									<th width="30" checkbox="true"></th>
@@ -124,9 +127,9 @@
 										<td>${obj.realname}</td>
 										<td>
 											[#if obj.status.className == "OPEN"]
-												<div class="handler close yes status" />
+												<div class="handler switch-close yes status" />
 											[#elseif obj.status.className == "CLOSE"]
-												<div class="handler open no status" />
+												<div class="handler switch-open no status" />
 											[/#if]
 										</td>
 										<td>${obj.sort}</td>
@@ -154,7 +157,7 @@
 								
 							</table>
 						</div>
-					</div>
+					
 					[#-- 分页区域 --]
 					<div class="page">
 						[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage

@@ -29,54 +29,53 @@
 			<div class="row">
 				<div class="col-xs-12">
 					
-					<div id="core-div">
-						[#-- 查询区域 --]
-						<div class="control">
-							<form action="/partner/list.html" method="post">
-								<ul class="search">
-									
-									<li class="param-li">
-										合作商名：<input type="text" name="name" value="${partner.name}" />
-									</li>
-									
-									<li class="param-li">
-										密钥：<input type="text" name="partnerKey" value="${partner.partnerKey}" />
-									</li>
-									
-									<li class="param-li">
-										网址：<input type="text" name="website" value="${partner.website}" />
-									</li>
-									
-									<li class="param-li">
-										状态：[@e.radioEnum name="status" enumName="CloseStatus" 
-												selectedValue=partner.status exclude="DELETE" /]
-									</li>
-									
-									[#-- 查询按钮 --]
-									<li class="search-btns">
-			                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
-			                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
-									</li>
-			                        
-									[#-- 功能按钮区域 --]
-									<li class="handle-btns">
-										[@permited value="partner/add"]
-			                        		<button type="button" id="addBtn" class="btn">+ 新增</button>
-			                        	[/@permited]
-			                        	[@permited value="partner/remove"]
-			                        		<button type="button" class="btn" onclick="gb.batchRemove('/partner/remove.html')">删除</button>
-			                        	[/@permited]
-			                        	[@permited value="partner/openClose"]
-				                        	<button type="button" class="handler open batch btn">启用</button>
-											<button type="button" class="handler close batch btn">禁用</button>
-										[/@permited]
-									</li>
-								</ul>
-							</form>	
+					<form class="form-inline search words5" action="/partner/list.html" method="post">
+					
+						<div class="form-group">
+							<label>合作商名：</label>
+							<input type="text" class="form-control" name="name" value="${partner.name}" />
 						</div>
 						
-						[#-- 列表信息区域 --]
-						<div class="data-div">
+						<div class="form-group">
+							<label>密钥：</label>
+							<input type="text" class="form-control" name="partnerKey" value="${partner.partnerKey}" />
+						</div>
+						
+						<div class="form-group">
+							<label>网址：</label>
+							<input type="text" class="form-control" name="website" value="${partner.website}" />
+						</div>
+						
+						<div class="form-group">
+							<label>状态：</label>
+							[@e.radioEnum labelClass="radio-inline" name="status" enumName="CloseStatus" 
+									selectedValue=partner.status exclude="DELETE" /]
+						</div>
+						
+						<div class="form-btns">
+							<button type="button" class="toggle-icon hidden">展开/收起</button>
+							<button type="submit" class="btn btn-default">查询</button>
+	                       	<button type="reset" class="reset-btn btn btn-default">清空</button>
+						</div>
+                       	
+                       	<div class="fun-btns">
+                       		[@permited value="partner/add"]
+                        		<button type="button" id="addBtn" class="btn btn-default">+ 新增</button>
+                        	[/@permited]
+                        	[@permited value="partner/remove"]
+                        		<button type="button" class="btn btn-default" onclick="gb.batchRemove('/partner/remove.html')">删除</button>
+                        	[/@permited]
+                        	[@permited value="partner/openClose"]
+                        		<div class="btn-group">
+		                        	<button type="button" class="handler switch-open batch btn btn-default">启用</button>
+									<button type="button" class="handler switch-close batch btn btn-default">禁用</button>
+                        		</div>
+							[/@permited]
+                       	</div>
+					</form>
+					
+					[#-- 列表信息区域 --]
+					<div class="data-div">
 							<table class="ui-table">
 								<tr class="th-row">
 									<th width="30" checkbox="true"></th>
@@ -102,9 +101,9 @@
 										<td>${obj.website}</td>
 										<td>
 											[#if obj.status.className == "OPEN"]
-												<div class="handler close yes status" />
+												<div class="handler switch-close yes status" />
 											[#elseif obj.status.className == "CLOSE"]
-												<div class="handler open no status" />
+												<div class="handler switch-open no status" />
 											[/#if]
 										</td>
 										<td>${obj.sort}</td>
@@ -129,7 +128,7 @@
 								
 							</table>
 						</div>
-					</div>
+					
 					[#-- 分页区域 --]
 					<div class="page">
 						[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage

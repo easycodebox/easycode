@@ -5,10 +5,9 @@ import java.util.List;
 
 import javax.servlet.jsp.JspException;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-
 import com.easycodebox.common.enums.DetailEnum;
+import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Symbol;
 
 /**
  * @author WangXiaoJin
@@ -21,11 +20,9 @@ public class RadioEnum extends EnumGroupTag {
 	private String labelClass;
 	private String labelStyle;
 	
-	private String tmpId;
-	
 	@Override
 	protected void init() {
-		labelClass = labelStyle = tmpId = null;
+		labelClass = labelStyle = null;
 		super.init();
 	}
 
@@ -38,31 +35,32 @@ public class RadioEnum extends EnumGroupTag {
 		List<Enum<?>> enumsList = getEnumList();
 		
 		end = end == null ? enumsList.size() - 1 : end;
-		tmpId = (tmpId == null ? "e_radio"  : tmpId) + "_" + RandomStringUtils.randomAlphanumeric(8);
 		
-		String html = super.generateHtmlNoID();
-		StringBuilder sb = new StringBuilder();
+		String html = super.generateHtmlNoID(),
+				pattern = "<label {} > <input type='radio' value='{}' {} /> {} </label> ",
+				labelAttr = Symbol.EMPTY;
+		StringBuilder all = new StringBuilder();
+		//组装labelAttr
+		if(StringUtils.isNotBlank(labelClass))
+			labelAttr += " class='" + labelClass + "' ";
+		if(StringUtils.isNotBlank(labelStyle))
+			labelAttr += " style='" + labelStyle + "' ";
+		
 		for(; begin <= end; begin++) {
-			id = tmpId + "_" + begin;
+			String inputAttr = Symbol.EMPTY;
 			DetailEnum<?> cur = (DetailEnum<?>)enumsList.get(begin);
 			String enumName = ((Enum<?>)cur).name();		//枚举实体的名字
 			String radioValue = dataType.equals(DATA_TYPE_VALUE) ? cur.getValue().toString() : enumName;
-			sb.append("<input type='radio' value='" + radioValue + "' ");
-			sb.append(" id = '" + id + "' ")
-				.append(html).append(checkoutTagAttr(begin, end + 1));
+			if (StringUtils.isNotBlank(id)) {
+				inputAttr += StringUtils.format(" id = '{0}_{1}' ", id, begin);
+			}
+			inputAttr += html + checkoutTagAttr(begin, end + 1);
 			if(selectedValue != null && (enumName.equals(selectedValue) || cur.getValue().toString().equals(selectedValue)))
-				sb.append(" checked='checked' ");
-			sb.append(" /> ");
-			sb.append(" <label ");
-			if(StringUtils.isNotBlank(labelClass))
-				sb.append(" class='" + labelClass + "' ");
-			if(StringUtils.isNotBlank(labelStyle))
-				sb.append(" style='" + labelStyle + "' ");
-			sb.append(" for='" + id + "' >" + cur.getDesc() + "</label> ")
-				.append("&nbsp;&nbsp;");
+				inputAttr += " checked='checked' ";
+			all.append(StringUtils.format(pattern, labelAttr, radioValue, inputAttr, cur.getDesc()));
 		}
 		try {
-			pageContext.getOut().append(sb);
+			pageContext.getOut().append(all);
 		} catch (IOException e) {
 			LOG.error("RadioEnum Tag processing error.", e);
 		}
@@ -77,8 +75,4 @@ public class RadioEnum extends EnumGroupTag {
 		this.labelStyle = labelStyle;
 	}
 
-	public void setId(String id) {
-		this.id = this.tmpId = id;
-	}
-	
 }

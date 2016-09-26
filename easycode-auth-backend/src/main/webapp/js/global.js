@@ -199,6 +199,8 @@ $(function() {
 				AdminLTE.pushMenu.expandOnHover();
 				AdminLTE.layout.activate();
 			}
+			//触发布局事件
+			$("body").trigger('layout.frame');
 			AdminLTE.controlSidebar._fix($(".control-sidebar-bg"));
 			AdminLTE.controlSidebar._fix($(".control-sidebar"));
 		}
@@ -263,10 +265,100 @@ $(function() {
 		}
 	})($.AdminLTE);
 	
+	/************  搜索区域  *****************/
+	//初始化搜索区域
+	(function() {
+		var dowm = 'glyphicon-chevron-down',
+        	up = 'glyphicon-chevron-up';
+		//当宽度改变时，重置表单项的显示/影藏状态
+		window.gb.resetFormGroupStatus = function($form) {
+			var $form = $form || $(".search"),
+				hidable = 'hidable';
+			//显示小标签，为了计算宽度时包含它
+			$form.children(".form-btns").children(".toggle-icon").show();
+			$form.has(".toggle-icon").each(function() {
+				var $this = $(this),
+					$formGroups = $this.children(".form-group"),
+					$formBtns = $this.children(".form-btns"),
+					$funBtns = $this.children(".fun-btns"),
+					usableWidth = $form.width() - $formBtns.outerWidth(true) - $funBtns.outerWidth(true),
+					hasHide = false,
+					sum = 0;
+				for (var i = 0; i < $formGroups.length; i++) {
+					var $fg = $($formGroups[i]);
+					if (!hasHide) {
+						sum += $fg.outerWidth(true);
+						if (sum > usableWidth) {
+							hasHide = true;
+							$fg.before($formBtns).addClass(hidable).hide();
+							$fg.before($funBtns);
+						} else {
+							$fg.removeClass(hidable).show();
+						}
+					} else {
+						$fg.addClass(hidable).hide();
+					}
+				}
+				if (!hasHide) {
+					$formBtns.children(".toggle-icon").hide();
+				}
+			});
+		};
+		
+		//当浏览器窗口改变时，重置搜索区域选项显示/影藏状态
+        if(!utils.bindedEvent($(window), "resize", "frame")) {
+        	$(window).off(".frame").on("resize.frame", utils.debounce(gb.resetFormGroupStatus));
+        }
+        //当左侧菜单项展开/收缩时，重置搜索区域选项显示/影藏状态【AdminLTE.js触发此事件】
+        $("body").off(".pushMenu").on("expanded.pushMenu collapsed.pushMenu", function() {
+        	//因为左侧菜单显示/影藏有一个滑动效果，所以0.3s后计算执行逻辑
+        	setTimeout(function() {
+        		gb.resetFormGroupStatus();
+        	}, 300);
+        });
+        //右侧控制面板中修改页面布局
+        $("body").off("layout.frame").on("layout.frame", function() {
+        	//因为左侧菜单显示/影藏有一个滑动效果，所以0.3s后计算执行逻辑
+        	setTimeout(function() {
+        		gb.resetFormGroupStatus();
+        	}, 300);
+        });
+        
+		//展开、收起搜索功能区
+        $(".toggle-icon").each(function() {
+            var $this = $(this),
+                $form = $this.closest(".search"),
+                $content = $('<span class="glyphicon {0} toggle-icon" title="展开" aria-hidden="true"></span>'.format(dowm));
+            if ($form.length == 0) {
+                if (console)
+                    console.error("展开/收起", "功能需要提供.search对象");
+                return;
+            }
+            $this.replaceWith($content);
+            gb.resetFormGroupStatus($form);
+            
+            $content.off(".frame").on("click.frame", function() {
+                var $this = $(this);
+                if ($this.hasClass(dowm)) {
+                    $this.removeClass(dowm).addClass(up).attr("title", "收起");
+                    $form.children(".hidable").show();
+                } else {
+                    $this.removeClass(up).addClass(dowm).attr("title", "展开");
+                    $form.children(".hidable").hide();
+                }
+            });
+        });
+	})();
+	
+	var initSearch = function() {
+		
+	};
+	
 	/************  绑定事件  *****************/
 	(function() {
+        
 		//清空form表单的数据,如果想不清空指定的对象，则加上class="not-reset"
-		$(".reset-btn").off(".init-page").on("click.init-page", function() {
+		$(".reset-btn").off(".frame").on("click.frame", function() {
 			gb.resetForm($(this).closest("form"));
 			return false;
 		});
@@ -472,164 +564,6 @@ $(function() {
 			return value ? BaseData.imgUrl + "/" + value : value;
 		}
 		return value;
-	});
-	
-	/****************************** 开启/关闭功能 *************************************/
-	var default_setting = {
-			batchClass: "batch",//批处理标识，含有class="batch" 表明此操作是批处理
-			targetClass: null,	//操作成功后修改的目标对象,null为当前触发事件的对象。批量操作必须传值
-			idsKey: "ids",		//主键参数的key值
-			url: null,			//如果change里面包含url参数则首选，否则用此url参数
-			change: {
-				open: {
-					confirmMsg	: "确定启用？",
-			 		sucMsg		: null,
-			 		failMsg		: "启用失败!",
-			 		sucText		: null,
-			 		targetText	: null,
-			 		targetClass	: "yes",
-			 		url			: null,
-			 		type		: "POST",
-			 		cache 		: false,
-			 		data		: {status: "OPEN"}
-				},
-				close: {
-					confirmMsg	: "确定禁用？",
-			 		sucMsg		: null,
-			 		failMsg		: "禁用失败!",
-			 		sucText		: null,
-			 		targetText	: null,
-			 		targetClass	: "no",
-			 		url			: null,
-			 		type		: "POST",
-			 		cache 		: false,
-			 		data		: {status: "CLOSE"}
-				}
-			}
-	};
-	$.fn.extend({
-		//更换对象处理逻辑
-		changeHandler : function(settings) {
-			settings = $.extend(true, {}, default_setting, settings);
-			var self = this,
-				obverseClass,
-				reverseClass;
-			for(var cls in settings.change) {
-				if(!obverseClass) {
-					obverseClass = cls;
-				}else if(!reverseClass) {
-					reverseClass = cls;
-				}else
-					break;
-			}
-			
-			function change(addClass, removeClass) {
-				var $addObj = settings.change[addClass],
-					$rmObj = settings.change[removeClass];
-				if($(this).hasClass(settings.batchClass)
-						&& settings.targetClass) {
-					var parents = $("input[name=ids]:checked").closest("[trid]"),
-						$targets = parents.find("." + settings.targetClass);
-						
-					if($rmObj.targetText)
-						$targets.text($rmObj.targetText);
-					if($addObj.targetClass && $rmObj.targetClass) {
-						$targets.removeClass($addObj.targetClass).addClass($rmObj.targetClass);
-					}
-					$targets.removeClass(removeClass).addClass(addClass);
-					if($addObj.sucText)
-						$targets.html($addObj.sucText);
-				}else {
-					if($addObj.sucText)
-						$(this).html(s.sucText);
-					$(this).removeClass(removeClass).addClass(addClass);
-					
-					var $target = !settings.targetClass ? $(this)
-							: $(this).closest("[trid]").find("." + settings.targetClass);
-					if($rmObj.targetText)
-						$target.text($rmObj.targetText);
-					if($addObj.targetClass && $rmObj.targetClass) {
-						$target.removeClass($addObj.targetClass).addClass($rmObj.targetClass);
-					}
-				}
-			}
-			
-			function bindData(s) {
-				s.data = s.data || {};
-				if(!settings.idsKey) 
-					return;
-				var vals = [];
-				if($(this).hasClass(settings.batchClass)) {
-					$("input[name=ids]:checked").each(function(){
-						vals.push($(this).val());
-					});
-				}else {
-					var val = $(this).closest("[trid]").attr("trid");
-					if(val)
-						vals.push(val);
-				}
-				s.data[settings.idsKey] = vals;
-			}
-			self.off(".changeHandler").on("click.changeHandler", function(){
-				var _this = this;
-				if($(_this).hasClass(settings.batchClass)
-						&& $("input[name=ids]:checked").length == 0) {
-					$.msg("warn", "请先选择您要操作的对象！");
-					return;
-				}
-				if($(_this).hasClass(obverseClass)){
-					var s = $.extend({}, settings.change[obverseClass] || {});
-					s.url = s.url || settings.url;
-					var successTmp = s.success;
-					s.success = function(data, textStatus, jqXHR){
-						if(!data.code || data.code == BaseData.suc){
-							change.call(_this, reverseClass, obverseClass);
-						}
-						if(successTmp)
-							successTmp.call(_this, data, textStatus, jqXHR);
-					};
-					bindData.call(_this, s);
-					if(s.beforeAjax){
-						var back = s.beforeAjax.call(_this, s);
-						if(back === false)
-							return;
-					}
-					if(s.confirmMsg){
-						$.confirm(s.confirmMsg, function(){
-							$.ajax(s);
-						});
-					}else{
-						$.ajax(s);
-					}
-				}else if($(_this).hasClass(reverseClass)){
-					var s = $.extend({}, settings.change[reverseClass] || {});
-					s.url = s.url || settings.url;
-					var successTmp = s.success;
-					s.success = function(data, textStatus, jqXHR){
-						if(!data.code || data.code == BaseData.suc){
-							change.call(_this, obverseClass, reverseClass);
-						}
-						if(successTmp)
-							successTmp.call(_this, data, textStatus, jqXHR);
-					};
-					bindData.call(_this, s);
-					if(s.beforeAjax){
-						var back = s.beforeAjax.call(_this, s);
-						if(back === false)
-							return;
-					}
-					if(s.confirmMsg){
-						$.confirm(s.confirmMsg, function(){
-							$.ajax(s);
-						});
-					}else{
-						$.ajax(s);
-					}
-				}
-				return false;
-			});
-			return this;
-		}
 	});
 	
 })(jQuery);

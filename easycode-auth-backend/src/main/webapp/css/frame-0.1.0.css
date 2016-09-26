@@ -3,8 +3,6 @@
 select {width:152px;border: 1px solid #cdcdcd;height: 32px;padding: 3px 5px;line-height: 32px;border-radius: 3px;vertical-align: middle;}
 input[type="text"],input[type="password"] {width: 140px;border: 1px solid #cdcdcd;height: 24px;padding: 3px 5px;line-height: 24px;border-radius: 3px;vertical-align:middle;}
 input[type="checkbox"],input[type="radio"] {vertical-align: middle;}
-.yes{background:url('../imgs/util/check-yes.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
-.no{background:url('../imgs/util/check-no.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
 
 .required {padding: 0 0 0 6px;background: url('../imgs/util/asterisk.png') no-repeat 0 center;}
 

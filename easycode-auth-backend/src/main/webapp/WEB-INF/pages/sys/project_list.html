@@ -29,50 +29,48 @@
 			<div class="row">
 				<div class="col-xs-12">
 					
-					<div id="core-div">
-						[#-- 查询区域 --]
-						<div class="control">
-							<form action="/project/list.html" method="post">
-								<ul class="search">
-									
-									<li class="param-li">
-										项目名：<input type="text" name="name" value="${project.name}" />
-									</li>
-									
-									<li class="param-li">
-										项目编号：<input type="text" name="projectNo" value="${project.projectNo}" />
-									</li>
-									
-									<li class="param-li">
-										状态：[@e.radioEnum name="status" enumName="CloseStatus" 
-												selectedValue=project.status exclude="DELETE" /]
-									</li>
-									
-									[#-- 查询按钮 --]
-									<li class="search-btns">
-			                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
-			                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
-									</li>
-			                        
-									[#-- 功能按钮区域 --]
-									<li class="handle-btns">
-										[@permited value="project/add"]
-				                        	<button type="button" id="addBtn" class="btn">+ 新增</button>
-				                        [/@permited]
-				                        [@permited value="project/remove"]
-				                        	<button type="button" class="btn" onclick="gb.batchRemove('/project/remove.html')">删除</button>
-				                        [/@permited]
-				                        [@permited value="project/openClose"]
-				                        	<button type="button" class="handler open batch btn">启用</button>
-											<button type="button" class="handler close batch btn">禁用</button>
-										[/@permited]
-									</li>
-								</ul>
-							</form>	
+					<form class="form-inline search words5" action="/project/list.html" method="post">
+					
+						<div class="form-group">
+							<label>项目名：</label>
+							<input type="text" class="form-control" name="name" value="${project.name}" />
 						</div>
 						
-						[#-- 列表信息区域 --]
-						<div class="data-div">
+						<div class="form-group">
+							<label>项目编号：</label>
+							<input type="text" class="form-control" name="projectNo" value="${project.projectNo}" />
+						</div>
+						
+						<div class="form-group">
+							<label>状态：</label>
+							[@e.radioEnum labelClass="radio-inline" name="status" enumName="CloseStatus" 
+									selectedValue=project.status exclude="DELETE" /]
+						</div>
+						
+						<div class="form-btns">
+							<button type="button" class="toggle-icon hidden">展开/收起</button>
+							<button type="submit" class="btn btn-default">查询</button>
+	                       	<button type="reset" class="reset-btn btn btn-default">清空</button>
+						</div>
+                       	
+                       	<div class="fun-btns">
+                       		[@permited value="project/add"]
+	                        	<button type="button" id="addBtn" class="btn btn-default">+ 新增</button>
+	                        [/@permited]
+	                        [@permited value="project/remove"]
+	                        	<button type="button" class="btn btn-default" onclick="gb.batchRemove('/project/remove.html')">删除</button>
+	                        [/@permited]
+	                        [@permited value="project/openClose"]
+	                        	<div class="btn-group">
+		                        	<button type="button" class="handler switch-open batch btn btn-default">启用</button>
+									<button type="button" class="handler switch-close batch btn btn-default">禁用</button>
+	                        	</div>
+							[/@permited]
+                       	</div>
+					</form>
+					
+					[#-- 列表信息区域 --]
+					<div class="data-div">
 							<table class="ui-table">
 								<tr class="th-row">
 									<th width="30" checkbox="true"></th>
@@ -97,9 +95,9 @@
 										<td>${obj.sort}</td>
 										<td>
 											[#if obj.status.className == "OPEN"]
-												<div class="handler close yes status" />
+												<div class="handler switch-close yes status" />
 											[#elseif obj.status.className == "CLOSE"]
-												<div class="handler open no status" />
+												<div class="handler switch-open no status" />
 											[/#if]
 										</td>
 										<td>${obj.remark}</td>
@@ -121,7 +119,7 @@
 								
 							</table>
 						</div>
-					</div>
+					
 					[#-- 分页区域 --]
 					<div class="page">
 						[@e.page pageNo=dataPage.pageNo totalPage=dataPage.totalPage

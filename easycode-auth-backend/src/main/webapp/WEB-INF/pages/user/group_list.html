@@ -28,47 +28,47 @@
 		<section class="content">
 			<div class="row">
 				<div class="col-xs-12">
+
+					<form class="form-inline search" action="/group/list.html" method="post">
 					
-					<div class="control">
-						<form action="/group/list.html" method="post">
-							<ul class="search">
-								
-								<li class="param-li">
-									上级组织：<input type="text" name="parentName" value="${group.parentName}" />
-								</li>
-								
-								<li class="param-li">
-									组名：<input type="text" name="name" value="${group.name}" />
-								</li>
-								
-								<li class="param-li">
-									状态：[@e.radioEnum name="status" enumName="CloseStatus" 
-											selectedValue=group.status exclude="DELETE" /]
-								</li>
-								
-								[#-- 查询按钮 --]
-								<li class="search-btns">
-		                        	<button type="submit" class="common-submit btn blue-btn">查询</button>
-		                        	<button type="reset" class="reset-btn btn blue-btn">清空</button>
-								</li>
-		                        
-								[#-- 功能按钮区域 --]
-								<li class="handle-btns">
-									[@permited value="group/add"]
-		                        		<button type="button" id="addBtn" class="btn">+ 新增</button>
-		                        	[/@permited]
-		                        	[@permited value="group/remove"]
-		                        		<button type="button" class="btn" onclick="gb.batchRemove('/group/remove.html')">删除</button>
-		                        	[/@permited]
-		                        	[@permited value="group/openClose"]
-			                        	<button type="button" class="handler open batch btn">启用</button>
-										<button type="button" class="handler close batch btn">禁用</button>
-									[/@permited]
-								</li>
-							</ul>
-						</form>	
-					</div>
-					
+						<div class="form-group">
+							<label>上级：</label>
+							<input type="text" class="form-control" name="parentName" value="${group.parentName}" />
+						</div>
+						
+						<div class="form-group">
+							<label>组名：</label>
+							<input type="text" class="form-control" name="name" value="${group.name}" />
+						</div>
+						
+						<div class="form-group">
+							<label>状态：</label>
+							[@e.radioEnum labelClass="radio-inline" name="status" enumName="CloseStatus" 
+									selectedValue=group.status exclude="DELETE" /]
+						</div>
+						
+						<div class="form-btns">
+							<button type="button" class="toggle-icon hidden">展开/收起</button>
+							<button type="submit" class="btn btn-default">查询</button>
+	                       	<button type="reset" class="reset-btn btn btn-default">清空</button>
+						</div>
+                       	
+                       	<div class="fun-btns">
+	                       	[@permited value="group/add"]
+	                       		<button type="button" id="addBtn" class="btn btn-default">+ 新增</button>
+	                       	[/@permited]
+	                       	[@permited value="group/remove"]
+	                       		<button type="button" class="btn btn-default" onclick="gb.batchRemove('/group/remove.html')">删除</button>
+	                       	[/@permited]
+	                       	[@permited value="group/openClose"]
+	                       		<div class="btn-group">
+		                        	<button type="button" class="handler switch-open batch btn btn-default">启用</button>
+									<button type="button" class="handler switch-close batch btn btn-default">禁用</button>
+	                       		</div>
+							[/@permited]
+                       	</div>
+					</form>
+
 					[#-- 列表信息区域 --]
 					<div class="data-div">
 						<table class="ui-table">
@@ -94,9 +94,9 @@
 									<td>${obj.sort}</td>
 									<td>
 										[#if obj.status.className == "OPEN"]
-											<div class="handler close yes status" />
+											<div class="handler switch-close yes status" />
 										[#elseif obj.status.className == "CLOSE"]
-											<div class="handler open no status" />
+											<div class="handler switch-open no status" />
 										[/#if]
 									</td>
 									<td>[@e.convertId cid=obj.creator prop="realname || nickname" /]</td>

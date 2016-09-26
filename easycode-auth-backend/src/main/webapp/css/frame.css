@@ -1,0 +1,71 @@
+/* 搜索表单 */
+.search {
+    font-size: 0;
+}
+.search div {
+    font-size: 14px;
+}
+.search .form-group {
+    width: 13.5em;
+    padding: 4px 0;
+    overflow: hidden;
+}
+.search.words4 .form-group {
+    width: 14.5em;
+}
+.search.words5 .form-group {
+    width: 15.5em;
+}
+.search label {
+	font-weight: normal;
+}
+.search .form-group > label:first-child {
+    text-align: right;
+    width: 3em;
+}
+.search.words4 .form-group > label:first-child {
+    width: 4em;
+}
+.search.words5 .form-group > label:first-child {
+    width: 5em;
+}
+.search .form-group > label:first-child + * {
+    margin-left: -.3em;
+}
+.search .form-group input,
+.search .form-group select,
+.search .form-group .bootstrap-select:not([class*="col-"]) {
+    width: 10em;
+}
+.search .form-group input[type="radio"],
+.search .form-group input[type="checkbox"] {
+    width: auto;
+}
+.search .form-btns {
+	padding: 4px 0;
+	display: inline-block;
+	vertical-align: middle;
+}
+/***** 搜索区域的 展开/收起 功能样式  *******/
+.toggle-icon {
+    cursor: pointer;
+    font-size: 18px;
+    vertical-align: middle;
+    width: 30px;
+    text-align: center;
+}
+.toggle-icon:hover {
+    font-size: 20px;
+    transition: transform 0.2s;
+    transform: rotate(360deg);
+}
+/* 功能按钮区域 */
+.search .fun-btns {
+	float: right;
+	padding: 4px 0;
+	display: inline-block;
+	vertical-align: middle;
+}
+/*============ 修改layer样式，因form验证的提示信息不好显示  ==============*/
+.layui-layer-page .layui-layer-content { overflow: visible !important; }
+
