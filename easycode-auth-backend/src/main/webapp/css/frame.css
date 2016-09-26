@@ -68,4 +68,7 @@
 }
 /*============ 修改layer样式，因form验证的提示信息不好显示  ==============*/
 .layui-layer-page .layui-layer-content { overflow: visible !important; }
+/*============ switch  ==============*/
+.yes{background:url('../imgs/util/check-yes.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
+.no{background:url('../imgs/util/check-no.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
 
