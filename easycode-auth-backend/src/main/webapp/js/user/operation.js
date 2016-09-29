@@ -1,11 +1,25 @@
 /**
  * 全局属性和方法
  */
-utils.extend(window.gb || (window.gb = {}), {
+$.extend(true, window.gb || (window.gb = {}), {
 	caches: {
 		
 	},
+	table: {
+		/**
+		 * 格式化 是否是菜单
+		 */
+		fmtIsMenu: function(value, row, index) {
+			if (value.className == "YES") {
+				return '<div class="handlerIsMenu switch-close yes isMenu" />';
+			} else if (value.className == "NO") {
+				return '<div class="handlerIsMenu switch-open no isMenu" />';
+			}
+		}
+	},
 	init: function() {
+		//缓存表格操作列html
+		this.table.cacheOps();
 		//初始化模板
 		this.vm = new Vue({
 			el: '#tmpls',
@@ -156,17 +170,18 @@ $(function(){
 	});
 	
 	//启用、禁用 功能
-	$(".handler").UI_switch({
-		//操作成功后修改的目标对象
-		targetClass: "status",
+	$("#toolbar, #data-table").UI_switch({
+		srcSelector: ".handler",//触发事件的对象
+		scopeSelector: "#data-table",//操作的dom范围
+		targetClass: "status",	//操作成功后修改的目标对象
 		url: "/operation/openClose.json"
 	});
 	
 	//是否是菜单 功能
-	$(".handlerIsMenu").UI_switch({
-		//操作成功后修改的目标对象
-		targetClass: "isMenu",
-		idsKey: "id",
+	$("#toolbar, #data-table").UI_switch({
+		srcSelector: ".handlerIsMenu",//触发事件的对象
+		scopeSelector: "#data-table",//操作的dom范围
+		targetClass: "isMenu",	//操作成功后修改的目标对象
 		url: "/operation/changeIsMenu.json",
 		change: {
 			"switch-open": {
@@ -182,11 +197,25 @@ $(function(){
 		}
 	});
 	
-	$(".loadBtn").click(function() {
+	$("#data-table").on("click", ".loadBtn", function() {
 		var $btn = $(this);
 		$.post("/operation/load.json",{id: $btn.data("id")}, function(data) {
 			gb.vm.operation = data.data;
 			layer.page1(gb.title($btn), $('#loadDialogOperation'));
+		});
+	}).on("click", ".updBtn", function() {
+		var $btn = $(this),
+			id = $btn.data("id");
+		gb.initProjects(function() {
+			$.post("/operation/load.json",{id: id}, function(data) {
+				gb.vm.operation = data.data;
+				
+				var $form = $('#updDialog');
+				if(data.data.projectId) {
+					gb.listOperations($form, $form.find(".parentName"), data.data.projectId);
+				}
+				gb.show(gb.title($btn), $form);
+			});
 		});
 	});
 	
@@ -205,22 +234,6 @@ $(function(){
 			};
 			
 			gb.show(gb.title($btn), $('#addDialog'));
-		});
-	});
-	
-	$(".updBtn").click(function() {
-		var $btn = $(this),
-			id = $btn.data("id");
-		gb.initProjects(function() {
-			$.post("/operation/load.json",{id: id}, function(data) {
-				gb.vm.operation = data.data;
-				
-				var $form = $('#updDialog');
-				if(data.data.projectId) {
-					gb.listOperations($form, $form.find(".parentName"), data.data.projectId);
-				}
-				gb.show(gb.title($btn), $form);
-			});
 		});
 	});
 	

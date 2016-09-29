@@ -1,11 +1,13 @@
 /**
  * 全局属性和方法
  */
-utils.extend(window.gb || (window.gb = {}), {
+$.extend(true, window.gb || (window.gb = {}), {
 	caches: {
 		initTree: false
 	},
 	init: function() {
+		//缓存表格操作列html
+		this.table.cacheOps();
 		//初始化模板
 		this.vm = new Vue({
 			el: '#tmpls',
@@ -102,38 +104,20 @@ $(function(){
 	gb.init();
 	
 	//启用、禁用 功能
-	$(".handler").UI_switch({
-		//操作成功后修改的目标对象
-		targetClass: "status",
+	$("#toolbar, #data-table").UI_switch({
+		srcSelector: ".handler",//触发事件的对象
+		scopeSelector: "#data-table",//操作的dom范围
+		targetClass: "status",	//操作成功后修改的目标对象
 		url: "/user/openClose.json"
 	});
 	
-	$(".loadBtn").click(function() {
+	$("#data-table").on("click", ".loadBtn", function() {
 		var $btn = $(this);
 		$.post("/user/load.json",{id: $btn.data("id")}, function(data) {
 			gb.vm.user = data.data;
 			layer.page1(gb.title($btn), $('#loadDialogUser'));
 		});
-	});
-	
-	$("#addBtn").click(function() {
-		var $btn = $(this);
-		//初始化树形结构
-		gb.initTree();
-		//初始化选项默认值
-		gb.vm.user = {
-			status: {
-				className: "OPEN"
-			},
-			sort: 0,
-			gender: {
-				className: "MALE"
-			}
-		};
-		gb.show(gb.title($btn), $('#addDialog'));
-	});
-	
-	$(".updBtn").click(function() {
+	}).on("click", ".updBtn", function() {
 		var $btn = $(this);
 		//初始化树形结构
 		gb.initTree();
@@ -142,22 +126,8 @@ $(function(){
 			
 			gb.show(gb.title($btn), $('#updDialog'));
 		});
-	});
-	
-	//显示树形结构
-	$(".groupName, .tree-tip-div").click(function() {
-		var $treeDiv = $(this).closest(".tree-tip-wrap").find(".tree-tip-div");
-		if($treeDiv.is(":hidden")) {
-			$treeDiv.show();
-			$("body").one("click", function() {
-				$treeDiv.hide();
-			});
-		}
-		return false;
-	});
-	
-	//配置角色
-	$(".cfgRolesBtn").click(function() {
+	}).on("click", ".cfgRolesBtn", function() {
+		//配置角色
 		var $btn = $(this),
 			userId = $btn.data("id");
 		$.post("/role/listByUserId.json", {userId: userId}, function(data) {
@@ -188,6 +158,35 @@ $(function(){
 			    });
 			});
 		});
+	});
+	
+	$("#addBtn").click(function() {
+		var $btn = $(this);
+		//初始化树形结构
+		gb.initTree();
+		//初始化选项默认值
+		gb.vm.user = {
+			status: {
+				className: "OPEN"
+			},
+			sort: 0,
+			gender: {
+				className: "MALE"
+			}
+		};
+		gb.show(gb.title($btn), $('#addDialog'));
+	});
+	
+	//显示树形结构
+	$(".groupName, .tree-tip-div").click(function() {
+		var $treeDiv = $(this).closest(".tree-tip-wrap").find(".tree-tip-div");
+		if($treeDiv.is(":hidden")) {
+			$treeDiv.show();
+			$("body").one("click", function() {
+				$treeDiv.hide();
+			});
+		}
+		return false;
 	});
 	
 });

@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.pojo.sys.Generator;
 import com.easycodebox.auth.core.service.sys.GeneratorService;
 import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
@@ -23,15 +24,21 @@ import com.easycodebox.common.web.BaseController;
 public class GeneratorController extends BaseController {
 	
 	@Resource
+	private UserIdConverter userIdConverter;
+	@Resource
 	private GeneratorService generatorService;
 
 	/**
 	 * 列表
 	 */
-	public DataPage<Generator> list(Generator generator, DataPage<Generator> dataPage) throws Exception {
-		
-		return generatorService.page(generator.getGeneratorType(),
+	@ResponseBody
+	public CodeMsg list(Generator generator, DataPage<Generator> dataPage) throws Exception {
+		DataPage<Generator> data = generatorService.page(generator.getGeneratorType(),
 				generator.getIsCycle(), dataPage.getPageNo(), dataPage.getPageSize());
+		for (Generator item : data.getData()) {
+			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+		}
+		return none(data);
 	}
 	
 	/**

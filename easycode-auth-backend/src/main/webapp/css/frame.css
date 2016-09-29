@@ -66,9 +66,18 @@
 	display: inline-block;
 	vertical-align: middle;
 }
+/*============新增、修改表格样式  ============*/
+table.table-edit>tbody>tr>th {text-align: right; padding: 8px 0 8px 14px; min-width: 60px;}
+table.table-edit>tbody>tr>td {text-align: left; padding: 8px 14px 8px 10px; width: 170px;}
+table.table-edit label {margin-bottom: 0; font-weight: normal;}
+table.table-edit label.required::before {color: red; content: " \2732 ";}
+table.table-edit textarea {width: 390px; height: 100px;}
 /*============ 修改layer样式，因form验证的提示信息不好显示  ==============*/
 .layui-layer-page .layui-layer-content { overflow: visible !important; }
 /*============ switch  ==============*/
 .yes{background:url('../imgs/util/check-yes.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
 .no{background:url('../imgs/util/check-no.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
-
+/*============ utils  ==============*/
+.none {
+	display: none;
+}

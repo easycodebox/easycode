@@ -19,6 +19,13 @@ public class BaseController {
 	protected final Logger LOG = LoggerFactory.getLogger(getClass());
 	
 	/**
+	 * 自动映射Handler时默认执行的方法
+	 */
+	public void execute() throws Exception {
+		
+	}
+	
+	/**
 	 * 列表
 	 */
 	public void list() throws Exception {

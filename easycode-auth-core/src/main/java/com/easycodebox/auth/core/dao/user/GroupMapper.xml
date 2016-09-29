@@ -17,10 +17,10 @@
 		LEFT JOIN u_group pa ON g.parentId = pa.id
 		WHERE g.status != %{CloseStatus.DELETE}
 		<if test="parentName != null">
-			AND pa.name LIKE #{parentName}
+			AND pa.name LIKE CONCAT('%',#{parentName},'%')
 		</if>
 		<if test="groupName != null">
-			AND g.name LIKE #{groupName}
+			AND g.name LIKE CONCAT('%',#{groupName},'%')
 		</if>
 		<if test="status != null">
 			AND g.status = #{status}

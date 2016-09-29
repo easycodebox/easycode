@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.pojo.user.Group;
 import com.easycodebox.auth.core.service.user.GroupService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
@@ -31,15 +32,21 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 public class GroupController extends BaseController {
 	
 	@Resource
+	private UserIdConverter userIdConverter;
+	@Resource
 	private GroupService groupService;
 
 	/**
 	 * 列表
 	 */
-	public DataPage<Group> list(Group group, DataPage<Group> dataPage) throws Exception {
-		
-		return groupService.page(group.getParentName(), group.getName(), 
+	@ResponseBody
+	public CodeMsg list(Group group, DataPage<Group> dataPage) throws Exception {
+		DataPage<Group> data = groupService.page(group.getParentName(), group.getName(), 
 				group.getStatus(), dataPage.getPageNo(), dataPage.getPageSize());
+		for (Group item : data.getData()) {
+			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+		}
+		return none(data);
 	}
 	
 	/**

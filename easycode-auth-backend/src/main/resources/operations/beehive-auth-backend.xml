@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu project="EASYCODE-AUTH-BACKEND">
 	
-	<menu1 name="系统管理" icon="sys">
-		<menu2 name="日志管理" url="log/list" description="跳转到日志管理页面">
+	<menu1 name="系统管理" icon="fa fa-cogs">
+		<menu2 name="日志管理" url="log" description="日志管理页面">
 			<operations>
+				<operation name="日志列表" url="log/list" description="日志列表" />
 				<operation name="日志详情" url="log/load" description="日志详情" />
 				<operation name="删除日志" url="log/removePhy" description="删除日志" />
 			</operations>
 		</menu2>
 		
-		<menu2 name="授权项目管理" url="project/list" description="跳转到授权项目管理页面">
+		<menu2 name="授权项目管理" url="project" description="授权项目管理页面">
 			<operations>
+				<operation name="授权项目列表" url="project/list" description="授权项目列表" />
 				<operation name="授权项目详情" url="project/load" description="授权项目详情" />
 				<operation name="修改授权项目" url="project/update" description="修改授权项目" />
 				<operation name="删除授权项目" url="project/remove" description="删除授权项目" />
@@ -18,15 +20,17 @@
 			</operations>
 		</menu2>
 		
-		<menu2 name="生成策略管理" url="generator/list" description="跳转到生成策略管理页面">
+		<menu2 name="生成策略管理" url="generator" description="生成策略管理页面">
 			<operations>
+				<operation name="生成策略列表" url="generator/list" description="生成策略列表" />
 				<operation name="生成策略详情" url="generator/load" description="生成策略详情" />
 				<operation name="修改生成策略" url="generator/update" description="修改生成策略" />
 			</operations>
 		</menu2>
 		
-		<menu2 name="合作商管理" url="partner/list" description="跳转到合作商管理页面">
+		<menu2 name="合作商管理" url="partner" description="合作商管理页面">
 			<operations>
+				<operation name="合作商列表" url="partner/list" description="合作商列表" />
 				<operation name="合作商详情" url="partner/load" description="合作商详情" />
 				<operation name="修改合作商" url="partner/update" description="修改合作商" />
 				<operation name="删除合作商" url="partner/remove" description="删除合作商" />
@@ -35,9 +39,10 @@
 		</menu2>
 	</menu1>
 		
-	<menu1 name="用户管理" icon="user">
-		<menu2 name="用户管理" url="user/list" description="跳转到用户管理页面">
+	<menu1 name="用户管理" icon="fa fa-user">
+		<menu2 name="用户管理" url="user" description="用户管理页面">
 			<operations>
+				<operation name="用户列表" url="user/list" description="用户列表" />
 				<operation name="用户详情" url="user/load" description="用户详情" />
 				<operation name="修改用户" url="user/update" description="修改用户" />
 				<operation name="添加用户" url="user/add" description="添加用户" />
@@ -48,8 +53,9 @@
 			</operations>
 		</menu2>
 		
-		<menu2 name="组织管理" url="group/list" description="跳转到组织管理页面">
+		<menu2 name="组织管理" url="group" description="组织管理页面">
 			<operations>
+				<operation name="组织列表" url="group/list" description="组织列表" />
 				<operation name="组织详情" url="group/load" description="组织详情" />
 				<operation name="修改组织" url="group/update" description="修改组织" />
 				<operation name="添加组织" url="group/add" description="添加组织" />
@@ -59,8 +65,9 @@
 			</operations>
 		</menu2>
 		
-		<menu2 name="角色管理" url="role/list" description="跳转到角色管理页面">
+		<menu2 name="角色管理" url="role" description="角色管理页面">
 			<operations>
+				<operation name="角色列表" url="role/list" description="角色列表" />
 				<operation name="角色详情" url="role/load" description="角色详情" />
 				<operation name="修改角色" url="role/update" description="修改角色" />
 				<operation name="添加角色" url="role/add" description="添加角色" />
@@ -70,8 +77,9 @@
 			</operations>
 		</menu2>
 		
-		<menu2 name="权限管理" url="operation/list" description="跳转到权限管理页面">
+		<menu2 name="权限管理" url="operation" description="权限管理页面">
 			<operations>
+				<operation name="权限列表" url="operation/list" description="权限列表" />
 				<operation name="权限详情" url="operation/load" description="权限详情" />
 				<operation name="修改权限" url="operation/update" description="修改权限" />
 				<operation name="添加权限" url="operation/add" description="添加权限" />

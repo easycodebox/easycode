@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.pojo.sys.Partner;
 import com.easycodebox.auth.core.service.sys.PartnerService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
@@ -23,16 +24,22 @@ import com.easycodebox.common.web.BaseController;
 public class PartnerController extends BaseController {
 	
 	@Resource
+	private UserIdConverter userIdConverter;
+	@Resource
 	private PartnerService partnerService;
 
 	/**
 	 * 列表
 	 */
-	public DataPage<Partner> list(Partner partner, DataPage<Partner> dataPage) throws Exception {
-		
-		return partnerService.page(partner.getName(), partner.getPartnerKey(),
+	@ResponseBody
+	public CodeMsg list(Partner partner, DataPage<Partner> dataPage) throws Exception {
+		DataPage<Partner> data = partnerService.page(partner.getName(), partner.getPartnerKey(),
 				partner.getWebsite(), partner.getStatus(), 
 				dataPage.getPageNo(), dataPage.getPageSize());
+		for (Partner item : data.getData()) {
+			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+		}
+		return none(data);
 	}
 	
 	/**

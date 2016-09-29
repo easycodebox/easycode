@@ -24,7 +24,6 @@ import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.common.enums.entity.status.CloseStatus;
 import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractService;
@@ -169,11 +168,8 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 	public DataPage<Group> page(String parentName, String groupName,
 			CloseStatus status, int pageNo, int pageSize) {
 		
-		parentName = parentName == null || StringUtils.isBlank(parentName) ? null 
-				: Symbol.PERCENT.concat(parentName.trim()).concat(Symbol.PERCENT);
-		
-		groupName = groupName == null || StringUtils.isBlank(groupName) ? null 
-				: Symbol.PERCENT.concat(groupName.trim()).concat(Symbol.PERCENT);
+		parentName = StringUtils.trimToNull(parentName);
+		groupName = StringUtils.trimToNull(groupName);
 		
 		List<Group> data = groupMapper.page(parentName, groupName, status, pageNo, pageSize);
 		long totalCount = groupMapper.pageTotalCount(parentName, groupName, status);

@@ -1,0 +1,370 @@
+[#include "/WEB-INF/common/core.ftl"/]
+<!DOCTYPE HTML>
+<html>
+<head>
+[#include "/WEB-INF/common/meta.html"/]
+<title>EasyCode | 权限</title>
+[#include "/WEB-INF/common/styles.html"/]
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+	[#include "/WEB-INF/common/header.html"/]
+	
+	[#include "/WEB-INF/common/left.html"/]
+	
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>
+				权限 <small>权限</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+				<li><a href="#">Tables</a></li>
+				<li class="active">Simple</li>
+			</ol>
+		</section>
+
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					
+					<!-- 查询区域 -->
+					<div class="box">
+						<div class="box-body">
+						
+							<form id="query-form" class="form-inline search words4">
+								<div class="form-group">
+									<label>上级：</label>
+									<input type="text" class="form-control" name="parentName" />
+								</div>
+								
+								<div class="form-group">
+									<label>项目名：</label>
+									<input type="text" class="form-control" name="projectName" />
+								</div>
+								
+								<div class="form-group">
+									<label>权限名：</label>
+									<input type="text" class="form-control" name="name" />
+								</div>
+								
+								<div class="form-group">
+									<label>状态：</label>
+									[@e.radioEnum labelClass="radio-inline" name="status" enumName="CloseStatus" exclude="DELETE" /]
+								</div>
+								
+								<div class="form-group">
+									<label>菜单：</label>
+									[@e.radioEnum labelClass="radio-inline" name="isMenu" enumName="YesNo" /]
+								</div>
+								
+								<div class="form-group">
+									<label>地址：</label>
+									<input type="text" class="form-control" name="url" />
+								</div>
+								
+								<div class="form-btns">
+									<button type="button" class="toggle-icon hidden">展开/收起</button>
+									<button type="submit" class="btn btn-default">查询</button>
+			                       	<button type="reset" class="reset-btn btn btn-default">清空</button>
+								</div>
+							</form>
+						
+						</div>
+					</div>
+					
+					<!-- 数据区域 -->
+					<div class="box">
+						<div class="box-body">
+							
+							<div id="toolbar" class="btn-group">
+								[@permited value="operation/add"]
+	                        		<button type="button" title="新增" id="addBtn" class="btn btn-default">
+		                       			<i class="fa fa-plus"></i>
+		                       		</button>
+	                        	[/@permited]
+	                        	[@permited value="operation/remove"]
+	                        		<button type="button" title="批量删除" class="btn btn-default" onclick="gb.remove('/operation/remove.html')">
+	                        			<i class="fa fa-remove"></i>
+	                        		</button>
+	                        	[/@permited]
+	                        	[@permited value="operation/openClose"]
+	                        		<button type="button" title="启用" class="handler switch-open batch btn btn-default">
+		                        		<i class="fa fa-toggle-on"></i>
+		                        	</button>
+									<button type="button" title="禁用" class="handler switch-close batch btn btn-default">
+										<i class="fa fa-toggle-off"></i>
+									</button>
+								[/@permited]
+	                        	[@permited value="operation/imports"]
+									<button type="button" title="导入" class="btn btn-default" id="importsOper">
+										<i class="fa fa-upload"></i>
+									</button>
+								[/@permited]
+	                        	[@permited value="operation/exports"]
+									<button type="button" title="导出" class="btn btn-default" id="exportsOper">
+										<i class="fa fa-download"></i>
+									</button>
+								[/@permited]
+							</div>
+							<table id="data-table" data-toggle="table" 
+									data-toolbar="#toolbar"
+									data-query-form="query-form"
+									data-query-params="gb.table.params"
+									data-id-field="id"
+									data-unique-id="id"
+									data-select-item-name="ids"
+									data-url="/operation/list.json">
+								<thead>
+									<tr>
+										<th data-checkbox="true" data-click-to-select="true"></th>
+										<th data-formatter="gb.table.fmtOrder" data-click-to-select="true">序号</th>
+										<th data-field="parentName">上级权限</th>
+										<th data-field="projectName">项目名</th>
+										<th data-field="name">权限名</th>
+										<th data-field="status" data-formatter="gb.table.fmtOpenClose">启动/禁用</th>
+										<th data-field="isMenu" data-formatter="gb.table.fmtIsMenu">菜单</th>
+										<th data-field="icon">图标</th>
+										<th data-field="url">地址</th>
+										<th data-field="sort">排序值</th>
+										<th data-field="creatorName">创建人</th>
+										<th data-field="createTime" data-formatter="gb.table.fmtDate">创建时间</th>
+										<th data-formatter="gb.table.fmtOps">操作</th>
+									</tr>
+								</thead>
+							</table>
+							<div id="table-ops" class="hidden">
+								[@permited value="operation/load"]
+									<a class="btn btn-xs btn-default loadBtn" data-id="{id}" title="详情" href="#" role="button">
+										<i class="fa fa-reorder"></i>
+									</a>
+								[/@permited]
+								[@permited value="operation/update"]
+									<a class="btn btn-xs btn-default updBtn" data-id="{id}" title="修改" href="#" role="button">
+										<i class="fa fa-edit"></i>
+									</a>
+								[/@permited]
+								[@permited value="operation/remove"]
+									<a class="btn btn-xs btn-default" href="javascript:gb.remove('/operation/remove.html', '{id}');" title="删除" role="button">
+										<i class="fa fa-remove"></i>
+									</a>
+								[/@permited]
+							</div>
+							
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</section>
+	</div>
+	
+	[#include "/WEB-INF/common/footer.html"/]
+	
+	[#include "/WEB-INF/common/control-sidebar.html"/]
+	
+	<!-- 模板页 -->
+	<div id="tmpls">
+		[#include "/WEB-INF/pages/user/operation_load.html"/]
+		
+		<!-- 新增 -->
+		<form id="addDialog" class="form-validate none" action="/operation/add.json" data-suc="新增权限成功" data-fail="新增权限失败">
+			<table class="table-edit">
+				
+				<tr>
+					<th>
+						<label class="required">项目：</label>
+					</th>
+					<td>
+						<select class="form-control projectId" name="projectId" v-model="operation.projectId" validator="min[1],required" validator-msg="请选择项目类型">
+							<option value="">--请选择项目--</option>
+							<option v-for="pro in projects" :value="pro.id">{{pro.name}}</option>
+						</select>
+					</td>
+					<th>
+						<label>上级权限：</label>
+					</th>
+					<td>
+						<div class="tree-tip-wrap">
+							<input type="text" class="form-control parentName" v-model="operation.parentName" validator="gb.operationValidator,valempty" validator-on="gb.operationValidateTime" readonly />
+							<input type="hidden" class="parentId" name="parentId" v-model="operation.parentId" readonly />
+							<div class="tree-tip-div">
+								<ul class="ztree tree-tip"></ul>
+							</div>
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">权限名：</label>
+					</th>
+					<td>
+						<input type="text" name="name" class="form-control" v-model="operation.name" validator="maxlength[128],required" maxlength="128" />
+					</td>
+					<th>
+						<label class="required">状态：</label>
+					</th>
+					<td>
+						[@e.radioEnum name="status" enumName="CloseStatus" exclude="DELETE" 
+								tagAttr='{
+									last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
+									all: "v-model=\'operation.status.className\'"
+								}'/]
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">菜单：</label>
+					</th>
+					<td>
+						[@e.radioEnum name="isMenu" enumName="YesNo"
+								tagAttr='{
+									last: "validator=\'minlength[1],required\' validator-msg=\'请选择是否为菜单\'",
+									all: "v-model=\'operation.isMenu.className\'"
+								}'/]
+					</td>
+					<th>
+						<label>地址：</label>
+					</th>
+					<td>
+						<input type="text" name="url" class="form-control" v-model="operation.url" validator="maxlength[128],gb.existUrl" maxlength="128" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">排序值：</label>
+					</th>
+					<td>
+						<input type="text" name="sort" class="form-control" v-model="operation.sort" validator="num,max[999999999],required" maxlength="9" />
+					</td>
+					<th>
+						<label>图标 ：</label>
+					</th>
+					<td>
+						<input type="text" name="icon" class="form-control" v-model="operation.icon" validator="maxlength[128]" maxlength="128" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>描述：</label>
+					</th>
+					<td colspan="3">
+						<textarea name="description" class="form-control" v-model="operation.description" validator="maxlength[512]" maxlength="512"> </textarea>
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>备注：</label>
+					</th>
+					<td colspan="3">
+						<textarea name="remark" class="form-control" v-model="operation.remark" validator="maxlength[512]" maxlength="512"> </textarea>
+					</td>
+				</tr>
+			</table>
+		</form>
+		
+		<!-- 修改 -->
+		<form id="updDialog" class="form-validate none" action="/operation/update.json" data-suc="更新权限成功" data-fail="更新权限失败">
+		
+			<input type="hidden" name="id" v-model="operation.id" />
+			
+			<table class="table-edit">
+				<tr>
+					<th>
+						<label class="required">项目：</label>
+					</th>
+					<td>
+						<select class="form-control projectId" name="projectId" v-model="operation.projectId" validator="min[1],required" validator-msg="请选择项目类型">
+							<option value="">--请选择项目--</option>
+							<option v-for="pro in projects" :value="pro.id">{{pro.name}}</option>
+						</select>
+					</td>
+					<th>
+						<label>上级权限：</label>
+					</th>
+					<td>
+						<div class="tree-tip-wrap">
+							<input type="text" class="form-control parentName" v-model="operation.parentName" validator="gb.operationValidator,valempty" validator-on="gb.operationValidateTime" readonly />
+							<input type="hidden" class="parentId" name="parentId" v-model="operation.parentId" readonly />
+							<div class="tree-tip-div">
+								<ul class="ztree tree-tip"></ul>
+							</div>
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">权限名：</label>
+					</th>
+					<td>
+						<input type="text" name="name" class="form-control" v-model="operation.name" validator="maxlength[128],required" maxlength="128" />
+					</td>
+					<th>
+						<label class="required">排序值：</label>
+					</th>
+					<td>
+						<input type="text" name="sort" class="form-control" v-model="operation.sort" validator="num,max[999999999],required" maxlength="9" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label class="required">菜单：</label>
+					</th>
+					<td>
+						[@e.radioEnum name="isMenu" enumName="YesNo" 
+								tagAttr='{
+									last: "validator=\'minlength[1],required\' validator-msg=\'请选择是否为菜单\'",
+									all: "v-model=\'operation.isMenu.className\'"
+								}'/]
+					</td>
+					<th>
+						<label>地址：</label>
+					</th>
+					<td>
+						<input type="text" name="url" class="form-control" v-model="operation.url" validator="maxlength[128],gb.existUrl" maxlength="128" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>图标 ：</label>
+					</th>
+					<td>
+						<input type="text" name="icon" class="form-control" v-model="operation.icon" validator="maxlength[128]" maxlength="128" />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>描述：</label>
+					</th>
+					<td colspan="3">
+						<textarea name="description" class="form-control" v-model="operation.description" validator="maxlength[512]" maxlength="512"></textarea>
+					</td>
+				</tr>
+				
+				<tr>
+					<th>
+						<label>备注：</label>
+					</th>
+					<td colspan="3">
+						<textarea name="remark" class="form-control" v-model="operation.remark" validator="maxlength[512]" maxlength="512"></textarea>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+	
+[#include "/WEB-INF/common/scripts.html"/]
+[@e.script src="/js/??user/operation.js" /]
+</body>
+</html>

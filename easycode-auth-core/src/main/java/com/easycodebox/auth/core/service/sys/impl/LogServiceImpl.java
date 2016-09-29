@@ -31,12 +31,12 @@ public class LogServiceImpl extends AbstractService<Log> implements LogService {
 	public List<Log> list(String url, String params, ModuleType moduleType, 
 			LogLevel logLevel, String result, String clientIp) {
 		return super.list(sql()
-				.like(R.Log.url, url)
-				.like(R.Log.params, params)
+				.likeTrim(R.Log.url, url)
+				.likeTrim(R.Log.params, params)
 				.eq(R.Log.moduleType, moduleType)
 				.eq(R.Log.logLevel, logLevel)
-				.like(R.Log.result, result)
-				.like(R.Log.clientIp, clientIp)
+				.likeTrim(R.Log.result, result)
+				.likeTrim(R.Log.clientIp, clientIp)
 				.desc(R.Log.createTime)
 				);
 	}
@@ -73,13 +73,13 @@ public class LogServiceImpl extends AbstractService<Log> implements LogService {
 	public DataPage<Log> page(String title, String url, String params, ModuleType moduleType, 
 			LogLevel logLevel, String result, String clientIp, int pageNo, int pageSize) {
 		return super.page(sql()
-				.like(R.Log.title, title)
-				.like(R.Log.url, url)
-				.like(R.Log.params, params)
+				.likeTrim(R.Log.title, title)
+				.likeTrim(R.Log.url, url)
+				.likeTrim(R.Log.params, params)
 				.eq(R.Log.moduleType, moduleType)
 				.eq(R.Log.logLevel, logLevel)
-				.like(R.Log.result, result)
-				.like(R.Log.clientIp, clientIp)
+				.likeTrim(R.Log.result, result)
+				.likeTrim(R.Log.clientIp, clientIp)
 				.desc(R.Log.createTime)
 				.limit(pageNo, pageSize)
 				);

@@ -145,7 +145,7 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 	@Override
 	public DataPage<Role> page(String name, CloseStatus status, int pageNo, int pageSize) {
 		return super.page(sql()
-				.like(R.Role.name, name)
+				.likeTrim(R.Role.name, name)
 				.eq(R.Role.status, status)
 				.ne(R.Role.status, CloseStatus.DELETE)
 				.desc(R.Role.sort)

@@ -1,11 +1,13 @@
 /**
  * 全局属性和方法
  */
-utils.extend(window.gb || (window.gb = {}), {
+$.extend(true, window.gb || (window.gb = {}), {
 	caches: {
 		
 	},
 	init: function() {
+		//缓存表格操作列html
+		this.table.cacheOps();
 		//初始化模板
 		this.vm = new Vue({
 			el: '#tmpls',
@@ -42,9 +44,10 @@ $(function(){
 	gb.init();
 	
 	//启用、禁用 功能
-	$(".handler").UI_switch({
-		//操作成功后修改的目标对象
-		targetClass: "status",
+	$("#toolbar, #data-table").UI_switch({
+		srcSelector: ".handler",//触发事件的对象
+		scopeSelector: "#data-table",//操作的dom范围
+		targetClass: "status",	//操作成功后修改的目标对象
 		url: "/partner/openClose.json"
 	});
 	
@@ -68,11 +71,21 @@ $(function(){
 		uploadTitle: "upImgUpd"
 	});
 	
-	$(".loadBtn").click(function() {
+	$("#data-table").on("click", ".loadBtn", function() {
 		var $btn = $(this);
 		$.post("/partner/load.json",{id: $btn.data("id")}, function(data) {
 			gb.vm.partner = data.data;
 			layer.page1(gb.title($btn), $('#loadDialogPartner'));
+		});
+	}).on("click", ".updBtn", function() {
+		var $btn = $(this);
+		$.post("/partner/load.json",{id: $btn.data("id")}, function(data) {
+			gb.vm.partner = data.data;
+			//初始化图片
+			if(data.data.contract) {
+				$.uploadImg.setImg("updImg", data.data.contract);
+			}
+			gb.show(gb.title($btn), $('#updDialog'));
 		});
 	});
 	
@@ -89,18 +102,6 @@ $(function(){
 		$.uploadImg.clear("addImg");
 		
 		gb.show(gb.title($btn), $('#addDialog'));
-	});
-	
-	$(".updBtn").click(function() {
-		var $btn = $(this);
-		$.post("/partner/load.json",{id: $btn.data("id")}, function(data) {
-			gb.vm.partner = data.data;
-			//初始化图片
-			if(data.data.contract) {
-				$.uploadImg.setImg("updImg", data.data.contract);
-			}
-			gb.show(gb.title($btn), $('#updDialog'));
-		});
 	});
 	
 });

@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.easycodebox.auth.core.pojo.user.User;
 import com.easycodebox.auth.core.service.user.UserService;
+import com.easycodebox.auth.core.util.R;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.tag.IdConverter;
 import com.easycodebox.jdbc.support.DefaultJdbcPreHandler;
@@ -20,6 +21,12 @@ import com.easycodebox.jdbc.support.DefaultJdbcPreHandler;
  */
 public class UserIdConverter implements IdConverter {
 
+	public static final String NICKNAME = R.User.nickname.getPropertyName();
+	
+	public static final String REALNAME = R.User.realname.getPropertyName();
+	
+	public static final String USERNAME = R.User.username.getPropertyName();
+	
 	@Resource
 	private UserService userService;
 	
@@ -46,7 +53,15 @@ public class UserIdConverter implements IdConverter {
 				Object newVal = null;
 				for (String frag : frags) {
 					try {
-						newVal = PropertyUtils.getProperty(val, frag.trim());
+						if (NICKNAME.equals(frag)) {
+							newVal = val.getNickname();
+						} else if (REALNAME.equals(frag)) {
+							newVal = val.getRealname();
+						} else if (USERNAME.equals(frag)) {
+							newVal = val.getUsername();
+						} else {
+							newVal = PropertyUtils.getProperty(val, frag.trim());
+						}
 						if (newVal != null)
 							break;
 					} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

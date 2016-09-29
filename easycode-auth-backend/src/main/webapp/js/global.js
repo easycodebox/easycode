@@ -5,6 +5,66 @@
 window.gb = {
 	caches: {},
 	/**
+	 * bootstrap-table插件的功能，主要存放一些格式化函数
+	 */
+	table: {
+		/**
+		 * 表单查询数据时传递的参数
+		 */
+		params: function(params) {
+			var jsonParams = this.queryForm ? $("#" + this.queryForm).serializeJSON() : {};
+			jsonParams.pageNo = params.pageNumber;
+			jsonParams.pageSize = params.pageSize;
+			if (params.sortName) {
+				jsonParams.sortName = params.sortName;
+				jsonParams.sortOrder = params.sortOrder;
+			}
+			return jsonParams;
+		},
+		/**
+		 * 缓存表格的操作列html内容
+		 */
+		cacheOps: function() {
+			var $ops = $("#table-ops");
+			gb.caches.tableOps = $ops.html();
+			$ops.remove();
+		},
+		/**
+		 * 表格操作列
+		 */
+		fmtOps: function(value, row, index) {
+			return gb.caches.tableOps.format(row);
+		},
+		/**
+		 * 序号
+		 */
+		fmtOrder: function(value, row, index) {
+			return ++index;
+		},
+		/**
+		 * 图片
+		 */
+		fmtPic: function(value, row, index) {
+			return value && utils.imgUrlFormat(value, "r40c40");
+		},
+		/**
+		 * 格式化 开启/关闭 按钮
+		 */
+		fmtOpenClose: function(value, row, index) {
+			if (value.className == "OPEN") {
+				return '<div class="handler switch-close yes status" />';
+			} else if (value.className == "CLOSE") {
+				return '<div class="handler switch-open no status" />';
+			}
+		},
+		/**
+		 * 格式化日期
+		 */
+		fmtDate: function(value, row, index) {
+			return utils.fmtDate(value);
+		}
+	},
+	/**
 	 * 清空form表单的数据,如果想不清空指定的对象，则加上class="not-reset"
 	 */
 	resetForm: function($form) {
@@ -46,7 +106,7 @@ window.gb = {
 	 */
 	show: function(title, $dialog, success) {
 		var $form = $dialog.is("form") ? $dialog : $dialog.find("form"),
-			valid = $form.data('bValidator');
+			valid = $form.data("bValidator");
 		if($form.length == 0) {
 			$.msg("error", "弹出框内缺少form标签");
 			return false;
@@ -71,8 +131,7 @@ window.gb = {
 			        	if(utils.isFunction(success)) {
 			        		success.apply(this, arguments);
 			        	}
-			        	//等替换表格插件后需要修改 - 待修改
-			        	window.location.reload(true);
+			        	$("#data-table").bootstrapTable("refresh");
 			        }
 			    });
 			}
@@ -84,79 +143,65 @@ window.gb = {
 	 * _sucMsg	删除成功后的提示信息
 	 * _failMsg 删除失败后的提示信息
 	 */
-	remove: function(_url, _id, _info, _sucMsg, _failMsg, _sucFun) {
-		if(utils.isFunction(_info)){
-			_sucFun = _info;
-			_info = null;
-			_sucMsg = null;
-			_failMsg = null;
-		}else if(utils.isFunction(_sucMsg)){
-			_sucFun = _sucMsg;
-			_sucMsg = null;
-			_failMsg = null;
+	remove: function(url, id, sucFun) {
+		var opts = {
+				info: "确定删除？",
+				url: null,
+				target: "#data-table input[name=ids]:checked",
+				ids: null,
+				sucMsg: "删除成功!",
+				failMsg: "删除失败!",
+				sucFun: null,
+				refresh: function(data, textStatus, jqXHR) {
+					$("#data-table").bootstrapTable("refresh");
+				}
+		};
+		if (utils.isObject(url)) {
+			$.extend(opts, url);
+		} else {
+			opts.url = url;
+			if (utils.isFunction(id)) {
+				opts.sucFun = id;
+			} else {
+				opts.ids = id;
+				opts.sucFun = sucFun;
+			}
 		}
-		$.confirm(_info || "确定删除？", function(){
-			$.ajax({
-	            type: "post",
-	            url: _url,
-	            data: {ids:_id},
-	            sucMsg: _sucMsg || "删除成功!",
-	            failMsg: _failMsg || "删除失败!",
-	            suc: function (data, textStatus, jqXHR) {
-					//删除指定的行
-					$("tr[trid='"+_id+"']").remove();
-					//显示的总数减1
-					if($(".content").length > 0) {
-						$(".totalCount").text($(".totalCount").text()-1);
-					}
-					//重新排序
-					$.UI_table.resortRowNo();
-	    			if(utils.isFunction(_sucFun))
-	    				_sucFun(data, textStatus, jqXHR);
-	            }
-	        });
-		});
-	},
-	/**
-	 * 批量删除
-	 * _info 	删除确认框的提示信息
-	 * _sucMsg	删除成功后的提示信息
-	 * _failMsg 删除失败后的提示信息
-	 * _sucFun  回调函数
-	 * 只有在_sucFun返回值不等于false ，且ajax请求返回suc 时才会刷新页面
-	 */
-	batchRemove: function(_url, _info, _sucMsg, _failMsg, _sucFun) {
-		if(utils.isFunction(_info)){
-			_sucFun = _info;
-			_info = null;
-			_sucMsg = null;
-			_failMsg = null;
-		}else if(utils.isFunction(_sucMsg)){
-			_sucFun = _sucMsg;
-			_sucMsg = null;
-			_failMsg = null;
-		}
-		var idsDom = $("input[name=ids]:checked");
-		if(idsDom.length === 0){
-			$.msg("warn", "请先选择您要删除的对象！");
+		if (!opts.url) {
+			$.msg("warn", "url参数不能为null");
 			return;
 		}
-		$.confirm(_info || idsDom.length == 1 ? "确定删除？" : "确定批量删除？", function(){
+		if (!opts.ids) {
+			if (!opts.target) {
+				$.msg("warn", "target参数不能为null");
+				return;
+			}
+			var $target = $(opts.target);
+			if(!$target.length) {
+				$.msg("warn", "请先选择您要删除的对象！");
+				return;
+			}
+			opts.ids = [];
+			$target.each(function() {
+				opts.ids.push($(this).val());
+			});
+		} else if (utils.isArray(opts.ids)) {
+			opts.ids = [opts.ids];
+		}
+		$.confirm(opts.info, function() {
 			$.ajax({
 	            type: "post",
-	            url: _url,
-	            data: $("input[name=ids]:checked"),
-	            sucMsg: _sucMsg || idsDom.length == 1 ? "删除成功!" : "批量删除成功!", 
-	            failMsg: _failMsg || idsDom.length == 1 ? "删除失败!" : "批量删除失败!",
-	            suc: function(data, textStatus, jqXHR){
-	    			var reload = true;
-	    			if(utils.isFunction(_sucFun))
-	    				reload = _sucFun(data, textStatus, jqXHR);
-	    			if(reload !== false) {
-	    				//等替换表格插件后需要修改 - 待修改
-			        	window.location.reload(true);
-	    			}
-	    		}
+	            url: opts.url,
+	            data: {ids: opts.ids},
+	            sucMsg: opts.sucMsg,
+	            failMsg: opts.failMsg,
+	            suc: function (data, textStatus, jqXHR) {
+	    			if(utils.isFunction(opts.sucFun))
+	    				opts.sucFun(data, textStatus, jqXHR);
+	    			if(utils.isFunction(opts.refresh))
+	    				opts.refresh(data, textStatus, jqXHR);
+	    			
+	            }
 	        });
 		});
 	}
@@ -195,12 +240,12 @@ $(function() {
 			//Fix the problem with right sidebar and layout boxed
 			if (cls == "layout-boxed")
 				AdminLTE.controlSidebar._fix($(".control-sidebar-bg"));
-			if ($('body').hasClass('fixed') && cls == 'fixed') {
+			if ($("body").hasClass("fixed") && cls == "fixed") {
 				AdminLTE.pushMenu.expandOnHover();
 				AdminLTE.layout.activate();
 			}
 			//触发布局事件
-			$("body").trigger('layout.frame');
+			$("body").trigger("layout.frame");
 			AdminLTE.controlSidebar._fix($(".control-sidebar-bg"));
 			AdminLTE.controlSidebar._fix($(".control-sidebar"));
 		}
@@ -209,30 +254,30 @@ $(function() {
 			var $body = $("body"),
 				rawClass = $body.attr("class").replace(/skin-\w+/g, "");
 			$body.attr("class", rawClass + " " + cls);
-			localStorage.setItem('skin', cls);
+			localStorage.setItem("skin", cls);
 		}
 		
 		var $body = $("body"),
-			tmp = localStorage.getItem('skin');
+			tmp = localStorage.getItem("skin");
 		if (tmp) changeSkin(tmp);
 
 		$("[data-skin]").off(".frame").on("click.frame", function(e) {
-			if ($(this).hasClass('knob'))
+			if ($(this).hasClass("knob"))
 				return;
 			e.preventDefault();
-			changeSkin($(this).data('skin'));
+			changeSkin($(this).data("skin"));
 		});
 
 		$("[data-layout]").off(".frame").on("click.frame", function() {
-			changeLayout($(this).data('layout'));
+			changeLayout($(this).data("layout"));
 		});
 
 		$("[data-controlsidebar]").off(".frame").on("click.frame", function() {
-			changeLayout($(this).data('controlsidebar'));
+			changeLayout($(this).data("controlsidebar"));
 			var slide = !AdminLTE.options.controlSidebarOptions.slide;
 			AdminLTE.options.controlSidebarOptions.slide = slide;
 			if (!slide)
-				$('.control-sidebar').removeClass('control-sidebar-open');
+				$(".control-sidebar").removeClass("control-sidebar-open");
 		});
 
 		$("[data-sidebarskin='toggle']").off(".frame").on("click.frame", function() {
@@ -291,7 +336,9 @@ $(function() {
 						if (sum > usableWidth) {
 							hasHide = true;
 							$fg.before($formBtns).addClass(hidable).hide();
-							$fg.before($funBtns);
+							if ($funBtns.length) {
+								$fg.before($funBtns);
+							}
 						} else {
 							$fg.removeClass(hidable).show();
 						}
@@ -350,10 +397,6 @@ $(function() {
         });
 	})();
 	
-	var initSearch = function() {
-		
-	};
-	
 	/************  绑定事件  *****************/
 	(function() {
         
@@ -364,7 +407,7 @@ $(function() {
 		});
 		
 		//修改密码
-		$("#updPwdBtn").click(function() {
+		$("#updPwdBtn").off(".frame").on("click.frame", function() {
 			var $btn = $(this),
 				$dialog = $("#updPwdDialog");
 			if($dialog.length) {
@@ -385,6 +428,15 @@ $(function() {
 		//绑定表单验证
 		$(".form-validate").bValidator();
 		
+		//绑定搜索区域的查询按钮
+		$(".search").off(".frame").on("submit.frame", function() {
+			var id = $(this).attr("id");
+			if (id) {
+				$("table[data-query-form={}]".format(id)).bootstrapTable("refresh");
+			}
+			return false;
+		});
+		
 	})();
 	
 });
@@ -396,9 +448,75 @@ $(function() {
     	traditional: true, //Jquery ajax请求时，用传统方式组装参数。设置此值后，参数不能传嵌套数组
     });
 	
+	/*******************************  table  **************************************/
+	$.extend($.fn.bootstrapTable.defaults, {
+		striped: true,
+		showToggle: true,
+		//search: true,		//显示搜索框
+		showRefresh: true,	//显示刷新按钮
+		detailView: true,	//显示详情按钮，最前面的“+”符号
+		detailFormatter: function(index, row) {
+			var opts = this, html = [];
+			function showField(columns) {
+				if (utils.isArray(columns)) {
+					for (var i = 0; i < columns.length; i++) {
+						var col = columns[i];
+						if (utils.isArray(col)) {
+							showField(col);
+						} else {
+							if (col.visible && col.title && utils.isString(col.field)) {
+								var val = row[col.field], processed = false;
+								//判断是否是Object类型，且为枚举，如果是枚举则显示desc属性
+								if (utils.isObject(val) && val.desc) {
+									val = val.desc;
+									processed = true;
+								}
+								//判断是否有格式化函数
+								if (!processed && col.formatter) {
+									var func = eval('(' + col.formatter + ')');
+									if (utils.isFunction(func)) {
+										val = func.call(col, val, row, index);
+									}
+								}
+								html.push('<p><b>' + col.title + ':</b> ' + (val || opts.undefinedText) + '</p>');
+							}
+						}
+					}
+				}
+			};
+			showField(opts.columns);
+	        return html.join("");
+		},
+		showColumns: true,	//控制table是否显示某列column的按钮
+		method: "post",		//ajax请求类型
+		//cache: false,		//禁用ajax缓存
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		pagination: true,
+		//pageList: [10, 25, 50, "ALL"],//ALL显示所有
+		sidePagination: "server",//服务端分页
+		queryParamsType: "common",//取消默认的'limit'类型
+		responseHandler: function(res) {
+			//格式化服务返回数据。插件需要返回的数据格式：{total: 100, rows: [], fixedScroll: true(可选)}
+			if (res && (!res.code || BaseData.suc === res.code) && res.data) {
+				var total = res.totalCount || res.data.totalCount,
+					rows = res.data.data || res.data;
+				return {total: total, rows: rows};
+			} else {
+				return {total: 0, rows: []};
+			}
+		},
+		//selectItemName: "ids",//radio或checkbox的name属性值
+		clickToSelect: true
+	});
+	$.extend($.fn.bootstrapTable.columnDefaults, {
+		align: "center",
+		valign: "middle",
+		clickToSelect: false
+	});
+	
 	/*******************************  配置layer  **************************************/
 	layer.config({
-		maxWidth: 'auto' //默认的maxWidth为360，固改成auto
+		maxWidth: "auto" //默认的maxWidth为360，固改成auto
 	});
 	//一个按钮【确认】
 	layer.page1 = function(title, content, options, yes) {
@@ -539,24 +657,7 @@ $(function() {
 	
 	/*******************************  扩展Vue  **************************************/
 	//格式化日期
-	Vue.filter('date', function(value, format) {
-		var date;
-		if(value != null) {
-			if(utils.isNumber(value)) {
-				date = new Date(value);
-			}else if(value instanceof Date) {
-				date = value;
-			}else if(utils.isString(value)) {
-				if(/^\d+$/.test(value)) {
-					date = new Date(parseInt(value));
-				}else {
-					var num = Date.parse(value);
-					date = isNaN(num) ? null : new Date(num);
-				}
-			}
-		}
-		return date && date.format(format);
-	});
+	Vue.filter('date', utils.fmtDate);
 	//格式化图片
 	Vue.filter('img', function(value, rule, mode) {
 		if(value && rule) {

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.pojo.sys.Project;
 import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
@@ -25,15 +26,20 @@ import com.easycodebox.common.web.BaseController;
 public class ProjectController extends BaseController {
 	
 	@Resource
+	private UserIdConverter userIdConverter;
+	@Resource
 	private ProjectService projectService;
 
 	/**
 	 * 列表
 	 */
-	public DataPage<Project> list(Project project, DataPage<Project> dataPage) throws Exception {
-		
-		return projectService.page(project.getName(), project.getProjectNo(), 
+	public CodeMsg list(Project project, DataPage<Project> dataPage) throws Exception {
+		DataPage<Project> data = projectService.page(project.getName(), project.getProjectNo(), 
 				project.getStatus(), dataPage.getPageNo(), dataPage.getPageSize());
+		for (Project item : data.getData()) {
+			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+		}
+		return none(data);
 	}
 	
 	/**

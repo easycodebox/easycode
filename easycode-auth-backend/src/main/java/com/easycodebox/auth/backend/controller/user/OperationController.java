@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.pojo.user.Operation;
 import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.OperationService;
@@ -38,6 +39,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 public class OperationController extends BaseController {
 	
 	@Resource
+	private UserIdConverter userIdConverter;
+	@Resource
 	private OperationService operationService;
 	@Resource
 	private ProjectService projectService;
@@ -47,12 +50,16 @@ public class OperationController extends BaseController {
 	/**
 	 * 列表
 	 */
-	public DataPage<Operation> list(Operation operation, DataPage<Operation> dataPage) throws Exception {
-		
-		return operationService.page(operation.getParentName(), 
+	@ResponseBody
+	public CodeMsg list(Operation operation, DataPage<Operation> dataPage) throws Exception {
+		DataPage<Operation> data = operationService.page(operation.getParentName(), 
 				operation.getProjectName(), operation.getName(), 
 				operation.getIsMenu(), operation.getStatus(), operation.getUrl(), 
 				dataPage.getPageNo(), dataPage.getPageSize()); 
+		for (Operation item : data.getData()) {
+			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+		}
+		return none(data);
 	}
 	
 	/**

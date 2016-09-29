@@ -1,11 +1,25 @@
 /**
  * 全局属性和方法
  */
-utils.extend(window.gb || (window.gb = {}), {
+$.extend(true, window.gb || (window.gb = {}), {
 	caches: {
 		
 	},
+	table: {
+		/**
+		 * 格式化 是否循环
+		 */
+		fmtIsCycle: function(value, row, index) {
+			if (value.className == "YES") {
+				return '<div class="handler isCycle switch-close yes" />';
+			} else if (value.className == "NO") {
+				return '<div class="handler isCycle switch-open no" />';
+			}
+		}
+	},
 	init: function() {
+		//缓存表格操作列html
+		this.table.cacheOps();
 		//初始化模板
 		this.vm = new Vue({
 			el: '#tmpls',
@@ -59,11 +73,12 @@ $(function(){
 	gb.init();
 	
 	//启用、禁用 功能
-	$(".handler").UI_switch({
-		//操作成功后修改的目标对象
-		targetClass: "isCycle",
+	$("#toolbar, #data-table").UI_switch({
+		srcSelector: ".handler",//触发事件的对象
+		scopeSelector: "#data-table",//操作的dom范围
+		targetClass: "isCycle",	//操作成功后修改的目标对象
 		idsKey: "generatorType",
-		url: "/generator/updateIsCycle.json",
+		url: "/generator/openClose.json",
 		change: {
 			"switch-open": {
 				confirmMsg	: "启用循环？",
@@ -78,15 +93,13 @@ $(function(){
 		}
 	});
 	
-	$(".loadBtn").click(function() {
+	$("#data-table").on("click", ".loadBtn", function() {
 		var $btn = $(this);
 		$.post("/generator/load.json",{generatorType: $btn.data("generatorType")}, function(data) {
 			gb.vm.generator = data.data;
 			layer.page1(gb.title($btn), $('#loadDialogGenerator'));
 		});
-	});
-	
-	$(".updBtn").click(function() {
+	}).on("click", ".updBtn", function() {
 		var $btn = $(this);
 		$.post("/generator/load.json",{generatorType: $btn.data("generatorType")}, function(data) {
 			gb.vm.generator = data.data;

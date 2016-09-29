@@ -91,7 +91,7 @@
 		</layout>
 	</appender>
 	
-	<!-- <logger name="druid.sql" level="INFO" /> -->
+	<!-- <logger name="druid.sql" level="DEBUG" /> -->
 	
 	<if condition='property("project_env").equals("DEV")'>
 		<then>

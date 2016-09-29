@@ -545,7 +545,7 @@ public class SqlGrammar implements Cloneable {
 	}
 	
 	/**
-	 * 如果value等于null或空字符窜则此条件不添加进SQL
+	 * 如果value等于null则此条件不添加进SQL <br>
 	 * 当value等于空字符窜时，效果等于查询出不为null的数据
 	 * @param property
 	 * @param value
@@ -556,7 +556,28 @@ public class SqlGrammar implements Cloneable {
 	}
 	
 	/**
-	 * 如果value等于null或空字符窜则此条件不添加进SQL
+	 * 会对value执行trim操作，操作后的值如果为null或空字符窜则sql会忽略此like条件
+	 * @param property
+	 * @param value
+	 * @return
+	 */
+	public SqlGrammar likeTrim(Property property, String value) {
+		return this.likeTrim(property, value, LIKE_A);
+	}
+	
+	/**
+	 * 会对value执行trim操作，操作后的值如果为null或空字符窜则sql会忽略此like条件
+	 * @param property
+	 * @param value
+	 * @return
+	 */
+	public SqlGrammar likeTrim(Property property, String value, short type) {
+		value = StringUtils.trimToNull(value);
+		return this.like(property, value, type);
+	}
+	
+	/**
+	 * 如果value等于null则此条件不添加进SQL <br>
 	 * 当value等于空字符窜时，效果等于查询出不为null的数据
 	 * @param property
 	 * @param value

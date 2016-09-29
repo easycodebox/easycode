@@ -40,7 +40,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	@Override
 	public List<Project> list(String name, CloseStatus status) {
 		return super.list(sql()
-				.like(R.Project.name, name)
+				.likeTrim(R.Project.name, name)
 				.eq(R.Project.status, status)
 				.ne(R.Project.status, CloseStatus.DELETE)
 				.desc(R.Project.sort)
@@ -144,8 +144,8 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	@Override
 	public DataPage<Project> page(String name, String projectNo, CloseStatus status, int pageNo, int pageSize) {
 		return super.page(sql()
-				.like(R.Project.name, name)
-				.like(R.Project.projectNo, projectNo)
+				.likeTrim(R.Project.name, name)
+				.likeTrim(R.Project.projectNo, projectNo)
 				.eq(R.Project.status, status)
 				.ne(R.Project.status, CloseStatus.DELETE)
 				.desc(R.Project.sort)

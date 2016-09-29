@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.pojo.sys.Log;
 import com.easycodebox.auth.core.service.sys.LogService;
 import com.easycodebox.common.error.CodeMsg;
@@ -21,16 +22,22 @@ import com.easycodebox.common.web.BaseController;
 public class LogController extends BaseController {
 	
 	@Resource
+	private UserIdConverter userIdConverter;
+	@Resource
 	private LogService logService;
 
 	/**
 	 * 列表
 	 */
-	public DataPage<Log> list(Log log, DataPage<Log> dataPage) throws Exception {
-		
-		return logService.page(log.getTitle(), log.getUrl(), log.getParams(), 
+	@ResponseBody
+	public CodeMsg list(Log log, DataPage<Log> dataPage) throws Exception {
+		DataPage<Log> data = logService.page(log.getTitle(), log.getUrl(), log.getParams(), 
 				log.getModuleType(), log.getLogLevel(), log.getResult(), 
 				log.getClientIp(), dataPage.getPageNo(), dataPage.getPageSize());
+		for (Log item : data.getData()) {
+			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+		}
+		return none(data);
 	}
 	
 	/**

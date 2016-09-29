@@ -112,9 +112,9 @@ public class PartnerServiceImpl extends AbstractService<Partner> implements Part
 	public DataPage<Partner> page(String name, String partnerKey, 
 			String website, CloseStatus status, int pageNo, int pageSize) {
 		return super.page(sql()
-				.like(R.Partner.name, name)
-				.like(R.Partner.partnerKey, partnerKey)
-				.like(R.Partner.website, website)
+				.likeTrim(R.Partner.name, name)
+				.likeTrim(R.Partner.partnerKey, partnerKey)
+				.likeTrim(R.Partner.website, website)
 				.eq(R.Partner.status, status)
 				.ne(R.Partner.status, CloseStatus.DELETE)
 				.desc(R.Partner.sort)

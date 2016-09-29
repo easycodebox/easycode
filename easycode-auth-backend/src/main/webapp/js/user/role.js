@@ -1,11 +1,13 @@
 /**
  * 全局属性和方法
  */
-utils.extend(window.gb || (window.gb = {}), {
+$.extend(true, window.gb || (window.gb = {}), {
 	caches: {
 		
 	},
 	init: function() {
+		//缓存表格操作列html
+		this.table.cacheOps();
 		//初始化模板
 		this.vm = new Vue({
 			el: '#tmpls',
@@ -42,42 +44,27 @@ $(function(){
 	gb.init();
 	
 	//启用、禁用 功能
-	$(".handler").UI_switch({
-		//操作成功后修改的目标对象
-		targetClass: "status",
+	$("#toolbar, #data-table").UI_switch({
+		srcSelector: ".handler",//触发事件的对象
+		scopeSelector: "#data-table",//操作的dom范围
+		targetClass: "status",	//操作成功后修改的目标对象
 		url: "/role/openClose.json"
 	});
 	
-	$(".loadBtn").click(function() {
+	$("#data-table").on("click", ".loadBtn", function() {
 		var $btn = $(this);
 		$.post("/role/load.json",{id: $btn.data("id")}, function(data) {
 			gb.vm.role = data.data;
 			layer.page1(gb.title($btn), $('#loadDialogRole'));
 		});
-	});
-	
-	$("#addBtn").click(function() {
-		var $btn = $(this);
-		//初始化选项默认值
-		gb.vm.role = {
-			status: {
-				className: "OPEN"
-			},
-			sort: 0
-		};
-		gb.show(gb.title($btn), $('#addDialog'));
-	});
-	
-	$(".updBtn").click(function() {
+	}).on("click", ".updBtn", function() {
 		var $btn = $(this);
 		$.post("/role/load.json",{id: $btn.data("id")}, function(data) {
 			gb.vm.role = data.data;
 			
 			gb.show(gb.title($btn), $('#updDialog'));
 		});
-	});
-	
-	$(".cfgOpsBtn").click(function() {
+	}).on("click", ".cfgOpsBtn", function() {
 		var $btn = $(this),
 			id = $btn.data("id");
 		$.post("/operation/cfgOperationByRoleId.json", {roleId: id}, function(data) {
@@ -128,6 +115,18 @@ $(function(){
 			    });
 			});
 		});
+	});
+	
+	$("#addBtn").click(function() {
+		var $btn = $(this);
+		//初始化选项默认值
+		gb.vm.role = {
+			status: {
+				className: "OPEN"
+			},
+			sort: 0
+		};
+		gb.show(gb.title($btn), $('#addDialog'));
 	});
 	
 });

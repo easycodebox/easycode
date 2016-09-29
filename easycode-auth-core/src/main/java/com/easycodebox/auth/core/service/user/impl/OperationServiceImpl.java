@@ -46,7 +46,6 @@ import com.easycodebox.common.enums.entity.status.CloseStatus;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.freemarker.ConfigurationFactory;
 import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.xml.XmlDataParser;
@@ -181,17 +180,10 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 			String operationName, YesNo isMenu, CloseStatus status, 
 			String url, int pageNo, int pageSize) {
 		
-		parentName = parentName == null || StringUtils.isBlank(parentName) ? null 
-				: Symbol.PERCENT.concat(parentName.trim()).concat(Symbol.PERCENT);
-		
-		projectName = projectName == null || StringUtils.isBlank(projectName) ? null 
-				: Symbol.PERCENT.concat(projectName.trim()).concat(Symbol.PERCENT);
-		
-		operationName = operationName == null || StringUtils.isBlank(operationName) ? null 
-				: Symbol.PERCENT.concat(operationName.trim()).concat(Symbol.PERCENT);
-		
-		url = url == null || StringUtils.isBlank(url) ? null 
-				: Symbol.PERCENT.concat(url.trim()).concat(Symbol.PERCENT);
+		parentName = StringUtils.trimToNull(parentName);
+		projectName = StringUtils.trimToNull(projectName);
+		operationName = StringUtils.trimToNull(operationName);
+		url = StringUtils.trimToNull(url);
 		
 		List<Operation> os = operationMapper.page(parentName, projectName, 
 				operationName, isMenu, status, url, pageNo, pageSize);

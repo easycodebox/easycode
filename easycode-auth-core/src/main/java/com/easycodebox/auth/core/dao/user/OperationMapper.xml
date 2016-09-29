@@ -28,16 +28,16 @@
 		LEFT JOIN u_operation pa ON o.parentId = pa.id
 		WHERE o.status != %{CloseStatus.DELETE}
 		<if test="parentName != null">
-			AND pa.name LIKE #{parentName}
+			AND pa.name LIKE CONCAT('%',#{parentName},'%')
 		</if>
 		<if test="projectName != null">
-			AND p.name LIKE #{projectName}
+			AND p.name LIKE CONCAT('%',#{projectName},'%')
 		</if>
 		<if test="operationName != null">
-			AND o.name LIKE #{operationName}
+			AND o.name LIKE CONCAT('%',#{operationName},'%')
 		</if>
 		<if test="url != null">
-			AND o.url LIKE #{url}
+			AND o.url LIKE CONCAT('%',#{url},'%')
 		</if>
 		<if test="isMenu != null">
 			AND o.isMenu = #{isMenu}

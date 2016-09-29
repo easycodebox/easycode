@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.pojo.user.Role;
 import com.easycodebox.auth.core.service.user.RoleService;
 import com.easycodebox.auth.core.service.user.UserService;
@@ -27,6 +28,8 @@ import com.easycodebox.common.web.BaseController;
 public class RoleController extends BaseController {
 	
 	@Resource
+	private UserIdConverter userIdConverter;
+	@Resource
 	private RoleService roleService;
 	@Resource
 	private UserService userService;
@@ -34,10 +37,14 @@ public class RoleController extends BaseController {
 	/**
 	 * 列表
 	 */
-	public DataPage<Role> list(Role role, DataPage<Role> dataPage) throws Exception {
-		
-		return roleService.page(role.getName(), role.getStatus(), 
+	@ResponseBody
+	public CodeMsg list(Role role, DataPage<Role> dataPage) throws Exception {
+		DataPage<Role> data = roleService.page(role.getName(), role.getStatus(), 
 				dataPage.getPageNo(), dataPage.getPageSize());
+		for (Role item : data.getData()) {
+			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+		}
+		return none(data);
 	}
 	
 	/**

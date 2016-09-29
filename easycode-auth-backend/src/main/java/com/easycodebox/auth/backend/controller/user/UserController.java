@@ -39,12 +39,16 @@ public class UserController extends BaseController {
 	/**
 	 * 列表
 	 */
-	public DataPage<User> list(User user, DataPage<User> dataPage) throws Exception {
-		
-		return userService.page(user.getGroupName(), user.getUserNo(),
+	@ResponseBody
+	public CodeMsg list(User user, DataPage<User> dataPage) throws Exception {
+		DataPage<User> data = userService.page(user.getGroupName(), user.getUserNo(),
 				user.getUsername(), user.getNickname(), user.getRealname(),
 				user.getStatus(), user.getEmail(),
 				user.getMobile(), dataPage.getPageNo(), dataPage.getPageSize());
+		for (User item : data.getData()) {
+			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+		}
+		return none(data);
 	}
 	
 	/**
