@@ -46,7 +46,7 @@
 	
 	<servlet>
 		<servlet-name>upload</servlet-name>
-		<servlet-class>com.depsemi.upload.servlet.UploadServlet</servlet-class>
+		<servlet-class>com.easycodebox.upload.servlet.UploadServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>upload</servlet-name>
@@ -55,7 +55,7 @@
 	
 	<servlet>
 		<servlet-name>delete</servlet-name>
-		<servlet-class>com.depsemi.upload.servlet.DeleteServlet</servlet-class>
+		<servlet-class>com.easycodebox.upload.servlet.DeleteServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>delete</servlet-name>

@@ -71,12 +71,15 @@ table.table-edit>tbody>tr>th {text-align: right; padding: 8px 0 8px 14px; min-wi
 table.table-edit>tbody>tr>td {text-align: left; padding: 8px 14px 8px 10px; width: 170px;}
 table.table-edit label {margin-bottom: 0; font-weight: normal;}
 table.table-edit label.required::before {color: red; content: " \2732 ";}
-table.table-edit textarea {width: 390px; height: 100px;}
+table.table-edit textarea {height: 100px;}
 /*============ 修改layer样式，因form验证的提示信息不好显示  ==============*/
 .layui-layer-page .layui-layer-content { overflow: visible !important; }
 /*============ switch  ==============*/
 .yes{background:url('../imgs/util/check-yes.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
 .no{background:url('../imgs/util/check-no.png') no-repeat;cursor: pointer;height: 20px;margin: 0 auto;width: 50px;}
+/*============ 上传图片样式 ==============*/
+.uploadPicDiv { border: 1px dashed #FF9900; color: #999999; height: 150px; position: relative; width: 150px; }
+.uploadTitle { width: 100%; height: 100%; position: absolute; top: 0; background: url('../imgs/util/upload.png') no-repeat center center; }
 /*============ utils  ==============*/
 .none {
 	display: none;

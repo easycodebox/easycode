@@ -182,6 +182,7 @@ $(function(){
 		srcSelector: ".handlerIsMenu",//触发事件的对象
 		scopeSelector: "#data-table",//操作的dom范围
 		targetClass: "isMenu",	//操作成功后修改的目标对象
+		ajaxKey: "id",
 		url: "/operation/changeIsMenu.json",
 		change: {
 			"switch-open": {

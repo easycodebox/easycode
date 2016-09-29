@@ -33,6 +33,7 @@ public class ProjectController extends BaseController {
 	/**
 	 * 列表
 	 */
+	@ResponseBody
 	public CodeMsg list(Project project, DataPage<Project> dataPage) throws Exception {
 		DataPage<Project> data = projectService.page(project.getName(), project.getProjectNo(), 
 				project.getStatus(), dataPage.getPageNo(), dataPage.getPageSize());
