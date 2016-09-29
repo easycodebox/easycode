@@ -45,7 +45,15 @@ window.gb = {
 		 * 图片
 		 */
 		fmtPic: function(value, row, index) {
-			return value && utils.imgUrlFormat(value, "r40c40");
+			var tag = '<img src="{}" width="40" height="40">';
+			if (!BaseData.imgUrl) {
+				$.msg("warn", "BaseData缺少imgUrl配置");
+				return null;
+			}
+			if (value) {
+				var url = BaseData.imgUrl + "/" + utils.imgUrlFormat(value, "r40c40");
+				return tag.format(url);
+			}
 		},
 		/**
 		 * 格式化 开启/关闭 按钮
