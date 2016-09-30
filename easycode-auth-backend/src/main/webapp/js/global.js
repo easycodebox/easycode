@@ -468,6 +468,7 @@ $(function() {
 	/*******************************  table  **************************************/
 	$.extend($.fn.bootstrapTable.defaults, {
 		striped: true,
+		escape: true,		//转义html字符
 		showToggle: true,
 		//search: true,		//显示搜索框
 		showRefresh: true,	//显示刷新按钮
@@ -483,6 +484,9 @@ $(function() {
 						} else {
 							if (col.title && utils.isString(col.field)) {
 								var val = row[col.field], processed = false;
+								if (opts.escape && utils.isString(val)) {
+									val = utils.escape(val);
+								}
 								//判断是否是Object类型，且为枚举，如果是枚举则显示desc属性
 								if (utils.isObject(val) && val.desc) {
 									val = val.desc;
