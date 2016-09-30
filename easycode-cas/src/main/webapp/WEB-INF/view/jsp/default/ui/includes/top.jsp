@@ -28,6 +28,13 @@
 		.errors {
 			color: #dd4b39 !important;
 		}
+		.main-footer {
+			margin-left: 0;
+			text-align: center;
+			bottom: 0;
+			width: 100%;
+			position: absolute;
+		}
 	</style>
 </head>
 <body class="hold-transition login-page">
