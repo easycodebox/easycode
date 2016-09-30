@@ -1,9 +1,0 @@
-{
-  "@class" : "org.jasig.cas.services.RegexRegisteredService",
-  "serviceId" : "^https?://back.ic",
-  "name" : "IC Backend",
-  "theme" : "ic-back",
-  "id" : 100301,
-  "description" : "IC Backend",
-  "evaluationOrder" : 2
-}

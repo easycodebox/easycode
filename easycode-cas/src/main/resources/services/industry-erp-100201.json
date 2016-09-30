@@ -1,9 +1,0 @@
-{
-  "@class" : "org.jasig.cas.services.RegexRegisteredService",
-  "serviceId" : "^https?://erp.industry",
-  "name" : "Industry ERP",
-  "theme" : "industry-erp",
-  "id" : 100201,
-  "description" : "Industry ERP",
-  "evaluationOrder" : 1
-}

@@ -3,7 +3,7 @@
   "serviceId" : "^https?://dev.ic",
   "name" : "IC Dev",
   "theme" : "ic-dev",
-  "id" : 100302,
+  "id" : 100101,
   "description" : "IC Dev",
-  "evaluationOrder" : 1
+  "evaluationOrder" : 100
 }
