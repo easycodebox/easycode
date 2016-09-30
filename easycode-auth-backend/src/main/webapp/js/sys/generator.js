@@ -77,8 +77,9 @@ $(function(){
 		srcSelector: ".handler",//触发事件的对象
 		scopeSelector: "#data-table",//操作的dom范围
 		targetClass: "isCycle",	//操作成功后修改的目标对象
-		idsKey: "generatorType",
-		url: "/generator/openClose.json",
+		idsKey: "generatorTypes",
+		ajaxKey: "generatorType",
+		url: "/generator/updateIsCycle.json",
 		change: {
 			"switch-open": {
 				confirmMsg	: "启用循环？",

@@ -60,7 +60,7 @@ public class Project extends AbstractOperateEntity {
 	
 	}
 
-	public Project(Integer id){
+	public Project(Integer id) {
 		this.id = id;
 	}
 	public Integer getId() {

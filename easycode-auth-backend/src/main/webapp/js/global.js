@@ -481,7 +481,7 @@ $(function() {
 						if (utils.isArray(col)) {
 							showField(col);
 						} else {
-							if (col.visible && col.title && utils.isString(col.field)) {
+							if (col.title && utils.isString(col.field)) {
 								var val = row[col.field], processed = false;
 								//判断是否是Object类型，且为枚举，如果是枚举则显示desc属性
 								if (utils.isObject(val) && val.desc) {
