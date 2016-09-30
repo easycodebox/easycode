@@ -10,14 +10,28 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1 ,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<meta name="renderer" content="webkit">
+	<meta http-equiv="Pragma" CONTENT="no-cache">
+	<meta http-equiv="Cache-Control" CONTENT="no-cache">
+	<meta http-equiv="Expires" CONTENT="0">
   
-	<title>登录 - <spring:theme code='project.name' /></title>
+	<title>EasyCode - <spring:theme code='project.name' /> - 登录</title>
 	
 	<link rel="shortcut icon" href="<spring:theme code='project.icon' />" type="image/x-icon" />
-	<link type="text/css" rel="stylesheet" href="<spring:theme code='css.file' />" />
+	<link type="text/css" rel="stylesheet" href="http://cdn.easycodebox.com/??bootstrap/3.3.6/css/bootstrap.min.css,font-awesome/4.6.3/css/font-awesome.min.css,ionicons/2.0.1/css/ionicons.min.css,admin-tmpls/AdminLTE/2.3.6/css/AdminLTE.min.css,icheck/1.0.2/skins/square/blue.min.css" />
+	<style type="text/css">
+		.input-error {
+		  border-color: #d73925;
+		}
+		.errors {
+			color: #dd4b39 !important;
+		}
+	</style>
 </head>
-<body id="cas">
-	<div class="main-cont">
+<body class="hold-transition login-page">
+<div class="login-box">
+	<div class="login-logo">
+    	<a href="http://www.easycodebox.com"><b>Easy</b>Code</a>
+  	</div>
