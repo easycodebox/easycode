@@ -1,3 +1,36 @@
+/*============ popover 调整背景色  ==============*/
+.popover.blue-popover {
+  background-color: #3c8dbc;
+  border: 1px solid #3884b1;
+}
+.blue-popover .popover-title {
+  background-color: #367fa9;
+  border-bottom: 1px solid #ebebeb;
+}
+.popover.blue-popover.top > .arrow {
+  border-top-color: #999;
+}
+.popover.blue-popover.top > .arrow:after {
+  border-top-color: #3c8dbc;
+}
+.popover.blue-popover.right > .arrow {
+  border-right-color: #999;
+}
+.popover.blue-popover.right > .arrow:after {
+  border-right-color: #3c8dbc;
+}
+.popover.blue-popover.bottom > .arrow {
+  border-bottom-color: #999;
+}
+.popover.blue-popover.bottom > .arrow:after {
+  border-bottom-color: #3c8dbc;
+}
+.popover.blue-popover.left > .arrow {
+  border-left-color: #999;
+}
+.popover.blue-popover.left > .arrow:after {
+  border-left-color: #3c8dbc;
+}
 /* 搜索表单 */
 .search {
     font-size: 0;
@@ -84,3 +117,4 @@ table.table-edit textarea {height: 100px;}
 .none {
 	display: none;
 }
+

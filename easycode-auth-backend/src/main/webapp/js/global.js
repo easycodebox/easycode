@@ -314,6 +314,11 @@ $(function() {
 			if (!$('body').hasClass('sidebar-collapse'))
 				$("[data-layout='sidebar-collapse']").click();
 		});
+		
+		//显示提示信息
+		$(".control-sidebar [data-toggle='popover']").popover({
+			template : '<div class="popover blue-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+		});
 
 		// Reset options
 		if ($body.hasClass('fixed')) {
@@ -325,6 +330,7 @@ $(function() {
 		if ($body.hasClass('sidebar-collapse')) {
 			$("[data-layout='sidebar-collapse']").attr('checked', 'checked');
 		}
+		
 	})($.AdminLTE);
 	
 	/************  搜索区域  *****************/
