@@ -86,8 +86,8 @@
 						<div class="box-body">
 							
 							<div id="toolbar" class="btn-group">
-								[@permited value="log/remove"]
-									<button type="button" title="批量删除" class="btn btn-default" onclick="gb.remove('/log/remove.html')">
+								[@permited value="log/removePhy"]
+									<button type="button" title="批量删除" class="btn btn-default" onclick="gb.remove('/log/removePhy.json')">
 	                        			<i class="fa fa-remove"></i>
 	                        		</button>
 								[/@permited]
@@ -108,8 +108,8 @@
 										<th data-field="method">方法</th>
 										<th data-field="url">请求地址</th>
 										<th data-field="params">请求参数</th>
-										<th data-field="moduleType">模块类型</th>
-										<th data-field="logLevel">日志级别</th>
+										<th data-field="moduleType" data-formatter="gb.table.fmtEnum">模块类型</th>
+										<th data-field="logLevel" data-formatter="gb.table.fmtEnum">日志级别</th>
 										<th data-field="result">返回数据</th>
 										<th data-field="clientIp">客户端IP</th>
 										<th data-field="creatorName">创建人</th>
@@ -124,8 +124,8 @@
 										<i class="fa fa-reorder"></i>
 									</a>
 								[/@permited]
-								[@permited value="log/remove"]
-									<a class="btn btn-xs btn-default" href="javascript:gb.remove('/log/remove.html', '{id}');" title="删除" role="button">
+								[@permited value="log/removePhy"]
+									<a class="btn btn-xs btn-default" href="javascript:gb.remove('/log/removePhy.json', '{id}');" title="删除" role="button">
 										<i class="fa fa-remove"></i>
 									</a>
 								[/@permited]

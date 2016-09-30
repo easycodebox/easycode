@@ -59,6 +59,9 @@ window.gb = {
 		 * 格式化 开启/关闭 按钮
 		 */
 		fmtOpenClose: function(value, row, index) {
+			if (!value) {
+				return null;
+			}
 			if (value.className == "OPEN") {
 				return '<div class="handler switch-close yes status" />';
 			} else if (value.className == "CLOSE") {
@@ -70,6 +73,12 @@ window.gb = {
 		 */
 		fmtDate: function(value, row, index) {
 			return utils.fmtDate(value);
+		},
+		/**
+		 * 格式化DetailEnum枚举
+		 */
+		fmtEnum: function(value, row, index) {
+			return value && value.desc;
 		}
 	},
 	/**
