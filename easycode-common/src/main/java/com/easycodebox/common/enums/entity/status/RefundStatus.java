@@ -21,11 +21,6 @@ public enum RefundStatus implements DetailEnum<Integer>{
         this.desc = desc;
     }
 	
-    @Override
-	public String toString() {
-		return "{desc : '" + desc + "', value : " + value + "}";
-	}
-	
 	@Override
 	public String getDesc() {
 		return this.desc;

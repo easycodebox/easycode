@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.shiro.session.Session;
 
 import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.common.security.SecurityContext;
 import com.easycodebox.common.security.SecurityContexts;
@@ -34,7 +33,6 @@ public class ShiroSecurityUtils {
 	
 	public static void setSubject(UserExtWsBo user) {
 		UserInfo userInfo = new UserInfo(user.getId(), 
-				StringUtils.isBlank(user.getRealname()) ? user.getNickname() : user.getRealname(), 
 				user.getUsername(), user.getNickname(), user.getRealname(), user.getPic(), 
 				user.getStatus(), user.getGroupId(), user.getGroupName());
 		

@@ -64,7 +64,7 @@ public class HttpUtils {
 	private static final Logger LOG = LoggerFactory.getLogger(HttpUtils.class);
 	
 	/**
-	 * 获得登录ip
+	 * 获得客户端ip
 	 * @param request
 	 * @return
 	 */

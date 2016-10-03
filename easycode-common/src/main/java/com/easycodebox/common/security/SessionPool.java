@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 
-
 /**
  * @author WangXiaoJin
  * 

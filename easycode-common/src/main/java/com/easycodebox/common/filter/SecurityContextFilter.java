@@ -53,6 +53,7 @@ public class SecurityContextFilter implements Filter {
 		context.setSessionId(request.getSession(true).getId());
 		context.setRequest(request);
 		context.setResponse(response);
+		context.setUserAgent(request.getHeader("User-Agent"));
 		return context;
 	}
 

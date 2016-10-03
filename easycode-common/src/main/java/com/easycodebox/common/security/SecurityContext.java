@@ -9,8 +9,6 @@ import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.easycodebox.common.enums.entity.PhoneType;
-
 /**
  * @author WangXiaoJin
  * 
@@ -25,10 +23,8 @@ public class SecurityContext<T extends Serializable> implements Externalizable{
 	private T security;
 	private String ip;
 	private String sessionId;
-	private PhoneType phoneType;
-	private String loginStatusId;
+	private String userAgent;
 
-	
 	public T getSecurity() {
 		return security;
 	}
@@ -44,13 +40,13 @@ public class SecurityContext<T extends Serializable> implements Externalizable{
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-
-	public PhoneType getPhoneType() {
-		return phoneType;
+	
+	public String getUserAgent() {
+		return userAgent;
 	}
 
-	public void setPhoneType(PhoneType phoneType) {
-		this.phoneType = phoneType;
+	public void setUserAgent(String userAgent) {
+		this.userAgent = userAgent;
 	}
 
 	public String getSessionId() {
@@ -59,14 +55,6 @@ public class SecurityContext<T extends Serializable> implements Externalizable{
 
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
-	}
-
-	public String getLoginStatusId() {
-		return loginStatusId;
-	}
-
-	public void setLoginStatusId(String loginStatusId) {
-		this.loginStatusId = loginStatusId;
 	}
 
 	public HttpServletRequest getRequest() {

@@ -130,11 +130,6 @@ public enum FileType implements DetailEnum<String> {
 	}
 	
 	@Override
-	public String toString() {
-		return "{desc : '" + desc + "', value : " + value + "}";
-	}
-	
-	@Override
 	public String getClassName() {
 		return this.name();
 	}

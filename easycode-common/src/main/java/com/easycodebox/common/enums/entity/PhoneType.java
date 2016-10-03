@@ -27,11 +27,6 @@ public enum PhoneType implements DetailEnum<Integer> {
 	}
 
 	@Override
-	public String toString() {
-		return "{desc : '" + desc + "', value : " + value + "}";
-	}
-	
-	@Override
 	public String getClassName() {
 		return this.name();
 	}

@@ -24,11 +24,6 @@ public enum ProjectEnv implements DetailEnum<String> {
 	public String getDesc() {
 		return this.desc;
 	}
-
-	@Override
-	public String toString() {
-		return "{desc : '" + desc + "', value : " + value + "}";
-	}
 	
 	@Override
 	public String getClassName() {

@@ -27,11 +27,6 @@ public enum LogLevel implements DetailEnum<Integer> {
 	public String getDesc() {
 		return this.desc;
 	}
-
-	@Override
-	public String toString() {
-		return "{desc : '" + desc + "', value : " + value + "}";
-	}
 	
 	@Override
 	public String getClassName() {

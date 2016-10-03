@@ -1,4 +1,5 @@
-<form id="updPwdDialog" class="form-validate none" action="/user/updatingPwd.json" data-suc="更新密码成功" data-fail="更新密码失败">
+<form id="updPwdDialog" class="form-validate none" autocomplete="off"
+	action="/user/updatingPwd.json" data-suc="更新密码成功" data-fail="更新密码失败">
 	<table class="table-edit">
 		
 		<tr>
@@ -6,7 +7,7 @@
 				<label class="required">原密码：</label>
 			</th>
 			<td>
-				<input type="password" name="oldPwd" validator="maxlength[32],required" maxlength="32" autocomplete="off" />
+				<input type="password" name="oldPwd" class="form-control" validator="maxlength[32],required" maxlength="32" />
 			</td>
 		</tr>
 		
@@ -15,7 +16,7 @@
 				<label class="required">新密码：</label>
 			</th>
 			<td>
-				<input type="password" id="pwd" name="pwd" validator="maxlength[32],required" maxlength="32" autocomplete="off" />
+				<input type="password" id="pwd" name="pwd" class="form-control" validator="maxlength[32],required" maxlength="32" />
 			</td>
 		</tr>
 		
@@ -24,7 +25,7 @@
 				<label class="required">确认密码：</label>
 			</th>
 			<td>
-				<input type="password" validator="maxlength[32],equalto[pwd],required" maxlength="32" autocomplete="off" />
+				<input type="password" class="form-control" validator="maxlength[32],equalto[pwd],required" maxlength="32" />
 			</td>
 		</tr>
 	</table>

@@ -16,7 +16,6 @@ public class UserInfo extends AbstractBo {
 	private String realname;
 	private Integer groupId;
 	private String groupName;		//用户所属组织名
-	private String operator;		//执行操作后记录的名字，即POJO类的creator、modifier
 	private String pic;				//头像
 	private String password;
 	private DetailEnum<Integer> status;
@@ -27,8 +26,7 @@ public class UserInfo extends AbstractBo {
 	}
 	
 	public UserInfo(UserInfo userInfo){
-		this(userInfo.getUserId(), userInfo.getOperator(), 
-				userInfo.getUsername(), userInfo.getNickname(), userInfo.getRealname(),
+		this(userInfo.getUserId(), userInfo.getUsername(), userInfo.getNickname(), userInfo.getRealname(),
 				userInfo.getPic(), userInfo.getStatus());
 	}
 	
@@ -39,19 +37,15 @@ public class UserInfo extends AbstractBo {
 	 * @param loginName
 	 * @param state
 	 */
-	public UserInfo(String userId, String operator, 
-			String username, String nickname, String realname, String pic, 
+	public UserInfo(String userId, String username, String nickname, String realname, String pic, 
 			DetailEnum<Integer> status) {
-		this(userId, operator, username, nickname, realname, pic, status, null, null);
+		this(userId, username, nickname, realname, pic, status, null, null);
 	}
 	
-	public UserInfo(String userId, String operator, 
-			String username, String nickname, String realname, String pic, 
-			DetailEnum<Integer> status,
-			Integer groupId, String groupName) {
+	public UserInfo(String userId, String username, String nickname, String realname, String pic, 
+			DetailEnum<Integer> status, Integer groupId, String groupName) {
 		super();
 		this.userId = userId;
-		this.operator = operator;
 		this.username = username;
 		this.nickname = nickname;
 		this.realname = realname;
@@ -69,14 +63,6 @@ public class UserInfo extends AbstractBo {
 		this.userId = userId;
 	}
 	
-	public String getOperator() {
-		return operator;
-	}
-
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
-
 	public String getPassword() {
 		return password;
 	}

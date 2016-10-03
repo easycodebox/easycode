@@ -1,7 +1,5 @@
 package com.easycodebox.common.enums;
 
-import java.lang.reflect.Method;
-
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
@@ -35,21 +33,19 @@ public final class Enums {
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static <T extends Enum<T> & DetailEnum<V>, V> String getEnum(Class<T> clz) {
         try {
-            Method values = clz.getDeclaredMethod("values");
-            DetailEnum<T>[] v = (DetailEnum<T>[])values.invoke(clz);
-            return getEnum(v);
+        	T[] vals = clz.getEnumConstants();
+            return getEnum(vals);
         } catch ( Exception e ) {
         	LOG.error(clz.getSimpleName(), e);
         }
         return Symbol.EMPTY;
     }
 	
-    public static String getEnum( DetailEnum<?>[] pe ) {
+    public static String getEnum(DetailEnum<?>[] pe) {
     	StringBuilder sb = new StringBuilder();
-        for ( DetailEnum< ? > item : pe ) {
+        for (DetailEnum< ? > item : pe) {
             sb.append( "\"" )
             	.append( item.getValue() )
             	.append( "\":\"" )
