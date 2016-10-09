@@ -1,6 +1,7 @@
 package com.easycodebox.common.tag;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -22,6 +23,14 @@ public class LinkTag extends AbstractHtmlTag {
 	private String rel;
 	private String type;
 	private String href;
+	/**
+	 * src中多个文件地址的分隔符，默认为<b>,</b>
+	 */
+	private String separator;
+	/**
+	 * src中js参数的边界符号，默认为<b>??</b>
+	 */
+	private String boundary;
 	private String media;
 	private String sizes;
 	
@@ -39,6 +48,8 @@ public class LinkTag extends AbstractHtmlTag {
 	protected void init() {
 		rel = "stylesheet";
 		type = "text/css";
+		separator = Symbol.COMMA;
+		boundary = "??";
 		env = BaseConstants.projectEnv;
 		min = BaseConstants.transMinJsCss;
 		super.init();
@@ -56,7 +67,7 @@ public class LinkTag extends AbstractHtmlTag {
 			href = href.replaceAll("\\s*", "");
 			if(env != ProjectEnv.DEV && min) {
 				//自动转换成压缩后的min.css
-				href = href.replaceAll("(?<!\\.min)\\.css(?=,|\\?|$)", ".min.css");
+				href = href.replaceAll("(?<!\\.min)\\.css(?=" + Pattern.quote(separator) + "|\\?|$)", ".min.css");
 			}
 			sb.append("href=\"").append(env == ProjectEnv.DEV ? "{0}" : href).append("\" ");
 		}
@@ -70,11 +81,11 @@ public class LinkTag extends AbstractHtmlTag {
 			JspWriter write = pageContext.getOut();
 			if(env == ProjectEnv.DEV) {
 				String tag = sb.toString();
-				String[] srcFrags = href.split("\\?\\?");
+				String[] srcFrags = href.split(Pattern.quote(boundary));
 				if(srcFrags.length == 1) {
 					write.append(StringUtils.format(tag, href));
 				}else {
-					String[] files = srcFrags[1].split(Symbol.COMMA);
+					String[] files = srcFrags[1].split(Pattern.quote(separator));
 					for(String file : files) {
 						write.append(StringUtils.format(tag, srcFrags[0] + file));
 					}
@@ -101,6 +112,14 @@ public class LinkTag extends AbstractHtmlTag {
 		this.href = href;
 	}
 
+	public void setSeparator(String separator) {
+		this.separator = separator;
+	}
+
+	public void setBoundary(String boundary) {
+		this.boundary = boundary;
+	}
+	
 	public void setMedia(String media) {
 		this.media = media;
 	}

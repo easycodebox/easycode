@@ -1,6 +1,7 @@
 package com.easycodebox.common.tag;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -21,6 +22,14 @@ public class ScriptTag extends AbstractHtmlTag {
 
 	private String type;
 	private String src;
+	/**
+	 * src中多个文件地址的分隔符，默认为<b>,</b>
+	 */
+	private String separator;
+	/**
+	 * src中js参数的边界符号，默认为<b>??</b>
+	 */
+	private String boundary;
 	private String charset;
 	private String async;
 	private String defer;
@@ -38,6 +47,8 @@ public class ScriptTag extends AbstractHtmlTag {
 	@Override
 	protected void init() {
 		type = "text/javascript";
+		separator = Symbol.COMMA;
+		boundary = "??";
 		env = BaseConstants.projectEnv;
 		min = BaseConstants.transMinJsCss;
 		super.init();
@@ -53,7 +64,7 @@ public class ScriptTag extends AbstractHtmlTag {
 			src = src.replaceAll("\\s*", "");
 			if(env != ProjectEnv.DEV && min) {
 				//自动转换成压缩后的min.js
-				src = src.replaceAll("(?<!\\.min)\\.js(?=,|\\?|$)", ".min.js");
+				src = src.replaceAll("(?<!\\.min)\\.js(?=" + Pattern.quote(separator) + "|\\?|$)", ".min.js");
 			}
 			sb.append("src=\"").append(env == ProjectEnv.DEV ? "{0}" : src).append("\" ");
 		}
@@ -69,11 +80,11 @@ public class ScriptTag extends AbstractHtmlTag {
 			JspWriter write = pageContext.getOut();
 			if(env == ProjectEnv.DEV) {
 				String tag = sb.toString();
-				String[] srcFrags = src.split("\\?\\?");
+				String[] srcFrags = src.split(Pattern.quote(boundary));
 				if(srcFrags.length == 1) {
 					write.append(StringUtils.format(tag, src));
 				}else {
-					String[] files = srcFrags[1].split(Symbol.COMMA);
+					String[] files = srcFrags[1].split(Pattern.quote(separator));
 					for(int i = 0; i < files.length; i++) {
 						write.append(StringUtils.format(tag, srcFrags[0] + files[i]));
 						if(i < files.length - 1)
@@ -106,6 +117,14 @@ public class ScriptTag extends AbstractHtmlTag {
 
 	public void setSrc(String src) {
 		this.src = src;
+	}
+
+	public void setSeparator(String separator) {
+		this.separator = separator;
+	}
+
+	public void setBoundary(String boundary) {
+		this.boundary = boundary;
 	}
 
 	public void setCharset(String charset) {

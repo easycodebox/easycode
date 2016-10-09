@@ -1089,6 +1089,30 @@
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
+		<attribute>
+			<description><![CDATA[This tag environment. Valid value: "DEV"/"TEST"/"PRE"/"PROD". Default value is BaseConstants.projectEnv.]]></description>
+			<name>env</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Is format js url to min.js. Default value is BaseConstants.transMinJsCss.]]></description>
+			<name>min</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The separator of js urls. Default value: ",".]]></description>
+			<name>separator</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The boundary of js urls. Default value: "??".]]></description>
+			<name>boundary</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 		
 		<attribute>
 			<description><![CDATA[HTML id attribute]]></description>
@@ -1242,6 +1266,30 @@
 			<name>sizes</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[This tag environment. Valid value: "DEV"/"TEST"/"PRE"/"PROD". Default value is BaseConstants.projectEnv.]]></description>
+			<name>env</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Is format css url to min.css. Default value is BaseConstants.transMinJsCss.]]></description>
+			<name>min</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The separator of css urls. Default value: ",".]]></description>
+			<name>separator</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The boundary of css urls. Default value: "??".]]></description>
+			<name>boundary</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		
 		<attribute>
