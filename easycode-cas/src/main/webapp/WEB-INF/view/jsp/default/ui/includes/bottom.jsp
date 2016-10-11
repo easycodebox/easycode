@@ -4,7 +4,7 @@
 </div>
 
 <footer class="main-footer">
-	苏ICP备16047279号-1 | 
+	<a href="http://www.miitbeian.gov.cn">苏ICP备16047279号-1</a> | 
 	<strong>Copyright &copy; 2016 <a href="http://www.easycodebox.com">Easy Code</a>.</strong> 
 	All rights reserved.
 	<b>Version</b> 0.2.3

@@ -55,12 +55,12 @@
 	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="casRealm" />
-		<property name="subjectFactory" ref="casSubjectFactory"/>  
+		<property name="subjectFactory" ref="casSubjectFactory"/>
 	</bean>
 
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
-        <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>  
-        <property name="arguments" ref="securityManager"/>  
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
+        <property name="arguments" ref="securityManager"/>
     </bean>
     
     <!-- <bean name="ticketValidationFilter" class="org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter" >

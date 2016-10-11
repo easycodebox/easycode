@@ -73,7 +73,7 @@ public class SecurityUtils {
 		return (UserInfo)session.getAttribute(BaseConstants.USER_KEY);
 	}
 	
-	public static void invalidSession(HttpSession session){
+	public static void invalidSession(HttpSession session) {
 		if(session == null) return;
 		session.invalidate();
 	}

@@ -14,13 +14,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.ParameterRequestWrapper;
 
 public class CharacterEncodingFilter implements Filter {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(CharacterEncodingFilter.class);
 	
 	private String encoding;
 	private boolean forceEncoding = false;
@@ -76,9 +72,6 @@ public class CharacterEncodingFilter implements Filter {
 					}
 				}
 				chain.doFilter(request, response);
-			} catch(IOException e) {
-				LOG.warn("Encoding URL error, {0}.", req.getRequestURL().append("?").append(req.getQueryString()));
-				throw e;
 			} finally {
 				request.removeAttribute(attributeKey);
 			}
