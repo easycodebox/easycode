@@ -33,7 +33,10 @@ import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 /**
- * 
+ * 注：如果你的应用部署于Nginx后面，请确保Nginx不会拦截对应的status，不然永远只显示Nginx的错误页面。<br>
+ * 如Nginx典型配置：
+ * 	<pre>error_page   500 502 503 504  /50x.html;</pre>
+ * 如果你Nginx有这样的配置，则500/502/503/504状态码只会显示Nginx自己的错误错误页面。
  * @author WangXiaoJin
  * 
  */
