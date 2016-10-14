@@ -92,7 +92,7 @@ public class ErrorContextFilter implements Filter {
 	
 	private boolean storeException = false;
 	
-	protected ExceptionHandler exceptionHandler;
+	private ExceptionHandler exceptionHandler;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -300,5 +300,85 @@ public class ErrorContextFilter implements Filter {
 			ErrorContext.instance().reset();
 		}
 	}
-	
+
+	public int getDepth() {
+		return depth;
+	}
+
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
+
+	public String getDefaultPage() {
+		return defaultPage;
+	}
+
+	public void setDefaultPage(String defaultPage) {
+		this.defaultPage = defaultPage;
+	}
+
+	public int getDefaultStatus() {
+		return defaultStatus;
+	}
+
+	public void setDefaultStatus(int defaultStatus) {
+		this.defaultStatus = defaultStatus;
+	}
+
+	public Map<Class<?>, String> getExceptionMappings() {
+		return exceptionMappings;
+	}
+
+	public void setExceptionMappings(Map<Class<?>, String> exceptionMappings) {
+		this.exceptionMappings = exceptionMappings;
+	}
+
+	public Map<String, Integer> getStatusMappings() {
+		return statusMappings;
+	}
+
+	public void setStatusMappings(Map<String, Integer> statusMappings) {
+		this.statusMappings = statusMappings;
+	}
+
+	public Map<Class<?>, Boolean> getLogMappings() {
+		return logMappings;
+	}
+
+	public void setLogMappings(Map<Class<?>, Boolean> logMappings) {
+		this.logMappings = logMappings;
+	}
+
+	public boolean isLog() {
+		return isLog;
+	}
+
+	public void setLog(boolean isLog) {
+		this.isLog = isLog;
+	}
+
+	public LogLevelConfig getLogLevelConfig() {
+		return logLevelConfig;
+	}
+
+	public void setLogLevelConfig(LogLevelConfig logLevelConfig) {
+		this.logLevelConfig = logLevelConfig;
+	}
+
+	public ExceptionHandler getExceptionHandler() {
+		return exceptionHandler;
+	}
+
+	public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+	}
+
+	public boolean isStoreException() {
+		return storeException;
+	}
+
+	public void setStoreException(boolean storeException) {
+		this.storeException = storeException;
+	}
+
 }
