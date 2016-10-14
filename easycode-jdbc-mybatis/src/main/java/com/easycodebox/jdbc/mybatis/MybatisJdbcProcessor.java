@@ -19,7 +19,6 @@ import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.security.SecurityUtils;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.SqlCommandType;
 import com.easycodebox.jdbc.grammar.SqlGrammar;
@@ -121,7 +120,7 @@ public class MybatisJdbcProcessor implements JdbcProcessor {
 		Assert.notNull(sqlGrammar);
 		if(StringUtils.isBlank(sql))
 			sql = sqlGrammar.buildSql(sqlCommandType);
-		LOG.info("SQL({0}): {1}", SecurityUtils.getSessionId() , sql);
+		LOG.debug("SqlGrammar : {}", sql);
 		if(StringUtils.isBlank(sql))
 			return false;
 		Configuration configuration = sqlSessionTemplate.getConfiguration();
