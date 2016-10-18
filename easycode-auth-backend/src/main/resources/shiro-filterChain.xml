@@ -5,8 +5,7 @@
 		http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util 
-		http://www.springframework.org/schema/util/spring-util.xsd"
-	default-lazy-init="true">
+		http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<bean id="filterChainDefinitions" class="java.lang.String">
 		<constructor-arg>
@@ -14,14 +13,16 @@
 				/login = casFilter
 				/logout = logoutFilter
 				/favicon.ico = anon
-				/ws/** = anon
 				/css/** = anon
 				/errors/* = anon
 				/imgs/** = anon
 				/js/** = anon
                 /resources/** = anon
+                /permit/** = authc
+				/ws/** = anon
                 /clearuser/** = anon
-				/** = authFilter,urlFilter
+                /unauthorized.html = anon
+				/** = authc,perms
 			</value>
 		</constructor-arg>
 	</bean>

@@ -1,4 +1,4 @@
-package com.easycodebox.login.util;
+package com.easycodebox.login.shiro.filter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

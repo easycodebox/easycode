@@ -87,16 +87,16 @@
 								</thead>
 							</table>
 							<div id="table-ops" class="hidden">
-								[@permited value="generator/load"]
+								[@shiro.hasPermission name="generator/load"]
 									<a class="btn btn-xs btn-default loadBtn" data-generator-type="{generatorType.className}" title="详情" href="#" role="button">
 										<i class="fa fa-reorder"></i>
 									</a>
-								[/@permited]
-								[@permited value="generator/update"]
+								[/@shiro.hasPermission]
+								[@shiro.hasPermission name="generator/update"]
 									<a class="btn btn-xs btn-default updBtn" data-generator-type="{generatorType.className}" title="修改" href="#" role="button">
 										<i class="fa fa-edit"></i>
 									</a>
-								[/@permited]
+								[/@shiro.hasPermission]
 							</div>
 							
 						</div>

@@ -19,7 +19,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 	//初始化树形结构
 	initTree: function() {
 		if(!this.caches.initTree) {
-			$.post("/group/listAll.json", function(data) {
+			$.post("/permit/group/listAll.json", function(data) {
 				gb.caches.initTree = true;
 				data = JSON.parse(data);
 				
@@ -63,7 +63,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 			dataType: "json", 
 			async: false,
 			type: "POST",
-			url: "/group/existName.json",
+			url: "/permit/group/existName.json",
 			data: {
 				name: val,
 				excludeId: $id.length ? $id.val() : null
@@ -120,7 +120,7 @@ $(function(){
 		//配置角色
 		var $btn = $(this),
 			id = $btn.data("id");
-		$.post("/role/listByGroupId.json", {groupId: id}, function(data) {
+		$.post("/permit/role/listByGroupId.json", {groupId: id}, function(data) {
 			data = data.data;
 			var html = '<div id="cfgRolesDiv">',
 				templete = '<div style="float:left;margin: 0 8px;"><input type="checkbox" id="{0}" name="roleIds" value="{1}" {2} /> <label for="{0}">{3}</label></div>',

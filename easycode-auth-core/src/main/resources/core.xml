@@ -186,5 +186,10 @@
 		</property>
 	</bean>
 	<!-- =================================== 【ID转换器 - END】  ============================================== -->
-
+	
+	<!-- =================================== 【security info拦截器 - START】  ============================================== -->
+	<bean id="securityFilter" class="com.easycodebox.common.filter.SecurityContextFilter"
+		p:securityInfoHandler-ref="securityInfoHandler" />
+	<!-- =================================== 【security info拦截器 - END】  ============================================== -->
+	
 </beans>

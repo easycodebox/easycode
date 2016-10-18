@@ -11,11 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.easycodebox.common.lang.dto.UserInfo;
-import com.easycodebox.common.net.HttpUtils;
 import com.easycodebox.common.security.SecurityContext;
 import com.easycodebox.common.security.SecurityContexts;
 import com.easycodebox.common.security.SecurityUtils;
+import com.easycodebox.common.security.SecurityUtils.SecurityInfoHandler;
 
 /**
  * @author WangXiaoJin
@@ -23,6 +22,8 @@ import com.easycodebox.common.security.SecurityUtils;
  */
 public class SecurityContextFilter implements Filter {
 
+	private SecurityInfoHandler<?, ?> securityInfoHandler = SecurityUtils.SESSION_SECURITY_INFO_HANDLER;
+	
 	@Override
 	public void destroy() {
 		
@@ -31,35 +32,28 @@ public class SecurityContextFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest)request;
-		HttpServletResponse res = (HttpServletResponse)response;
-		SecurityContexts.setCurSecurityContext(getSecurityContext(req, res));
-		try{
+		try {
+			SecurityContext<?> context = securityInfoHandler.newSecurityContext(null, 
+					(HttpServletRequest)request, (HttpServletResponse)response);
+			SecurityContexts.setCurSecurityContext(context);
 			chain.doFilter(request, response);
-		}finally{
+		} finally {
 			SecurityContexts.resetSecurityContext();
 		}
 		
-	}
-	
-	private SecurityContext<UserInfo> getSecurityContext(HttpServletRequest request,
-				HttpServletResponse response) {
-		UserInfo user = SecurityUtils.getUser(request.getSession(false));
-		SecurityContext<UserInfo> context = new SecurityContext<UserInfo>();
-		if(user != null) {
-			context.setSecurity(user);
-		}
-		context.setIp(HttpUtils.getIpAddr(request));
-		context.setSessionId(request.getSession(true).getId());
-		context.setRequest(request);
-		context.setResponse(response);
-		context.setUserAgent(request.getHeader("User-Agent"));
-		return context;
 	}
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		
+	}
+
+	public SecurityInfoHandler<?, ?> getSecurityInfoHandler() {
+		return securityInfoHandler;
+	}
+
+	public void setSecurityInfoHandler(SecurityInfoHandler<?, ?> securityInfoHandler) {
+		this.securityInfoHandler = securityInfoHandler;
 	}
 
 }

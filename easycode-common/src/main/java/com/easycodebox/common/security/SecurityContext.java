@@ -22,7 +22,7 @@ public class SecurityContext<T extends Serializable> implements Externalizable{
 	
 	private T security;
 	private String ip;
-	private String sessionId;
+	private Serializable sessionId;
 	private String userAgent;
 
 	public T getSecurity() {
@@ -49,11 +49,11 @@ public class SecurityContext<T extends Serializable> implements Externalizable{
 		this.userAgent = userAgent;
 	}
 
-	public String getSessionId() {
+	public Serializable getSessionId() {
 		return sessionId;
 	}
 
-	public void setSessionId(String sessionId) {
+	public void setSessionId(Serializable sessionId) {
 		this.sessionId = sessionId;
 	}
 

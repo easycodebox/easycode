@@ -77,7 +77,7 @@
 		Cas-client-core-3.2.2（当前使用版本）的SingleSignOutFilter不需要配置casServerUrlPrefix，最新版是需要配置此参数的。
 		官网链接：https://github.com/apereo/java-cas-client
 	-->
-	<filter>
+	<!-- <filter>
 		<filter-name>CAS Single Sign Out Filter</filter-name>
 		<filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
 	</filter>
@@ -87,7 +87,7 @@
 	</filter-mapping>
 	<listener>
 	    <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
-	</listener>
+	</listener> -->
 	
 	<!-- Shiro filter 	-->
 	<filter>
@@ -105,7 +105,7 @@
 	
 	<filter>
 		<filter-name>securityFilter</filter-name>
-		<filter-class>com.easycodebox.common.filter.SecurityContextFilter</filter-class>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>securityFilter</filter-name>

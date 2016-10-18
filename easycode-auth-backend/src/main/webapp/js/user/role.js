@@ -23,7 +23,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		$.ajax({
 			async: false,
 			type: "POST",
-			url: "/role/existName.json",
+			url: "/permit/role/existName.json",
 			data: {
 				name: val,
 				excludeId: $id.length ? $id.val() : null
@@ -67,7 +67,7 @@ $(function(){
 	}).on("click", ".cfgOpsBtn", function() {
 		var $btn = $(this),
 			id = $btn.data("id");
-		$.post("/operation/cfgOperationByRoleId.json", {roleId: id}, function(data) {
+		$.post("/permit/operation/cfgOperationByRoleId.json", {roleId: id}, function(data) {
 			data = JSON.parse(data);
 			if(!$("#treeUl").length) {
 				$("body").append('<ul id="treeUl" class="ztree" style="display: none;height: 255px;overflow-y: auto;" ></ul>');

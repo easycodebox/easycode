@@ -79,34 +79,34 @@
 						<div class="box-body">
 							
 							<div id="toolbar" class="btn-group">
-								[@permited value="operation/add"]
+								[@shiro.hasPermission name="operation/add"]
 	                        		<button type="button" title="新增" id="addBtn" class="btn btn-default">
 		                       			<i class="fa fa-plus"></i>
 		                       		</button>
-	                        	[/@permited]
-	                        	[@permited value="operation/remove"]
+	                        	[/@shiro.hasPermission]
+	                        	[@shiro.hasPermission name="operation/remove"]
 	                        		<button type="button" title="批量删除" class="btn btn-default" onclick="gb.remove('/operation/remove.json')">
 	                        			<i class="fa fa-remove"></i>
 	                        		</button>
-	                        	[/@permited]
-	                        	[@permited value="operation/openClose"]
+	                        	[/@shiro.hasPermission]
+	                        	[@shiro.hasPermission name="operation/openClose"]
 	                        		<button type="button" title="启用" class="handler switch-open batch btn btn-default">
 		                        		<i class="fa fa-toggle-on"></i>
 		                        	</button>
 									<button type="button" title="禁用" class="handler switch-close batch btn btn-default">
 										<i class="fa fa-toggle-off"></i>
 									</button>
-								[/@permited]
-	                        	[@permited value="operation/imports"]
+								[/@shiro.hasPermission]
+	                        	[@shiro.hasPermission name="operation/imports"]
 									<button type="button" title="导入" class="btn btn-default" id="importsOper">
 										<i class="fa fa-upload"></i>
 									</button>
-								[/@permited]
-	                        	[@permited value="operation/exports"]
+								[/@shiro.hasPermission]
+	                        	[@shiro.hasPermission name="operation/exports"]
 									<button type="button" title="导出" class="btn btn-default" id="exportsOper">
 										<i class="fa fa-download"></i>
 									</button>
-								[/@permited]
+								[/@shiro.hasPermission]
 							</div>
 							<table id="data-table" data-toggle="table" 
 									data-toolbar="#toolbar"
@@ -135,21 +135,21 @@
 								</thead>
 							</table>
 							<div id="table-ops" class="hidden">
-								[@permited value="operation/load"]
+								[@shiro.hasPermission name="operation/load"]
 									<a class="btn btn-xs btn-default loadBtn" data-id="{id}" title="详情" href="#" role="button">
 										<i class="fa fa-reorder"></i>
 									</a>
-								[/@permited]
-								[@permited value="operation/update"]
+								[/@shiro.hasPermission]
+								[@shiro.hasPermission name="operation/update"]
 									<a class="btn btn-xs btn-default updBtn" data-id="{id}" title="修改" href="#" role="button">
 										<i class="fa fa-edit"></i>
 									</a>
-								[/@permited]
-								[@permited value="operation/remove"]
+								[/@shiro.hasPermission]
+								[@shiro.hasPermission name="operation/remove"]
 									<a class="btn btn-xs btn-default" href="javascript:gb.remove('/operation/remove.json', '{id}');" title="删除" role="button">
 										<i class="fa fa-remove"></i>
 									</a>
-								[/@permited]
+								[/@shiro.hasPermission]
 							</div>
 							
 						</div>

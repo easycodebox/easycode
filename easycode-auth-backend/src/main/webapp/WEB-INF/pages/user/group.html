@@ -64,24 +64,24 @@
 						<div class="box-body">
 						
 							<div id="toolbar" class="btn-group">
-								[@permited value="group/add"]
+								[@shiro.hasPermission name="group/add"]
 		                       		<button type="button" title="新增" id="addBtn" class="btn btn-default">
 		                       			<i class="fa fa-plus"></i>
 		                       		</button>
-		                       	[/@permited]
-		                       	[@permited value="group/remove"]
+		                       	[/@shiro.hasPermission]
+		                       	[@shiro.hasPermission name="group/remove"]
 		                       		<button type="button" title="批量删除" onclick="gb.remove('/group/remove.json')" class="btn btn-default">
 		                       			<i class="fa fa-remove"></i>
 		                       		</button>
-		                       	[/@permited]
-		                       	[@permited value="group/openClose"]
+		                       	[/@shiro.hasPermission]
+		                       	[@shiro.hasPermission name="group/openClose"]
 		                        	<button type="button" title="启用" class="handler switch-open batch btn btn-default">
 		                        		<i class="fa fa-toggle-on"></i>
 		                        	</button>
 									<button type="button" title="禁用" class="handler switch-close batch btn btn-default">
 										<i class="fa fa-toggle-off"></i>
 									</button>
-								[/@permited]
+								[/@shiro.hasPermission]
 							</div>
 							<table id="data-table" data-toggle="table" 
 									data-toolbar="#toolbar"
@@ -106,26 +106,26 @@
 								</thead>
 							</table>
 							<div id="table-ops" class="hidden">
-								[@permited value="group/load"]
+								[@shiro.hasPermission name="group/load"]
 									<a class="btn btn-xs btn-default loadBtn" data-id="{id}" title="详情" href="#" role="button">
 										<i class="fa fa-reorder"></i>
 									</a>
-								[/@permited]
-								[@permited value="group/update"]
+								[/@shiro.hasPermission]
+								[@shiro.hasPermission name="group/update"]
 									<a class="btn btn-xs btn-default updBtn" data-id="{id}" title="修改" href="#" role="button">
 										<i class="fa fa-edit"></i>
 									</a>
-								[/@permited]
-								[@permited value="group/remove"]
+								[/@shiro.hasPermission]
+								[@shiro.hasPermission name="group/remove"]
 									<a class="btn btn-xs btn-default" href="javascript:gb.remove('/group/remove.json', '{id}');" title="删除" role="button">
 										<i class="fa fa-remove"></i>
 									</a>
-								[/@permited]
-								[@permited value="role/cfgByGroupId"]
+								[/@shiro.hasPermission]
+								[@shiro.hasPermission name="role/cfgByGroupId"]
 									<a class="btn btn-xs btn-default cfgRolesBtn" data-id="{id}" title="配置角色" href="#" role="button">
 										<i class="fa fa-cog"></i>
 									</a>
-								[/@permited]
+								[/@shiro.hasPermission]
 							</div>
 							
 						</div>

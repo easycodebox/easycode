@@ -130,6 +130,7 @@ public class UserController extends BaseController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/permit/user/existUsername")
 	public CodeMsg existUsername(String username, String excludeId) throws Exception {
 		Assert.notBlank(username, CodeMsgExt.PARAM_BLANK.fillArgs("用户名"));
 		boolean exist = userService.existUsername(username, excludeId);
@@ -137,6 +138,7 @@ public class UserController extends BaseController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/permit/user/existNickname")
 	public CodeMsg existNickname(String nickname, String excludeId) throws Exception {
 		Assert.notBlank(nickname, CodeMsgExt.PARAM_BLANK.fillArgs("昵称"));
 		boolean exist = userService.existNickname(nickname, excludeId);

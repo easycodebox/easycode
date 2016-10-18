@@ -1,5 +1,7 @@
 package com.easycodebox.common.log.slf4j;
 
+import java.io.Serializable;
+
 import com.easycodebox.common.enums.entity.LogLevel;
 
 /**
@@ -7,8 +9,10 @@ import com.easycodebox.common.enums.entity.LogLevel;
  * @author WangXiaoJin
  *
  */
-public class LogLevelConfig {
+public class LogLevelConfig implements Serializable {
 
+	private static final long serialVersionUID = -83229930661162178L;
+	
 	/**
 	 * 输出的日志级别
 	 */

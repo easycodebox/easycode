@@ -1,43 +1,47 @@
 package com.easycodebox.login.ws.bo;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class UserExtWsBo extends UserWsBo {
 
 	private static final long serialVersionUID = -3600978665605684188L;
 
-	private Set<String> roleNames;
+	private String roleNames;
 	
-	private Integer[] roleIds;
+	private String roleIds;
 	
-	private Map<String, Boolean> allOsMap;
+	/**
+	 * 所有的权限
+	 */
+	private String operations;
 	
+	/**
+	 * 菜单项
+	 */
 	private List<OperationWsBo> menus;
 
-	public Set<String> getRoleNames() {
+	public String getRoleNames() {
 		return roleNames;
 	}
 
-	public void setRoleNames(Set<String> roleNames) {
+	public void setRoleNames(String roleNames) {
 		this.roleNames = roleNames;
 	}
 
-	public Integer[] getRoleIds() {
+	public String getRoleIds() {
 		return roleIds;
 	}
 
-	public void setRoleIds(Integer[] roleIds) {
+	public void setRoleIds(String roleIds) {
 		this.roleIds = roleIds;
 	}
 
-	public Map<String, Boolean> getAllOsMap() {
-		return allOsMap;
+	public String getOperations() {
+		return operations;
 	}
 
-	public void setAllOsMap(Map<String, Boolean> allOsMap) {
-		this.allOsMap = allOsMap;
+	public void setOperations(String operations) {
+		this.operations = operations;
 	}
 
 	public List<OperationWsBo> getMenus() {

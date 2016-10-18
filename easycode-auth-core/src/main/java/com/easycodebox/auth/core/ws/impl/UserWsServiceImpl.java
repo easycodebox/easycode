@@ -1,11 +1,7 @@
 package com.easycodebox.auth.core.ws.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -29,6 +25,7 @@ import com.easycodebox.common.enums.entity.status.CloseStatus;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
@@ -214,11 +211,11 @@ public class UserWsServiceImpl implements UserWsService {
 		Assert.notNull(user, CodeMsgExt.PARAM_ERR.fillArgs("用户名"));
 		
 		List<Role> roles = roleService.listOpenedByUserId(user.getId());
-		Set<String> roleNames = new HashSet<String>(roles.size());
+		String[] roleNames = new String[roles.size()];
 		Integer[] roleIds = new Integer[roles.size()];
 		for(int i = 0; i < roles.size(); i++) {
 			Role role = roles.get(i);
-			roleNames.add(role.getName());
+			roleNames[i] = role.getName();
 			roleIds[i] = role.getId();
 		}
 		
@@ -230,10 +227,12 @@ public class UserWsServiceImpl implements UserWsService {
 		
 		Project pro = projectService.load(projectNo);
 		Assert.notNull(pro, CodeMsgExt.PARAM_ERR.fillArgs("项目编号"));
-		List<Operation> allOs = operationService.listAllOpsOfUser(user.getId(), pro.getId(), null);
-		Map<String, Boolean> allOsMap = new HashMap<String, Boolean>();
-		for(Operation o : allOs) {
-			allOsMap.put(o.getUrl(), o.getIsOwn() == YesNo.YES ? true : false);
+		List<Operation> ops = operationService.listOperationsOfUser(user.getId(), pro.getId(), null);
+		List<String> strOps = new ArrayList<>(ops.size());
+		for(Operation o : ops) {
+			if (o.getUrl() != null) {
+				strOps.add(o.getUrl());
+			}
 		}
 		
 		List<Operation> treeOs = operationService.listOperationsOfUser(user.getId(), pro.getId(), YesNo.YES);
@@ -269,9 +268,9 @@ public class UserWsServiceImpl implements UserWsService {
 			bo.setGroupName(groupName);
 		}
 		
-		bo.setRoleIds(roleIds);
-		bo.setRoleNames(roleNames);
-		bo.setAllOsMap(allOsMap);
+		bo.setRoleIds(StringUtils.join(roleIds, Symbol.COMMA));
+		bo.setRoleNames(StringUtils.join(roleNames, Symbol.COMMA));
+		bo.setOperations(StringUtils.join(strOps, Symbol.COMMA));
 		bo.setMenus(menus);
 		return bo;
 	}

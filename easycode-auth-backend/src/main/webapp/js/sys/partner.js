@@ -23,7 +23,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		$.ajax({
 			async: false,
 			type: "POST",
-			url: "/partner/existName.json",
+			url: "/permit/partner/existName.json",
 			data: {
 				name: val,
 				excludeId: $id.length ? $id.val() : null

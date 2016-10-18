@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
@@ -109,6 +110,7 @@ public class RoleController extends BaseController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/permit/role/existName")
 	public CodeMsg existName(String name, Integer excludeId) throws Exception {
 		Assert.notBlank(name, CodeMsgExt.PARAM_BLANK.fillArgs("角色名"));
 		boolean exist = roleService.existName(name, excludeId);
@@ -116,6 +118,7 @@ public class RoleController extends BaseController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/permit/role/listByUserId")
 	public CodeMsg listByUserId(String userId) throws Exception {
 		List<Role> all = roleService.listAllByUserId(userId);
 		Integer groupId = userService.getGroupId(userId);
@@ -138,6 +141,7 @@ public class RoleController extends BaseController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/permit/role/listByGroupId")
 	public CodeMsg listByGroupId(int groupId) throws Exception {
 		return none(roleService.listAllByGroupId(groupId));
 	}

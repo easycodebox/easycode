@@ -17,6 +17,7 @@ import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.security.SecurityContexts;
 import com.easycodebox.common.security.SecurityUtils;
 
 /**
@@ -60,9 +61,9 @@ public final class LogAspect implements Ordered, InitializingBean {
 	@Around("@annotation(log)")
 	public Object logging(final ProceedingJoinPoint pjp, final Log log) throws Throwable {
 		com.easycodebox.auth.core.pojo.sys.Log logObj = new com.easycodebox.auth.core.pojo.sys.Log();
-		if(SecurityUtils.getCurSecurityContext() != null
-				&& SecurityUtils.getCurSecurityContext().getRequest() != null) {
-			HttpServletRequest request = SecurityUtils.getCurSecurityContext().getRequest();
+		if(SecurityContexts.getCurSecurityContext() != null
+				&& SecurityContexts.getCurSecurityContext().getRequest() != null) {
+			HttpServletRequest request = SecurityContexts.getCurSecurityContext().getRequest();
 			logObj.setUrl(request.getRequestURL().toString());
 			logObj.setParams(StringUtils.substring(HttpUtils.getRequestParams(request, false), 0, 2048));
 			logObj.setClientIp(SecurityUtils.getIp());

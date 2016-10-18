@@ -59,7 +59,6 @@
 		p:contentType="text/html;charset=utf-8"
 		p:viewClass="org.springframework.web.servlet.view.freemarker.FreeMarkerView"
 		p:exposeRequestAttributes="true"
-		p:exposeSessionAttributes="true"
 		p:exposeSpringMacroHelpers="true"
 		p:requestContextAttribute="request" />
 	
@@ -82,7 +81,6 @@
 		p:contentType="text/html;charset=utf-8"
 		p:viewClass="org.springframework.web.servlet.view.freemarker.FreeMarkerView"
 		p:exposeRequestAttributes="true"
-		p:exposeSessionAttributes="true"
 		p:exposeSpringMacroHelpers="true"
 		p:requestContextAttribute="request" />
 		

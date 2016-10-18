@@ -59,7 +59,7 @@
 		<aspectj.version>1.8.9</aspectj.version>
 		<jdk.version>1.7</jdk.version>
 		<junit.version>4.10</junit.version>
-		<shiro.version>1.2.5</shiro.version>
+		<shiro.version>1.2.6</shiro.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	

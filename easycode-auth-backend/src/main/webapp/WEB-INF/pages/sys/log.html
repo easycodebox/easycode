@@ -86,11 +86,11 @@
 						<div class="box-body">
 							
 							<div id="toolbar" class="btn-group">
-								[@permited value="log/removePhy"]
+								[@shiro.hasPermission name="log/removePhy"]
 									<button type="button" title="批量删除" class="btn btn-default" onclick="gb.remove('/log/removePhy.json')">
 	                        			<i class="fa fa-remove"></i>
 	                        		</button>
-								[/@permited]
+								[/@shiro.hasPermission]
 							</div>
 							<table id="data-table" data-toggle="table" 
 									data-toolbar="#toolbar"
@@ -119,16 +119,16 @@
 								</thead>
 							</table>
 							<div id="table-ops" class="hidden">
-								[@permited value="log/load"]
+								[@shiro.hasPermission name="log/load"]
 									<a class="btn btn-xs btn-default loadBtn" data-id="{id}" title="详情" href="#" role="button">
 										<i class="fa fa-reorder"></i>
 									</a>
-								[/@permited]
-								[@permited value="log/removePhy"]
+								[/@shiro.hasPermission]
+								[@shiro.hasPermission name="log/removePhy"]
 									<a class="btn btn-xs btn-default" href="javascript:gb.remove('/log/removePhy.json', '{id}');" title="删除" role="button">
 										<i class="fa fa-remove"></i>
 									</a>
-								[/@permited]
+								[/@shiro.hasPermission]
 							</div>
 							
 						</div>
