@@ -6,9 +6,10 @@ import com.easycodebox.jdbc.Property;
 import com.easycodebox.jdbc.entity.Entity;
 
 /**
- * 	如果是Entity类，则需要加上private static final Class<? extends Entity> entity = com.easycodebox.core.pojo.xxx.xxx.class;
- * 且创建的Property属性需要增加。如：public static final Property id = instance("id", entity)。
- * 	如果只是普通的BO对象，则：public static final String id = "id";
+ * <b>直接运行{@link com.easycodebox.auth.core.util.template.GenerateBeanRes}类会自动生成R文件的。</b><br>
+ * <p>如果是Entity类，会生成private static final Class<? extends Entity> entity = com.easycodebox.core.pojo.xxx.xxx.class
+ * 和Property属性【public static final Property id = instance("id", entity)】
+ * <p>如果只是普通的BO对象，则：public static final String id = "id";
  * @author WangXiaoJin
  *
  */
