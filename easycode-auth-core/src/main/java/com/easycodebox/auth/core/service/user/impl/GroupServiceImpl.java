@@ -22,7 +22,8 @@ import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
@@ -46,14 +47,15 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 		return super.get(sql()
 				.column(R.Group.name)
 				.eq(R.Group.id, id)
+				.eq(R.Group.deleted, YesNo.NO)
 				, String.class);
 	}
 
 	@Override
-	public List<Group> list(CloseStatus status) {
+	public List<Group> list(OpenClose status) {
 		return super.list(sql()
 				.eq(R.Group.status, status)
-				.ne(R.Group.status, CloseStatus.DELETE)
+				.eq(R.Group.deleted, YesNo.NO)
 				.desc(R.Group.sort)
 				.desc(R.Group.createTime)
 				);
@@ -61,7 +63,7 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 	
 	@Override
 	public List<Group> listTree() {
-		List<Group> orgs = this.list(CloseStatus.OPEN);
+		List<Group> orgs = this.list(OpenClose.OPEN);
 		return processGroupTree(null, orgs);
 	}
 	
@@ -100,7 +102,8 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 				CodeMsgExt.FAIL.msg("组名{0}已被占用", group.getName()));
 		
 		if(group.getStatus() == null)
-			group.setStatus(CloseStatus.OPEN);
+			group.setStatus(OpenClose.OPEN);
+		group.setDeleted(YesNo.NO);
 		super.save(group);
 		return group;
 	}
@@ -135,11 +138,11 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
 	public int remove(Integer[] ids) {
-		int count = super.updateStatus(ids, CloseStatus.DELETE);
-		super.delete(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
+		int count = super.delete(ids);
+		super.deletePhy(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
 		super.update(sql(User.class)
 				.updateNeed(R.User.groupId, null)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.in(R.User.groupId, ids)
 				);
 		return count;
@@ -154,11 +157,11 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
 	public int removePhy(Integer[] ids) {
-		int count = super.delete(ids);
-		super.delete(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
+		int count = super.deletePhy(ids);
+		super.deletePhy(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
 		super.update(sql(User.class)
 				.updateNeed(R.User.groupId, null)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.in(R.User.groupId, ids)
 				);
 		return count;
@@ -166,7 +169,7 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 
 	@Override
 	public DataPage<Group> page(String parentName, String groupName,
-			CloseStatus status, int pageNo, int pageSize) {
+			OpenClose status, int pageNo, int pageSize) {
 		
 		parentName = StringUtils.trimToNull(parentName);
 		groupName = StringUtils.trimToNull(groupName);
@@ -183,7 +186,7 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
-	public int openClose(Integer[] ids, CloseStatus status) {
+	public int openClose(Integer[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);
 	}
 
@@ -191,7 +194,7 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 	public boolean existName(String name, Integer excludeId) {
 		return this.exist(sql()
 				.eqAst(R.Group.name, name)
-				.ne(R.Group.status, CloseStatus.DELETE)
+				.eq(R.Group.deleted, YesNo.NO)
 				.ne(R.Group.id, excludeId)
 				);
 	}

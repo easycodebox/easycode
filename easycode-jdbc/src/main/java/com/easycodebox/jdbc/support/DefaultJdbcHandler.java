@@ -20,23 +20,18 @@ import com.easycodebox.jdbc.grammar.SqlGrammar;
  * @author WangXiaoJin
  *
  */
-public class DefaultJdbcPreHandler implements JdbcPreHandler {
+public class DefaultJdbcHandler implements JdbcHandler {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultJdbcPreHandler.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DefaultJdbcHandler.class);
 	
-	public static final Object SYS_USER_ID = "0";
-	public static final String SYS_USERNAME = "系统";
-	
-	public static final String CREATOR_FIELD_NAME = "creator";
-	public static final String CREATE_TIME_FIELD_NAME = "createTime";
-	public static final String MODIFIER_FIELD_NAME = "modifier";
-	public static final String MODIFY_TIME_FIELD_NAME = "modifyTime";
-	
-	private Object sysUserId = SYS_USER_ID;
-	private String creatorFieldName = CREATOR_FIELD_NAME;
-	private String createTimeFieldName = CREATE_TIME_FIELD_NAME;
-	private String modifierFieldName = MODIFIER_FIELD_NAME;
-	private String modifyTimeFieldName = MODIFY_TIME_FIELD_NAME;
+	private Object sysUserId = "0";
+	private String sysUsername = "系统";
+	private String creatorFieldName = "creator";
+	private String createTimeFieldName = "createTime";
+	private String modifierFieldName = "modifier";
+	private String modifyTimeFieldName = "modifyTime";
+	private String statusFieldName = "status";
+	private String deletedFieldName = "deleted";
 	
 	private SecurityUser securityUser = new SecurityUser() {
 
@@ -243,6 +238,30 @@ public class DefaultJdbcPreHandler implements JdbcPreHandler {
 
 	public void setDateFactory(DateFactory dateFactory) {
 		this.dateFactory = dateFactory;
+	}
+
+	public String getSysUsername() {
+		return sysUsername;
+	}
+
+	public void setSysUsername(String sysUsername) {
+		this.sysUsername = sysUsername;
+	}
+
+	public String getStatusFieldName() {
+		return statusFieldName;
+	}
+
+	public void setStatusFieldName(String statusFieldName) {
+		this.statusFieldName = statusFieldName;
+	}
+
+	public String getDeletedFieldName() {
+		return deletedFieldName;
+	}
+
+	public void setDeletedFieldName(String deletedFieldName) {
+		this.deletedFieldName = deletedFieldName;
 	}
 	
 }

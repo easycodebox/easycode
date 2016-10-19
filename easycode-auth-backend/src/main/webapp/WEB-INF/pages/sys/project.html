@@ -46,7 +46,7 @@
 								
 								<div class="form-group">
 									<label>状态：</label>
-									[@e.radioEnum labelClass="radio-inline" name="status" enumName="CloseStatus" exclude="DELETE" /]
+									[@e.radioEnum labelClass="radio-inline" name="status" enumName="OpenClose" /]
 								</div>
 								
 								<div class="form-btns">
@@ -169,7 +169,7 @@
 						<label class="required">状态：</label>
 					</th>
 					<td>
-						[@e.radioEnum name="status" enumName="CloseStatus" exclude="DELETE" 
+						[@e.radioEnum name="status" enumName="OpenClose" 
 								tagAttr='{
 									last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
 									all: "v-model=\'project.status.className\'"
@@ -220,7 +220,7 @@
 						<label class="required">状态：</label>
 					</th>
 					<td>
-						[@e.radioEnum name="status" enumName="CloseStatus" exclude="DELETE" 
+						[@e.radioEnum name="status" enumName="OpenClose" 
 								tagAttr='{
 									last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
 									all: "v-model=\'project.status.className\'"

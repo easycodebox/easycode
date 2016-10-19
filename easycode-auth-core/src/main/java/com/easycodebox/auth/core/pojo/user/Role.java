@@ -7,7 +7,7 @@ import javax.persistence.*;
 import com.easycodebox.auth.core.util.mybatis.GeneratedValue;
 import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
 /**
@@ -41,7 +41,12 @@ public class Role extends AbstractOperateEntity {
 	/**
 	 * 状态
 	 */
-	private CloseStatus status;
+	private OpenClose status;
+	
+	/**
+	 * 是否删除
+	 */
+	private YesNo deleted;
 	
 	/**
 	 * 描述
@@ -106,14 +111,22 @@ public class Role extends AbstractOperateEntity {
 		this.sort = sort;
 	}
 	
-	public CloseStatus getStatus() {
+	public OpenClose getStatus() {
 		return status;
 	}
 	
-	public void setStatus(CloseStatus status) {
+	public void setStatus(OpenClose status) {
 		this.status = status;
 	}
 	
+	public YesNo getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(YesNo deleted) {
+		this.deleted = deleted;
+	}
+
 	public String getDescription() {
 		return description;
 	}

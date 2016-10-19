@@ -17,8 +17,8 @@ import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.OperationService;
 import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.Resources;
 import com.easycodebox.common.jackson.Jacksons;
@@ -202,7 +202,7 @@ public class OperationController extends BaseController {
 	}
 	
 	@ResponseBody
-	public CodeMsg openClose(Long[] ids, CloseStatus status) throws Exception {
+	public CodeMsg openClose(Long[] ids, OpenClose status) throws Exception {
 		Validators.instance(ids)
 			.minLength(1, "主键参数不能传空值")
 			.notEmptyInside("主键参数不能传空值");

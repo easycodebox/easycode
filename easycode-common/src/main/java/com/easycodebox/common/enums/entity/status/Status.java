@@ -4,8 +4,7 @@ import com.easycodebox.common.enums.DetailEnum;
 
 public enum Status implements DetailEnum<Integer>{
 	
-	NEW(0, "新建"),
-    DELETE(9, "删除");
+	NEW(0, "新建");
 	
 	private Integer value;
 	private String desc;

@@ -12,7 +12,7 @@ import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.tag.IdConverter;
-import com.easycodebox.jdbc.support.DefaultJdbcPreHandler;
+import com.easycodebox.jdbc.support.JdbcHandler;
 
 /**
  * 用户ID转换器
@@ -29,6 +29,8 @@ public class UserIdConverter implements IdConverter {
 	
 	@Resource
 	private UserService userService;
+	@Resource
+	private JdbcHandler jdbcHandler;
 	
 	/**
 	 * @param prop （可选） 某些情况下需要提供对象的属性名，特别是提供不同的属性名显示不同值的场景。
@@ -40,12 +42,12 @@ public class UserIdConverter implements IdConverter {
 			return null;
 		else {
 			User val = null;
-			if (DefaultJdbcPreHandler.SYS_USER_ID.equals(id.toString())) {
+			if (jdbcHandler.getSysUserId().equals(id.toString())) {
 				val = new User();
 				val.setId(id.toString());
 				val.setIsSuperAdmin(YesNo.YES);
-				val.setNickname(DefaultJdbcPreHandler.SYS_USERNAME);
-				val.setRealname(DefaultJdbcPreHandler.SYS_USERNAME);
+				val.setNickname(jdbcHandler.getSysUsername());
+				val.setRealname(jdbcHandler.getSysUsername());
 			} else
 				val = userService.load(id.toString());
 			if (val != null && StringUtils.isNotBlank(prop)) {

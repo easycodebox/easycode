@@ -22,8 +22,8 @@ import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractService;
@@ -42,11 +42,11 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 	private RoleMapper roleMapper;
 	
 	@Override
-	public List<Role> list(CloseStatus status, String eqName) {
+	public List<Role> list(OpenClose status, String eqName) {
 		return super.list(sql()
 				.eq(R.Role.status, status)
 				.eq(R.Role.name, eqName)
-				.ne(R.Role.status, CloseStatus.DELETE)
+				.eq(R.Role.deleted, YesNo.NO)
 				.desc(R.Role.sort)
 				.desc(R.Role.createTime)
 				);
@@ -55,7 +55,10 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 	@Override
 	@Cacheable(cacheNames=Constants.CN.ROLE)
 	public Role load(Integer id) {
-		Role data = super.get(id, CloseStatus.OPEN, CloseStatus.CLOSE);
+		Role data = super.get(sql()
+				.eq(R.Role.id, id)
+				.eq(R.Role.deleted, YesNo.NO)
+				);
 		if (data != null) {
 			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
 			data.setModifierName(userIdConverter.id2RealOrNickname(data.getModifier()));
@@ -71,7 +74,8 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 		Assert.isFalse(this.existName(role.getName(), role.getId()),
 				CodeMsgExt.FAIL.msg("角色名{0}已被占用", role.getName()));
 		if(role.getStatus() == null)
-			role.setStatus(CloseStatus.OPEN);
+			role.setStatus(OpenClose.OPEN);
+		role.setDeleted(YesNo.NO);
 		super.save(role);
 		return role;
 	}
@@ -108,10 +112,10 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
 	public int remove(Integer[] ids) {
-		super.delete(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
-		super.delete(sql(UserRole.class).in(R.UserRole.roleId, ids));
-		super.delete(sql(RoleOperation.class).in(R.RoleOperation.roleId, ids));
-		return super.updateStatus(ids, CloseStatus.DELETE);
+		super.deletePhy(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
+		super.deletePhy(sql(UserRole.class).in(R.UserRole.roleId, ids));
+		super.deletePhy(sql(RoleOperation.class).in(R.RoleOperation.roleId, ids));
+		return super.delete(ids);
 	}
 	
 	@Override
@@ -124,10 +128,10 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
 	public int removePhy(Integer[] ids) {
-		super.delete(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
-		super.delete(sql(UserRole.class).in(R.UserRole.roleId, ids));
-		super.delete(sql(RoleOperation.class).in(R.RoleOperation.roleId, ids));
-		return super.delete(ids);
+		super.deletePhy(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
+		super.deletePhy(sql(UserRole.class).in(R.UserRole.roleId, ids));
+		super.deletePhy(sql(RoleOperation.class).in(R.RoleOperation.roleId, ids));
+		return super.deletePhy(ids);
 	}
 	
 	@Override
@@ -138,16 +142,16 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, allEntries=true),
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
-	public int openClose(Integer[] ids, CloseStatus status) {
+	public int openClose(Integer[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);
 	}
 	
 	@Override
-	public DataPage<Role> page(String name, CloseStatus status, int pageNo, int pageSize) {
+	public DataPage<Role> page(String name, OpenClose status, int pageNo, int pageSize) {
 		return super.page(sql()
 				.likeTrim(R.Role.name, name)
 				.eq(R.Role.status, status)
-				.ne(R.Role.status, CloseStatus.DELETE)
+				.eq(R.Role.deleted, YesNo.NO)
 				.desc(R.Role.sort)
 				.desc(R.Role.createTime)
 				.limit(pageNo, pageSize)
@@ -173,7 +177,7 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 
 	@Override
 	public List<Role> listAllByGroupId(int groupId) {
-		List<Role> rs = this.list(CloseStatus.OPEN, null);
+		List<Role> rs = this.list(OpenClose.OPEN, null);
 		List<Role> owns = this.listOpenedByGroupId(groupId);
 		for(Role o : owns) {
 			for(Role r : rs) {
@@ -189,7 +193,7 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 	@Override
 	public List<Role> listAllByUserId(String userId) {
 		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK, "用户ID");
-		List<Role> rs = this.list(CloseStatus.OPEN, null);
+		List<Role> rs = this.list(OpenClose.OPEN, null);
 		List<Role> owns = this.listOpenedByUserId(userId);
 		for(Role o : owns) {
 			for(Role r : rs) {
@@ -212,7 +216,7 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
 	public void installRolesOfGroup(int groupId, Integer[] roleIds) {
-		super.delete(sql(GroupRole.class)
+		super.deletePhy(sql(GroupRole.class)
 				.eq(R.GroupRole.groupId, groupId)
 				);
 		if(roleIds != null && roleIds.length > 0) {
@@ -234,7 +238,7 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 	})
 	public void installRolesOfUser(String userId, Integer[] roleIds) {
 		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK, "用户ID");
-		super.delete(sql(UserRole.class)
+		super.deletePhy(sql(UserRole.class)
 				.eq(R.UserRole.userId, userId)
 				);
 		if(roleIds != null && roleIds.length > 0) {
@@ -251,7 +255,7 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 	public boolean existName(String name, Integer excludeId) {
 		return this.exist(sql()
 				.eqAst(R.Role.name, name)
-				.ne(R.Role.status, CloseStatus.DELETE)
+				.eq(R.Role.deleted, YesNo.NO)
 				.ne(R.Role.id, excludeId)
 				);
 	}

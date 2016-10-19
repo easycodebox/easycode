@@ -21,7 +21,7 @@ import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.ws.UserWsService;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.StringUtils;
@@ -92,7 +92,7 @@ public class UserWsServiceImpl implements UserWsService {
 	@Override
 	public DataPage<UserWsBo> page(Integer groupId, String userNo,
 			String username, String nickname, String realname,
-			CloseStatus status, String email, String mobile, String[] ids,
+			OpenClose status, String email, String mobile, String[] ids,
 			Integer pageNo, Integer pageSize)throws ErrorContext {
 		return userService.page(groupId, userNo, username, nickname, 
 				realname, status, email, mobile, ids, pageNo, pageSize);
@@ -108,7 +108,7 @@ public class UserWsServiceImpl implements UserWsService {
 	}
 
 	@Override
-	public int updateStatus(String[] ids, CloseStatus status)
+	public int updateStatus(String[] ids, OpenClose status)
 			throws ErrorContext {
 		return userService.openClose(ids, status);
 	}
@@ -186,7 +186,7 @@ public class UserWsServiceImpl implements UserWsService {
 		pojo = userService.add(pojo);
 		
 		if(StringUtils.isNotBlank(roleName)) {
-			List<Role> role = roleService.list(CloseStatus.OPEN, roleName);
+			List<Role> role = roleService.list(OpenClose.OPEN, roleName);
 			if(role.size() > 0) {
 				if(role.size() > 1) {
 					LOG.error("There are multiple role name {0}", roleName);

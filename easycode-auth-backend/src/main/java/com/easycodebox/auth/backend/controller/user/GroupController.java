@@ -12,7 +12,7 @@ import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.pojo.user.Group;
 import com.easycodebox.auth.core.service.user.GroupService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.dto.DataPage;
@@ -102,7 +102,7 @@ public class GroupController extends BaseController {
 	}
 	
 	@ResponseBody
-	public CodeMsg openClose(Integer[] ids, CloseStatus status) throws Exception {
+	public CodeMsg openClose(Integer[] ids, OpenClose status) throws Exception {
 		Validators.instance(ids)
 			.minLength(1, "主键参数不能传空值")
 			.notEmptyInside("主键参数不能传空值");

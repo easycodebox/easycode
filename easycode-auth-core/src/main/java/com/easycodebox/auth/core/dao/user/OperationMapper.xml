@@ -10,7 +10,7 @@
 		FROM u_operation o 
 		LEFT JOIN sys_project p ON o.projectId = p.id
 		LEFT JOIN u_operation pa ON o.parentId = pa.id
-		WHERE o.status != %{CloseStatus.DELETE}
+		WHERE o.deleted = %{YesNo.NO}
 		<if test="id != null">
 			AND o.id = #{id}
 		</if>
@@ -26,7 +26,7 @@
 		FROM u_operation o 
 		LEFT JOIN sys_project p ON o.projectId = p.id
 		LEFT JOIN u_operation pa ON o.parentId = pa.id
-		WHERE o.status != %{CloseStatus.DELETE}
+		WHERE o.deleted = %{YesNo.NO}
 		<if test="parentName != null">
 			AND pa.name LIKE CONCAT('%',#{parentName},'%')
 		</if>
@@ -60,7 +60,7 @@
 	
 	<select id="listOperationsOfRoles" resultType="Operation">
 		SELECT * FROM u_operation o 
-		WHERE o.status = %{CloseStatus.OPEN}
+		WHERE o.deleted = %{YesNo.NO}
 		<if test="projectId != null">
 			AND o.projectId = #{projectId}
 		</if>

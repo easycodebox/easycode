@@ -14,7 +14,7 @@ import com.easycodebox.auth.core.pojo.user.User;
 import com.easycodebox.auth.core.service.user.GroupService;
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.security.SecurityUtils;
@@ -121,7 +121,7 @@ public class UserController extends BaseController {
 	}
 	
 	@ResponseBody
-	public CodeMsg openClose(String[] ids, CloseStatus status) throws Exception {
+	public CodeMsg openClose(String[] ids, OpenClose status) throws Exception {
 		Validators.instance(ids)
 			.minLength(1, "主键参数不能传空值")
 			.notEmptyInside("主键参数不能传空值");

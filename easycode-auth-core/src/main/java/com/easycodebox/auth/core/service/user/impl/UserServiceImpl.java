@@ -18,7 +18,7 @@ import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.generator.Generators;
 import com.easycodebox.jdbc.JoinType;
@@ -38,7 +38,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	@Override
 	public List<User> list() {
 		return super.list(sql()
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.desc(R.User.sort)
 				.desc(R.User.createTime)
 				);
@@ -49,7 +49,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	public User load(String id) {
 		return super.get(sql()
 				.eq(R.User.id, id)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				);
 	}
 	
@@ -57,7 +57,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	public User loadByUsername(String username) {
 		return super.get(sql()
 				.eq(R.User.username, username)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				);
 	}
 
@@ -74,7 +74,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 				CodeMsgExt.FAIL.msg("用户名{0}已被占用", user.getUsername()));
 		
 		if(user.getStatus() == null)
-			user.setStatus(CloseStatus.OPEN);
+			user.setStatus(OpenClose.OPEN);
 		user.setLoginFail(0);
 		if(StringUtils.isBlank(user.getRealname()))
 			user.setRealname(null);
@@ -97,6 +97,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 		}
 		//不能通过外部添加超级管理员
 		user.setIsSuperAdmin(YesNo.NO);
+		user.setDeleted(YesNo.NO);
 		super.save(user);
 		return user;
 	}
@@ -162,7 +163,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
 	public int remove(String[] ids) {
-		return super.updateStatus(ids, CloseStatus.DELETE);
+		return super.delete(ids);
 	}
 	
 	@Override
@@ -173,12 +174,12 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
 	public int removePhy(String[] ids) {
-		return super.delete(ids);
+		return super.deletePhy(ids);
 	}
 
 	@Override
 	public DataPage<User> page(String groupName, String userNo, String username, 
-			String nickname, String realname, CloseStatus status, 
+			String nickname, String realname, OpenClose status, 
 			String email, String mobile, int pageNo, int pageSize) {
 		return super.page(sql()
 				.join(R.User.group, "g", JoinType.LEFT_OUTER_JOIN)
@@ -192,7 +193,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 				.likeTrim(R.User.email, email)
 				.likeTrim(R.User.mobile, mobile)
 				.eq(R.User.status, status)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.desc(R.User.sort)
 				.desc(R.User.createTime)
 				.limit(pageNo, pageSize)
@@ -202,7 +203,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	@Override
 	public DataPage<UserWsBo> page(Integer groupId, String userNo,
 			String username, String nickname, String realname,
-			CloseStatus status, String email, String mobile, String[] ids,
+			OpenClose status, String email, String mobile, String[] ids,
 			Integer pageNo, Integer pageSize) {
 		if(ids != null && ids.length == 0)
 			return new DataPage<UserWsBo>();
@@ -215,7 +216,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 				.likeTrim(R.User.email, email)
 				.likeTrim(R.User.mobile, mobile)
 				.eq(R.User.status, status)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.in(R.User.id, ids)
 				.desc(R.User.sort)
 				.desc(R.User.createTime)
@@ -230,7 +231,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
-	public int openClose(String[] ids, CloseStatus status) {
+	public int openClose(String[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);
 	}
 	
@@ -239,19 +240,19 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 		User u = this.loadByUsername(username);
 		if(u == null)
 			return null;
-		else if(!u.getPassword().equals(DigestUtils.md5Hex(password))) {
+		else if (!u.getPassword().equals(DigestUtils.md5Hex(password))) {
 			Integer loginFail = u.getLoginFail() + 1;
 			//用户状态为开启下，登录超过指定次数，则锁住该用户
 			if(loginFail > Constants.loginFail
-					&& u.getStatus() == CloseStatus.OPEN)
+					&& u.getStatus() == OpenClose.OPEN)
 				
 				super.update(sql()
 						.update(R.User.loginFail, loginFail)
-						.update(R.User.status, CloseStatus.CLOSE)
+						.update(R.User.status, OpenClose.CLOSE)
 						.eq(R.User.id, u.getId())
 						);
 			return null;
-		}else if(u.getStatus() == CloseStatus.OPEN
+		} else if (u.getStatus() == OpenClose.OPEN
 					&& u.getLoginFail() > 0) {
 			super.update(sql()
 					.update(R.User.loginFail, 0)
@@ -265,7 +266,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	public boolean existUsername(String username, String excludeId) {
 		return this.exist(sql()
 				.eqAst(R.User.username, username)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.ne(R.User.id, excludeId)
 				);
 	}
@@ -274,7 +275,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	public boolean existNickname(String nickname, String excludeId) {
 		return this.exist(sql()
 				.eqAst(R.User.nickname, nickname)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.ne(R.User.id, excludeId)
 				);
 	}
@@ -297,7 +298,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	public String getPwd(String id) {
 		return super.get(sql()
 				.column(R.User.password)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.eqAst(R.User.id, id)
 				, String.class);
 	}
@@ -308,7 +309,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	public int updatePwd(String newPwd, String id) {
 		return super.update(sql()
 				.updateAst(R.User.password, newPwd)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.eqAst(R.User.id, id)
 				);
 	}
@@ -341,7 +342,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	public YesNo isSuperAdmin(String id) {
 		return super.get(sql()
 				.column(R.User.isSuperAdmin)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.eqAst(R.User.id, id)
 				, YesNo.class);
 	}
@@ -350,7 +351,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	public Integer getGroupId(String id) {
 		return super.get(sql()
 				.column(R.User.groupId)
-				.ne(R.User.status, CloseStatus.DELETE)
+				.eq(R.User.deleted, YesNo.NO)
 				.eqAst(R.User.id, id)
 				, Integer.class);
 	}

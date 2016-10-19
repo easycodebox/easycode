@@ -101,10 +101,10 @@
         <!-- ===== 配置数据库相关配置 ===== -->
         <property name="dataSource" ref="dataSource" />
 	    <property name="maxLoginFail" value="${max.login.fail}" />
-	    <property name="verifySql" value="SELECT id, password, status, loginFail FROM u_user WHERE username=? AND status != 9 " />
-	    <property name="loginFailSql" value="UPDATE u_user SET loginFail = loginFail + 1 WHERE username=? AND status != 9 " />
-	    <property name="resetFailSql" value="UPDATE u_user SET loginFail = 0 WHERE username=? AND status != 9 " />
-	    <property name="closeUser" value="UPDATE u_user SET loginFail = loginFail + 1, status = 1 WHERE username=? AND status != 9 " />
+	    <property name="verifySql" value="SELECT id, password, status, loginFail FROM u_user WHERE username=? AND deleted = 0 " />
+	    <property name="loginFailSql" value="UPDATE u_user SET loginFail = loginFail + 1 WHERE username=? AND deleted = 0 " />
+	    <property name="resetFailSql" value="UPDATE u_user SET loginFail = 0 WHERE username=? AND deleted = 0 " />
+	    <property name="closeUser" value="UPDATE u_user SET loginFail = loginFail + 1, status = 1 WHERE username=? AND deleted = 0 " />
 	    <property name="passwordEncoder" ref="passwordEncoder" />
 	    <!-- ===== 配置清除缓存策略，当user的loginFail、status字段修改后需要清除相应的user缓存  ===== -->
         <property name="clearUserCache" ref="urlClearUserCache" />

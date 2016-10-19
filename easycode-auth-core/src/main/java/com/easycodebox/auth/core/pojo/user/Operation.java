@@ -8,7 +8,7 @@ import com.easycodebox.auth.core.pojo.sys.Project;
 import com.easycodebox.auth.core.util.mybatis.GeneratedValue;
 import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
 /**
@@ -47,7 +47,12 @@ public class Operation extends AbstractOperateEntity {
 	/**
 	 * 状态
 	 */
-	private CloseStatus status;
+	private OpenClose status;
+	
+	/**
+	 * 是否删除
+	 */
+	private YesNo deleted;
 	
 	/**
 	 * 菜单 - 是否为菜单按钮
@@ -165,14 +170,22 @@ public class Operation extends AbstractOperateEntity {
 		this.name = name;
 	}
 	
-	public CloseStatus getStatus() {
+	public OpenClose getStatus() {
 		return status;
 	}
 	
-	public void setStatus(CloseStatus status) {
+	public void setStatus(OpenClose status) {
 		this.status = status;
 	}
 	
+	public YesNo getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(YesNo deleted) {
+		this.deleted = deleted;
+	}
+
 	public YesNo getIsMenu() {
 		return isMenu;
 	}

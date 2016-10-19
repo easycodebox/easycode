@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.easycodebox.auth.core.pojo.user.User;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.login.ws.bo.UserWsBo;
@@ -70,11 +70,11 @@ public interface UserService {
 	 * @return
 	 */
 	DataPage<User> page(String groupName, String userNo, String username, 
-			String nickname, String realname, CloseStatus status, 
+			String nickname, String realname, OpenClose status, 
 			String email, String mobile, int pageNo, int pageSize);
 	
 	DataPage<UserWsBo> page(Integer groupId, String userNo, String username, String nickname, 
-			String realname, CloseStatus status, String email, String mobile,
+			String realname, OpenClose status, String email, String mobile,
 			String[] ids, Integer pageNo, Integer pageSize);
 			
 	/**
@@ -83,7 +83,7 @@ public interface UserService {
 	 * @param status
 	 * @return
 	 */
-	int openClose(String[] ids, CloseStatus status);
+	int openClose(String[] ids, OpenClose status);
 	
 	/**
 	 * 登录统一使用CAS系统

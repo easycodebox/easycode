@@ -19,7 +19,8 @@ import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractService;
@@ -38,11 +39,11 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	private RoleProjectService roleProjectService;
 	
 	@Override
-	public List<Project> list(String name, CloseStatus status) {
+	public List<Project> list(String name, OpenClose status) {
 		return super.list(sql()
 				.likeTrim(R.Project.name, name)
 				.eq(R.Project.status, status)
-				.ne(R.Project.status, CloseStatus.DELETE)
+				.eq(R.Project.deleted, YesNo.NO)
 				.desc(R.Project.sort)
 				.desc(R.Project.createTime)
 				);
@@ -53,7 +54,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	public Project load(Integer id) {
 		Project data = super.get(sql()
 				.eq(R.Project.id, id)
-				.ne(R.Project.status, CloseStatus.DELETE)
+				.eq(R.Project.deleted, YesNo.NO)
 				);
 		if (data != null) {
 			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
@@ -67,7 +68,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	public Project load(String projectNo) {
 		return super.get(sql()
 				.eq(R.Project.projectNo, projectNo)
-				.ne(R.Project.status, CloseStatus.DELETE)
+				.eq(R.Project.deleted, YesNo.NO)
 				);
 	}
 
@@ -85,7 +86,8 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 		Integer maxNum = super.get(sql().max(R.Project.num), Integer.class);
 		project.setNum(maxNum == null ? 1 : ++maxNum);
 		if(project.getStatus() == null)
-			project.setStatus(CloseStatus.OPEN);
+			project.setStatus(OpenClose.OPEN);
+		project.setDeleted(YesNo.NO);
 		super.save(project);
 		return project;
 	}
@@ -125,7 +127,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	})
 	public int remove(Integer[] ids) {
 		roleProjectService.removePhyByProjectIds(ids);
-		return super.updateStatus(ids, CloseStatus.DELETE);
+		return super.delete(ids);
 	}
 	
 	@Override
@@ -138,16 +140,16 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	})
 	public int removePhy(Integer[] ids) {
 		roleProjectService.removePhyByProjectIds(ids);
-		return super.delete(ids);
+		return super.deletePhy(ids);
 	}
 
 	@Override
-	public DataPage<Project> page(String name, String projectNo, CloseStatus status, int pageNo, int pageSize) {
+	public DataPage<Project> page(String name, String projectNo, OpenClose status, int pageNo, int pageSize) {
 		return super.page(sql()
 				.likeTrim(R.Project.name, name)
 				.likeTrim(R.Project.projectNo, projectNo)
 				.eq(R.Project.status, status)
-				.ne(R.Project.status, CloseStatus.DELETE)
+				.eq(R.Project.deleted, YesNo.NO)
 				.desc(R.Project.sort)
 				.desc(R.Project.createTime)
 				.limit(pageNo, pageSize)
@@ -161,7 +163,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
-	public int openClose(Integer[] ids, CloseStatus status) {
+	public int openClose(Integer[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);
 	}
 
@@ -169,7 +171,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	public boolean existName(String name, Integer excludeId) {
 		return this.exist(sql()
 				.eq(R.Project.name, name)
-				.ne(R.Project.status, CloseStatus.DELETE)
+				.eq(R.Project.deleted, YesNo.NO)
 				.ne(R.Project.id, excludeId)
 				);
 	}
@@ -178,7 +180,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	public boolean existProjectNo(String projectNo, Integer excludeId) {
 		return this.exist(sql()
 				.eq(R.Project.projectNo, projectNo)
-				.ne(R.Project.status, CloseStatus.DELETE)
+				.eq(R.Project.deleted, YesNo.NO)
 				.ne(R.Project.id, excludeId)
 				);
 	}

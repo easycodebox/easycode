@@ -1,6 +1,6 @@
 package com.easycodebox.login.ws;
 
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.login.ws.bo.UserExtWsBo;
@@ -23,7 +23,7 @@ public interface UserWsService {
 	UserWsBo load(String id, String username, String nickname) throws ErrorContext;
 	
 	DataPage<UserWsBo> page(Integer groupId, String userNo, String username, String nickname, 
-			String realname, CloseStatus status, String email, String mobile,
+			String realname, OpenClose status, String email, String mobile,
 			String[] ids, Integer pageNo, Integer pageSize) throws ErrorContext;
 	
 	int updatePwd(String id, String oldPwd, String newPwd) throws ErrorContext;
@@ -35,7 +35,7 @@ public interface UserWsService {
 	 * @return
 	 * @throws ErrorContext
 	 */
-	int updateStatus(String[] ids, CloseStatus status) throws ErrorContext;
+	int updateStatus(String[] ids, OpenClose status) throws ErrorContext;
 	
 	int update(UserWsBo userWsBo) throws ErrorContext;
 	

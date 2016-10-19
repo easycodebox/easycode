@@ -8,7 +8,7 @@ import com.easycodebox.auth.core.util.mybatis.GeneratedValue;
 import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.Gender;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
 /**
@@ -62,7 +62,12 @@ public class User extends AbstractOperateEntity {
 	/**
 	 * 状态
 	 */
-	private CloseStatus status;
+	private OpenClose status;
+	
+	/**
+	 * 是否删除
+	 */
+	private YesNo deleted;
 	
 	/**
 	 * 是否是超级管理员，超级管理员具备任何权限
@@ -177,14 +182,22 @@ public class User extends AbstractOperateEntity {
 		this.realname = realname;
 	}
 	
-	public CloseStatus getStatus() {
+	public OpenClose getStatus() {
 		return status;
 	}
 	
-	public void setStatus(CloseStatus status) {
+	public void setStatus(OpenClose status) {
 		this.status = status;
 	}
 	
+	public YesNo getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(YesNo deleted) {
+		this.deleted = deleted;
+	}
+
 	public YesNo getIsSuperAdmin() {
 		return isSuperAdmin;
 	}

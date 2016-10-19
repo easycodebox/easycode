@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.easycodebox.auth.core.pojo.user.Operation;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.lang.dto.DataPage;
 
 /**
@@ -20,7 +20,7 @@ public interface OperationService {
 	 * 权限列表
 	 * @return
 	 */
-	List<Operation> list(Integer projectId, CloseStatus status, YesNo isMenu);
+	List<Operation> list(Integer projectId, OpenClose status, YesNo isMenu);
 	
 	/**
 	 * 权限详情  - 两种获取方式 1.只需要id 2.只需要projectId和url
@@ -63,7 +63,7 @@ public interface OperationService {
 	 * @param status
 	 * @return
 	 */
-	int openClose(Long[] ids, CloseStatus status);
+	int openClose(Long[] ids, OpenClose status);
 	
 	/**
 	 * 权限分页
@@ -72,7 +72,7 @@ public interface OperationService {
 	 * @return
 	 */
 	DataPage<Operation> page(String parentName, String projectName, 
-			String operationName, YesNo isMenu, CloseStatus status, 
+			String operationName, YesNo isMenu, OpenClose status, 
 			String url, int pageNo, int pageSize);
 	
 	/**

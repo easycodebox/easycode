@@ -3,7 +3,7 @@ package com.easycodebox.auth.core.service.sys;
 import java.util.List;
 
 import com.easycodebox.auth.core.pojo.sys.Partner;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.lang.dto.DataPage;
 
 /**
@@ -60,7 +60,7 @@ public interface PartnerService {
 	 * @return
 	 */
 	DataPage<Partner> page(String name, String partnerKey, 
-			String website, CloseStatus status, int pageNo, int pageSize);
+			String website, OpenClose status, int pageNo, int pageSize);
 	
 	/**
 	 * 判断是否存在指定的名字
@@ -76,6 +76,6 @@ public interface PartnerService {
 	 * @param status
 	 * @return
 	 */
-	int openClose(String[] ids, CloseStatus status);
+	int openClose(String[] ids, OpenClose status);
 	
 }

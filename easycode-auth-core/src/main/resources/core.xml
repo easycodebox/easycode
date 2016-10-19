@@ -166,7 +166,7 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
 		p:basePackage="com.easycodebox.auth.core.dao" />
 	<!-- 在insert、update时修改自动设置操作人、操作时间 -->
-	<bean id="jdbcPreHandler" class="com.easycodebox.jdbc.support.DefaultJdbcPreHandler" />
+	<bean id="jdbcHandler" class="com.easycodebox.jdbc.support.DefaultJdbcHandler" />
 	<!-- jdbc处理器，实际处理sql的类 -->
 	<bean id="jdbcProcessor" class="com.easycodebox.jdbc.mybatis.MybatisJdbcProcessor"
 		p:sqlSessionTemplate-ref="sqlSessionTemplate" />

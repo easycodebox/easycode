@@ -20,9 +20,6 @@ import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.PhoneType;
 import com.easycodebox.common.enums.entity.RequestMethod;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseDelStatus;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
-import com.easycodebox.common.enums.entity.status.DeleteStatus;
 import com.easycodebox.common.enums.entity.status.OnShelfStatus;
 import com.easycodebox.common.enums.entity.status.Status;
 import com.easycodebox.common.enums.entity.status.UserStatus;
@@ -45,9 +42,6 @@ import com.easycodebox.common.enums.entity.status.VerifyStatus;
 	DataType.class,
 	RequestMethod.class,
 	/***** 状态  分割线 *****/
-	CloseDelStatus.class,
-	CloseStatus.class,
-	DeleteStatus.class,
 	OnShelfStatus.class,
 	Status.class,
 	UserStatus.class,

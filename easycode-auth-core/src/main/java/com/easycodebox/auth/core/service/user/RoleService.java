@@ -3,7 +3,7 @@ package com.easycodebox.auth.core.service.user;
 import java.util.List;
 
 import com.easycodebox.auth.core.pojo.user.Role;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.lang.dto.DataPage;
 
 /**
@@ -17,7 +17,7 @@ public interface RoleService {
 	 * @param eqName 角色名等于eqName的角色，不是like
 	 * @return
 	 */
-	List<Role> list(CloseStatus status, String eqName);
+	List<Role> list(OpenClose status, String eqName);
 	
 	/**
 	 * 角色详情
@@ -60,7 +60,7 @@ public interface RoleService {
 	 * @param status
 	 * @return
 	 */
-	int openClose(Integer[] ids, CloseStatus status);
+	int openClose(Integer[] ids, OpenClose status);
 	
 	/**
 	 * 角色分页
@@ -68,7 +68,7 @@ public interface RoleService {
 	 * @param pageSize
 	 * @return
 	 */
-	DataPage<Role> page(String name, CloseStatus status, int pageNo, int pageSize);
+	DataPage<Role> page(String name, OpenClose status, int pageNo, int pageSize);
 	
 	/**
 	 * 只列出已开放的角色

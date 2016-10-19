@@ -42,7 +42,7 @@ import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.freemarker.ConfigurationFactory;
 import com.easycodebox.common.lang.StringUtils;
@@ -78,12 +78,12 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	private OperationMapper operationMapper;
 	
 	@Override
-	public List<Operation> list(Integer projectId, CloseStatus status, YesNo isMenu) {
+	public List<Operation> list(Integer projectId, OpenClose status, YesNo isMenu) {
 		return super.list(sql()
 				.eq(R.Operation.projectId, projectId)
 				.eq(R.Operation.status, status)
 				.eq(R.Operation.isMenu, isMenu)
-				.ne(R.Operation.status, CloseStatus.DELETE)
+				.eq(R.Operation.deleted, YesNo.NO)
 				.desc(R.Operation.isMenu)
 				.desc(R.Operation.sort)
 				.desc(R.Operation.createTime)
@@ -118,7 +118,8 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 					CodeMsgExt.FAIL.msg("url{0}已被占用", operation.getUrl()));
 		
 		if(operation.getStatus() == null)
-			operation.setStatus(CloseStatus.OPEN);
+			operation.setStatus(OpenClose.OPEN);
+		operation.setDeleted(YesNo.NO);
 		super.save(operation);
 		return operation;
 	}
@@ -158,26 +159,26 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	@Log(title = "逻辑删除权限", moduleType = ModuleType.USER)
 	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	public int remove(Long[] ids) {
-		return super.updateStatus(ids, CloseStatus.DELETE);
+		return super.delete(ids);
 	}
 	
 	@Override
 	@Log(title = "物理删除权限", moduleType = ModuleType.USER)
 	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	public int removePhy(Long[] ids) {
-		return super.delete(ids);
+		return super.deletePhy(ids);
 	}
 	
 	@Override
 	@Log(title = "开启关闭权限", moduleType = ModuleType.USER)
 	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
-	public int openClose(Long[] ids, CloseStatus status) {
+	public int openClose(Long[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);
 	}
 
 	@Override
 	public DataPage<Operation> page(String parentName, String projectName, 
-			String operationName, YesNo isMenu, CloseStatus status, 
+			String operationName, YesNo isMenu, OpenClose status, 
 			String url, int pageNo, int pageSize) {
 		
 		parentName = StringUtils.trimToNull(parentName);
@@ -198,7 +199,8 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 			return super.list(sql()
 					.column(R.Operation.id)
 					.eq(R.Operation.projectId, projectId)
-					.eq(R.Operation.status, CloseStatus.OPEN)
+					.eq(R.Operation.deleted, YesNo.NO)
+					.eq(R.Operation.status, OpenClose.OPEN)
 					.desc(R.Operation.sort)
 					.desc(R.Operation.createTime)
 					, Long.class);
@@ -208,7 +210,8 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 					.join(R.Operation.roleOperations, "ro")
 					.distinct(R.Operation.id)
 					.eq(R.Operation.projectId, projectId)
-					.eq(R.Operation.status, CloseStatus.OPEN)
+					.eq(R.Operation.deleted, YesNo.NO)
+					.eq(R.Operation.status, OpenClose.OPEN)
 					.in(R.RoleOperation.roleId, roleIds)
 					.desc(R.Operation.sort)
 					.desc(R.Operation.createTime)
@@ -231,7 +234,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	public synchronized void importFromXml(List<InputStream> streams) throws Exception {
 		//此处不用truncate，因truncate不能被事务回滚
 		//super.truncate();
-		super.delete(sql());
+		super.deletePhy(sql());
 		SAXReader reader = new SAXReader();
 		for(int x = 0; x < streams.size(); x++) {
 			Document document = null;
@@ -260,7 +263,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 				Operation o1 = new Operation(StringUtils.isNotBlank(menu1Id) ? Long.parseLong(menu1Id) : cal1 , 
 						null, menu1Name, pro.getId(), YesNo.YES, menu1Url, menu1Description, menu1Icon);
 				if(StringUtils.isNotBlank(menu1Status)) {
-					CloseStatus st = Enum.valueOf(CloseStatus.class, menu1Status);
+					OpenClose st = Enum.valueOf(OpenClose.class, menu1Status);
 					o1.setStatus(st);
 				}
 				if(StringUtils.isNotBlank(menu1Sort)) {
@@ -283,7 +286,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 							o1.getId(), menu2Name,
 							pro.getId(), YesNo.YES, menu2Url, menu2Description, menu2Icon);
 					if(StringUtils.isNotBlank(menu2Status)) {
-						CloseStatus st = Enum.valueOf(CloseStatus.class, menu2Status);
+						OpenClose st = Enum.valueOf(OpenClose.class, menu2Status);
 						o2.setStatus(st);
 					}
 					if(StringUtils.isNotBlank(menu2Sort)) {
@@ -306,7 +309,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 								o2.getId(), menu3Name, 
 								pro.getId(), YesNo.YES, menu3Url, menu3Description, menu3Icon);
 						if(StringUtils.isNotBlank(menu3Status)) {
-							CloseStatus st = Enum.valueOf(CloseStatus.class, menu3Status);
+							OpenClose st = Enum.valueOf(OpenClose.class, menu3Status);
 							o3.setStatus(st);
 						}
 						if(StringUtils.isNotBlank(menu3Sort)) {
@@ -341,7 +344,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 			Operation o = new Operation(StringUtils.isNotBlank(id) ? Long.parseLong(id) : begin + x*multiple , 
 					menuId, name, projectId, YesNo.NO, url, description, null);
 			if(StringUtils.isNotBlank(status)) {
-				CloseStatus st = Enum.valueOf(CloseStatus.class, status);
+				OpenClose st = Enum.valueOf(OpenClose.class, status);
 				o.setStatus(st);
 			}
 			if(StringUtils.isNotBlank(sort)) {
@@ -391,7 +394,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 		Assert.notNull(userId, "userId can not be null.");
 		YesNo isSuperAdmin = userService.isSuperAdmin(userId);
 		if(isSuperAdmin == YesNo.YES)
-			return this.list(projectId, CloseStatus.OPEN, isMenu);
+			return this.list(projectId, OpenClose.OPEN, isMenu);
 		else {
 			Integer[] roleIds = roleService.listOpenedRoleIdsByUserId(userId);
 			return this.listOperationsOfRoles(roleIds, projectId, isMenu);
@@ -408,7 +411,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	public List<Operation> listTreeOperationsByRoleId(Integer roleId, YesNo isMenu) {
 		List<Operation> os = null;
 		if(roleId == null)
-			os =  this.list(null, CloseStatus.OPEN, isMenu);
+			os =  this.list(null, OpenClose.OPEN, isMenu);
 		else
 			os = this.listOperationsOfRole(roleId, isMenu);
 		return treeOperations(null, os, null);
@@ -416,7 +419,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 
 	@Override
 	public List<Operation> listAllTreeOperationsByRoleId(Integer roleId, YesNo isMenu) {
-		List<Operation> allOs = this.list(null, CloseStatus.OPEN, isMenu);
+		List<Operation> allOs = this.list(null, OpenClose.OPEN, isMenu);
 		List<Operation> userOs = this.listOperationsOfRole(roleId, isMenu);
 		return treeOperations(null, allOs, userOs);
 	}
@@ -495,7 +498,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	@Override
 	public List<Operation> listAllTreeOperationsByUserId(String userId, Integer projectId, YesNo isMenu) {
 		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK, "用户ID");
-		List<Operation> allOs = this.list(projectId, CloseStatus.OPEN, isMenu);
+		List<Operation> allOs = this.list(projectId, OpenClose.OPEN, isMenu);
 		List<Operation> userOs = this.listOperationsOfUser(userId, projectId, isMenu);
 		return treeOperations(null, allOs, userOs);
 	}
@@ -504,7 +507,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	@Log(title = "配置指定角色权限", moduleType = ModuleType.USER)
 	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	public void addOperationsOfRole(int roleId, Long[] operationIds) {
-		super.delete(sql(RoleOperation.class).eq(R.RoleOperation.roleId, roleId));
+		super.deletePhy(sql(RoleOperation.class).eq(R.RoleOperation.roleId, roleId));
 		for(int i = 0; i < operationIds.length; i++) {
 			RoleOperation ro = new RoleOperation();
 			ro.setRoleId(roleId);
@@ -529,7 +532,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	@Override
 	public List<Operation> listAllOpsOfRoles(Integer[] roleIds,
 			Integer projectId, YesNo isMenu) {
-		List<Operation> all = this.list(projectId, CloseStatus.OPEN, isMenu);
+		List<Operation> all = this.list(projectId, OpenClose.OPEN, isMenu);
 		List<Operation> owns = this.listOperationsOfRoles(roleIds, projectId, isMenu);
 		return analyzeOps(all, owns);
 	}
@@ -538,7 +541,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	@Cacheable(cacheNames=Constants.CN.OPERATION, keyGenerator=Constants.METHOD_ARGS_KEY_GENERATOR)
 	public List<Operation> listAllOpsOfUser(String userId, Integer projectId,
 			YesNo isMenu) {
-		List<Operation> all = this.list(projectId, CloseStatus.OPEN, isMenu);
+		List<Operation> all = this.list(projectId, OpenClose.OPEN, isMenu);
 		List<Operation> owns = this.listOperationsOfUser(userId, projectId, isMenu);
 		return analyzeOps(all, owns);
 	}
@@ -572,7 +575,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 		return this.exist(sql()
 				.eqAst(R.Operation.name, name)
 				.eq(R.Operation.projectId, projectId)
-				.ne(R.Operation.status, CloseStatus.DELETE)
+				.eq(R.Operation.deleted, YesNo.NO)
 				.ne(R.Operation.id, excludeId)
 				);
 	}
@@ -582,7 +585,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 		return this.exist(sql()
 				.eqAst(R.Operation.url, url)
 				.eq(R.Operation.projectId, projectId)
-				.ne(R.Operation.status, CloseStatus.DELETE)
+				.eq(R.Operation.deleted, YesNo.NO)
 				.ne(R.Operation.id, excludeId)
 				);
 	}

@@ -18,9 +18,9 @@ import com.easycodebox.common.lang.StringUtils;
 
 /**
  * 此类是为了解决MyBatis的XML文件中SQL语句出现枚举值而定义的
- * 例子:	SELECT * FROM u_operation o WHERE o.status != #{CloseStatus.DELETE} 
+ * 例子:	SELECT * FROM u_operation o WHERE o.status != #{OpenClose.CLOSE} 
  * 		ORDER BY o.sort DESC, o.createTime DESC
- * 		会把#{CloseStatus.DELETE} 自动转换成对应的枚举值
+ * 		会把#{OpenClose.CLOSE} 自动转换成对应的枚举值
  * 注意：当MAPPER文件中statementType="STATEMENT" 时，此类不会生效。建议使用替代类DelegateSqlSource
  * 使用配置：在Mybatis配置中增加<objectWrapperFactory type="com.easycodebox.common.mybatis.DefaultObjectWrapperFactory" />
  * @author WangXiaoJin
@@ -116,7 +116,7 @@ public class DefaultObjectWrapperFactory implements ObjectWrapperFactory {
 		
 		/**
 		 * 校验name是否是获取枚举值
-		 * name = CloseStatus.DELETE
+		 * name = OpenClose.CLOSE
 		 * @param name
 		 * @return
 		 */

@@ -18,7 +18,8 @@ import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.Generators;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
@@ -37,6 +38,7 @@ public class PartnerServiceImpl extends AbstractService<Partner> implements Part
 	@Override
 	public List<Partner> list() {
 		return super.list(sql()
+				.eq(R.Partner.deleted, YesNo.NO)
 				.desc(R.Partner.sort)
 				.desc(R.Partner.createTime)
 				);
@@ -47,7 +49,7 @@ public class PartnerServiceImpl extends AbstractService<Partner> implements Part
 	public Partner load(String id) {
 		Partner data = super.get(sql()
 				.eqAst(R.Partner.id, id)
-				.ne(R.Partner.status, CloseStatus.DELETE)
+				.eq(R.Partner.deleted, YesNo.NO)
 				);
 		if (data != null) {
 			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
@@ -66,9 +68,10 @@ public class PartnerServiceImpl extends AbstractService<Partner> implements Part
 		
 		partner.setPartnerKey((String)Generators.getGeneratorNextVal(GeneratorEnum.KEY));
 		if(partner.getStatus() == null)
-			partner.setStatus(CloseStatus.OPEN);
+			partner.setStatus(OpenClose.OPEN);
 		if(partner.getSort() == null)
 			partner.setSort(0);
+		partner.setDeleted(YesNo.NO);
 		super.save(partner);
 		return partner;
 	}
@@ -98,25 +101,25 @@ public class PartnerServiceImpl extends AbstractService<Partner> implements Part
 	@Log(title = "逻辑删除合作商", moduleType = ModuleType.SYS)
 	@CacheEvict(cacheNames=Constants.CN.PARTNER, keyGenerator=Constants.MULTI_KEY_GENERATOR)
 	public int remove(String[] ids) {
-		return super.updateStatus(ids, CloseStatus.DELETE);
+		return super.delete(ids);
 	}
 	
 	@Override
 	@Log(title = "物理删除合作商", moduleType = ModuleType.SYS)
 	@CacheEvict(cacheNames=Constants.CN.PARTNER, keyGenerator=Constants.MULTI_KEY_GENERATOR)
 	public int removePhy(String[] ids) {
-		return super.delete(ids);
+		return super.deletePhy(ids);
 	}
 
 	@Override
 	public DataPage<Partner> page(String name, String partnerKey, 
-			String website, CloseStatus status, int pageNo, int pageSize) {
+			String website, OpenClose status, int pageNo, int pageSize) {
 		return super.page(sql()
 				.likeTrim(R.Partner.name, name)
 				.likeTrim(R.Partner.partnerKey, partnerKey)
 				.likeTrim(R.Partner.website, website)
 				.eq(R.Partner.status, status)
-				.ne(R.Partner.status, CloseStatus.DELETE)
+				.eq(R.Partner.deleted, YesNo.NO)
 				.desc(R.Partner.sort)
 				.desc(R.Partner.createTime)
 				.limit(pageNo, pageSize));
@@ -126,7 +129,7 @@ public class PartnerServiceImpl extends AbstractService<Partner> implements Part
 	public boolean existName(String name, String excludeId) {
 		return this.exist(sql()
 				.eqAst(R.Partner.name, name)
-				.ne(R.Partner.status, CloseStatus.DELETE)
+				.eq(R.Partner.deleted, YesNo.NO)
 				.ne(R.Partner.id, excludeId)
 				);
 	}
@@ -134,7 +137,7 @@ public class PartnerServiceImpl extends AbstractService<Partner> implements Part
 	@Override
 	@Log(title = "开启关闭合作商", moduleType = ModuleType.SYS)
 	@CacheEvict(cacheNames=Constants.CN.PARTNER, keyGenerator=Constants.MULTI_KEY_GENERATOR)
-	public int openClose(String[] ids, CloseStatus status) {
+	public int openClose(String[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);
 	}
 	

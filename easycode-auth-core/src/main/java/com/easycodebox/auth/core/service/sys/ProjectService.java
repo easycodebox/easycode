@@ -3,7 +3,7 @@ package com.easycodebox.auth.core.service.sys;
 import java.util.List;
 
 import com.easycodebox.auth.core.pojo.sys.Project;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.lang.dto.DataPage;
 
 /**
@@ -16,7 +16,7 @@ public interface ProjectService {
 	 * 授权项目列表
 	 * @return
 	 */
-	List<Project> list(String name, CloseStatus status);
+	List<Project> list(String name, OpenClose status);
 	
 	/**
 	 * 授权项目详情
@@ -66,7 +66,7 @@ public interface ProjectService {
 	 * @param pageSize
 	 * @return
 	 */
-	DataPage<Project> page(String name, String projectNo, CloseStatus status, int pageNo, int pageSize);
+	DataPage<Project> page(String name, String projectNo, OpenClose status, int pageNo, int pageSize);
 	
 	/**
 	 * 开启、关闭授权项目
@@ -74,7 +74,7 @@ public interface ProjectService {
 	 * @param status
 	 * @return
 	 */
-	int openClose(Integer[] ids, CloseStatus status);
+	int openClose(Integer[] ids, OpenClose status);
 	
 	boolean existName(String name, Integer excludeId);
 	

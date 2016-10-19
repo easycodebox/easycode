@@ -2,7 +2,7 @@ package com.easycodebox.login.ws.bo;
 
 import com.easycodebox.common.enums.entity.Gender;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
 public class UserWsBo extends AbstractOperateEntity {
@@ -47,7 +47,7 @@ public class UserWsBo extends AbstractOperateEntity {
 	/**
 	 * 状态
 	 */
-	private CloseStatus status;
+	private OpenClose status;
 	
 	/**
 	 * 是否是超级管理员，超级管理员具备任何权限
@@ -151,11 +151,11 @@ public class UserWsBo extends AbstractOperateEntity {
 		this.realname = realname;
 	}
 	
-	public CloseStatus getStatus() {
+	public OpenClose getStatus() {
 		return status;
 	}
 	
-	public void setStatus(CloseStatus status) {
+	public void setStatus(OpenClose status) {
 		this.status = status;
 	}
 	

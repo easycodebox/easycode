@@ -6,8 +6,7 @@ public enum UserStatus implements DetailEnum<Integer>{
 	
 	NO_ACTIVE(0, "未激活"),
 	ACTIVED(1, "已激活"),
-	CLOSED(2, "禁用"),
-	DELETE(3, "删除");
+	CLOSED(2, "禁用");
 	
 	private Integer value;
 	private String desc;

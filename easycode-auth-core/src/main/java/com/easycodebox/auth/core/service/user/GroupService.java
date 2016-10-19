@@ -3,7 +3,7 @@ package com.easycodebox.auth.core.service.user;
 import java.util.List;
 
 import com.easycodebox.auth.core.pojo.user.Group;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.lang.dto.DataPage;
 
 /**
@@ -25,7 +25,7 @@ public interface GroupService {
 	 * 组织列表
 	 * @return
 	 */
-	List<Group> list(CloseStatus status);
+	List<Group> list(OpenClose status);
 	
 	/**
 	 * 列出组织树形结构
@@ -75,7 +75,7 @@ public interface GroupService {
 	 * @return
 	 */
 	DataPage<Group> page(String parentName, String groupName,
-			CloseStatus status, int pageNo, int pageSize);
+			OpenClose status, int pageNo, int pageSize);
 	
 	/**
 	 * 开启、关闭组织
@@ -83,7 +83,7 @@ public interface GroupService {
 	 * @param status
 	 * @return
 	 */
-	int openClose(Integer[] ids, CloseStatus status);
+	int openClose(Integer[] ids, OpenClose status);
 	
 	boolean existName(String name, Integer excludeId);
 	

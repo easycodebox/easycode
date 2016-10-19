@@ -9,13 +9,13 @@
 		SELECT g.*, pa.name AS parentName
 		FROM u_group g 
 		LEFT JOIN u_group pa ON g.parentId = pa.id
-		WHERE g.status != %{CloseStatus.DELETE} AND g.id = #{id}
+		WHERE g.deleted = %{YesNo.NO} AND g.id = #{id}
 	</select>
 	
 	<sql id="pageSql">
 		FROM u_group g 
 		LEFT JOIN u_group pa ON g.parentId = pa.id
-		WHERE g.status != %{CloseStatus.DELETE}
+		WHERE g.deleted = %{YesNo.NO}
 		<if test="parentName != null">
 			AND pa.name LIKE CONCAT('%',#{parentName},'%')
 		</if>

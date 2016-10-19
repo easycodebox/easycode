@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import com.easycodebox.common.enums.DetailEnum;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.Generators;
 import com.easycodebox.common.lang.StringUtils;
@@ -35,7 +36,7 @@ public abstract class AbstractService<T extends Entity> {
 	protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	@Resource
-	private JdbcPreHandler jdbcPreHandler;
+	private JdbcHandler jdbcHandler;
 	
 	@Resource
 	private JdbcProcessor jdbcProcessor;
@@ -84,8 +85,8 @@ public abstract class AbstractService<T extends Entity> {
 	 */
 	protected <K extends Entity> int save(K entity, Class<K> entityClass) {
 		try {
-			if (jdbcPreHandler != null)
-				jdbcPreHandler.beforeSave(entity);
+			if (jdbcHandler != null)
+				jdbcHandler.beforeSave(entity);
 			List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 			boolean sqlIncludePk = true;
 			for(PkColumn c : pks) {
@@ -115,33 +116,73 @@ public abstract class AbstractService<T extends Entity> {
 	}
 	
 	/**
-	 * 
-	 * @param idVal  可以是java中任意数据类型，因为list，set，数组都实现了Serializable接口
-	 * @param status
+	 * 逻辑删除
+	 * @param idVal
 	 * @return
-	 * @throws Exception
 	 */
-	@SafeVarargs
-	protected final <V extends DetailEnum<?>> int delete(Serializable idVal, V... status) {
-		return this.delete(idVal, entityClass, status);
+	protected int delete(Serializable idVal) {
+		return delete(idVal, entityClass);
 	}
 	
 	/**
-	 * 
+	 * 逻辑删除，默认使用YesNo.YES值存数据库
+	 * @param idVal
+	 * @param entityClass
+	 * @return
+	 */
+	protected <K extends Entity> int delete(Serializable idVal, Class<K> entityClass) {
+		return delete(idVal, YesNo.YES, entityClass);
+	}
+	
+	/**
+	 * 逻辑删除
+	 * @param idVal
+	 * @param deletedVal	代表删除的值
+	 * @param entityClass
+	 * @return
+	 */
+	protected <K extends Entity> int delete(Serializable idVal, Object deletedVal, Class<K> entityClass) {
+		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
+		SqlGrammar sqlGrammar = sql(entityClass)
+				.update(Property.instance(jdbcHandler.getDeletedFieldName(), entityClass, false), deletedVal);
+		if (idVal.getClass().isArray()) {
+			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
+		}else if(idVal instanceof Collection<?>) {
+			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Collection<?>)idVal);
+		}else {
+			sqlGrammar.eq(Property.instance(pks.get(0).getName(), entityClass, false), idVal);
+		}
+		return update(sqlGrammar);
+	}
+	
+	/**
+	 * 当条件满足status参数时物理删除数据
 	 * @param idVal  可以是java中任意数据类型，因为list，set，数组都实现了Serializable接口
 	 * @param status
 	 * @return
 	 * @throws Exception
 	 */
 	@SafeVarargs
-	protected final <K extends Entity, V extends DetailEnum<?>> int delete(Serializable idVal, Class<K> entityClass, V... status) {
+	protected final <V extends DetailEnum<?>> int deletePhy(Serializable idVal, V... status) {
+		return this.deletePhy(idVal, entityClass, status);
+	}
+	
+	/**
+	 * 当条件满足status参数时物理删除数据
+	 * @param idVal  可以是java中任意数据类型，因为list，set，数组都实现了Serializable接口
+	 * @param status
+	 * @return
+	 * @throws Exception
+	 */
+	@SafeVarargs
+	protected final <K extends Entity, V extends DetailEnum<?>> int deletePhy(Serializable idVal, Class<K> entityClass, V... status) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass);
 		if(status != null && status.length > 0) {
 			if(status.length > 1)
-				sqlGrammar.in(Property.instance("status", entityClass, false), status);
+				sqlGrammar.in(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status);
 			else
-				sqlGrammar.eq(Property.instance("status", entityClass, false), status[0]);
+				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status[0]);
 		}
 		if (idVal.getClass().isArray()) {
 			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
@@ -150,10 +191,15 @@ public abstract class AbstractService<T extends Entity> {
 		}else {
 			sqlGrammar.eq(Property.instance(pks.get(0).getName(), entityClass, false), idVal);
 		}
-		return delete(sqlGrammar);
+		return deletePhy(sqlGrammar);
 	}
 	
-	protected int delete(SqlGrammar sqlGrammar) {
+	/**
+	 * 物理删除数据
+	 * @param sqlGrammar
+	 * @return
+	 */
+	protected int deletePhy(SqlGrammar sqlGrammar) {
 		return jdbcProcessor.delete(sqlGrammar, null, null, int.class);
 	}
 	
@@ -187,9 +233,9 @@ public abstract class AbstractService<T extends Entity> {
 		int valCount = 1;
 		if(status != null && status.length > 0) {
 			if(status.length > 1)
-				sqlGrammar.in(Property.instance("status", entityClass, false), status);
+				sqlGrammar.in(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status);
 			else
-				sqlGrammar.eq(Property.instance("status", entityClass, false), status[0]);
+				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status[0]);
 		}
 		if (idVal.getClass().isArray()) {
 			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
@@ -235,9 +281,9 @@ public abstract class AbstractService<T extends Entity> {
 				.eq(Property.instance(pks.get(0).getName(), entityClass, false), id);
 		if(status != null && status.length > 0) {
 			if(status.length > 1)
-				sqlGrammar.in(Property.instance("status", entityClass, false), status);
+				sqlGrammar.in(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status);
 			else
-				sqlGrammar.eq(Property.instance("status", entityClass, false), status[0]);
+				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status[0]);
 		}
 		return get(sqlGrammar.lockMode(lockMode), entityClass);
 	}
@@ -275,8 +321,8 @@ public abstract class AbstractService<T extends Entity> {
 	}
 	
 	protected int update(SqlGrammar sqlGrammar) {
-		if (jdbcPreHandler != null)
-			jdbcPreHandler.beforeUpdate(sqlGrammar);
+		if (jdbcHandler != null)
+			jdbcHandler.beforeUpdate(sqlGrammar);
 		return jdbcProcessor.update(sqlGrammar, null, null, int.class);
 	}
 	
@@ -292,8 +338,8 @@ public abstract class AbstractService<T extends Entity> {
 	 */
 	protected <K extends Entity> int update(K entity, Class<K> entityClass) {
 		try {
-			if (jdbcPreHandler != null)
-				jdbcPreHandler.beforeUpdate(entity);
+			if (jdbcHandler != null)
+				jdbcHandler.beforeUpdate(entity);
 			
 			String sql = SqlUtils.getUpdateSql(entity, 
 					com.easycodebox.jdbc.config.Configuration.getTable(entityClass));
@@ -311,7 +357,7 @@ public abstract class AbstractService<T extends Entity> {
 			V status, Class<K> entityClass) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
-				.update(Property.instance("status", entityClass, false), status);
+				.update(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status);
 		if (idVal.getClass().isArray()) {
 			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
 		}else if(idVal instanceof Collection<?>) {

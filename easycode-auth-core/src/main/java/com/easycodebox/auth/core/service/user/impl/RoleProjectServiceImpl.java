@@ -14,7 +14,7 @@ import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
-import com.easycodebox.common.enums.entity.status.CloseStatus;
+import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractService;
 
@@ -33,7 +33,7 @@ public class RoleProjectServiceImpl extends AbstractService<RoleProject> impleme
 		if(roleIds == null || roleIds.length == 0 || projectNo == null)
 			return false;
 		Project project = projectService.load(projectNo);
-		if(project == null || project.getStatus() != CloseStatus.OPEN)
+		if(project == null || project.getStatus() != OpenClose.OPEN)
 			return false;
 		return super.exist(sql()
 				.in(R.RoleProject.roleId, roleIds)
@@ -67,14 +67,14 @@ public class RoleProjectServiceImpl extends AbstractService<RoleProject> impleme
 	@Log(title = "删除指定角色和项目的对应关系", moduleType = ModuleType.USER)
 	public int removePhyByRoleId(Integer roleId) {
 		Assert.notNull(roleId, "roleId can't be null.");
-		return super.delete(sql().eq(R.RoleProject.roleId, roleId));
+		return super.deletePhy(sql().eq(R.RoleProject.roleId, roleId));
 	}
 
 	@Override
 	@Log(title = "删除角色项目", moduleType = ModuleType.USER)
 	public int removePhyByProjectIds(Integer[] projectIds) {
 		Assert.notNull(projectIds);
-		return super.delete(sql().in(R.RoleProject.projectId, projectIds));
+		return super.deletePhy(sql().in(R.RoleProject.projectId, projectIds));
 	}
 	
 }

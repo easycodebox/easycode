@@ -66,7 +66,7 @@ public class LogServiceImpl extends AbstractService<Log> implements LogService {
 
 	@Override
 	public int removePhy(Long[] ids) {
-		return super.delete(ids);
+		return super.deletePhy(ids);
 	}
 
 	@Override
