@@ -18,10 +18,8 @@
 				/imgs/** = anon
 				/js/** = anon
                 /resources/** = anon
-                /permit/** = authc
 				/ws/** = anon
                 /clearuser/** = anon
-                /unauthorized.html = anon
 				/** = authc,perms
 			</value>
 		</constructor-arg>

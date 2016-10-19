@@ -9,7 +9,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
@@ -143,7 +142,6 @@ public class OperationController extends BaseController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping("/permit/operation/listByProject")
 	public String listByProject(Integer projectId) throws Exception {
 		List<Operation> os = operationService.list(projectId, null, null);
 		Operation no = new Operation();
@@ -170,7 +168,6 @@ public class OperationController extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/permit/operation/cfgOperationByRoleId")
 	public String cfgOperationByRoleId(Integer roleId) throws Exception {
 		List<Operation> os = operationService.listAllGroupByProject(roleId);
 		Jacksons j = Jacksons.nonNull().addJsonSerializer(Operation.class, new JsonSerializer<Operation>(){
@@ -221,7 +218,6 @@ public class OperationController extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/permit/operation/existName")
 	public CodeMsg existName(Integer projectId, String name, Long excludeId) throws Exception {
 		Assert.notNull(projectId, CodeMsgExt.PARAM_BLANK.fillArgs("项目ID"));
 		Assert.notBlank(name, CodeMsgExt.PARAM_BLANK.fillArgs("权限名"));
@@ -230,7 +226,6 @@ public class OperationController extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/permit/operation/existUrl")
 	public CodeMsg existUrl(Integer projectId, String url, Long excludeId) throws Exception {
 		Assert.notNull(projectId, CodeMsgExt.PARAM_BLANK.fillArgs("项目ID"));
 		Assert.notBlank(url, CodeMsgExt.PARAM_BLANK.fillArgs("url"));

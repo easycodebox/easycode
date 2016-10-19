@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
@@ -48,7 +47,6 @@ public class ProjectController extends BaseController {
 	 * 列出所有项目
 	 */
 	@ResponseBody
-	@RequestMapping("/permit/project/all")
 	public CodeMsg all() throws Exception {
 		List<Project> data = projectService.list(null, null);
 		return none(data);
@@ -116,7 +114,6 @@ public class ProjectController extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/permit/project/existName")
 	public CodeMsg existName(String name, Integer excludeId) throws Exception {
 		Assert.notBlank(name, CodeMsgExt.PARAM_BLANK.fillArgs("项目名"));
 		boolean exist = projectService.existName(name, excludeId);
@@ -124,7 +121,6 @@ public class ProjectController extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/permit/project/existProjectNo")
 	public CodeMsg existProjectNo(String projectNo, Integer excludeId) throws Exception {
 		Assert.notBlank(projectNo, CodeMsgExt.PARAM_BLANK.fillArgs("项目编码"));
 		boolean exist = projectService.existProjectNo(projectNo, excludeId);

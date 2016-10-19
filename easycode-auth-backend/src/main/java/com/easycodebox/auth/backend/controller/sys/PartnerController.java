@@ -3,7 +3,6 @@ package com.easycodebox.auth.backend.controller.sys;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
@@ -96,7 +95,6 @@ public class PartnerController extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/permit/partner/existName")
 	public CodeMsg existName(String name, String excludeId) throws Exception {
 		Assert.notBlank(name, CodeMsgExt.PARAM_BLANK.fillArgs("合作商名"));
 		boolean exist = partnerService.existName(name, excludeId);

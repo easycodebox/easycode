@@ -36,7 +36,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 				callback();
 			}
 		}else {
-			$.get("/permit/project/all.json", function(data) {
+			$.get("/project/all.json", function(data) {
 				gb.vm.projects = data.data;
 				if(utils.isFunction(callback)) {
 					callback();
@@ -99,7 +99,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		$tree = $.fn.zTree.init($form.find(".ztree"), setting, array);
 	},
 	listOperations: function($form, $parentName, projectId) {
-		$.post("/permit/operation/listByProject.json", {projectId: projectId}, function(data) {
+		$.post("/operation/listByProject.json", {projectId: projectId}, function(data) {
 			data = JSON.parse(data);
 			gb.refreshTree($form, $parentName, data);
 		});
@@ -114,7 +114,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		$.ajax({
 			async: false,
 			type: "POST",
-			url: "/permit/operation/existName.json",
+			url: "/operation/existName.json",
 			data: {
 				projectId: projectId,
 				name: val,
@@ -140,7 +140,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		$.ajax({
 			async: false,
 			type: "POST",
-			url: "/permit/operation/existUrl.json",
+			url: "/operation/existUrl.json",
 			data: {
 				projectId: projectId,
 				url: val,

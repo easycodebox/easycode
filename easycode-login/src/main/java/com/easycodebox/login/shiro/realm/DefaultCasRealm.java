@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.login.shiro.ShiroSecurityInfoHandler;
+import com.easycodebox.login.shiro.permission.GlobalPermission;
 import com.easycodebox.login.ws.UserWsService;
 import com.easycodebox.login.ws.bo.OperationWsBo;
 import com.easycodebox.login.ws.bo.UserExtWsBo;
@@ -52,6 +53,11 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	@Value("${valid_project_auth:true}")
 	private boolean validProjectAuth;
 	
+	/**
+	 * 全局模式 - 会一次性加载系统中所有的权限，然后系统中明确
+	 */
+	private boolean globalPermissionMode;
+	
 	public DefaultCasRealm() {
 		setName("defaultCasRealm");
 	}
@@ -59,14 +65,30 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	@Override
 	protected boolean isPermitted(Permission permission, AuthorizationInfo info) {
         Collection<Permission> perms = getPermissions(info);
+        //提供给GlobalPermission使用.如果included = true，说明之前已经有GlobalPermission匹配过permission，且没有permission权限
+        boolean included = false;
         if (perms != null && !perms.isEmpty()) {
             for (Permission perm : perms) {
-                if (perm.implies(permission)) {
+            	if (perm instanceof GlobalPermission) {
+            		GlobalPermission gp = (GlobalPermission)perm;
+            		//GlobalPermission包含permission
+            		if (perm.implies(permission)) {
+            			if (gp.isPermitted()) {
+            				return true;
+						} else {
+							included = true;
+						}
+					}
+				} else if (perm.implies(permission)) {
                     return true;
                 }
             }
         }
-        return false;
+        //如果是系统一次性加载所有权限的模式且系统中不包含此验证permission则返回true，意思就是此permission不受权限管控，直接放行
+        if (globalPermissionMode && !included) {
+			return true;
+		}
+		return false;
     }
 	
 	/**
@@ -128,4 +150,13 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 		}
 		return cur;
 	}
+
+	public boolean isGlobalPermissionMode() {
+		return globalPermissionMode;
+	}
+
+	public void setGlobalPermissionMode(boolean globalPermissionMode) {
+		this.globalPermissionMode = globalPermissionMode;
+	}
+	
 }

@@ -227,11 +227,11 @@ public class UserWsServiceImpl implements UserWsService {
 		
 		Project pro = projectService.load(projectNo);
 		Assert.notNull(pro, CodeMsgExt.PARAM_ERR.fillArgs("项目编号"));
-		List<Operation> ops = operationService.listOperationsOfUser(user.getId(), pro.getId(), null);
-		List<String> strOps = new ArrayList<>(ops.size());
-		for(Operation o : ops) {
+		List<Operation> allOs = operationService.listAllOpsOfUser(user.getId(), pro.getId(), null);
+		List<String> strOps = new ArrayList<>(allOs.size());
+		for(Operation o : allOs) {
 			if (o.getUrl() != null) {
-				strOps.add(o.getUrl());
+				strOps.add(o.getUrl() + (o.getIsOwn() == YesNo.YES ? Symbol.EMPTY : ":0"));
 			}
 		}
 		

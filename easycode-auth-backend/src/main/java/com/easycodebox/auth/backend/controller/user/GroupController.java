@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
@@ -112,7 +111,6 @@ public class GroupController extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/permit/group/listAll")
 	public String listAll() throws Exception {
 		List<Group> gs = groupService.list(null);
 		Group g = new Group();
@@ -137,7 +135,6 @@ public class GroupController extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/permit/group/existName")
 	public CodeMsg existName(String name, Integer excludeId) throws Exception {
 		Assert.notBlank(name, CodeMsgExt.PARAM_BLANK.fillArgs("组名"));
 		boolean exist = groupService.existName(name, excludeId);
