@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.easycodebox</groupId>
 		<artifactId>easycode-parent</artifactId>
-		<version>0.2.3</version>
+		<version>0.2.4-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>easycode-jdbc</artifactId>
