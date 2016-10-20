@@ -25,12 +25,17 @@ public class DefaultJdbcHandler implements JdbcHandler {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultJdbcHandler.class);
 	
+	private final String DEFAULT_CREATOR_PROPNAME = "creator";
+	private final String DEFAULT_CREATOR_TIME_PROPNAME = "createTime";
+	private final String DEFAULT_MODIFIER_PROPNAME = "modifier";
+	private final String DEFAULT_MODIFIER_TIME_PROPNAME = "modifyTime";
+	
 	private Object sysUserId = "0";
 	private String sysUsername = "系统";
-	private String creatorPropName = "creator";
-	private String createTimePropName = "createTime";
-	private String modifierPropName = "modifier";
-	private String modifyTimePropName = "modifyTime";
+	private String creatorPropName = DEFAULT_CREATOR_PROPNAME;
+	private String createTimePropName = DEFAULT_CREATOR_TIME_PROPNAME;
+	private String modifierPropName = DEFAULT_MODIFIER_PROPNAME;
+	private String modifyTimePropName = DEFAULT_MODIFIER_TIME_PROPNAME;
 	private String statusPropName = "status";
 	private String deletedPropName = "deleted";
 	private Object deletedValue = YesNo.YES;
@@ -88,18 +93,24 @@ public class DefaultJdbcHandler implements JdbcHandler {
 	public void beforeUpdate(SqlGrammar sqlGrammar) {
 		Object userId = securityUser.getUserId() == null ? sysUserId : securityUser.getUserId();
 		boolean isModifyEntity = ModifyEntity.class.isAssignableFrom(sqlGrammar.getEntity());
+		
+		if (isModifyEntity 
+				&& !DEFAULT_MODIFIER_PROPNAME.equals(modifierPropName)
+				&& !updateSqlHad(sqlGrammar, DEFAULT_MODIFIER_PROPNAME)) {
+			sqlGrammar.update(Property.instance(DEFAULT_MODIFIER_PROPNAME, sqlGrammar.getEntity(), false), userId);
+		}
+		if (isModifyEntity 
+				&& !DEFAULT_MODIFIER_TIME_PROPNAME.equals(modifyTimePropName)
+				&& !updateSqlHad(sqlGrammar, DEFAULT_MODIFIER_TIME_PROPNAME)) {
+			sqlGrammar.update(Property.instance(DEFAULT_MODIFIER_TIME_PROPNAME, sqlGrammar.getEntity(), false), dateFactory.instance());
+		}
+		
 		if(!updateSqlHad(sqlGrammar, modifierPropName)
-				&& (
-						isModifyEntity
-						|| existProperty(sqlGrammar.getEntity(), modifierPropName)
-						)) {
+				&& existProperty(sqlGrammar.getEntity(), modifierPropName)) {
 			sqlGrammar.update(Property.instance(modifierPropName, sqlGrammar.getEntity(), false), userId);
 		}
 		if(!updateSqlHad(sqlGrammar, modifyTimePropName)
-				&& (
-						isModifyEntity
-						|| existProperty(sqlGrammar.getEntity(), modifyTimePropName)
-						)) {
+				&& existProperty(sqlGrammar.getEntity(), modifyTimePropName)) {
 			sqlGrammar.update(Property.instance(modifyTimePropName, sqlGrammar.getEntity(), false), dateFactory.instance());
 		}
 	}
