@@ -27,12 +27,12 @@ public class DefaultJdbcHandler implements JdbcHandler {
 	
 	private Object sysUserId = "0";
 	private String sysUsername = "系统";
-	private String creatorFieldName = "creator";
-	private String createTimeFieldName = "createTime";
-	private String modifierFieldName = "modifier";
-	private String modifyTimeFieldName = "modifyTime";
-	private String statusFieldName = "status";
-	private String deletedFieldName = "deleted";
+	private String creatorPropName = "creator";
+	private String createTimePropName = "createTime";
+	private String modifierPropName = "modifier";
+	private String modifyTimePropName = "modifyTime";
+	private String statusPropName = "status";
+	private String deletedPropName = "deleted";
 	private Object deletedValue = YesNo.YES;
 	
 	private SecurityUser securityUser = new SecurityUser() {
@@ -63,8 +63,8 @@ public class DefaultJdbcHandler implements JdbcHandler {
 			if(e.getCreateTime() == null)
 				e.setCreateTime((Date)dateFactory.instance());
 		}else {
-			setBeanProperty(entity, creatorFieldName, userId);
-			setBeanProperty(entity, createTimeFieldName, dateFactory.instance());
+			setBeanProperty(entity, creatorPropName, userId);
+			setBeanProperty(entity, createTimePropName, dateFactory.instance());
 		}
 		beforeUpdate(entity);
 	}
@@ -79,8 +79,8 @@ public class DefaultJdbcHandler implements JdbcHandler {
 			if(e.getModifyTime() == null)
 				e.setModifyTime((Date)dateFactory.instance());
 		}else {
-			setBeanProperty(entity, modifierFieldName, userId);
-			setBeanProperty(entity, modifyTimeFieldName, dateFactory.instance());
+			setBeanProperty(entity, modifierPropName, userId);
+			setBeanProperty(entity, modifyTimePropName, dateFactory.instance());
 		}
 	}
 	
@@ -88,19 +88,19 @@ public class DefaultJdbcHandler implements JdbcHandler {
 	public void beforeUpdate(SqlGrammar sqlGrammar) {
 		Object userId = securityUser.getUserId() == null ? sysUserId : securityUser.getUserId();
 		boolean isModifyEntity = ModifyEntity.class.isAssignableFrom(sqlGrammar.getEntity());
-		if(!updateSqlHad(sqlGrammar, modifierFieldName)
+		if(!updateSqlHad(sqlGrammar, modifierPropName)
 				&& (
 						isModifyEntity
-						|| existProperty(sqlGrammar.getEntity(), modifierFieldName)
+						|| existProperty(sqlGrammar.getEntity(), modifierPropName)
 						)) {
-			sqlGrammar.update(Property.instance(modifierFieldName, sqlGrammar.getEntity(), false), userId);
+			sqlGrammar.update(Property.instance(modifierPropName, sqlGrammar.getEntity(), false), userId);
 		}
-		if(!updateSqlHad(sqlGrammar, modifyTimeFieldName)
+		if(!updateSqlHad(sqlGrammar, modifyTimePropName)
 				&& (
 						isModifyEntity
-						|| existProperty(sqlGrammar.getEntity(), modifyTimeFieldName)
+						|| existProperty(sqlGrammar.getEntity(), modifyTimePropName)
 						)) {
-			sqlGrammar.update(Property.instance(modifyTimeFieldName, sqlGrammar.getEntity(), false), dateFactory.instance());
+			sqlGrammar.update(Property.instance(modifyTimePropName, sqlGrammar.getEntity(), false), dateFactory.instance());
 		}
 	}
 	
@@ -194,38 +194,6 @@ public class DefaultJdbcHandler implements JdbcHandler {
 		this.sysUserId = sysUserId;
 	}
 
-	public String getCreatorFieldName() {
-		return creatorFieldName;
-	}
-
-	public void setCreatorFieldName(String creatorFieldName) {
-		this.creatorFieldName = creatorFieldName;
-	}
-
-	public String getCreateTimeFieldName() {
-		return createTimeFieldName;
-	}
-
-	public void setCreateTimeFieldName(String createTimeFieldName) {
-		this.createTimeFieldName = createTimeFieldName;
-	}
-
-	public String getModifierFieldName() {
-		return modifierFieldName;
-	}
-
-	public void setModifierFieldName(String modifierFieldName) {
-		this.modifierFieldName = modifierFieldName;
-	}
-
-	public String getModifyTimeFieldName() {
-		return modifyTimeFieldName;
-	}
-
-	public void setModifyTimeFieldName(String modifyTimeFieldName) {
-		this.modifyTimeFieldName = modifyTimeFieldName;
-	}
-
 	public SecurityUser getSecurityUser() {
 		return securityUser;
 	}
@@ -250,20 +218,52 @@ public class DefaultJdbcHandler implements JdbcHandler {
 		this.sysUsername = sysUsername;
 	}
 
-	public String getStatusFieldName() {
-		return statusFieldName;
+	public String getCreatorPropName() {
+		return creatorPropName;
 	}
 
-	public void setStatusFieldName(String statusFieldName) {
-		this.statusFieldName = statusFieldName;
+	public void setCreatorPropName(String creatorPropName) {
+		this.creatorPropName = creatorPropName;
 	}
 
-	public String getDeletedFieldName() {
-		return deletedFieldName;
+	public String getCreateTimePropName() {
+		return createTimePropName;
 	}
 
-	public void setDeletedFieldName(String deletedFieldName) {
-		this.deletedFieldName = deletedFieldName;
+	public void setCreateTimePropName(String createTimePropName) {
+		this.createTimePropName = createTimePropName;
+	}
+
+	public String getModifierPropName() {
+		return modifierPropName;
+	}
+
+	public void setModifierPropName(String modifierPropName) {
+		this.modifierPropName = modifierPropName;
+	}
+
+	public String getModifyTimePropName() {
+		return modifyTimePropName;
+	}
+
+	public void setModifyTimePropName(String modifyTimePropName) {
+		this.modifyTimePropName = modifyTimePropName;
+	}
+
+	public String getStatusPropName() {
+		return statusPropName;
+	}
+
+	public void setStatusPropName(String statusPropName) {
+		this.statusPropName = statusPropName;
+	}
+
+	public String getDeletedPropName() {
+		return deletedPropName;
+	}
+
+	public void setDeletedPropName(String deletedPropName) {
+		this.deletedPropName = deletedPropName;
 	}
 
 	public Object getDeletedValue() {

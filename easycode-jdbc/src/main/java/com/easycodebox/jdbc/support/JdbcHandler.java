@@ -43,37 +43,37 @@ public interface JdbcHandler {
 	 * 获取创建人的属性名
 	 * @return
 	 */
-	String getCreatorFieldName();
+	String getCreatorPropName();
 	
 	/**
 	 * 获取创建时间的属性名
 	 * @return
 	 */
-	String getCreateTimeFieldName();
+	String getCreateTimePropName();
 	
 	/**
 	 * 获取修改人的属性名
 	 * @return
 	 */
-	String getModifierFieldName();
+	String getModifierPropName();
 	
 	/**
 	 * 获取修改时间的属性名
 	 * @return
 	 */
-	String getModifyTimeFieldName();
+	String getModifyTimePropName();
 	
 	/**
 	 * 获取状态属性名
 	 * @return
 	 */
-	String getStatusFieldName();
+	String getStatusPropName();
 	
 	/**
 	 * 获取是否删除属性名
 	 * @return
 	 */
-	String getDeletedFieldName();
+	String getDeletedPropName();
 	
 	/**
 	 * 获取代表删除状态的值

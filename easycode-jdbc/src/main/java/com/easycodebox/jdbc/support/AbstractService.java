@@ -143,7 +143,7 @@ public abstract class AbstractService<T extends Entity> {
 	public <K extends Entity> int delete(Serializable idVal, Object deletedVal, Class<K> entityClass) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
-				.update(Property.instance(jdbcHandler.getDeletedFieldName(), entityClass, false), deletedVal);
+				.update(Property.instance(jdbcHandler.getDeletedPropName(), entityClass, false), deletedVal);
 		if (idVal.getClass().isArray()) {
 			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
 		}else if(idVal instanceof Collection<?>) {
@@ -179,9 +179,9 @@ public abstract class AbstractService<T extends Entity> {
 		SqlGrammar sqlGrammar = sql(entityClass);
 		if(status != null && status.length > 0) {
 			if(status.length > 1)
-				sqlGrammar.in(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status);
+				sqlGrammar.in(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status);
 			else
-				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status[0]);
+				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status[0]);
 		}
 		if (idVal.getClass().isArray()) {
 			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
@@ -232,9 +232,9 @@ public abstract class AbstractService<T extends Entity> {
 		int valCount = 1;
 		if(status != null && status.length > 0) {
 			if(status.length > 1)
-				sqlGrammar.in(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status);
+				sqlGrammar.in(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status);
 			else
-				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status[0]);
+				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status[0]);
 		}
 		if (idVal.getClass().isArray()) {
 			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
@@ -280,9 +280,9 @@ public abstract class AbstractService<T extends Entity> {
 				.eq(Property.instance(pks.get(0).getName(), entityClass, false), id);
 		if(status != null && status.length > 0) {
 			if(status.length > 1)
-				sqlGrammar.in(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status);
+				sqlGrammar.in(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status);
 			else
-				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status[0]);
+				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status[0]);
 		}
 		return get(sqlGrammar.lockMode(lockMode), entityClass);
 	}
@@ -356,7 +356,7 @@ public abstract class AbstractService<T extends Entity> {
 			V status, Class<K> entityClass) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
-				.update(Property.instance(jdbcHandler.getStatusFieldName(), entityClass, false), status);
+				.update(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status);
 		if (idVal.getClass().isArray()) {
 			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
 		}else if(idVal instanceof Collection<?>) {
