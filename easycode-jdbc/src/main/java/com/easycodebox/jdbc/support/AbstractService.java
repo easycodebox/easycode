@@ -72,7 +72,7 @@ public abstract class AbstractService<T extends Entity> {
 				: jdbcProcessor.instanceSqlGrammar(entityClass, alias);
 	}
 	
-	protected int save(T entity) {
+	public int save(T entity) {
 		return save(entity, entityClass);
 	}
 	
@@ -82,7 +82,7 @@ public abstract class AbstractService<T extends Entity> {
 	 * @param entityClass
 	 * @return
 	 */
-	protected <K extends Entity> int save(K entity, Class<K> entityClass) {
+	public <K extends Entity> int save(K entity, Class<K> entityClass) {
 		try {
 			if (jdbcHandler != null)
 				jdbcHandler.beforeSave(entity);
@@ -119,7 +119,7 @@ public abstract class AbstractService<T extends Entity> {
 	 * @param idVal
 	 * @return
 	 */
-	protected int delete(Serializable idVal) {
+	public int delete(Serializable idVal) {
 		return delete(idVal, entityClass);
 	}
 	
@@ -129,7 +129,7 @@ public abstract class AbstractService<T extends Entity> {
 	 * @param entityClass
 	 * @return
 	 */
-	protected <K extends Entity> int delete(Serializable idVal, Class<K> entityClass) {
+	public <K extends Entity> int delete(Serializable idVal, Class<K> entityClass) {
 		return delete(idVal, jdbcHandler.getDeletedValue(), entityClass);
 	}
 	
@@ -140,7 +140,7 @@ public abstract class AbstractService<T extends Entity> {
 	 * @param entityClass
 	 * @return
 	 */
-	protected <K extends Entity> int delete(Serializable idVal, Object deletedVal, Class<K> entityClass) {
+	public <K extends Entity> int delete(Serializable idVal, Object deletedVal, Class<K> entityClass) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
 				.update(Property.instance(jdbcHandler.getDeletedFieldName(), entityClass, false), deletedVal);
@@ -162,7 +162,7 @@ public abstract class AbstractService<T extends Entity> {
 	 * @throws Exception
 	 */
 	@SafeVarargs
-	protected final <V extends DetailEnum<?>> int deletePhy(Serializable idVal, V... status) {
+	public final <V extends DetailEnum<?>> int deletePhy(Serializable idVal, V... status) {
 		return this.deletePhy(idVal, entityClass, status);
 	}
 	
@@ -174,7 +174,7 @@ public abstract class AbstractService<T extends Entity> {
 	 * @throws Exception
 	 */
 	@SafeVarargs
-	protected final <K extends Entity, V extends DetailEnum<?>> int deletePhy(Serializable idVal, Class<K> entityClass, V... status) {
+	public final <K extends Entity, V extends DetailEnum<?>> int deletePhy(Serializable idVal, Class<K> entityClass, V... status) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass);
 		if(status != null && status.length > 0) {
@@ -206,7 +206,7 @@ public abstract class AbstractService<T extends Entity> {
 	 * 用到此功能时，不能事务回滚
 	 * @return
 	 */
-	protected int truncate() {
+	public int truncate() {
 		return truncate(entityClass);
 	}
 	
@@ -214,19 +214,19 @@ public abstract class AbstractService<T extends Entity> {
 	 * 用到此功能时，不能事务回滚
 	 * @return
 	 */
-	protected <K extends Entity> int truncate(Class<K> entityClass) {
+	public <K extends Entity> int truncate(Class<K> entityClass) {
 		String tableName = com.easycodebox.jdbc.config.Configuration.dialect.wrapQuote(
 				com.easycodebox.jdbc.config.Configuration.getTable(entityClass).getName());
 		return jdbcProcessor.delete(sql(entityClass), "TRUNCATE TABLE " + tableName , null, int.class);
 	}
 	
 	@SafeVarargs
-	protected final <V extends DetailEnum<?>> boolean exist(Serializable idVal,  V... status) {
+	public final <V extends DetailEnum<?>> boolean exist(Serializable idVal,  V... status) {
 		return this.exist(idVal, entityClass, status);
 	}
 	
 	@SafeVarargs
-	protected final <K extends Entity, V extends DetailEnum<?>> boolean exist(Serializable idVal, Class<K> entityClass, V... status) {
+	public final <K extends Entity, V extends DetailEnum<?>> boolean exist(Serializable idVal, Class<K> entityClass, V... status) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass);
 		int valCount = 1;
@@ -259,22 +259,22 @@ public abstract class AbstractService<T extends Entity> {
 	}
 	
 	@SafeVarargs
-	protected final <V extends DetailEnum<?>> T get(Serializable id, V... status) {
+	public final <V extends DetailEnum<?>> T get(Serializable id, V... status) {
 		return get(id, (LockMode)null, status);
 	}
 	
 	@SafeVarargs
-	protected final <K extends Entity, V extends DetailEnum<?>> K get(Serializable id, Class<K> entityClass, V... status) {
+	public final <K extends Entity, V extends DetailEnum<?>> K get(Serializable id, Class<K> entityClass, V... status) {
 		return get(id, entityClass, null, status);
 	}
 	
 	@SafeVarargs
-	protected final <V extends DetailEnum<?>> T get(Serializable id, LockMode lockMode, V... status) {
+	public final <V extends DetailEnum<?>> T get(Serializable id, LockMode lockMode, V... status) {
 		return this.get(id, entityClass, lockMode, status);
 	}
 	
 	@SafeVarargs
-	protected final <K extends Entity, V extends DetailEnum<?>> K get(Serializable id, Class<K> entityClass, LockMode lockMode, V... status) {
+	public final <K extends Entity, V extends DetailEnum<?>> K get(Serializable id, Class<K> entityClass, LockMode lockMode, V... status) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
 				.eq(Property.instance(pks.get(0).getName(), entityClass, false), id);
@@ -325,7 +325,7 @@ public abstract class AbstractService<T extends Entity> {
 		return jdbcProcessor.update(sqlGrammar, null, null, int.class);
 	}
 	
-	protected int update(T entity) {
+	public int update(T entity) {
 		return update(entity, entityClass);
 	}
 	
@@ -335,7 +335,7 @@ public abstract class AbstractService<T extends Entity> {
 	 * @param entityClass
 	 * @return
 	 */
-	protected <K extends Entity> int update(K entity, Class<K> entityClass) {
+	public <K extends Entity> int update(K entity, Class<K> entityClass) {
 		try {
 			if (jdbcHandler != null)
 				jdbcHandler.beforeUpdate(entity);
@@ -348,11 +348,11 @@ public abstract class AbstractService<T extends Entity> {
 		}
 	}
 	
-	protected <V extends DetailEnum<?>> int updateStatus(Serializable idVal, V status) {
+	public <V extends DetailEnum<?>> int updateStatus(Serializable idVal, V status) {
 		return updateStatus(idVal, status, entityClass);
 	}
 	
-	protected <K extends Entity,V extends DetailEnum<?>> int updateStatus(Serializable idVal, 
+	public <K extends Entity,V extends DetailEnum<?>> int updateStatus(Serializable idVal, 
 			V status, Class<K> entityClass) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
