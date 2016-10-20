@@ -11,7 +11,6 @@ import javax.annotation.Resource;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import com.easycodebox.common.enums.DetailEnum;
-import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.Generators;
 import com.easycodebox.common.lang.StringUtils;
@@ -125,13 +124,13 @@ public abstract class AbstractService<T extends Entity> {
 	}
 	
 	/**
-	 * 逻辑删除，默认使用YesNo.YES值存数据库
+	 * 逻辑删除，默认使用jdbcHandler.getDeletedValue()值作为删除状态
 	 * @param idVal
 	 * @param entityClass
 	 * @return
 	 */
 	protected <K extends Entity> int delete(Serializable idVal, Class<K> entityClass) {
-		return delete(idVal, YesNo.YES, entityClass);
+		return delete(idVal, jdbcHandler.getDeletedValue(), entityClass);
 	}
 	
 	/**

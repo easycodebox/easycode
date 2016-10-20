@@ -75,4 +75,9 @@ public interface JdbcHandler {
 	 */
 	String getDeletedFieldName();
 	
+	/**
+	 * 获取代表删除状态的值
+	 * @return
+	 */
+	Object getDeletedValue();
 }

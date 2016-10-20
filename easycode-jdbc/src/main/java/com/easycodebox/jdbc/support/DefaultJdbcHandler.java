@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.security.SecurityUtils;
@@ -32,6 +33,7 @@ public class DefaultJdbcHandler implements JdbcHandler {
 	private String modifyTimeFieldName = "modifyTime";
 	private String statusFieldName = "status";
 	private String deletedFieldName = "deleted";
+	private Object deletedValue = YesNo.YES;
 	
 	private SecurityUser securityUser = new SecurityUser() {
 
@@ -262,6 +264,14 @@ public class DefaultJdbcHandler implements JdbcHandler {
 
 	public void setDeletedFieldName(String deletedFieldName) {
 		this.deletedFieldName = deletedFieldName;
+	}
+
+	public Object getDeletedValue() {
+		return deletedValue;
+	}
+
+	public void setDeletedValue(Object deletedValue) {
+		this.deletedValue = deletedValue;
 	}
 	
 }
