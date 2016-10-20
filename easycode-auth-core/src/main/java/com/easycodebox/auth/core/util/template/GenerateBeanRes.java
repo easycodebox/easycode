@@ -22,11 +22,12 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 import com.easycodebox.common.freemarker.ConfigurationFactory;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.jdbc.entity.Entity;
 import com.easycodebox.common.lang.reflect.ClassUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
+import com.easycodebox.jdbc.GenerateRes;
+import com.easycodebox.jdbc.entity.Entity;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
@@ -100,7 +101,7 @@ public class GenerateBeanRes {
 			
 			//设置包装器，并将对象包装为数据模型
 			Template tpl = cfg.getTemplate(TEMPLATE, "UTF-8");
-			Map<String, BeanData[]> root = new LinkedHashMap<String, BeanData[]>();
+			Map<String, List<BeanData>> root = new LinkedHashMap<>();
 			root.put("data", processRes2BeanData(rs));
 			File outPutFile = new File(OUTPUT_FILE);
 			if(!outPutFile.getParentFile().exists()) {
@@ -124,9 +125,9 @@ public class GenerateBeanRes {
 		
 	}
 	
-	private static BeanData[] processRes2BeanData(Resource[] rs) {
+	private static List<BeanData> processRes2BeanData(Resource[] rs) {
 		Assert.notEmpty(rs);
-		BeanData[] beanData = new BeanData[rs.length];
+		List<BeanData> beanDatas = new ArrayList<>(rs.length);
 		try {
 			for(int i = 0; i < rs.length; i++) {
 				Resource r = rs[i];
@@ -136,6 +137,13 @@ public class GenerateBeanRes {
 					String className = cr.getClassName();
 					Class<?> clazz = ClassUtils.getClass(className
 							.replace(Symbol.SLASH, Symbol.PERIOD));
+					if (clazz.isAnnotation() || clazz.isAnonymousClass() || clazz.isArray() || clazz.isEnum()) {
+						continue;
+					}
+					GenerateRes res = clazz.getAnnotation(GenerateRes.class);
+					if (res != null && !res.value()) {
+						continue;
+					}
 					List<String> properties = new ArrayList<String>();
 					data.setClazz(clazz.getName() + ".class");
 					data.setClassName(clazz.getSimpleName());
@@ -154,11 +162,14 @@ public class GenerateBeanRes {
 							properties.add(f.getName());
 						}
 					}
+					if (properties.size() == 0) {
+						continue;
+					}
 					data.setProperties(properties);
 					if(LOG.isInfoEnabled()) {
 						LOG.info("==== Add {0} class to resources.", clazz);
 					}
-					beanData[i] = data;
+					beanDatas.add(data);
 				}
 			}
 		} catch (IOException e) {
@@ -166,7 +177,7 @@ public class GenerateBeanRes {
 		} catch (ClassNotFoundException e) {
 			LOG.error("generate value-object resource error.", e);
 		}
-		return beanData;
+		return beanDatas;
 	}
 	
 	public static class BeanData {
