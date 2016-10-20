@@ -8,7 +8,7 @@
 4. 前端页面代码整体重构，后期版本会继续重构
 5. easycode项目代码基本成型
 
-###【v0.2.3】 - 2016.09.29
+###【v0.2.3】 - 2016.10.20
 
 1. 分离出jdbc jar包easycode-jdbc和easycode-jdbc-mybatis
 2. 重构页面框架
