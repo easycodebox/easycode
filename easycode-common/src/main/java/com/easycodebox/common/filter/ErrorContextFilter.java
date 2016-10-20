@@ -257,6 +257,11 @@ public class ErrorContextFilter implements Filter {
 				//error = error.data(ex.getMessage());
 			}
 			
+			//如果response已经关闭了，则直接返回
+			if (response.isCommitted()) {
+				return;
+			}
+			
 			//判断请求是否为AJAX请求
 			if(HttpUtils.isAjaxRequest(request)) {
 				response.setContentType("application/json;charset=UTF-8");
