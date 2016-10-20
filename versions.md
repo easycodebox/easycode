@@ -13,3 +13,4 @@
 1. 分离出jdbc jar包easycode-jdbc和easycode-jdbc-mybatis
 2. 重构页面框架
 3. 增强ErrorContextFilter功能，提供各种配置
+4. 重构easycode-login
