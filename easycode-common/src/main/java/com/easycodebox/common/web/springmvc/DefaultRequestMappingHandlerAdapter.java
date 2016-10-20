@@ -13,8 +13,23 @@ import com.easycodebox.common.net.HttpUtils;
 
 /**
  * 主要为了解决controller方法不返回view时自动生成view。重写此HandlerAdapter的原因是RequestToViewNameTranslator
- * 无法满足需求。 <br>
- * 注意：如果此类配置后无效，请增加@Order注释或者实现Order接口，让此类的优先级大于其他HandlerAdapter
+ * 无法满足需求。 
+ * <p>
+ * 注意：
+ * <ul>
+ * 	<li>如果此类配置后无效，请增加@Order注释或者实现Order接口，让此类的优先级大于其他HandlerAdapter</li>
+ * 	<li>
+ * 		如果Controller方法中包含HttpServletResponse response参数，则此类不会帮你自动生成View。
+ * 	<pre>
+ * 	@RequestMapping("/user/list")
+ * 	public void list(HttpServletResponse response) {
+ * 		//...
+ * 	}
+ * 	</pre>
+ * 		您使用了response参数，意味着响应由你自己来控制，而不是由插件自动帮你生成View。
+ *	</li>
+ * </ul>
+ * 
  * @author WangXiaoJin
  *
  */
