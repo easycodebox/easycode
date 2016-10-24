@@ -103,6 +103,9 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 
 		try {
 			SimpleAuthenticationInfo info = (SimpleAuthenticationInfo)super.doGetAuthenticationInfo(token);
+			if (info == null) {
+				return null;
+			}
 			Map<String, String> attributes = (Map<String, String>)info.getPrincipals().asList().get(1);
 			
 			//后期考虑直接从CAS返回角色、权限等信息是否可行
