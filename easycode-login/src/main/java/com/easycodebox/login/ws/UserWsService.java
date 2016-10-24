@@ -9,18 +9,11 @@ import com.easycodebox.login.ws.bo.UserWsBo;
 public interface UserWsService {
 
 	/**
-	 * 详情 (包含禁用状态的用户) <br>
-	 * 后期load方法删除后，此方法改名为load
+	 * 详情 (包含禁用状态的用户)
 	 * @param id
 	 * @return
 	 */
-	UserWsBo loadById(String id) throws ErrorContext;
-	
-	/**
-	 * 为了兼容老版本项目，就算username、nickname有值也会忽略。请使用loadById(String id)
-	 */
-	@Deprecated
-	UserWsBo load(String id, String username, String nickname) throws ErrorContext;
+	UserWsBo load(String id) throws ErrorContext;
 	
 	DataPage<UserWsBo> page(Integer groupId, String userNo, String username, String nickname, 
 			String realname, OpenClose status, String email, String mobile,
@@ -86,20 +79,6 @@ public interface UserWsService {
 	 * @return
 	 * @throws ErrorContext
 	 */
-	UserExtWsBo loginSucBack(String userId, String projectNo, boolean validProjectAuth) throws ErrorContext;
-	
-	/**
-	 * 请使用loginSucBack(String userId, String projectNo, boolean validProjectAuth)
-	 * @return
-	 * @throws ErrorContext
-	 */
-	@Deprecated
-	UserExtWsBo loginSucNew(String userId, String projectNo) throws ErrorContext;
-	
-	/**
-	 * 请使用loginSucBack(String userId, String projectNo, boolean validProjectAuth)
-	 */
-	@Deprecated
-	UserExtWsBo loginSuc(String username, String projectNo) throws ErrorContext;
+	UserExtWsBo loginSuc(String userId, String projectNo, boolean validProjectAuth) throws ErrorContext;
 	
 }

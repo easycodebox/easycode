@@ -57,7 +57,7 @@ public class UserWsServiceImpl implements UserWsService {
 	private ProjectService projectService;
 	
 	@Override
-	public UserWsBo loadById(String id) throws ErrorContext {
+	public UserWsBo load(String id) throws ErrorContext {
 		User user = userService.load(id);
 		UserWsBo bo = new UserWsBo();
 		bo.setId(user.getId());
@@ -82,13 +82,6 @@ public class UserWsServiceImpl implements UserWsService {
 		return bo;
 	}
 	
-	@Override
-	@Deprecated
-	public UserWsBo load(String id, String username, String nickname)
-			throws ErrorContext {
-		return loadById(id);
-	}
-
 	@Override
 	public DataPage<UserWsBo> page(Integer groupId, String userNo,
 			String username, String nickname, String realname,
@@ -205,7 +198,7 @@ public class UserWsServiceImpl implements UserWsService {
 
 	
 	@Override
-	public UserExtWsBo loginSucBack(String userId, String projectNo,
+	public UserExtWsBo loginSuc(String userId, String projectNo,
 			boolean validProjectAuth) throws ErrorContext {
 		User user = userService.load(userId);
 		Assert.notNull(user, CodeMsgExt.PARAM_ERR.fillArgs("用户名"));
@@ -274,20 +267,5 @@ public class UserWsServiceImpl implements UserWsService {
 		bo.setMenus(menus);
 		return bo;
 	}
-
-	@Override
-	@Deprecated
-	public UserExtWsBo loginSucNew(String userId, String projectNo)
-			throws ErrorContext {
-		return loginSucBack(userId, projectNo, true);
-	}
-
-	@Override
-	@Deprecated
-	public UserExtWsBo loginSuc(String username, String projectNo) throws ErrorContext {
-		User user = userService.loadByUsername(username);
-		return this.loginSucNew(user.getId(), projectNo);
-	}
-
 	
 }

@@ -109,11 +109,8 @@ public class DefaultCasFilter extends CasFilter {
 			this.weave = weave == null ? null : (Weave)weave;
 		}
 		if(weave != null) {
-			try {
-				weave.after(subject, request, response);
-			} catch (Exception e) {
-				LOG.error("Execute weave error after login suc.", e);
-			}
+			//此处不需要捕获异常
+			weave.after(subject, request, response);
 		}
 	}
 

@@ -107,7 +107,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 			
 			//后期考虑直接从CAS返回角色、权限等信息是否可行
 	        String userId = attributes.get(PRINCIPAL_USER_ID_KEY);
-	        UserExtWsBo user = userWsService.loginSucBack(userId, projectNo, validProjectAuth);
+	        UserExtWsBo user = userWsService.loginSuc(userId, projectNo, validProjectAuth);
 	        //设置角色
 	        if (user.getRoleNames() != null) {
 	        	attributes.put(PRINCIPAL_ROLES_KEY, user.getRoleNames());
