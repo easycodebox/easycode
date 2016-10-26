@@ -7,7 +7,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
 import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.enums.Enums;
+import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.ProjectEnv;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
@@ -149,7 +149,7 @@ public class ScriptTag extends AbstractHtmlTag {
 
 	public void setEnv(String env) {
 		if (StringUtils.isNotBlank(env)) {
-			this.env = Enums.deserialize(ProjectEnv.class, env, false);
+			this.env = DetailEnums.deserialize(ProjectEnv.class, env, false);
 		}
 	}
 

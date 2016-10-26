@@ -8,31 +8,32 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  * @author WangXiaoJin
  * 
  */
-public final class Enums {
+public final class DetailEnums {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(Enums.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DetailEnums.class);
 	
 	/**
 	 *  根据DetailEnum的value值解析成DetailEnum。如果clazz中没有null值，value==null时return null值
-	 * @param <K>
-	 * @param <T>
-	 * @param clazz
-	 * @param value
-	 * @return
 	 */
-	public static <T extends Enum<T> & DetailEnum<V>, V> T parse(Class<T> clazz, V value) {
+	public static <T extends DetailEnum<?>> T parse(Class<T> clazz, Object value) {
+		if (!clazz.isEnum()) return null;
 		for(T t : clazz.getEnumConstants()) {
 			if(t.getValue() == null && value == null) {
 				return t;
-			} else if(t.getValue() == null || value == null){
+			} else if(t.getValue() == null || value == null) {
 				continue;
-			} else if(t.getValue().equals(value)){
+			} else if(t.getValue().equals(value)) {
 				return t;
 			}
 		}
 		return null;
 	}
 	
+	/**
+	 * 返回格式 :<code>"0":"启用","1":"禁用"</code>
+	 * @param clz
+	 * @return
+	 */
 	public static <T extends Enum<T> & DetailEnum<V>, V> String getEnum(Class<T> clz) {
         try {
         	T[] vals = clz.getEnumConstants();
@@ -43,6 +44,11 @@ public final class Enums {
         return Symbol.EMPTY;
     }
 	
+	/**
+	 * 返回格式 :<code>"0":"启用","1":"禁用"</code>
+	 * @param pe
+	 * @return
+	 */
     public static String getEnum(DetailEnum<?>[] pe) {
     	StringBuilder sb = new StringBuilder();
         for (DetailEnum< ? > item : pe) {
@@ -69,6 +75,7 @@ public final class Enums {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <T> T deserialize(Class<T> enumType, String value, boolean enableOrdinal) {
+    	if (!enumType.isEnum()) return null;
     	T data = null;
 		try {
 			data = (T)Enum.valueOf((Class<Enum>)enumType, value);
@@ -80,7 +87,7 @@ public final class Enums {
 				//根据DetailEnum的Valuel属性赋值
 	        	for(DetailEnum e : (DetailEnum[])enumType.getEnumConstants()) {
 					if(e.getValue() == null && value == null
-							|| value != null && value.equalsIgnoreCase(e.getValue().toString())) {
+							|| value != null && e.getValue() != null && value.equals(e.getValue().toString())) {
 						data = (T)e;
 						break;
 					}
@@ -90,7 +97,7 @@ public final class Enums {
 	        		//根据DetailEnum的desc属性赋值
 	        		for(DetailEnum e : (DetailEnum[])enumType.getEnumConstants()) {
 	        			if(e.getDesc() == null && value == null
-	        					|| value != null && value.equalsIgnoreCase(e.getDesc().toString())) {
+	        					|| value != null && e.getDesc() != null && value.equals(e.getDesc().toString())) {
 	        				data = (T)e;
 	        				break;
 	        			}

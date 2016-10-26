@@ -12,7 +12,7 @@ import org.apache.ibatis.type.MappedTypes;
 import com.easycodebox.auth.core.enums.ModuleType;
 import com.easycodebox.auth.core.enums.MsgType;
 import com.easycodebox.common.enums.DetailEnum;
-import com.easycodebox.common.enums.Enums;
+import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.DataType;
 import com.easycodebox.common.enums.entity.Gender;
 import com.easycodebox.common.enums.entity.LogLevel;
@@ -67,7 +67,7 @@ public class EnumTypeHandler<T extends Enum<T> & DetailEnum<V>, V> extends BaseT
 	@Override
 	public T getNullableResult(ResultSet rs, String columnName)
 			throws SQLException {
-		return Enums.parse(classType, (V)rs.getObject(columnName));
+		return DetailEnums.parse(classType, (V)rs.getObject(columnName));
 	}
 
 	@SuppressWarnings("unchecked")

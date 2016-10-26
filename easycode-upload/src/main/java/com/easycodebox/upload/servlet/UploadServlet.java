@@ -18,7 +18,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.io.IOUtils;
 
-import com.easycodebox.common.enums.Enums;
+import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.FileInfo;
 import com.easycodebox.common.file.FileUtils;
@@ -84,7 +84,7 @@ public class UploadServlet extends BaseServlet {
 						} else if(Constants.TRANSACTION_KEY.equalsIgnoreCase(fieldName)) {
 							transaction = Boolean.parseBoolean(item.getString());
 						} else if(type == null && StringUtils.isNotBlank(fieldName)) {
-							type = Enums.parse(FileType.class, fieldName);
+							type = DetailEnums.parse(FileType.class, fieldName);
 							if(type != null) {
 								filePathKey = item.getString();
 								if(StringUtils.isNotBlank(filePathKey)) {

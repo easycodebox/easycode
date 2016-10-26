@@ -3,7 +3,7 @@ package com.easycodebox.common.web.springmvc;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
-import com.easycodebox.common.enums.Enums;
+import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.validate.Assert;
 
 /**
@@ -38,7 +38,7 @@ public class StringToEnumConverterFactory implements ConverterFactory<String, En
 			Assert.isTrue(enumType.isEnum(), 
 					"{0} class is not enum, so can not convert {1} to enum.", 
 					enumType, source);
-			return Enums.deserialize(enumType, source, true);
+			return DetailEnums.deserialize(enumType, source, true);
 		}
 		
 	}

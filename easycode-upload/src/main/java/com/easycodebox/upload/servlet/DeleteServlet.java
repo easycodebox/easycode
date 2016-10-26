@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.easycodebox.common.enums.Enums;
+import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
@@ -58,7 +58,7 @@ public class DeleteServlet extends BaseServlet {
 			//默认是图片类型
 			type = FileType.PIC_TYPE;
 		}else {
-			type = Enums.parse(FileType.class, fileType);
+			type = DetailEnums.parse(FileType.class, fileType);
 		}
 		
 		if(type == null) {

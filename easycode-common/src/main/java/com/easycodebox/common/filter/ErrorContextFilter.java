@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.enums.Enums;
+import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
@@ -159,7 +159,7 @@ public class ErrorContextFilter implements Filter {
 			this.isLog = Boolean.parseBoolean(isLog.trim());
 		}
 		if (StringUtils.isNotBlank(logLevel)) {
-			LogLevel logLevelEnum = Enums.deserialize(LogLevel.class, logLevel, false);
+			LogLevel logLevelEnum = DetailEnums.deserialize(LogLevel.class, logLevel, false);
 			if (logLevelEnum != null) {
 				logLevelConfig.setLogLevel(logLevelEnum);
 			}

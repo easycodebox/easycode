@@ -3,7 +3,7 @@ package com.easycodebox.common.jackson;
 import java.io.IOException;
 
 import com.easycodebox.common.enums.DetailEnum;
-import com.easycodebox.common.enums.Enums;
+import com.easycodebox.common.enums.DetailEnums;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.BeanProperty;
@@ -50,7 +50,7 @@ public class DetailEnumDeserializer extends JsonDeserializer<DetailEnum<?>> impl
 		}else {
 			value = node.asText();
 		}
-		return (DetailEnum<?>)Enums.deserialize(enumClass, value, !ctxt.isEnabled(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS));
+		return (DetailEnum<?>)DetailEnums.deserialize(enumClass, value, !ctxt.isEnabled(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS));
     }
 
 	/**
