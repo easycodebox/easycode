@@ -39,11 +39,26 @@
 	
 	<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO"
 		p:activeSessionsCacheName="sessionsCache" />
-	<!-- 修改Session保存到Cookie中的Key值，JSESSIONID 修改为 sid，解决使用Web容器Session时出现302重定向循环问题  -->
+		
 	<!-- 
-		<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie"
-			p:name="sid" />
+		1. 修改Session保存到Cookie中的Key值，JSESSIONID 修改为 sid，解决使用Web容器Session时出现302重定向循环问题。
+		如果你想查看项目中有没有使用Web容器的Session，你可以把sid改成JSESSIONID，这样就会出现302重定向循环问题。
+		原因：因为项目中使用了Shiro的Native Session，如果你用到Web容器的Session时（即调用了request.getSession()
+		或request.getSession(true)），Web容器会根据JSESSIONID的Cookie值去容器里找，没有找到则创建一个新的
+		Web Session然后把此Session Id存入到JSESSIONID的Cookie中。这样就会更新Shiro之前保存的JSESSIONID Cookie值，
+		所以会出现302重定向循环。
+		
+		2. 还有一种情况必须改成此Key值：当你本地启动了easycode-cas项目，且你的项目和cas项目共用同一个域名（比如：localhost），
+		只是通过端口号来区分访问哪个项目。这种情况下你第一次登录系统会报错，跳转到500页面，再次请求项目不会出现500页面。这是因为
+		CAS登录校验成功后，会访问本项目的/login地址，此请求中会包含JSESSIONID的cookie中，这是CAS项目生成的cookie，
+		由于CAS项目和本项目用的域是相同的，所以本项目可以拿到此JSESSIONID的cookie值去shiro的session manager中获取
+		对应的Session。这个JSESSIONID对应的session是CAS的Web容器生成的，Shiro获取不到对应的Session就抛出异常了。
+		提示：所以如果你启动的项目和CAS共用同一域，cookie key值就不能定义成JSESSIONID，除非CAS的session也是通过Shiro生成
+		的，且为互相共享Session。
 	-->
+	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie"
+		p:name="sid" />
+	
 	<!-- 
 		注：此处应该禁用shiro提供的定时器功能（sessionManager.sessionValidationSchedulerEnabled = false）。 
 		两个替换方案：1）缓存自提供的TTL，这个TTL值必须由程序端控制，即与shiro的session timeout值一致  2）定时器独立于当前项目之外运行
@@ -54,11 +69,11 @@
 		
 	<!-- 
 		globalSessionTimeout: Session Timeout 30分钟
-		可以增加配置p:sessionIdCookie-ref="sessionIdCookie" 使用自定义cookie key
 	 -->
 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager"
 		p:globalSessionTimeout="1800000"
 		p:sessionDAO-ref="sessionDAO"
+		p:sessionIdCookie-ref="sessionIdCookie"
 		p:sessionValidationScheduler-ref="sessionValidationScheduler" />
 	
 	<bean id="securityCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager"
