@@ -192,7 +192,7 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 
 	@Override
 	public List<Role> listAllByUserId(String userId) {
-		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK, "用户ID");
+		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK.fillArgs("用户ID"));
 		List<Role> rs = this.list(OpenClose.OPEN, null);
 		List<Role> owns = this.listOpenedByUserId(userId);
 		for(Role o : owns) {
@@ -237,7 +237,7 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
 	})
 	public void installRolesOfUser(String userId, Integer[] roleIds) {
-		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK, "用户ID");
+		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK.fillArgs("用户ID"));
 		super.deletePhy(sql(UserRole.class)
 				.eq(R.UserRole.userId, userId)
 				);

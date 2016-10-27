@@ -118,15 +118,12 @@ public interface OperationService {
 	List<Operation> listAllOpsOfRoles(Integer[] roleIds, Integer projectId, YesNo isMenu);
 	
 	/**
-	 * 从XML文件导入操作到数据库。<br>
-	 * 注意：<br>
-	 * （1）动作表中的动作不可以比参数xml中的多，也不可以少；<br>
-	 * （2）保留已有的动作与role之间的关系；
+	 * 从XML文件导入操作到数据库
 	 * @param xml 
 	 * @param orderNoStart
 	 * @throws Exception
 	 */
-	void importFromXml(List<InputStream> streams) throws Exception;
+	void importFromXml(InputStream streams) throws Exception;
 	
 	/**
 	 * 将权限记录导出到本地XML文件

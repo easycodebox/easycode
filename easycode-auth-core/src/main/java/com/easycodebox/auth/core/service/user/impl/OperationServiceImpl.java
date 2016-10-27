@@ -44,6 +44,7 @@ import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.BaseException;
+import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.freemarker.ConfigurationFactory;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
@@ -231,99 +232,101 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	@SuppressWarnings("unchecked")
 	@Log(title = "导入权限", moduleType = ModuleType.USER)
 	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
-	public synchronized void importFromXml(List<InputStream> streams) throws Exception {
-		//此处不用truncate，因truncate不能被事务回滚
+	public synchronized void importFromXml(InputStream streams) throws Exception {
+		//此处不用truncate，因truncate不能被事务回滚，而且此接口改成操作单个项目的权限了
 		//super.truncate();
-		super.deletePhy(sql());
+		
 		SAXReader reader = new SAXReader();
-		for(int x = 0; x < streams.size(); x++) {
-			Document document = null;
-			try {
-				document = reader.read(streams.get(x));
-			} finally {
-				IOUtils.closeQuietly(streams.get(x));
-			}
-			Element root = document.getRootElement();
-			String project = XmlDataParser.getXmlAttributeVal(root, "project");
-			Assert.notBlank(project, CodeMsgExt.PARAM_BLANK, "project");
-			Project pro = projectService.load(project);
-			long cal0 = (pro.getNum())*100000000L;
-			//列出以及菜单
-			List<Element> menu1s =  root.elements("menu1");
-			for(int i = 0; i < menu1s.size(); i++) {
-				Element menu1 = menu1s.get(i);
-				long cal1 = cal0 + (i + 1)*1000000L;
-				String menu1Id = XmlDataParser.getXmlAttributeVal(menu1, "id"),
-						menu1Url = XmlDataParser.getXmlAttributeVal(menu1, "url"),
-						menu1Name = XmlDataParser.getXmlAttributeVal(menu1, "name"),
-						menu1Icon = XmlDataParser.getXmlAttributeVal(menu1, "icon"),
-						menu1Status = XmlDataParser.getXmlAttributeVal(menu1, "status"),
-						menu1Sort = XmlDataParser.getXmlAttributeVal(menu1, "sort"),
-						menu1Description = XmlDataParser.getXmlAttributeVal(menu1, "description", menu1Name);
-				Operation o1 = new Operation(StringUtils.isNotBlank(menu1Id) ? Long.parseLong(menu1Id) : cal1 , 
-						null, menu1Name, pro.getId(), YesNo.YES, menu1Url, menu1Description, menu1Icon);
-				if(StringUtils.isNotBlank(menu1Status)) {
-					OpenClose st = Enum.valueOf(OpenClose.class, menu1Status);
-					o1.setStatus(st);
-				}
-				if(StringUtils.isNotBlank(menu1Sort)) {
-					o1.setSort(Integer.parseInt(menu1Sort));
-				}
-				this.add(o1);
-				//列出二级菜单
-				List<Element> menu2s =  menu1.elements("menu2");
-				for(int j = 0; j < menu2s.size(); j++) {
-					Element menu2 = menu2s.get(j);
-					long cal2 = cal1 + (j + 1)*10000L;
-					String menu2Id = XmlDataParser.getXmlAttributeVal(menu2, "id"),
-							menu2Url = XmlDataParser.getXmlAttributeVal(menu2, "url"),
-							menu2Name = XmlDataParser.getXmlAttributeVal(menu2, "name"),
-							menu2Icon = XmlDataParser.getXmlAttributeVal(menu2, "icon"),
-							menu2Status = XmlDataParser.getXmlAttributeVal(menu2, "status"),
-							menu2Sort = XmlDataParser.getXmlAttributeVal(menu2, "sort"),
-							menu2Description = XmlDataParser.getXmlAttributeVal(menu2, "description", menu2Name);
-					Operation o2 = new Operation(StringUtils.isNotBlank(menu2Id) ? Long.parseLong(menu2Id) : cal2 , 
-							o1.getId(), menu2Name,
-							pro.getId(), YesNo.YES, menu2Url, menu2Description, menu2Icon);
-					if(StringUtils.isNotBlank(menu2Status)) {
-						OpenClose st = Enum.valueOf(OpenClose.class, menu2Status);
-						o2.setStatus(st);
-					}
-					if(StringUtils.isNotBlank(menu2Sort)) {
-						o2.setSort(Integer.parseInt(menu2Sort));
-					}
-					this.add(o2);
-					//列出三级菜单
-					List<Element> menu3s =  menu2.elements("menu3");
-					for(int k = 0; k < menu3s.size(); k++) {
-						Element menu3 = menu3s.get(k);
-						long cal3 = cal2 + (k + 1)*100L;
-						String menu3Id = XmlDataParser.getXmlAttributeVal(menu3, "id"),
-								menu3Url = XmlDataParser.getXmlAttributeVal(menu3, "url"),
-								menu3Name = XmlDataParser.getXmlAttributeVal(menu3, "name"),
-								menu3Icon = XmlDataParser.getXmlAttributeVal(menu3, "icon"),
-								menu3Status = XmlDataParser.getXmlAttributeVal(menu3, "status"),
-								menu3Sort = XmlDataParser.getXmlAttributeVal(menu3, "sort"),
-								menu3Description = XmlDataParser.getXmlAttributeVal(menu3, "description", menu3Name);
-						Operation o3 = new Operation(StringUtils.isNotBlank(menu3Id) ? Long.parseLong(menu3Id) : cal3 , 
-								o2.getId(), menu3Name, 
-								pro.getId(), YesNo.YES, menu3Url, menu3Description, menu3Icon);
-						if(StringUtils.isNotBlank(menu3Status)) {
-							OpenClose st = Enum.valueOf(OpenClose.class, menu3Status);
-							o3.setStatus(st);
-						}
-						if(StringUtils.isNotBlank(menu3Sort)) {
-							o3.setSort(Integer.parseInt(menu3Sort));
-						}
-						this.add(o3);
-						analysisOperationTag(o3.getId(), pro.getId(), cal3 + 50L, 1, menu3);
-					}
-					analysisOperationTag(o2.getId(), pro.getId(), cal2 + 5000L, 100, menu2);
-				}
-				analysisOperationTag(o1.getId(), pro.getId(), cal1 + 500000L, 10000, menu1);
-			}
-			analysisOperationTag(null, pro.getId(), cal0 + 50000000L, 1000000, root);
+		Document document = null;
+		try {
+			document = reader.read(streams);
+		} finally {
+			IOUtils.closeQuietly(streams);
 		}
+		Element root = document.getRootElement();
+		String project = XmlDataParser.getXmlAttributeVal(root, "project");
+		Assert.notBlank(project, CodeMsg.FAIL.msg("XML文件中缺少project属性"));
+		Project pro = projectService.load(project);
+		Assert.notNull(pro, CodeMsg.FAIL.msg("没有项目编号为({})的授权项目", project));
+		//删除原有权限
+		super.deletePhy(sql().eq(R.Operation.projectId, pro.getId()));
+		
+		long cal0 = (pro.getNum())*100000000L;
+		//列出以及菜单
+		List<Element> menu1s =  root.elements("menu1");
+		for(int i = 0; i < menu1s.size(); i++) {
+			Element menu1 = menu1s.get(i);
+			long cal1 = cal0 + (i + 1)*1000000L;
+			String menu1Id = XmlDataParser.getXmlAttributeVal(menu1, "id"),
+					menu1Url = XmlDataParser.getXmlAttributeVal(menu1, "url"),
+					menu1Name = XmlDataParser.getXmlAttributeVal(menu1, "name"),
+					menu1Icon = XmlDataParser.getXmlAttributeVal(menu1, "icon"),
+					menu1Status = XmlDataParser.getXmlAttributeVal(menu1, "status"),
+					menu1Sort = XmlDataParser.getXmlAttributeVal(menu1, "sort"),
+					menu1Description = XmlDataParser.getXmlAttributeVal(menu1, "description", menu1Name);
+			Operation o1 = new Operation(StringUtils.isNotBlank(menu1Id) ? Long.parseLong(menu1Id) : cal1 , 
+					null, menu1Name, pro.getId(), YesNo.YES, menu1Url, menu1Description, menu1Icon);
+			if(StringUtils.isNotBlank(menu1Status)) {
+				OpenClose st = Enum.valueOf(OpenClose.class, menu1Status);
+				o1.setStatus(st);
+			}
+			if(StringUtils.isNotBlank(menu1Sort)) {
+				o1.setSort(Integer.parseInt(menu1Sort));
+			}
+			this.add(o1);
+			//列出二级菜单
+			List<Element> menu2s =  menu1.elements("menu2");
+			for(int j = 0; j < menu2s.size(); j++) {
+				Element menu2 = menu2s.get(j);
+				long cal2 = cal1 + (j + 1)*10000L;
+				String menu2Id = XmlDataParser.getXmlAttributeVal(menu2, "id"),
+						menu2Url = XmlDataParser.getXmlAttributeVal(menu2, "url"),
+						menu2Name = XmlDataParser.getXmlAttributeVal(menu2, "name"),
+						menu2Icon = XmlDataParser.getXmlAttributeVal(menu2, "icon"),
+						menu2Status = XmlDataParser.getXmlAttributeVal(menu2, "status"),
+						menu2Sort = XmlDataParser.getXmlAttributeVal(menu2, "sort"),
+						menu2Description = XmlDataParser.getXmlAttributeVal(menu2, "description", menu2Name);
+				Operation o2 = new Operation(StringUtils.isNotBlank(menu2Id) ? Long.parseLong(menu2Id) : cal2 , 
+						o1.getId(), menu2Name,
+						pro.getId(), YesNo.YES, menu2Url, menu2Description, menu2Icon);
+				if(StringUtils.isNotBlank(menu2Status)) {
+					OpenClose st = Enum.valueOf(OpenClose.class, menu2Status);
+					o2.setStatus(st);
+				}
+				if(StringUtils.isNotBlank(menu2Sort)) {
+					o2.setSort(Integer.parseInt(menu2Sort));
+				}
+				this.add(o2);
+				//列出三级菜单
+				List<Element> menu3s =  menu2.elements("menu3");
+				for(int k = 0; k < menu3s.size(); k++) {
+					Element menu3 = menu3s.get(k);
+					long cal3 = cal2 + (k + 1)*100L;
+					String menu3Id = XmlDataParser.getXmlAttributeVal(menu3, "id"),
+							menu3Url = XmlDataParser.getXmlAttributeVal(menu3, "url"),
+							menu3Name = XmlDataParser.getXmlAttributeVal(menu3, "name"),
+							menu3Icon = XmlDataParser.getXmlAttributeVal(menu3, "icon"),
+							menu3Status = XmlDataParser.getXmlAttributeVal(menu3, "status"),
+							menu3Sort = XmlDataParser.getXmlAttributeVal(menu3, "sort"),
+							menu3Description = XmlDataParser.getXmlAttributeVal(menu3, "description", menu3Name);
+					Operation o3 = new Operation(StringUtils.isNotBlank(menu3Id) ? Long.parseLong(menu3Id) : cal3 , 
+							o2.getId(), menu3Name, 
+							pro.getId(), YesNo.YES, menu3Url, menu3Description, menu3Icon);
+					if(StringUtils.isNotBlank(menu3Status)) {
+						OpenClose st = Enum.valueOf(OpenClose.class, menu3Status);
+						o3.setStatus(st);
+					}
+					if(StringUtils.isNotBlank(menu3Sort)) {
+						o3.setSort(Integer.parseInt(menu3Sort));
+					}
+					this.add(o3);
+					analysisOperationTag(o3.getId(), pro.getId(), cal3 + 50L, 1, menu3);
+				}
+				analysisOperationTag(o2.getId(), pro.getId(), cal2 + 5000L, 100, menu2);
+			}
+			analysisOperationTag(o1.getId(), pro.getId(), cal1 + 500000L, 10000, menu1);
+		}
+		analysisOperationTag(null, pro.getId(), cal0 + 50000000L, 1000000, root);
 	}
 	/**
 	 * 解析operation标签
@@ -497,7 +500,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 
 	@Override
 	public List<Operation> listAllTreeOperationsByUserId(String userId, Integer projectId, YesNo isMenu) {
-		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK, "用户ID");
+		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK.fillArgs("用户ID"));
 		List<Operation> allOs = this.list(projectId, OpenClose.OPEN, isMenu);
 		List<Operation> userOs = this.listOperationsOfUser(userId, projectId, isMenu);
 		return treeOperations(null, allOs, userOs);

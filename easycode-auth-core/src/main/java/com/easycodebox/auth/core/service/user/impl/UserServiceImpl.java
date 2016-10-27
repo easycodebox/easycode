@@ -284,7 +284,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	@Log(title = "修改用户昵称", moduleType = ModuleType.USER)
 	@CacheEvict(cacheNames=Constants.CN.USER, key="#id")
 	public int updateNickname(String nickname, String id) {
-		Assert.notBlank(id, CodeMsgExt.PARAM_BLANK, "主键");
+		Assert.notBlank(id, CodeMsgExt.PARAM_BLANK.fillArgs("主键"));
 		
 		Assert.isFalse(this.existNickname(nickname, id),
 				CodeMsgExt.FAIL.msg("昵称{0}已被占用", nickname));

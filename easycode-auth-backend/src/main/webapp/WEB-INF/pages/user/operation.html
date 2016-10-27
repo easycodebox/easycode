@@ -5,6 +5,7 @@
 [#include "/WEB-INF/common/meta.html"/]
 <title>EasyCode | 权限</title>
 [#include "/WEB-INF/common/styles.html"/]
+[@e.link href="http://cdn.easycodebox.com/jquery-file-upload/9.12.3/css/??jquery.fileupload.css" /]
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -98,9 +99,10 @@
 									</button>
 								[/@shiro.hasPermission]
 	                        	[@shiro.hasPermission name="operation/imports"]
-									<button type="button" title="导入" class="btn btn-default" id="importsOper">
+									<span title="导入" class="btn btn-default fileinput-button">
 										<i class="fa fa-upload"></i>
-									</button>
+										<input id="importsOper" name="files[]" multiple="multiple" type="file">
+									</span>
 								[/@shiro.hasPermission]
 	                        	[@shiro.hasPermission name="operation/exports"]
 									<button type="button" title="导出" class="btn btn-default" id="exportsOper">
@@ -365,6 +367,12 @@
 </div>
 	
 [#include "/WEB-INF/common/scripts.html"/]
+[@e.script src="http://cdn.easycodebox.com/jquery-file-upload/9.12.3/js/??
+	vendor/jquery.ui.widget.js,
+	jquery.iframe-transport.js,
+	jquery.fileupload.js,
+	jquery.fileupload-process.js,
+	jquery.fileupload-validate.js" /]
 [@e.script src="/js/??user/operation.js" /]
 </body>
 </html>

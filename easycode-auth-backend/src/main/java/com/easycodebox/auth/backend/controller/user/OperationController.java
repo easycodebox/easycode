@@ -2,14 +2,16 @@ package com.easycodebox.auth.backend.controller.user;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.pojo.user.Operation;
@@ -20,7 +22,8 @@ import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.file.Resources;
+import com.easycodebox.common.error.ErrorContext;
+import com.easycodebox.common.file.FileInfo;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
@@ -118,10 +121,27 @@ public class OperationController extends BaseController {
 	 * 导入权限
 	 */
 	@ResponseBody
-	public CodeMsg imports() throws Exception {
-		List<InputStream> streams = Resources.scan2InputStream("operations/*.xml");
-		operationService.importFromXml(streams);
-		return CodeMsgExt.SUC;
+	public CodeMsg imports(@RequestParam("files[]")MultipartFile[] files) throws Exception {
+		//List<InputStream> streams = Resources.scan2InputStream("operations/*.xml");
+		List<FileInfo> fileInfos = new ArrayList<>(files.length);
+		for (MultipartFile file : files) {
+			FileInfo fileInfo = new FileInfo();
+			fileInfo.setName(file.getOriginalFilename());
+			if (!file.isEmpty()) {
+				try {
+					operationService.importFromXml(file.getInputStream());
+					fileInfo.setError("上传成功");
+				} catch (ErrorContext e) {
+					fileInfo.setError(e.getError().getMsg());
+				} catch (Exception e) {
+					fileInfo.setError("解析失败");
+				}
+			} else {
+				fileInfo.setError("空文件");
+			}
+			fileInfos.add(fileInfo);
+		}
+		return CodeMsg.NONE.data(fileInfos);
 	}
 	
 	/**

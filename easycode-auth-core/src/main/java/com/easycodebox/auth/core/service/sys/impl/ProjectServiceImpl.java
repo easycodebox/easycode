@@ -75,6 +75,10 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	@Override
 	@Transactional
 	@Log(title = "添加授权项目", moduleType = ModuleType.SYS)
+	@Caching(evict={
+			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
+			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+	})
 	public Project add(Project project) {
 		
 		Assert.isFalse(this.existName(project.getName(), project.getId()),

@@ -161,10 +161,6 @@ $(function(){
 	//初始化页面
 	gb.init();
 	
-	$("#importsOper").click(function() {
-		$.post("/operation/imports.json");
-	});
-	
 	$("#exportsOper").click(function() {
 		$.post("/operation/exports.json");
 	});
@@ -176,6 +172,30 @@ $(function(){
 		targetClass: "status",	//操作成功后修改的目标对象
 		url: "/operation/openClose.json"
 	});
+	
+	//导入
+	$('#importsOper').fileupload({
+    	url: "/operation/imports",
+    	acceptFileTypes : /(\.|\/)xml$/i
+    }).on("fileuploaddone", function (e, data) {
+    	data = data.result;
+    	if (data && data.data) {
+    		var files = data.data,
+    			info = "";
+    		files.forEach(function(item, index) {
+    			if (item.error) {
+    				info += (info ? "<br>" : "" ) + item.name + " : " + item.error;
+    			}
+    		});
+    		if (info) {
+    			$.msg("warn", info);
+			}
+    	} else {
+    		$.msg("error", data.msg ? data.msg : "上传文件失败！");
+    	}
+    }).on("fileuploadfail", function (e, data) {
+    	$.msg("error", "上传文件失败！");
+    });
 	
 	//是否是菜单 功能
 	$("#toolbar, #data-table").UI_switch({
