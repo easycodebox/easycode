@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.ArrayUtils;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.EnumClassFactory;
@@ -99,7 +100,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 	 */
 	public static String formatMix(String str, int model, String defaultVal, Object... args) {
 		if (isBlank(str)) return str;
-		if (args == null) args = new Object[0];
+		if (args == null) args = ArrayUtils.EMPTY_OBJECT_ARRAY;
 		
 		StringFormatToken token = new StringFormatToken(str, true);
 		String key = null;
