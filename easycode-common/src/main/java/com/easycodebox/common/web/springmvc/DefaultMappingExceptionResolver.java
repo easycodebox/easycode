@@ -48,9 +48,8 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 		
 		if(HttpUtils.isAjaxRequest(request)) {
 			response.setContentType("application/json;charset=UTF-8");
-			try {
-				JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
-						.createGenerator(response.getWriter());
+			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
+					.createGenerator(response.getWriter())) {
 				Jacksons.NON_NULL.writeValue(jsonGenerator, error);
 				return null;
 			}catch (Exception jsonEx) {

@@ -22,3 +22,4 @@
 3. SqlGrammar的增删改查	增加通用Dao
 4. easycode-common包中Enums类名改为DetailEnums
 5. 通信用的UserWsBo/OperationWsBo改为User/Operation，为了以后各项目间统一使用用户信息缓存做准备
+6. 日志属性名由LOG换成log，与lombok统一，方便集成

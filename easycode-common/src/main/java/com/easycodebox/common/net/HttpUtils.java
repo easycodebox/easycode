@@ -485,9 +485,8 @@ public class HttpUtils {
 	 * 
 	 */
 	public static void outObject(Object obj, HttpServletResponse response) {
-		try {
-			JsonGenerator jsonGenerator = Jacksons.COMMUNICATE.getFactory()
-					.createGenerator(response.getWriter());
+		try (JsonGenerator jsonGenerator = Jacksons.COMMUNICATE.getFactory()
+				.createGenerator(response.getWriter())) {
 			Jacksons.COMMUNICATE.writeValue(jsonGenerator, obj);
 		} catch (Exception e) {
 			LOG.error("The method outString in HttpUtil:" + e.getMessage());

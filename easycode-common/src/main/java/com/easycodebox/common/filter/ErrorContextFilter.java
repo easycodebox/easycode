@@ -265,11 +265,10 @@ public class ErrorContextFilter implements Filter {
 			//判断请求是否为AJAX请求
 			if(HttpUtils.isAjaxRequest(request)) {
 				response.setContentType("application/json;charset=UTF-8");
-				try {
-					JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
-							.createGenerator(response.getWriter());
+				try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
+						.createGenerator(response.getWriter())) {
 					Jacksons.NON_NULL.writeValue(jsonGenerator, error);
-				}catch (Exception jsonEx) {
+				} catch (Exception jsonEx) {
 					LOG.error("Write JSON data error!", jsonEx);
 					throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
 				}
