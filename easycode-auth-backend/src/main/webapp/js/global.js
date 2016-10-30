@@ -552,6 +552,7 @@ $(function() {
 		return layer.open($.extend({
 			id: "pageDialog",
 			type: 1,
+			zIndex: 999,
 			title: title,
 			content: content,
 			btn: ['确认'],
@@ -568,6 +569,7 @@ $(function() {
 		return layer.open($.extend({
 			id: "pageDialog",
 			type: 1,
+			zIndex: 999,
 			title: title,
 			content: content,
 			btn: ['确认', '取消'],

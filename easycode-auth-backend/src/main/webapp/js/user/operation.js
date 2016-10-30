@@ -162,7 +162,23 @@ $(function(){
 	gb.init();
 	
 	$("#exportsOper").click(function() {
-		$.post("/operation/exports.json");
+		gb.initProjects(function() {
+			var $export = $("#exportPros");
+			if (!$export.data("select2")) {
+				$export.select2({
+					data: $.map(gb.vm.projects, function(obj) {
+						return {id: obj.id, text: obj.name}
+					})
+				});
+			}
+			layer.page2("导出", $("#exportDiv"), function() {
+				if ($export.val()) {
+					location.href = "/operation/exports/" + $export.val();
+				} else {
+					$.msg("warn", "请选择您要导出权限的项目")
+				}
+			});
+		});
 	});
 	
 	//启用、禁用 功能
@@ -176,7 +192,38 @@ $(function(){
 	//导入
 	$('#importsOper').fileupload({
     	url: "/operation/imports",
-    	acceptFileTypes : /(\.|\/)xml$/i
+    	singleFileUploads: false,	//所有文件作为一个请求上传至服务端
+    	acceptFileTypes: /(\.|\/)xml$/i,
+    	messages: {
+            acceptFileTypes: '只能上传XML文件'
+    	},
+    	add: function (e, data) {
+    		//重写add函数只要是为了弹出验证失败的信息
+    		var $this = $(this);
+            if (e.isDefaultPrevented()) {
+                return false;
+            }
+            if (data.autoUpload || (data.autoUpload !== false &&
+            		$this.fileupload('option', 'autoUpload'))) {
+                data.process(function () {
+                    return $this.fileupload('process', data);
+                }).done(function () {
+                    data.submit();
+                }).fail(function () {
+                	if (data.files.error) {
+                		var info = "";
+                		data.files.forEach(function(item) {
+                			if (item.error) {
+                				info += (info ? "<br>" : "" ) + "【{}】:{}".format(item.name, item.error);
+            				}
+                		});
+                		if (info) {
+                			$.msg("warn", info);
+            			}
+            		}
+                });
+            }
+        }
     }).on("fileuploaddone", function (e, data) {
     	data = data.result;
     	if (data && data.data) {

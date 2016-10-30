@@ -1,11 +1,7 @@
 package com.easycodebox.auth.core.service.user.impl;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,8 +37,8 @@ import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
-import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.freemarker.ConfigurationFactory;
@@ -52,9 +48,12 @@ import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.xml.XmlDataParser;
 import com.easycodebox.jdbc.support.AbstractService;
 
+import freemarker.core.ParseException;
 import freemarker.template.Configuration;
+import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
 
 /**
  * @author WangXiaoJin
@@ -359,36 +358,18 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 	
 	@Override
 	@Log(title = "导出权限", moduleType = ModuleType.USER)
-	public void exportToXml(String ftlRes, File outPath) {
-		List<Operation> os = this.listAllGroupByProject(null);
-		if(!outPath.exists()) {
-			outPath.mkdirs();
-		}
-		try {
-			Configuration cfg = ConfigurationFactory.instance();
-			//设置包装器，并将对象包装为数据模型
-			Template tpl = cfg.getTemplate(ftlRes);
-			for(Operation o : os) {
-				Map<String, Object> root = new HashMap<String, Object>();
-				root.put("project", o.getProject().getProjectNo());
-				root.put("os", o.getChildren());
-				Writer out = null;
-				try {
-					File tmp = new File(outPath, o.getProject().getProjectNo().toLowerCase() + ".xml");
-					if(tmp.exists())
-						tmp.delete();
-					out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tmp),"UTF-8"));
-					tpl.process(root, out);
-				}finally {
-					IOUtils.closeQuietly(out);
-				}
-			}
-			LOG.info("=== ********* generate template *********** =====");
-		} catch (IOException e) {
-			LOG.error("generate value-object resource error.", e);
-		} catch (TemplateException e) {
-			LOG.error("generate value-object resource error.", e);
-		}
+	public void exportToXml(String ftlRes, Integer projectId, Writer writer) 
+			throws TemplateException, TemplateNotFoundException, MalformedTemplateNameException, 
+			ParseException, IOException {
+		List<Operation> os = treeOperations(null, this.list(projectId, null, null), null);
+		Project project = projectService.load(projectId);
+		Configuration cfg = ConfigurationFactory.instance();
+		//设置包装器，并将对象包装为数据模型
+		Template tpl = cfg.getTemplate(ftlRes);
+		Map<String, Object> root = new HashMap<String, Object>();
+		root.put("project", project.getProjectNo());
+		root.put("os", os);
+		tpl.process(root, writer);
 	}
 
 	@Override
@@ -433,7 +414,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 		List<Operation> newOs = new ArrayList<Operation>();
 		List<Operation> os = roleId == null ? treeOperations(null, this.list(null, null, null), null)
 				: this.listAllTreeOperationsByRoleId(roleId, null);
-		Map<Integer, List<Operation>> mapping = new HashMap<Integer, List<Operation>>();
+		Map<Integer, List<Operation>> mapping = new HashMap<>();
 		for(Operation o : os) {
 			if(!mapping.containsKey(o.getProjectId())) {
 				mapping.put(o.getProjectId(), new ArrayList<Operation>());

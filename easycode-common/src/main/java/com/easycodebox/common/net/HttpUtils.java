@@ -1,6 +1,10 @@
 package com.easycodebox.common.net;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -22,6 +26,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -43,6 +48,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.web.util.WebUtils;
 
 import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.file.MimeTypes;
 import com.easycodebox.common.file.UploadFileInfo;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.DataConvert;
@@ -466,7 +472,7 @@ public class HttpUtils {
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
-			out.write(str);;
+			out.write(str);
 		} catch (IOException e) {
 			LOG.error("The method outString in HttpUtil:" + e.getMessage());
 		} finally {
@@ -589,6 +595,41 @@ public class HttpUtils {
 	public static void outJson(Object obj, HttpServletResponse response) {
 		response.setContentType("application/json;charset=UTF-8");
 		outObject(obj, response);
+	}
+	
+	/**
+	 * 下载文件
+	 * @param srcFile	下载的源文件
+	 * @param filename	下载到客户端的文件名
+	 * @param response
+	 * @throws IOException
+	 */
+	public static void download(File srcFile, String filename, HttpServletResponse response) throws IOException {
+		try (FileInputStream is = new FileInputStream(srcFile)) {
+			download(is, filename, response);
+		}
+	}
+	
+	/**
+	 * 下载文件
+	 * @param inputStream 输入流，此流需要自己关闭，此方法不会帮你关闭
+	 * @param filename 下载到客户端的文件名
+	 * @throws IOException 
+	 * 
+	 */
+	public static void download(InputStream inputStream, String filename, HttpServletResponse response) throws IOException {
+		Assert.notBlank(filename);
+		String fn = filename;
+		try {
+			fn = new String(fn.getBytes("UTF-8"),"ISO-8859-1");
+		} catch (UnsupportedEncodingException e) {
+			
+		}
+		response.setContentType(MimeTypes.getMimeTypeByExt(FilenameUtils.getExtension(filename)));
+		response.setHeader("Content-Disposition", "attachment;fileName=" + fn);
+		try (OutputStream outputStream = response.getOutputStream()) {
+			IOUtils.copy(inputStream, outputStream);
+		}
 	}
 
 	public static class Request {

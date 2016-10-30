@@ -1,14 +1,18 @@
 package com.easycodebox.auth.backend.controller.user;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -147,12 +151,20 @@ public class OperationController extends BaseController {
 	/**
 	 * 导出权限
 	 */
-	@ResponseBody
-	public CodeMsg exports() throws Exception {
-		URL url = OperationController.class.getResource("/operations");
-		File tlFile = new File(url.toURI());
-		operationService.exportToXml("operations.ftl", tlFile);
-		return CodeMsgExt.SUC;
+	@RequestMapping("/operation/exports/{projectId}")
+	public void exports(@PathVariable("projectId")Integer projectId, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String filename = projectService.load(projectId).getProjectNo() + ".xml";
+		try {
+			filename = new String(filename.getBytes("UTF-8"),"ISO-8859-1");
+		} catch (UnsupportedEncodingException e) {
+			
+		}
+		response.setContentType(request.getServletContext().getMimeType(filename));
+		response.setHeader("Content-Disposition", "attachment;fileName=" + filename);
+		try (Writer writer = response.getWriter()) {
+			operationService.exportToXml("operations.ftl", projectId, writer);
+		}
 	}
 	
 	/**

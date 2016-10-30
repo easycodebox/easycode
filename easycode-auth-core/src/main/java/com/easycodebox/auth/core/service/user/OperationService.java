@@ -1,14 +1,20 @@
 package com.easycodebox.auth.core.service.user;
 
-import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
 import com.easycodebox.auth.core.pojo.user.Operation;
-import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.dto.DataPage;
+
+import freemarker.core.ParseException;
+import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
 
 /**
  * @author WangXiaoJin
@@ -126,11 +132,14 @@ public interface OperationService {
 	void importFromXml(InputStream streams) throws Exception;
 	
 	/**
-	 * 将权限记录导出到本地XML文件
-	 * @param xml 数据流
-	 * @throws Exception
+	 * 下载权限到客户端
+	 * @param ftlRes
+	 * @param projectId
+	 * @param writer
+	 * @return 返回文件名
 	 */
-	void exportToXml(String ftlRes, File outPath);
+	void exportToXml(String ftlRes, Integer projectId, Writer writer) throws TemplateException, 
+		TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException;
 	
 	/**
 	 * 列出已开放权限
