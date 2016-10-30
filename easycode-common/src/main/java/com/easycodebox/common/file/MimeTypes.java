@@ -9,6 +9,9 @@ import java.net.URLConnection;
 
 /**
  * 
+ * 
+	ServletContext.getMimeType() //Web容器获取MimeType方法 - 根据文件后缀名判断
+  ******************************************************
  	Path source = Paths.get(path);
 	System.out.println("1: " + Files.probeContentType(source));
 	此功能判断类型不完整
@@ -55,7 +58,8 @@ public class MimeTypes {
 	}
 	
 	/**
-	 * 通过文件后缀来判断的，通过文件后缀识别
+	 * 通过文件后缀来判断的，通过文件后缀识别 <br>
+	 * <code>ServletContext.getMimeType()</code>也是通过文件后缀判断
 	 * @param extension 文件扩展名
 	 * @return
 	 */
