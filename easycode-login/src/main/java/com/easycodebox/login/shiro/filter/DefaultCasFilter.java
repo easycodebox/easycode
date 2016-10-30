@@ -28,7 +28,7 @@ import com.easycodebox.common.spring.BeanFactory;
  */
 public class DefaultCasFilter extends CasFilter {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultCasFilter.class);
+	private static final Logger log = LoggerFactory.getLogger(DefaultCasFilter.class);
 	
 	private String weaveName;
 	private Weave weave;
@@ -84,7 +84,7 @@ public class DefaultCasFilter extends CasFilter {
 				queryParams.put("service", StringUtils.format(reloginUrl, 
 						URLEncoder.encode(URLEncoder.encode(error.getMessage(), "UTF-8"), "UTF-8")));
 			} catch (UnsupportedEncodingException e) {
-				LOG.error("URLEncoder params error : {0}", error.getMessage(), e);
+				log.error("URLEncoder params error : {0}", error.getMessage(), e);
 			}
         }else {
         	url = failureUrl;
@@ -93,7 +93,7 @@ public class DefaultCasFilter extends CasFilter {
         try {
             WebUtils.issueRedirect(request, response, url, queryParams);
         } catch (IOException e) {
-        	LOG.error("Cannot redirect to failure url : {0}", failureUrl, e);
+        	log.error("Cannot redirect to failure url : {0}", failureUrl, e);
         }
         return false;
     }

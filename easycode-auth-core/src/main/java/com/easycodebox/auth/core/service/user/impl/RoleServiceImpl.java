@@ -89,7 +89,7 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
 				CodeMsgExt.FAIL.msg("角色名{0}已被占用", role.getName()));
 		
 		if(role.getStatus() != null) {
-			LOG.info("The update method can not update status property.");
+			log.info("The update method can not update status property.");
 		}
 		
 		return super.update(sql()

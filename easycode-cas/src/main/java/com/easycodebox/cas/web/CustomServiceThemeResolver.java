@@ -29,7 +29,7 @@ import org.springframework.webflow.execution.RequestContextHolder;
  */
 public class CustomServiceThemeResolver extends AbstractThemeResolver {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomServiceThemeResolver.class);
+    private static final Logger log = LoggerFactory.getLogger(CustomServiceThemeResolver.class);
     
     /**
      * add by WangXiaoJin
@@ -85,14 +85,14 @@ public class CustomServiceThemeResolver extends AbstractThemeResolver {
         		if (rService != null && rService.getAccessStrategy().isServiceAccessAllowed()
         				&& StringUtils.isNotBlank(rService.getTheme())) {
         			String theme = resolveThemeName(rService.getTheme());
-        			LOGGER.debug("Service [{}] is configured to use a custom theme [{}]", rService, theme);
+        			log.debug("Service [{}] is configured to use a custom theme [{}]", rService, theme);
         			final CasThemeResourceBundleMessageSource messageSource = new CasThemeResourceBundleMessageSource();
         			messageSource.setBasename(theme);
         			if (messageSource.doGetBundle(theme, request.getLocale()) != null) {
-        				LOGGER.debug("Found custom theme [{}] for service [{}]", theme, rService);
+        				log.debug("Found custom theme [{}] for service [{}]", theme, rService);
         				return theme;
         			} else {
-        				LOGGER.warn("Custom theme {} for service {} cannot be located. Falling back to default theme...",
+        				log.warn("Custom theme {} for service {} cannot be located. Falling back to default theme...",
         						theme, rService);
         			}
         		}
@@ -103,10 +103,10 @@ public class CustomServiceThemeResolver extends AbstractThemeResolver {
         	final CasThemeResourceBundleMessageSource messageSource = new CasThemeResourceBundleMessageSource();
 			messageSource.setBasename(theme);
 			if (messageSource.doGetBundle(theme, request.getLocale()) != null) {
-				LOGGER.debug("Found custom theme [{}]", theme);
+				log.debug("Found custom theme [{}]", theme);
 				return theme;
 			} else {
-				LOGGER.warn("Custom theme {} cannot be located. Falling back to default theme...", theme);
+				log.warn("Custom theme {} cannot be located. Falling back to default theme...", theme);
 			}
 			/*** ================== ***/
         }
@@ -157,7 +157,7 @@ public class CustomServiceThemeResolver extends AbstractThemeResolver {
                     return bundle;
                 }
             } catch (final Exception e) {
-                LOGGER.debug(e.getMessage(), e);
+            	log.debug(e.getMessage(), e);
             }
             return null;
         }

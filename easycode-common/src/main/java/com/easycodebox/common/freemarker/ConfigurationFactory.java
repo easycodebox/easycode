@@ -20,7 +20,7 @@ import freemarker.template.TemplateException;
  */
 public class ConfigurationFactory {
 	
-	//private static final Logger LOG = LoggerFactory.getLogger(ConfigurationFactory.class);
+	//private static final Logger log = LoggerFactory.getLogger(ConfigurationFactory.class);
 	
 	@StaticValue("${freemarker.default_encoding}")
 	public static String DEFAULT_ENCODING = "UTF-8";

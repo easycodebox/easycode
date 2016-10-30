@@ -23,7 +23,7 @@ import com.easycodebox.common.zookeeper.ZkSerializer;
  */
 public class ZkNode<T> implements InitializingBean {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ZkNode.class);
+	private static final Logger log = LoggerFactory.getLogger(ZkNode.class);
 	
 	/**
 	 * 打印load和store的数据
@@ -63,7 +63,7 @@ public class ZkNode<T> implements InitializingBean {
 			data = client.getData(name, watchObj, stat);
 		}
 		if(debug) {
-			LOG.info("ZooKeeper get data. path: {0} --- data: {1}", name, data == null ? null : new String(data));
+			log.info("ZooKeeper get data. path: {0} --- data: {1}", name, data == null ? null : new String(data));
 		}
 		if(deserializer != null) {
 			return deserializer.deserialize(data);
@@ -89,7 +89,7 @@ public class ZkNode<T> implements InitializingBean {
 		}
 		client.setData(name, bytes, version);
 		if(debug) {
-			LOG.info("ZooKeeper set data. path: {0} --- data: {1}", name, bytes == null ? null : new String(bytes));
+			log.info("ZooKeeper set data. path: {0} --- data: {1}", name, bytes == null ? null : new String(bytes));
 		}
 	}
 	

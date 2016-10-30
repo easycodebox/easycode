@@ -16,7 +16,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class BaseController {
 	
-	protected final Logger LOG = LoggerFactory.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	/**
 	 * 自动映射Handler时默认执行的方法

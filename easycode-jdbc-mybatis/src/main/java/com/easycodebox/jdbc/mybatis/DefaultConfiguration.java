@@ -14,7 +14,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
 public class DefaultConfiguration extends
 		org.apache.ibatis.session.Configuration {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultConfiguration.class);
+	private static final Logger log = LoggerFactory.getLogger(DefaultConfiguration.class);
 	
 	private static final ThreadLocal<MappedStatement> CUR_MAPPED_STATEMENT = new ThreadLocal<MappedStatement>();
 	
@@ -62,7 +62,7 @@ public class DefaultConfiguration extends
 			try {
 				FieldUtils.writeField(ms, "sqlSource", new DelegateSqlSource(ms.getSqlSource()), true);
 			} catch (Exception e) {
-				LOG.error("set field value error.", e);
+				log.error("set field value error.", e);
 			}
 		}
 	    mappedStatements.put(ms.getId(), ms);

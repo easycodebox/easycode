@@ -16,7 +16,7 @@ import com.easycodebox.common.spring.BeanFactory;
  */
 public class AccessTools {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(AccessTools.class);
+	private static final Logger log = LoggerFactory.getLogger(AccessTools.class);
 	
 	private static OperationService operationService;
 	
@@ -77,7 +77,7 @@ public class AccessTools {
 			if(o != null)
 				valid = true;
 		} catch (Exception e) {
-			LOG.error("get operation id error.", e);
+			log.error("get operation id error.", e);
 		}
 		if(valid)
 			return AccessTools.canDo(o.getId(), operationCodes);

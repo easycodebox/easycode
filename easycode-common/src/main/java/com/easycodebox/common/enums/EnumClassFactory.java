@@ -17,7 +17,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class EnumClassFactory implements InitializingBean {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(EnumClassFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(EnumClassFactory.class);
 
 	private static Map<String, Class<? extends Enum<?>>> enums = new ConcurrentHashMap<>();
 	
@@ -34,14 +34,14 @@ public class EnumClassFactory implements InitializingBean {
 		if(annotatedClasses != null && annotatedClasses.length > 0) {
 			for(Class<? extends Enum<?>> clazz : annotatedClasses) {
 				addEnum(clazz);
-				LOG.debug("load enum class {0}", clazz);
+				log.debug("load enum class {0}", clazz);
 			}
 		}
 		List<Class<?>> classes = Resources.scanClass(packagesToScan);
 		for(Class<?> clazz : classes) {
 			if(Enum.class.isAssignableFrom(clazz)) {
 				addEnum((Class<? extends Enum<?>>)clazz);
-				LOG.debug("load enum class {0}", clazz);
+				log.debug("load enum class {0}", clazz);
 			}
 		}
 	}

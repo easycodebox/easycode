@@ -35,7 +35,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class FileUtils {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ImageTools.class);
+	private static final Logger log = LoggerFactory.getLogger(ImageTools.class);
 	
 	public static final String TMP_PATH = "tmp";
 	
@@ -49,7 +49,7 @@ public class FileUtils {
 		 try {
 			 courseFile = directory.getCanonicalPath();
 		 } catch (IOException e) {
-			 LOG.error("The method getAbsolutePathWithClass in HttpUtil:" + e.getMessage());
+			 log.error("The method getAbsolutePathWithClass in HttpUtil:" + e.getMessage());
 		 }
 		 return courseFile;
 	}
@@ -204,7 +204,7 @@ public class FileUtils {
 					}else
 						images[i] = tmp[0];
 				} catch (NonEnlargedException e) {
-					LOG.error("resizeImage error.", e);
+					log.error("resizeImage error.", e);
 					Image tmp = new Image();
 					tmp.setError(e.getMessage());
 					tmp.setWidth(bufImg.getWidth());
@@ -275,7 +275,7 @@ public class FileUtils {
 				}
 				return retImgs;
 			} catch (NonEnlargedException e) {
-				LOG.error("resizeImage error.", e);
+				log.error("resizeImage error.", e);
 				bigImg.setError(e.getMessage());
 			}
 		}
@@ -450,17 +450,17 @@ public class FileUtils {
 				if(mimeType != null) {
 					realFileExts = MimeTypes.getExtensions(mimeType);
 					if(realFileExts == null) {
-						LOG.warn("File 'mime.types' not contain mime type pair '{0}'-'{1}'. Please ADD this pair.", mimeType, fileType);
+						log.warn("File 'mime.types' not contain mime type pair '{0}'-'{1}'. Please ADD this pair.", mimeType, fileType);
 					}else if(realFileExts.length > 0) {
 						boolean exist = true;
 						if (fileType != null && !ArrayUtils.contains(realFileExts, fileType)) {
-							LOG.warn("File 'mime.types' not contain mime type pair '{0}'-'{1}'. Please VERIFY this pair.", mimeType, fileType);
+							log.warn("File 'mime.types' not contain mime type pair '{0}'-'{1}'. Please VERIFY this pair.", mimeType, fileType);
 							exist = false;
 						}
 						fileType = fileType == null || !exist ? realFileExts[0] : fileType;
 					}
 				} else {
-					LOG.warn("Filename '{0}' can't analyse mime type by Tika.", filenames[i]);
+					log.warn("Filename '{0}' can't analyse mime type by Tika.", filenames[i]);
 				}
 				file.setType(fileType);
 				
@@ -511,7 +511,7 @@ public class FileUtils {
 					}
 				}
 			} catch (IOException e) {
-				LOG.error("解析文件错误", e);
+				log.error("解析文件错误", e);
 				/************* error **************/
 				error = "上传失败";
 	        	if (transaction) {

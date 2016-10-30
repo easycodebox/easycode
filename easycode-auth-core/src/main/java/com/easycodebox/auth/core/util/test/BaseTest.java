@@ -33,7 +33,7 @@ public class BaseTest<T> extends LocateLogger {
 					try{
 						new ClassPathXmlApplicationContext("core.xml");
 					}catch (Exception e) {
-						LOG.error("run error!!!", e);
+						log.error("run error!!!", e);
 					}
 				}
 			} finally {
@@ -48,7 +48,7 @@ public class BaseTest<T> extends LocateLogger {
 			bean = (T)BeanFactory.getBean(ClassUtils.getSuperClassGenricType(getClass()));
 		} catch (Exception e) {
 			if(e.getClass() != NoSuchBeanDefinitionException.class)
-				LOG.error("run error!!!", e);
+				log.error("run error!!!", e);
 		}
 	}
 

@@ -22,7 +22,7 @@ public abstract class TagExt extends BodyTagSupport {
 
 	private static final long serialVersionUID = 3561443758087661847L;
 	
-	protected final Logger LOG = LoggerFactory.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private final String EXP = "^\\s*%\\s*\\{\\s*([\\w\\.]+)\\s*\\}\\s*$";
 	private final Pattern expPattern = Pattern.compile(EXP); 
@@ -89,7 +89,7 @@ public abstract class TagExt extends BodyTagSupport {
 			try {
 				data = PropertyUtils.getProperty(data, tmpKey);
 			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-				LOG.warn("Obtain obj({0} -- {1}) property({2}) error.", data.getClass(), data, tmpKey);
+				log.warn("Obtain obj({0} -- {1}) property({2}) error.", data.getClass(), data, tmpKey);
 				return null;
 			}
 		}

@@ -10,7 +10,7 @@ import com.easycodebox.common.processor.Processor;
  */
 public abstract class AbstractScheduler implements Scheduler, Processor {
 	
-	protected final Logger LOG = LoggerFactory.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private boolean isLog = true;
 	
@@ -20,10 +20,10 @@ public abstract class AbstractScheduler implements Scheduler, Processor {
 	@Override
 	public void execute() {
 		if(isLog)
-			LOG.info("Scheduler-begin: {0}", getClass().getSimpleName());
+			log.info("Scheduler-begin: {0}", getClass().getSimpleName());
 		this.process();
 		if(isLog)
-			LOG.info("Scheduler-end: {0}", getClass().getSimpleName());
+			log.info("Scheduler-end: {0}", getClass().getSimpleName());
 	}
 
 	public boolean isLog() {

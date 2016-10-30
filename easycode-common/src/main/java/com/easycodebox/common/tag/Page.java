@@ -185,7 +185,7 @@ public class Page extends AbstractHtmlTag implements ParamParent {
 			}
 			pageContext.getOut().append(sb);
 		} catch (IOException ex) {
-			LOG.error("page the data error!", ex);
+			log.error("page the data error!", ex);
 			this.release();
 			return SKIP_BODY;
 		}

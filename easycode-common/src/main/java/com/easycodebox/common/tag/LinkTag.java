@@ -95,7 +95,7 @@ public class LinkTag extends AbstractHtmlTag {
 				write.append(sb.toString());
 			}
 		} catch (IOException e) {
-			LOG.error("IOException.", e);
+			log.error("IOException.", e);
 		}
 		return EVAL_BODY_INCLUDE;
 	}

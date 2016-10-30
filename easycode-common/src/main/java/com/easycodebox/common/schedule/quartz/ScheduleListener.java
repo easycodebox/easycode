@@ -16,7 +16,7 @@ import com.easycodebox.common.spring.BeanFactory;
  */
 public class ScheduleListener implements ServletContextListener {
 	
-	private final Logger LOG = LoggerFactory.getLogger(ScheduleListener.class);
+	private final Logger log = LoggerFactory.getLogger(ScheduleListener.class);
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
@@ -32,7 +32,7 @@ public class ScheduleListener implements ServletContextListener {
 				Thread.sleep(1000);
 			}
 		} catch (Exception e) {
-			LOG.error("shut down Scheduler error.", e);
+			log.error("shut down Scheduler error.", e);
 		}
 	}
 

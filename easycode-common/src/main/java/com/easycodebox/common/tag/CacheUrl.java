@@ -87,7 +87,7 @@ public class CacheUrl extends TagExt implements ParamParent {
 			url = HttpUtils.addParams2Url(url, params.toString());
 			pageContext.getOut().append(String.format(content, url));
 		} catch (IOException e) {
-			LOG.error("TextCut Tag processing error.", e);
+			log.error("TextCut Tag processing error.", e);
 			this.release();
 			return SKIP_BODY;
 		}

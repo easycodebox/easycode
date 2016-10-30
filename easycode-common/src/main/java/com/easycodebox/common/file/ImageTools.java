@@ -40,7 +40,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class ImageTools {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ImageTools.class);
+	private static final Logger log = LoggerFactory.getLogger(ImageTools.class);
 	
 	
 	public static CodeMsg validateImgs(String rules, File... imgs) {
@@ -52,7 +52,7 @@ public class ImageTools {
 				lengths[i] = imgs[i].length();
 			}
 		} catch (IOException e) {
-			LOG.error("解析图片错误", e);
+			log.error("解析图片错误", e);
 			return CodeMsg.FAIL.msg("解析图片错误");
 		} finally {
 			for (ImageInputStream is : stream) {
@@ -75,7 +75,7 @@ public class ImageTools {
 				stream[i] = ImageIO.createImageInputStream(imgs[i]);
 			}
 		} catch (IOException e) {
-			LOG.error("解析图片错误", e);
+			log.error("解析图片错误", e);
 			return CodeMsg.FAIL.msg("解析图片错误");
 		}
 		return validateImgs(rules, stream, fileSizes, maxSize, transaction);
@@ -153,7 +153,7 @@ public class ImageTools {
 		        	String[] exts = MimeTypes.getExtensions(mimeType);
 		        	imgType = exts[0];
 		        }else {
-		        	LOG.error("未知的图片类型：" + imgType);
+		        	log.error("未知的图片类型：" + imgType);
 		        }
 		        im.setType(imgType);
 				
@@ -293,7 +293,7 @@ public class ImageTools {
 				im.setHeight(h);
 				
 			} catch (IOException e) {
-				LOG.error("解析图片错误", e);
+				log.error("解析图片错误", e);
 				/************* error **************/
 				error = "解析图片错误，请上传有效图片。";
 	        	if (transaction) {
@@ -324,7 +324,7 @@ public class ImageTools {
 			, int width, int height, boolean enlarge) {
 		if(StringUtils.isBlank(srcImg) 
         		||  StringUtils.isBlank(descImg)) {   
-        	LOG.warn("img is balnk in the method resizeImage of ImageTools.Class .");
+			log.warn("img is balnk in the method resizeImage of ImageTools.Class .");
             return false;
 		}
 		try {
@@ -352,10 +352,10 @@ public class ImageTools {
 				newFile.getParentFile().mkdirs();
 			ImageIO.write(newImg, FilenameUtils.getExtension(descImg).toLowerCase(), newFile);  
 		} catch (FileNotFoundException e) {
-			LOG.error("read img error.", e);
+			log.error("read img error.", e);
 			return false;
 		} catch (IOException e) {
-			LOG.error("read img error.", e);
+			log.error("read img error.", e);
 			return false;
 		}
 		return true;

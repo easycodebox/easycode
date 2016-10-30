@@ -16,7 +16,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public abstract class RuntimeUtils {
     // 
-	private static final Logger LOG = LoggerFactory.getLogger(RuntimeUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(RuntimeUtils.class);
 	
     /**
      * 
@@ -71,7 +71,7 @@ public abstract class RuntimeUtils {
 			IOUtils.closeQuietly(process.getErrorStream());
 			process.destroy();
 		} catch(Exception e) {
-			LOG.warn("failed to destroy process", e);
+			log.warn("failed to destroy process", e);
 		}
 	}
     
@@ -104,7 +104,7 @@ public abstract class RuntimeUtils {
                     }
                 }
             } catch(Exception e) {
-            	LOG.error("unhandled exception in stream consumer", e);
+            	log.error("unhandled exception in stream consumer", e);
             }
         }
     }

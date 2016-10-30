@@ -41,7 +41,7 @@ import freemarker.template.TemplateException;
  */
 public class GenerateBeanRes {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(GenerateBeanRes.class);
+	private static final Logger log = LoggerFactory.getLogger(GenerateBeanRes.class);
 	
 	/**
 	 * 要生成资源文件的Bean对象所在的路径
@@ -81,7 +81,7 @@ public class GenerateBeanRes {
 			}
 			
 		} catch (IOException e) {
-			LOG.error("generate value-object resource error.", e);
+			log.error("generate value-object resource error.", e);
 		}
 		
 		Writer out = null;
@@ -108,17 +108,17 @@ public class GenerateBeanRes {
 				outPutFile.getParentFile().mkdirs();
 			}
 			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outPutFile),"UTF-8"));
-			if(LOG.isInfoEnabled()) {
-				LOG.info("=== ********* Begin generate template *********** =====");
+			if(log.isInfoEnabled()) {
+				log.info("=== ********* Begin generate template *********** =====");
 			}
 			tpl.process(root, out);
-			if(LOG.isInfoEnabled()) {
-				LOG.info("=== ********* End generate template *********** =====");
+			if(log.isInfoEnabled()) {
+				log.info("=== ********* End generate template *********** =====");
 			}
 		} catch (IOException e) {
-			LOG.error("generate value-object resource error.", e);
+			log.error("generate value-object resource error.", e);
 		} catch (TemplateException e) {
-			LOG.error("generate value-object resource error.", e);
+			log.error("generate value-object resource error.", e);
 		}finally {
 			IOUtils.closeQuietly(out);
 		}
@@ -166,16 +166,16 @@ public class GenerateBeanRes {
 						continue;
 					}
 					data.setProperties(properties);
-					if(LOG.isInfoEnabled()) {
-						LOG.info("==== Add {0} class to resources.", clazz);
+					if(log.isInfoEnabled()) {
+						log.info("==== Add {0} class to resources.", clazz);
 					}
 					beanDatas.add(data);
 				}
 			}
 		} catch (IOException e) {
-			LOG.error("generate value-object resource error.", e);
+			log.error("generate value-object resource error.", e);
 		} catch (ClassNotFoundException e) {
-			LOG.error("generate value-object resource error.", e);
+			log.error("generate value-object resource error.", e);
 		}
 		return beanDatas;
 	}

@@ -22,7 +22,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
 
 public class MailUtils {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MailUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(MailUtils.class);
 
 	public static MailInfo defaultMailInfo() {
 		MailInfo info = new MailInfo();
@@ -97,7 +97,7 @@ public class MailUtils {
 			Transport.send(mailMessage);
 			return true;
 		} catch (Exception e) {
-			LOG.error("send mail error!", e);
+			log.error("send mail error!", e);
 		}
 		return false;
 	}
@@ -168,7 +168,7 @@ public class MailUtils {
 			Transport.send(mailMessage);
 			return true;
 		} catch (Exception e) {
-			LOG.error("send mail error!", e);
+			log.error("send mail error!", e);
 		}
 		return false;
 	}

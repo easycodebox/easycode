@@ -25,7 +25,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
  */
 public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResolver {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultMappingExceptionResolver.class);
+	private static final Logger log = LoggerFactory.getLogger(DefaultMappingExceptionResolver.class);
 
 	private String exceptionAttribute = DEFAULT_EXCEPTION_ATTRIBUTE;
 	public static final String MSG_ATTR = "msg";
@@ -61,7 +61,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 				return null;
 			}
 			//打印此日志是因为错误已被springMVC过滤掉，到达不了ErrorContextFilter拦截器中打印
-			LOG.error("Execute controller error.", ex);
+			log.error("Execute controller error.", ex);
 			return super.doResolveException(request, response, handler, ex);
 		}
 	}

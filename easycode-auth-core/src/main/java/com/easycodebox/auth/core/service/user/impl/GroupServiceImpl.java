@@ -117,7 +117,7 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 				CodeMsgExt.FAIL.msg("组名{0}已被占用", group.getName()));
 		
 		if(group.getStatus() != null) {
-			LOG.info("The update method of GroupService can not update status property.");
+			log.info("The update method of GroupService can not update status property.");
 		}
 		
 		return super.update(sql()

@@ -27,7 +27,7 @@ import com.easycodebox.cas.exception.MultipleUserException;
  */
 public class JdbcUsernamePasswordAuthenticationHandler extends AbstractJdbcUsernamePasswordAuthenticationHandler {
 
-	private static final Logger LOG = LoggerFactory.getLogger(JdbcUsernamePasswordAuthenticationHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(JdbcUsernamePasswordAuthenticationHandler.class);
 	
 	private ClearUserCache clearUserCache;
 	
@@ -61,7 +61,7 @@ public class JdbcUsernamePasswordAuthenticationHandler extends AbstractJdbcUsern
             				try {
 								clearUserCache.clear(id);
 							} catch (Exception e) {
-								LOG.error("清除user(" + id + ")缓存失败！", e);
+								log.error("清除user(" + id + ")缓存失败！", e);
 							}
             			}
             			Map<String, Object> attributes = new HashMap<String, Object>(1);
@@ -78,7 +78,7 @@ public class JdbcUsernamePasswordAuthenticationHandler extends AbstractJdbcUsern
     				try {
 						clearUserCache.clear(id);
 					} catch (Exception e) {
-						LOG.error("清除user(" + id + ")缓存失败！", e);
+						log.error("清除user(" + id + ")缓存失败！", e);
 					}
             	}
             }
@@ -88,12 +88,12 @@ public class JdbcUsernamePasswordAuthenticationHandler extends AbstractJdbcUsern
                 throw new AccountNotFoundException(username + " not found with SQL query");
             } else {
             	String msg = "Multiple records found for " + username;
-            	LOG.error(msg, e);
+            	log.error(msg, e);
                 throw new MultipleUserException(msg);
             }
         } catch (final DataAccessException e) {
         	String msg = "SQL exception while executing query for " + username;
-        	LOG.error(msg, e);
+        	log.error(msg, e);
             throw new PreventedException(msg, e);
         }
     }

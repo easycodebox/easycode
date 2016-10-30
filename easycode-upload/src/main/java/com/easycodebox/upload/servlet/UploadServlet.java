@@ -57,7 +57,7 @@ public class UploadServlet extends BaseServlet {
 		boolean transaction = false;
 		CodeMsg error = null;
 
-		LOG.info("flag={0} 开始上传文件", flag);
+		log.info("flag={0} 开始上传文件", flag);
 
 		// 判斷表单提交是否是正确格式
 		boolean isMultipart = ServletFileUpload.isMultipartContent(req);
@@ -101,14 +101,14 @@ public class UploadServlet extends BaseServlet {
 					
 					if(StringUtils.isBlank(filePath)) {
 						error = CodeMsgExt.NO_PATH.fillArgs(filePathKey);
-						LOG.warn("flag={0} : {1}", flag, error.getMsg());
+						log.warn("flag={0} : {1}", flag, error.getMsg());
 						this.outData(error, responseUrl, resp);
 						return ;
 					}
 					
 					if(itemList.size() == 0) {
 						error = CodeMsgExt.NO_FILE;
-						LOG.warn("flag={0} : {1}", flag, error.getMsg());
+						log.warn("flag={0} : {1}", flag, error.getMsg());
 						this.outData(error, responseUrl, resp);
 						return ;
 					}
@@ -125,7 +125,7 @@ public class UploadServlet extends BaseServlet {
 						//上传文件为图片类型
 						error = ImageTools.validateImgs(filePath, streams, lengths, Constants.MAX_UPLOAD_FILE, transaction);
 						if(!error.isSuc()) {
-							LOG.warn("flag={0} : {1}", flag, error.getMsg());
+							log.warn("flag={0} : {1}", flag, error.getMsg());
 							this.outData(error, responseUrl, resp);
 							return ;
 						}
@@ -133,7 +133,7 @@ public class UploadServlet extends BaseServlet {
 						imgs = UploadUtils.uploadImg(type, itemList, filePath, imgs, null, transaction);
 						
 						error = CodeMsgExt.SUC.data(imgs);
-						LOG.info("flag={0} : {1}", flag, error.getMsg());
+						log.info("flag={0} : {1}", flag, error.getMsg());
 					}else if(type == FileType.MIX_TYPE) {
 						//上传文件为混合类型，可以是图片、TXT、ZIP等
 						String[] filenames = new String[itemList.size()];
@@ -143,7 +143,7 @@ public class UploadServlet extends BaseServlet {
 						}
 						error = FileUtils.validate(filePath, streams, filenames, lengths, Constants.MAX_UPLOAD_FILE, transaction);
 						if(!error.isSuc()) {
-							LOG.warn("flag={0} : {1}", flag, error.getMsg());
+							log.warn("flag={0} : {1}", flag, error.getMsg());
 							this.outData(error, responseUrl, resp);
 							return ;
 						}
@@ -151,20 +151,20 @@ public class UploadServlet extends BaseServlet {
 						files = UploadUtils.uploadFile(type, itemList, filePath, files, null, transaction);
 						
 						error = CodeMsgExt.SUC.data(files);
-						LOG.info("flag={0} : {1}", flag, error.getMsg());
+						log.info("flag={0} : {1}", flag, error.getMsg());
 					}else {
 						error = CodeMsgExt.PARAM_ERROR_TYPE;
-						LOG.warn("flag={0} : {1}", flag, error.getMsg());
+						log.warn("flag={0} : {1}", flag, error.getMsg());
 					}
 					
 				}else {
 					error = CodeMsgExt.PARAM_ERROR_TYPE;
-					LOG.warn("flag={0} : {1}", flag, error.getMsg());
+					log.warn("flag={0} : {1}", flag, error.getMsg());
 				}
 				
 			} catch (Exception e) {
 				error = CodeMsgExt.FAIL.msg("上传失败");
-				LOG.error("flag={0} : {1}", e, flag, error.getMsg());
+				log.error("flag={0} : {1}", e, flag, error.getMsg());
 			} finally {
 				if(streams != null) {
 					for (InputStream is : streams) {
@@ -174,7 +174,7 @@ public class UploadServlet extends BaseServlet {
 			}
 		} else {
 			error = CodeMsgExt.FAIL.msg("上传失败");
-			LOG.warn("flag={0} : {1}", flag, error.getMsg());
+			log.warn("flag={0} : {1}", flag, error.getMsg());
 		}
 		this.outData(error, responseUrl, resp);
 	}

@@ -62,7 +62,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class MimetypesFileTypeMap extends FileTypeMap {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MimetypesFileTypeMap.class);
+	private static final Logger log = LoggerFactory.getLogger(MimetypesFileTypeMap.class);
 
 	private static MimeTypeFile defDB = null;
 	private MimeTypeFile[] DB;
@@ -78,7 +78,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		MimeTypeFile mf = null;
 		dbv.add(null);
 
-		LOG.info("MimetypesFileTypeMap: load HOME");
+		log.info("MimetypesFileTypeMap: load HOME");
 		try {
 			String user_home = System.getProperty("user.home");
 
@@ -91,7 +91,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		} catch (SecurityException ex) {
 		}
 
-		LOG.info("MimetypesFileTypeMap: load SYS");
+		log.info("MimetypesFileTypeMap: load SYS");
 		try {
 			// check system's home
 			String system_mimetypes = System.getProperty("java.home")
@@ -102,11 +102,11 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		} catch (SecurityException ex) {
 		}
 
-		LOG.info("MimetypesFileTypeMap: load JAR");
+		log.info("MimetypesFileTypeMap: load JAR");
 		// load from the app's jar file
 		loadAllResources(dbv, "META-INF/mime.types");
 
-		LOG.info("MimetypesFileTypeMap: load DEF");
+		log.info("MimetypesFileTypeMap: load DEF");
 		synchronized (MimetypesFileTypeMap.class) {
 			// see if another instance has created this yet.
 			if (defDB == null)
@@ -140,13 +140,13 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		try(InputStream clis = this.getClass().getResourceAsStream(name)) {
 			if (clis != null) {
 				MimeTypeFile mf = new MimeTypeFile(clis);
-				LOG.info("MimetypesFileTypeMap: successfully loaded mime types file: " + name);
+				log.info("MimetypesFileTypeMap: successfully loaded mime types file: " + name);
 				return mf;
 			} else {
-				LOG.warn("MimetypesFileTypeMap: not loading mime types file: " + name);
+				log.warn("MimetypesFileTypeMap: not loading mime types file: " + name);
 			}
 		} catch (IOException e) {
-			LOG.error("MimetypesFileTypeMap: load file ({0}) failed.", e, name);
+			log.error("MimetypesFileTypeMap: load file ({0}) failed.", e, name);
 		}
 		return null;
 	}
@@ -182,27 +182,27 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		boolean anyLoaded = false;
 		URL[] urls = getResources(ClassUtils.getClassLoader(), name);
 		if (urls != null) {
-			LOG.info("MimetypesFileTypeMap: getResources");
+			log.info("MimetypesFileTypeMap: getResources");
 			for (int i = 0; i < urls.length; i++) {
 				URL url = urls[i];
-				LOG.info("MimetypesFileTypeMap: URL " + url);
+				log.info("MimetypesFileTypeMap: URL " + url);
 				try(InputStream clis = url.openStream()) {
 					if (clis != null) {
 						v.add(new MimeTypeFile(clis));
 						anyLoaded = true;
-						LOG.info("MimetypesFileTypeMap: successfully loaded mime types from URL: " + url);
+						log.info("MimetypesFileTypeMap: successfully loaded mime types from URL: " + url);
 					} else {
-						LOG.warn("MimetypesFileTypeMap: not loading mime types from URL: " + url);
+						log.warn("MimetypesFileTypeMap: not loading mime types from URL: " + url);
 					}
 				} catch (IOException e) {
-					LOG.info("MimetypesFileTypeMap: can't load " + name, e);
+					log.info("MimetypesFileTypeMap: can't load " + name, e);
 				}
 			}
 		}
 
 		// if failed to load anything, fall back to old technique, just in case
 		if (!anyLoaded) {
-			LOG.info("MimetypesFileTypeMap: !anyLoaded");
+			log.info("MimetypesFileTypeMap: !anyLoaded");
 			MimeTypeFile mf = loadResource(Symbol.SLASH + name);
 			if (mf != null)
 				v.add(mf);
@@ -434,7 +434,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 							&& lt.hasMoreTokens())
 						value = lt.nextToken();
 					if (value == null) {
-						LOG.info("Bad .mime.types entry: " + line);
+						log.info("Bad .mime.types entry: " + line);
 						return;
 					}
 					if (name.equals("type")) {

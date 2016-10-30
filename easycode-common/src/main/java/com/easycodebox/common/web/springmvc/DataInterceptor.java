@@ -21,7 +21,7 @@ import com.easycodebox.common.web.CacheHisUris;
  */
 public class DataInterceptor extends HandlerInterceptorAdapter {
 
-	private static final Logger LOG = LoggerFactory
+	private static final Logger log = LoggerFactory
 			.getLogger(DataInterceptor.class);
 
 	private boolean basePath = true;
@@ -48,7 +48,7 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 
 			if (imgUrl) {
 				if (StringUtils.isBlank(BaseConstants.imgUrl)) {
-					LOG.warn("Has no config IMG_URL constant.");
+					log.warn("Has no config IMG_URL constant.");
 				} else
 					modelAndView.addObject(IMG_URL_KEY, BaseConstants.imgUrl);
 			}

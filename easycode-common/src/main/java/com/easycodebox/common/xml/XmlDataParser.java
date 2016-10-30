@@ -27,7 +27,7 @@ import com.easycodebox.common.validate.Assert;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class XmlDataParser {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(XmlDataParser.class);
+	private static final Logger log = LoggerFactory.getLogger(XmlDataParser.class);
 
 	public static final String COMMENT_ELEMENT = "comment";
 
@@ -99,7 +99,7 @@ public class XmlDataParser {
 			try {
 				return buildTypedStringValue(value , typeClassName, ele);
 			} catch (ClassNotFoundException e) {
-				LOGGER.error("Type class [" + typeClassName + "] not found for value " + value, e);
+				log.error("Type class [" + typeClassName + "] not found for value " + value, e);
 				return value;
 			}
 		}else if (subElement != null) {
@@ -150,7 +150,7 @@ public class XmlDataParser {
 		try {
 			return buildTypedStringValue(value, typeClassName, ele);
 		}catch (ClassNotFoundException ex) {
-			LOGGER.error("Type class [" + typeClassName + "] not found for <value> element",ex);
+			log.error("Type class [" + typeClassName + "] not found for <value> element",ex);
 			return value;
 		}
 	}
@@ -271,7 +271,7 @@ public class XmlDataParser {
 			return buildTypedStringValue(value, defaultTypeClassName, entryEle);
 		}
 		catch (ClassNotFoundException ex) {
-			LOGGER.error("Type class [" + defaultTypeClassName + "] not found for Map key/value type" + entryEle, ex);
+			log.error("Type class [" + defaultTypeClassName + "] not found for Map key/value type" + entryEle, ex);
 			return value;
 		}
 	}

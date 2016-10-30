@@ -96,7 +96,7 @@ public class ScriptTag extends AbstractHtmlTag {
 				write.append(sb.toString());
 			}
 		} catch (IOException e) {
-			LOG.error("IOException.", e);
+			log.error("IOException.", e);
 		}
 		return EVAL_BODY_INCLUDE;
 	}
@@ -106,7 +106,7 @@ public class ScriptTag extends AbstractHtmlTag {
 		try {
 			pageContext.getOut().append("</script>");
 		} catch (IOException e) {
-			LOG.error("IOException.", e);
+			log.error("IOException.", e);
 		}
 		return super.doEndTag();
 	}

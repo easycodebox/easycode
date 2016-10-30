@@ -42,7 +42,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
  */
 public class ErrorContextFilter implements Filter {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ErrorContextFilter.class);
+	private static final Logger log = LoggerFactory.getLogger(ErrorContextFilter.class);
 
 	private static final String REDIRECT_FLAG = "redirect:";
 	private static final String SEPARATOR_PATTERN = "[,\n]";
@@ -121,7 +121,7 @@ public class ErrorContextFilter implements Filter {
 						try {
 							this.exceptionMappings.put(ClassUtils.getClass(vals[0].trim()), vals[1].trim());
 						} catch (ClassNotFoundException e) {
-							LOG.error("Class not find.", e);
+							log.error("Class not find.", e);
 						}
 					}
 				}
@@ -149,7 +149,7 @@ public class ErrorContextFilter implements Filter {
 						try {
 							this.logMappings.put(ClassUtils.getClass(vals[0].trim()), Boolean.parseBoolean(vals[1].trim()));
 						} catch (ClassNotFoundException e) {
-							LOG.error("Class not find.", e);
+							log.error("Class not find.", e);
 						}
 					}
 				}
@@ -231,9 +231,9 @@ public class ErrorContextFilter implements Filter {
 				LogLevelException lle = spyException(ex, LogLevelException.class);
 				if (lle != null) {
 					//用户自定义log level打印日志
-					lle.getLogLevelConfig().log(LOG, lle.getMessage(), lle);
+					lle.getLogLevelConfig().log(log, lle.getMessage(), lle);
 				} else {
-					logLevelConfig.log(LOG, ex.getMessage(), ex);
+					logLevelConfig.log(log, ex.getMessage(), ex);
 				}
 			}
 			
@@ -269,7 +269,7 @@ public class ErrorContextFilter implements Filter {
 						.createGenerator(response.getWriter())) {
 					Jacksons.NON_NULL.writeValue(jsonGenerator, error);
 				} catch (Exception jsonEx) {
-					LOG.error("Write JSON data error!", jsonEx);
+					log.error("Write JSON data error!", jsonEx);
 					throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
 				}
 			} else {

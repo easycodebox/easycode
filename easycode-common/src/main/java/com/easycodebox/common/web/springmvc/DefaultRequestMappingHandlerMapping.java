@@ -32,7 +32,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultRequestMappingHandlerMapping.class);
+	private static final Logger log = LoggerFactory.getLogger(DefaultRequestMappingHandlerMapping.class);
 	/**
 	 * 当url中没有指定执行的方法名，默认执行defaultMethod方法
 	 */
@@ -96,7 +96,7 @@ public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMa
 				try {
 					controller = getApplicationContext().getBean(className);
 				} catch (Exception e) {
-					LOG.error("Obtain bean [{0}] error.", e, className);
+					log.error("Obtain bean [{0}] error.", e, className);
 				}
 			}
 			if(controller == null || !isHandler(controller.getClass())) {

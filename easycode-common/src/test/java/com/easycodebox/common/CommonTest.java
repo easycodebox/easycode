@@ -12,19 +12,19 @@ public class CommonTest extends LocateLogger {
 		try{
 			
 		}catch (Exception e) {
-			LOG.error("run error!!!", e);
+			log.error("run error!!!", e);
 		}
 	}
 
 	@Test
     public void testLog() {
     	/*try {
-    		Logger LOG = LoggerFactory.getLogger(CommonTest.class);
-    		LOG.info("11111xxx {} xxxx", "A", "B");
-    		LOG.info("2222222xxx {0} xxxx", new NullPointerException(), "A", "B");
-    		LOG.info("33333333xxx {0} xxxx", new NullPointerException());
+    		Logger log = LoggerFactory.getLogger(CommonTest.class);
+    		log.info("11111xxx {} xxxx", "A", "B");
+    		log.info("2222222xxx {0} xxxx", new NullPointerException(), "A", "B");
+    		log.info("33333333xxx {0} xxxx", new NullPointerException());
 		} catch (Exception e) {
-			LOG.error("run error!!!", e);
+			log.error("run error!!!", e);
 		}*/
     }
     

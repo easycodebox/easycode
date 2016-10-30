@@ -84,7 +84,7 @@ public class PartnerServiceImpl extends AbstractService<Partner> implements Part
 				CodeMsgExt.FAIL.msg("合作商名{0}已被占用", partner.getName()));
 		
 		if(partner.getStatus() != null) {
-			LOG.info("The update method can not update status property.");
+			log.info("The update method can not update status property.");
 		}
 		
 		return super.update(sql()

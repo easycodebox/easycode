@@ -23,7 +23,7 @@ public abstract class BaseServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -1064465770862657698L;
 	
-	protected final Logger LOG = LoggerFactory.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	protected void outData(CodeMsg error, String responseUrl, HttpServletResponse resp) throws IOException {
 		Assert.notNull(error);

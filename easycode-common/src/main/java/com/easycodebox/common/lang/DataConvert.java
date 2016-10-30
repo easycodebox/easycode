@@ -23,7 +23,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class DataConvert {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DataConvert.class);
+	private static final Logger log = LoggerFactory.getLogger(DataConvert.class);
 	
 	public static final String separator = ",";
 	
@@ -274,7 +274,7 @@ public class DataConvert {
 				try { 
 					sb.append(BeanUtils.getProperty(data, props[0]));
 				} catch (Exception e) {
-					LOG.error("获取属性值错误", e);
+					log.error("获取属性值错误", e);
 				}
 			}else
 				sb.append(data.toString());
@@ -293,7 +293,7 @@ public class DataConvert {
 							if(j < props.length - 1)
 								sb.append(Symbol.COMMA);
 						} catch (Exception e) {
-							LOG.error("获取属性值错误", e);
+							log.error("获取属性值错误", e);
 						}
 					}
 				}

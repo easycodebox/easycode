@@ -16,7 +16,7 @@ import com.easycodebox.common.net.InetAddresses;
  */
 public class ZkIpNodeNameMaker implements ZkNodeNameMaker {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ZkIpNodeNameMaker.class);
+	private static final Logger log = LoggerFactory.getLogger(ZkIpNodeNameMaker.class);
 	
 	/**
 	 * 前缀节点名
@@ -41,7 +41,7 @@ public class ZkIpNodeNameMaker implements ZkNodeNameMaker {
 			String ip = InetAddresses.getLocalIp();
 			name = prefixNodeName + ipPrefix + ip + ipPostfix;
 		} catch (SocketException e) {
-			LOG.error("Make zookeeper node name error.", e);
+			log.error("Make zookeeper node name error.", e);
 		}
 		return name;
 	}

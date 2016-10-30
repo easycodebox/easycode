@@ -41,7 +41,7 @@ import com.easycodebox.login.ws.bo.UserWsBo;
 @Service("UserWsServer")
 public class UserWsServiceImpl implements UserWsService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(UserWsServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(UserWsServiceImpl.class);
 	
 	@Resource
 	private UserService userService;
@@ -182,7 +182,7 @@ public class UserWsServiceImpl implements UserWsService {
 			List<Role> role = roleService.list(OpenClose.OPEN, roleName);
 			if(role.size() > 0) {
 				if(role.size() > 1) {
-					LOG.error("There are multiple role name {0}", roleName);
+					log.error("There are multiple role name {0}", roleName);
 				}
 				Integer roleId = role.get(0).getId();
 				roleService.installRolesOfUser(pojo.getId(), new Integer[]{roleId});

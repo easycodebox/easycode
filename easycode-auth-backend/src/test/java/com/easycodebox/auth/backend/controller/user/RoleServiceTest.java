@@ -9,7 +9,7 @@ public class RoleServiceTest extends BaseTest<RoleService> {
 
 	@Test
 	public void testLoad() {
-		LOG.info(bean.load(859));
+		log.info(bean.load(859));
 	}
 	
 }

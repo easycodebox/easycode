@@ -31,7 +31,7 @@ import com.easycodebox.jdbc.support.JdbcProcessor;
  */
 public class MybatisJdbcProcessor implements JdbcProcessor {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MybatisJdbcProcessor.class);
+	private static final Logger log = LoggerFactory.getLogger(MybatisJdbcProcessor.class);
 	
 	private SqlSessionTemplate sqlSessionTemplate;
 	
@@ -120,7 +120,7 @@ public class MybatisJdbcProcessor implements JdbcProcessor {
 		Assert.notNull(sqlGrammar);
 		if(StringUtils.isBlank(sql))
 			sql = sqlGrammar.buildSql(sqlCommandType);
-		LOG.debug("SqlGrammar : {}", sql);
+		log.debug("SqlGrammar : {}", sql);
 		if(StringUtils.isBlank(sql))
 			return false;
 		Configuration configuration = sqlSessionTemplate.getConfiguration();

@@ -32,7 +32,7 @@ import com.easycodebox.jdbc.util.SqlUtils;
  */
 public abstract class AbstractService<T extends Entity> {
 	
-	protected final Logger LOG = LoggerFactory.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Resource
 	private JdbcHandler jdbcHandler;

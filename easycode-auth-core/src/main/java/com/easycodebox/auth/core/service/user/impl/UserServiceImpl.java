@@ -121,7 +121,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 				CodeMsgExt.FAIL.msg("用户名{0}已被占用", user.getUsername()));
 		
 		if(user.getStatus() != null) {
-			LOG.info("The update method can not update status property.");
+			log.info("The update method can not update status property.");
 		}
 		
 		if(StringUtils.isBlank(user.getRealname()))
@@ -359,7 +359,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	@Override
 	@CacheEvict(cacheNames=Constants.CN.USER)
 	public boolean clearCache(String userId) throws ErrorContext {
-		LOG.info("清除用户缓存 userId:{0}", userId);
+		log.info("清除用户缓存 userId:{0}", userId);
 		return true;
 	}
 	

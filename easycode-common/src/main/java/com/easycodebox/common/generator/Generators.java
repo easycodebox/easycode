@@ -8,7 +8,7 @@ import com.easycodebox.common.spring.BeanFactory;
  */
 public class Generators {
 	
-	//private static final Logger LOG = LoggerFactory.getLogger(GeneratorFactory.class);
+	//private static final Logger log = LoggerFactory.getLogger(GeneratorFactory.class);
 	
 	private static GenerateProcess generateProcess;
 	

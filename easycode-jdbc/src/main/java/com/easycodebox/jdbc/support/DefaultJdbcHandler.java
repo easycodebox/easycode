@@ -23,7 +23,7 @@ import com.easycodebox.jdbc.grammar.SqlGrammar;
  */
 public class DefaultJdbcHandler implements JdbcHandler {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultJdbcHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(DefaultJdbcHandler.class);
 	
 	private final String DEFAULT_CREATOR_PROPNAME = "creator";
 	private final String DEFAULT_CREATOR_TIME_PROPNAME = "createTime";
@@ -158,7 +158,7 @@ public class DefaultJdbcHandler implements JdbcHandler {
 					write.invoke(obj, val);
 				}
 			} catch (Exception e) {
-				LOG.warn("read or write object({0}) property({1}) error.", e, obj, name);
+				log.warn("read or write object({0}) property({1}) error.", e, obj, name);
 			}
 		}
 	}

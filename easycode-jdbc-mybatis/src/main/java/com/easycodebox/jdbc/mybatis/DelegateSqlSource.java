@@ -18,7 +18,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class DelegateSqlSource implements SqlSource {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DelegateSqlSource.class);
+	private static final Logger log = LoggerFactory.getLogger(DelegateSqlSource.class);
 	
 	private SqlSource delegate;
 	
@@ -56,7 +56,7 @@ public class DelegateSqlSource implements SqlSource {
 		try {
 			FieldUtils.writeField(boundSql, "sql", token.getAssemble(), true);
 		} catch (Exception e) {
-			LOG.error("set field value error.", e);
+			log.error("set field value error.", e);
 		}
 		return boundSql;
 	}

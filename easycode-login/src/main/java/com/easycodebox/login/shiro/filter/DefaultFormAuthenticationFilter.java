@@ -21,22 +21,22 @@ import com.easycodebox.common.web.callback.Callbacks;
  */
 public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultFormAuthenticationFilter.class);
+	private static final Logger log = LoggerFactory.getLogger(DefaultFormAuthenticationFilter.class);
 
 	@Override
 	protected boolean onAccessDenied(ServletRequest request,
 			ServletResponse response) throws Exception {
 		if (isLoginRequest(request, response)) {
             if (isLoginSubmission(request, response)) {
-            	LOG.trace("Login submission detected.  Attempting to execute login.");
+            	log.trace("Login submission detected.  Attempting to execute login.");
                 return executeLogin(request, response);
             } else {
-            	LOG.trace("Login page view.");
+            	log.trace("Login page view.");
                 //allow them to see the login page ;)
                 return true;
             }
         } else {
-        	LOG.trace("Attempting to access a path which requires authentication.  Forwarding to the " +
+        	log.trace("Attempting to access a path which requires authentication.  Forwarding to the " +
                         "Authentication url [{0}]", getLoginUrl());
         	HttpServletRequest req = (HttpServletRequest)request;
         	HttpServletResponse resp = (HttpServletResponse)response;

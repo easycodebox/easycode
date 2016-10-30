@@ -47,7 +47,7 @@ public class ConvertIdTag extends TagExt {
 			if(data != null)
 				pageContext.getOut().append(data);
 		} catch (IOException e) {
-			LOG.error("IOException.", e);
+			log.error("IOException.", e);
 		}
 		return super.doStartTag();
 	}

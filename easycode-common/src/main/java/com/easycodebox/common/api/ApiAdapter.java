@@ -16,7 +16,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public abstract class ApiAdapter implements Api, Init {
 	
-	protected Logger LOG = LoggerFactory.getLogger(getClass());
+	protected Logger log = LoggerFactory.getLogger(getClass());
 	
 	public ApiAdapter() {
 		this.init();

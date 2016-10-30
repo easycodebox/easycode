@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  */
 public class StringUtils extends org.apache.commons.lang.StringUtils {
 	
-	//private static final Logger LOG = LoggerFactory.getLogger(StringUtils.class);
+	//private static final Logger log = LoggerFactory.getLogger(StringUtils.class);
 	
 	public static String string2unicode(String str) {
 		if(str == null) return null;

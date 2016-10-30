@@ -13,7 +13,7 @@ import com.easycodebox.common.net.HttpUtils;
  */
 public class Callbacks {
 	
-	//private static final Logger LOG = LoggerFactory.getLogger(Callbacks.class);
+	//private static final Logger log = LoggerFactory.getLogger(Callbacks.class);
 	
 	/**
 	 * 获取回调对象，此回调对象为参数错误

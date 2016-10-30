@@ -288,7 +288,7 @@ public abstract class AbstractHtmlTag extends TagExt {
 				try {
 					tagAttrMap = Jacksons.COMMUNICATE.toBean(tagAttr, Map.class);
 				} catch (Exception e) {
-					LOG.warn("Parse json string error.【{0}】", e, tagAttr);
+					log.warn("Parse json string error.【{0}】", e, tagAttr);
 				}
 			}
 			this.tagAttr = tagAttr;

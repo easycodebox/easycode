@@ -24,7 +24,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class RemoteFactory {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RemoteFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(RemoteFactory.class);
 	
 	//注册时的端口
 	public static final int REGISTRY_PORT = 1099;
@@ -44,9 +44,9 @@ public class RemoteFactory {
 			RMISocketFactory.setSocketFactory(new FixPortRMISocketFactory());
 			LocateRegistry.createRegistry(REGISTRY_PORT);
 		} catch (RemoteException e) {
-			LOG.error("Registry RMI error.", e);
+			log.error("Registry RMI error.", e);
 		} catch (IOException e) {
-			LOG.error("Setting rmi socket factory error.", e);
+			log.error("Setting rmi socket factory error.", e);
 		}
 	}
 	
@@ -62,11 +62,11 @@ public class RemoteFactory {
 						,remotes.get(i));
 			}
 		} catch (RemoteException e) {
-			LOG.error("RemoteFactory  createRemote error.", e);
+			log.error("RemoteFactory  createRemote error.", e);
 		} catch (MalformedURLException e) {
-			LOG.error("RemoteFactory  createRemote error.", e);
+			log.error("RemoteFactory  createRemote error.", e);
 		} catch (AlreadyBoundException e) {
-			LOG.error("RemoteFactory  createRemote error.", e);
+			log.error("RemoteFactory  createRemote error.", e);
 		}
 	}
 

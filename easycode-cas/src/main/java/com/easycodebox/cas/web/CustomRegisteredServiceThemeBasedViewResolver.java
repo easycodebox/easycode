@@ -27,7 +27,7 @@ import org.springframework.webflow.execution.RequestContextHolder;
  *
  */
 public class CustomRegisteredServiceThemeBasedViewResolver extends InternalResourceViewResolver {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomRegisteredServiceThemeBasedViewResolver.class);
+    private static final Logger log = LoggerFactory.getLogger(CustomRegisteredServiceThemeBasedViewResolver.class);
     private static final String DEFAULT_PATH_PREFIX = "/WEB-INF/view/jsp";
     /**
      * add by WangXiaoJin
@@ -112,7 +112,7 @@ public class CustomRegisteredServiceThemeBasedViewResolver extends InternalResou
         view.setExposeContextBeansAsAttributes(false);
         view.setPreventDispatchLoop(true);
 
-        LOGGER.debug("View resolved: {}", view.getUrl());
+        log.debug("View resolved: {}", view.getUrl());
 
         return view;
     }
@@ -124,7 +124,7 @@ public class CustomRegisteredServiceThemeBasedViewResolver extends InternalResou
      */
     @Override
     public void setCache(final boolean cache) {
-        LOGGER.warn("The {} does not support caching. Turned off caching forcefully.", this.getClass().getSimpleName());
+    	log.warn("The {} does not support caching. Turned off caching forcefully.", this.getClass().getSimpleName());
         super.setCache(false);
     }
 

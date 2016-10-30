@@ -10,7 +10,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public final class DetailEnums {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DetailEnums.class);
+	private static final Logger log = LoggerFactory.getLogger(DetailEnums.class);
 	
 	/**
 	 *  根据DetailEnum的value值解析成DetailEnum。如果clazz中没有null值，value==null时return null值
@@ -39,7 +39,7 @@ public final class DetailEnums {
         	T[] vals = clz.getEnumConstants();
             return getEnum(vals);
         } catch ( Exception e ) {
-        	LOG.error(clz.getSimpleName(), e);
+        	log.error(clz.getSimpleName(), e);
         }
         return Symbol.EMPTY;
     }

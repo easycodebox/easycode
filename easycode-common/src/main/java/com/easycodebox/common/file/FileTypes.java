@@ -23,7 +23,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
 @Deprecated
 public class FileTypes {
 
-	private static final Logger LOG = LoggerFactory.getLogger(FileTypes.class);
+	private static final Logger log = LoggerFactory.getLogger(FileTypes.class);
 	
 	
 	/** 
@@ -63,7 +63,7 @@ public class FileTypes {
         try {
 			return getFileType(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
-			LOG.error("FileNotFoundException", e);
+			log.error("FileNotFoundException", e);
 		}
 		return null;  
     }
@@ -88,12 +88,12 @@ public class FileTypes {
                 }
             }
         } catch (IOException e) {  
-        	LOG.error("IOException", e);
+        	log.error("IOException", e);
         } finally {
         	try {
 				inputStream.close();
 			} catch (IOException e) {
-				LOG.error("IOException", e);
+				log.error("IOException", e);
 			}
         }
         return null;  
@@ -113,7 +113,7 @@ public class FileTypes {
     		ImageReader reader = iter.next();
     		return reader.getFormatName();
     	} catch (IOException e) {
-    		LOG.error("IOException", e);
+    		log.error("IOException", e);
 		}
         return null;  
     }

@@ -53,7 +53,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class DefaultCuratorFrameworkFactory implements FactoryBean<CuratorFramework>, InitializingBean, DisposableBean {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultCuratorFrameworkFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(DefaultCuratorFrameworkFactory.class);
 	
 	private CuratorFramework client;
 	
@@ -67,7 +67,7 @@ public class DefaultCuratorFrameworkFactory implements FactoryBean<CuratorFramew
 	@Override
 	public void destroy() throws Exception {
 		if (client != null) {
-			LOG.info("Shutdown zooKeeper.");
+			log.info("Shutdown zooKeeper.");
 			client.close();
 		}
 	}
@@ -94,7 +94,7 @@ public class DefaultCuratorFrameworkFactory implements FactoryBean<CuratorFramew
 				builder.connectionTimeoutMs(connectionTimeoutMs);
 			client = builder.build();
 			client.start();
-			LOG.info("Create zooKeeper instance successfully.");
+			log.info("Create zooKeeper instance successfully.");
 		}
 		return client;
 	}

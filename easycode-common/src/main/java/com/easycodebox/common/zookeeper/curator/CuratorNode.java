@@ -21,7 +21,7 @@ import com.easycodebox.common.zookeeper.ZkSerializer;
  */
 public class CuratorNode<T> implements InitializingBean {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(CuratorNode.class);
+	private static final Logger log = LoggerFactory.getLogger(CuratorNode.class);
 	
 	/**
 	 * 打印load和store的数据
@@ -61,7 +61,7 @@ public class CuratorNode<T> implements InitializingBean {
 		}
 		data = builder.storingStatIn(stat).forPath(name);
 		if(debug) {
-			LOG.info("ZooKeeper get data. path: {0} --- data: {1}", name, data == null ? null : new String(data));
+			log.info("ZooKeeper get data. path: {0} --- data: {1}", name, data == null ? null : new String(data));
 		}
 		if(deserializer != null) {
 			return deserializer.deserialize(data);
@@ -85,7 +85,7 @@ public class CuratorNode<T> implements InitializingBean {
 		}
 		client.setData().withVersion(version).forPath(name, bytes);
 		if(debug) {
-			LOG.info("ZooKeeper set data. path: {0} --- data: {1}", name, bytes == null ? null : new String(bytes));
+			log.info("ZooKeeper set data. path: {0} --- data: {1}", name, bytes == null ? null : new String(bytes));
 		}
 	}
 	

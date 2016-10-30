@@ -9,9 +9,9 @@ public class GeneratorServiceTest extends BaseTest<GeneratorService> {
 	@Test
     public void testGenerator() {
     	try {
-    		//LOG.info(bean.batchAdd());
+    		//log.info(bean.batchAdd());
 		} catch (Exception e) {
-			LOG.error("run error!!!", e);
+			log.error("run error!!!", e);
 		}
     }
     

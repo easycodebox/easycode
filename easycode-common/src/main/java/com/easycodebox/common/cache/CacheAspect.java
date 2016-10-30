@@ -28,7 +28,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
 @Deprecated
 public final class CacheAspect implements Ordered, InitializingBean {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(CacheAspect.class);
+	private static final Logger log = LoggerFactory.getLogger(CacheAspect.class);
 	
 	private final Integer DEFAULT_ORDER = 100;
 	private Integer order;
@@ -48,7 +48,7 @@ public final class CacheAspect implements Ordered, InitializingBean {
 	private int diskExpiryThreadIntervalSeconds = 120;
 	
 	public void destroy() {
-		LOG.info("Shutting down Cache CacheManager");
+		log.info("Shutting down Cache CacheManager");
 		this.cacheManager.shutdown();
 	}
 	
@@ -57,17 +57,17 @@ public final class CacheAspect implements Ordered, InitializingBean {
 		order = order == null ? DEFAULT_ORDER : order;
 		
 		if(this.cacheManager != null) {
-			LOG.info("Cache CacheManager had been Initialized");
+			log.info("Cache CacheManager had been Initialized");
 			return;
 		}
-		LOG.info("Initializing Cache CacheManager");
+		log.info("Initializing Cache CacheManager");
 		if (this.shared) {
 			// Shared CacheManager singleton at the VM level.
 			if (this.configLocation != null) {
 				try {
 					this.cacheManager = CacheManager.create(this.configLocation.getInputStream());
 				} catch (Exception e) {
-					LOG.error("load resource error.", e);
+					log.error("load resource error.", e);
 					this.cacheManager = CacheManager.create();
 				}
 			}else {
@@ -80,7 +80,7 @@ public final class CacheAspect implements Ordered, InitializingBean {
 				try {
 					this.cacheManager = new CacheManager(this.configLocation.getInputStream());
 				} catch (Exception e) {
-					LOG.error("load resource error.", e);
+					log.error("load resource error.", e);
 					this.cacheManager = new CacheManager();
 				}
 			}else {
@@ -117,13 +117,13 @@ public final class CacheAspect implements Ordered, InitializingBean {
 	        	result = pjp.proceed();
 	            if(result == null || result instanceof Serializable) {
 	            	element = new Element(cacheKey, (Serializable)result);
-	            	LOG.info("正在缓存{0}对象。", cacheKey);
+	            	log.info("正在缓存{0}对象。", cacheKey);
 	            	cache.putIfAbsent(element);
 	            }else {
-	            	LOG.warn("{0}指定方法返回对象{1}不能被序列化，不能缓存。", cacheKey, result);
+	            	log.warn("{0}指定方法返回对象{1}不能被序列化，不能缓存。", cacheKey, result);
 	            }
 	        }else {
-	        	LOG.info("从缓存中获取{0}对象。", cacheKey);
+	        	log.info("从缓存中获取{0}对象。", cacheKey);
 	        	result = element.getObjectValue();
 	        }
 		}else if(cacheable.cacheOperation() == CacheOperation.FLUSH_CACHE) {
@@ -131,12 +131,12 @@ public final class CacheAspect implements Ordered, InitializingBean {
 	        for(Class<?> clazz : cacheable.flushGroup()) {
 	        	String groupName = clazz.getName();
 	        	if(!groupName.equals(group)) {
-	        		LOG.info("删除缓存组{0}所有的缓存对象。", groupName);
+	        		log.info("删除缓存组{0}所有的缓存对象。", groupName);
 	        		getCache(group).removeAll();
 	        	}
 	        		
 	        }
-	        LOG.info("删除缓存组{0}所有的缓存对象。", group);
+	        log.info("删除缓存组{0}所有的缓存对象。", group);
 	        //此处应该优化，应该可配置成只删除对应ID的数据，不应该全部删除该类型的缓存
 	        cache.removeAll();
 		}
@@ -171,11 +171,11 @@ public final class CacheAspect implements Ordered, InitializingBean {
 		}
     	Cache cache = null;
 		if (this.cacheManager.cacheExists(group)) {
-			LOG.debug("获取缓存组{0}对象。", group);
+			log.debug("获取缓存组{0}对象。", group);
 			cache = this.cacheManager.getCache(group);
 		}
 		if (cache == null) {
-			LOG.debug("创建缓存组{0}对象。", group);
+			log.debug("创建缓存组{0}对象。", group);
 			cache = createCache(group);
 			Cache back = (Cache)this.cacheManager.addCacheIfAbsent(cache);
 			

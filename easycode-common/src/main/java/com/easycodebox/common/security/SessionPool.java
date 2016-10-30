@@ -15,17 +15,17 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class SessionPool {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SessionPool.class);
+	private static final Logger log = LoggerFactory.getLogger(SessionPool.class);
 	
 	private static ConcurrentMap<String, HttpSession> dataMap = new ConcurrentHashMap<String, HttpSession>() ;
 	
 	public static void addSession(HttpSession session){
 		if(session==null) {
-			LOGGER.info("session is null,session:"+session);
+			log.info("session is null,session:"+session);
 			return;
 		}
 		dataMap.put(session.getId(), session);
-		LOGGER.info("insert session into SessionPool.sessionId:{0}\tsession:{1}",session.getId(),session);
+		log.info("insert session into SessionPool.sessionId:{0}\tsession:{1}",session.getId(),session);
 	}
 	
 	public static void remove(String sessionId){
@@ -33,7 +33,7 @@ public class SessionPool {
 		HttpSession session = dataMap.get(sessionId);
 		if (null != session) {
 			dataMap.remove(sessionId);
-			LOGGER.info("remove session from SessionPool.sessionId:{0}",session.getId());
+			log.info("remove session from SessionPool.sessionId:{0}",session.getId());
 		}
 	}
 	

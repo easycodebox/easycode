@@ -61,7 +61,7 @@ public class CheckboxEnum extends EnumGroupTag {
 		try {
 			pageContext.getOut().append(all);
 		} catch (IOException e) {
-			LOG.error("RadioEnum Tag processing error.", e);
+			log.error("RadioEnum Tag processing error.", e);
 		}
 		return EVAL_BODY_INCLUDE;
 	}

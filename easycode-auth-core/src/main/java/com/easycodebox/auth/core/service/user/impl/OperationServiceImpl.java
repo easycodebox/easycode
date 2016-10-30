@@ -137,7 +137,7 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
 					CodeMsgExt.FAIL.msg("url{0}已被占用", operation.getUrl()));
 		
 		if(operation.getStatus() != null) {
-			LOG.info("The update method can not update status property.");
+			log.info("The update method can not update status property.");
 		}
 		
 		return super.update(sql()

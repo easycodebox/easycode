@@ -16,7 +16,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class PropertiesPool {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(PropertiesPool.class);
+	private static final Logger log = LoggerFactory.getLogger(PropertiesPool.class);
 	
 	private static final String[] properties;
 	private static final String[] xmls;
@@ -75,7 +75,7 @@ public class PropertiesPool {
 					else
 						PropertiesUtils.loadFile(propertyFile, resource);
 				} catch (IOException e) {
-					LOG.error("Load file ({0}) to Properties error!!", e, resource);
+					log.error("Load file ({0}) to Properties error!!", e, resource);
 				}
 				if(!contains)
 					files.add(resource);
@@ -111,7 +111,7 @@ public class PropertiesPool {
 					else
 						PropertiesUtils.loadXmlFile(propertyFile, resource);
 				} catch (Exception e) {
-					LOG.error("Load xml file ({0}) to Properties error!!", e, resource);
+					log.error("Load xml file ({0}) to Properties error!!", e, resource);
 				}
 				if(!contains)
 					files.add(resource);

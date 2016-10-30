@@ -68,7 +68,7 @@ public class ShowEnum extends TagExt {
 		try {
 			pageContext.getOut().append(writeVal);
 		} catch (IOException e) {
-			LOG.error("ShowEnum Tag processing error.", e);
+			log.error("ShowEnum Tag processing error.", e);
 		}
 		return EVAL_BODY_INCLUDE;
 	}

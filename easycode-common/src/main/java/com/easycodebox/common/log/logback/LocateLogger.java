@@ -20,7 +20,7 @@ import ch.qos.logback.core.joran.spi.JoranException;
  */
 public abstract class LocateLogger {
 	
-	protected final Logger LOG = LoggerFactory.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private final String CLASS_PREFIX = "classpath:";
 

@@ -51,7 +51,7 @@ public class MyBatisSqlSessionFactoryBean implements
 		FactoryBean<SqlSessionFactory>, InitializingBean,
 		ApplicationListener<ApplicationEvent> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(XmlDataParser.class);
+	private static final Logger log = LoggerFactory.getLogger(XmlDataParser.class);
 	
 	private Resource configLocation;
 
@@ -372,8 +372,8 @@ public class MyBatisSqlSessionFactoryBean implements
 					this.configurationProperties);
 			configuration = xmlConfigBuilder.getConfiguration();
 		} else {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Property 'configLocation' not specified, using default MyBatis Configuration");
+			if (log.isDebugEnabled()) {
+				log.debug("Property 'configLocation' not specified, using default MyBatis Configuration");
 			}
 			configuration = new DefaultConfiguration();
 			configuration.setVariables(this.configurationProperties);
@@ -396,8 +396,8 @@ public class MyBatisSqlSessionFactoryBean implements
 						packageToScan,
 						typeAliasesSuperType == null ? Object.class
 								: typeAliasesSuperType);
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Scanned package: '" + packageToScan
+				if (log.isDebugEnabled()) {
+					log.debug("Scanned package: '" + packageToScan
 							+ "' for aliases");
 				}
 			}
@@ -406,8 +406,8 @@ public class MyBatisSqlSessionFactoryBean implements
 		if (!isEmpty(this.typeAliases)) {
 			for (Class<?> typeAlias : this.typeAliases) {
 				configuration.getTypeAliasRegistry().registerAlias(typeAlias);
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Registered type alias: '" + typeAlias + "'");
+				if (log.isDebugEnabled()) {
+					log.debug("Registered type alias: '" + typeAlias + "'");
 				}
 			}
 		}
@@ -415,8 +415,8 @@ public class MyBatisSqlSessionFactoryBean implements
 		if (!isEmpty(this.plugins)) {
 			for (Interceptor plugin : this.plugins) {
 				configuration.addInterceptor(plugin);
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Registered plugin: '" + plugin + "'");
+				if (log.isDebugEnabled()) {
+					log.debug("Registered plugin: '" + plugin + "'");
 				}
 			}
 		}
@@ -427,8 +427,8 @@ public class MyBatisSqlSessionFactoryBean implements
 					ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
 			for (String packageToScan : typeHandlersPackageArray) {
 				configuration.getTypeHandlerRegistry().register(packageToScan);
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Scanned package: '" + packageToScan
+				if (log.isDebugEnabled()) {
+					log.debug("Scanned package: '" + packageToScan
 							+ "' for type handlers");
 				}
 			}
@@ -437,8 +437,8 @@ public class MyBatisSqlSessionFactoryBean implements
 		if (!isEmpty(this.typeHandlers)) {
 			for (TypeHandler<?> typeHandler : this.typeHandlers) {
 				configuration.getTypeHandlerRegistry().register(typeHandler);
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Registered type handler: '" + typeHandler
+				if (log.isDebugEnabled()) {
+					log.debug("Registered type handler: '" + typeHandler
 							+ "'");
 				}
 			}
@@ -448,8 +448,8 @@ public class MyBatisSqlSessionFactoryBean implements
 			try {
 				xmlConfigBuilder.parse();
 
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Parsed configuration file: '"
+				if (log.isDebugEnabled()) {
+					log.debug("Parsed configuration file: '"
 							+ this.configLocation + "'");
 				}
 			} catch (Exception ex) {
@@ -497,13 +497,13 @@ public class MyBatisSqlSessionFactoryBean implements
 					ErrorContext.instance().reset();
 				}
 
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Parsed mapper file: '" + mapperLocation + "'");
+				if (log.isDebugEnabled()) {
+					log.debug("Parsed mapper file: '" + mapperLocation + "'");
 				}
 			}
 		} else {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Property 'mapperLocations' was not specified or no matching resources found");
+			if (log.isDebugEnabled()) {
+				log.debug("Property 'mapperLocations' was not specified or no matching resources found");
 			}
 		}
 

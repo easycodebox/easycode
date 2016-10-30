@@ -38,7 +38,7 @@ public class JavaTemplateDateFormatFactory extends TemplateDateFormatFactory {
     
     static final JavaTemplateDateFormatFactory INSTANCE = new JavaTemplateDateFormatFactory(); 
     
-    private static final Logger LOG = LoggerFactory.getLogger(JavaTemplateDateFormatFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(JavaTemplateDateFormatFactory.class);
     
     private static final ConcurrentHashMap<CacheKey, DateFormat> GLOBAL_FORMAT_CACHE
             = new ConcurrentHashMap<CacheKey, DateFormat>();
@@ -115,7 +115,7 @@ public class JavaTemplateDateFormatFactory extends TemplateDateFormatFactory {
                     }
                 }
                 if (triggered) {
-                    LOG.warn("Global Java DateFormat cache has exceeded " + LEAK_ALERT_NUMBER_FORMAT_CACHE_SIZE
+                	log.warn("Global Java DateFormat cache has exceeded " + LEAK_ALERT_NUMBER_FORMAT_CACHE_SIZE
                             + " entries => cache flushed. "
                             + "Typical cause: Some template generates high variety of format pattern strings.");
                 }

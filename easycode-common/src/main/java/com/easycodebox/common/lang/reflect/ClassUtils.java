@@ -26,7 +26,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class ClassUtils extends org.apache.commons.lang.ClassUtils {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ClassUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(ClassUtils.class);
 	
     /**
      * 
@@ -197,7 +197,7 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils {
 				c.setAccessible(true);
 				return c.newInstance();
 			} catch (Exception e) {
-				LOG.debug("There is no empty param Constructor in class({0})", clazz);
+				log.debug("There is no empty param Constructor in class({0})", clazz);
 			}
 		}
 			

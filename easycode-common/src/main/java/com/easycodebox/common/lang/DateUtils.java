@@ -18,7 +18,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DateUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(DateUtils.class);
 	
 	public static final String DATETIME_FMT_STR = "yyyy-MM-dd HH:mm:ss";
 	public static final String DATE_FMT_STR = "yyyy-MM-dd";
@@ -33,7 +33,7 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 		try {
 			c.setTime(new SimpleDateFormat(formater).parse(date));
 		} catch (ParseException e) {
-			LOG.error("parse2Calenar method has error.",e);
+			log.error("parse2Calenar method has error.",e);
 			return null;
 		}
 		return c;
@@ -51,7 +51,7 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 		try {
 			fd = new SimpleDateFormat(formater).parse(date);
 		} catch (ParseException e) {
-			LOG.error("parse Date Exception.",e);
+			log.error("parse Date Exception.",e);
 			return null;
 		}
 		return fd;

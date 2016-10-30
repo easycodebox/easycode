@@ -20,7 +20,7 @@ import com.easycodebox.common.net.HttpUtils;
 @Deprecated
 public class CacheHisUris {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(CacheHisUris.class);
+	private static final Logger log = LoggerFactory.getLogger(CacheHisUris.class);
 
 	public static final String CACHE_HIS_URI_KEY = "cached_his_uri";
 	public static final String FLUSH_CACHED_URI = "flush_cached_uri";
@@ -82,7 +82,7 @@ public class CacheHisUris {
 					String fullUri = HttpUtils.getFullRequestUri(request, true);
 					//缓存uri地址
 					uris.add(fullUri);
-					LOG.debug("cache hisUri = {0}", fullUri);
+					log.debug("cache hisUri = {0}", fullUri);
 				}else if(request.getQueryString().contains(BACK_CACHED_URI)) {
 					uris.remove(uris.size() - 1);
 					
@@ -98,7 +98,7 @@ public class CacheHisUris {
 				request.setAttribute(BACK_URI, backUri);
 			}
 		} catch (Exception e) {
-			LOG.error("CacheHisUri error.", e);
+			log.error("CacheHisUri error.", e);
 		}
 		return isCacheUri;
 	}

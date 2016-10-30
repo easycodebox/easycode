@@ -63,7 +63,7 @@ public class DeleteServlet extends BaseServlet {
 		
 		if(type == null) {
 			error = CodeMsgExt.FILE_TYPE_PARAM_ERROR;
-			LOG.warn("flag={0} : {1}", flag, error.getMsg());
+			log.warn("flag={0} : {1}", flag, error.getMsg());
 			this.outData(error, null, resp);
 			return;
 		}
@@ -92,7 +92,7 @@ public class DeleteServlet extends BaseServlet {
 			}
 		}
 		
-		LOG.info("flag={0} : {1}", flag, error.getMsg());
+		log.info("flag={0} : {1}", flag, error.getMsg());
 		this.outData(error, null, resp);
 	}
 	

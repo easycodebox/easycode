@@ -37,7 +37,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 
 	private static final long serialVersionUID = 2888923134019023168L;
 
-	//private static final Logger LOG = LoggerFactory.getLogger(DefaultCasRealm.class);
+	//private static final Logger log = LoggerFactory.getLogger(DefaultCasRealm.class);
 	
 	public static final String PRINCIPAL_USER_ID_KEY = "id";
 	public static final String PRINCIPAL_ROLES_KEY = "roles";

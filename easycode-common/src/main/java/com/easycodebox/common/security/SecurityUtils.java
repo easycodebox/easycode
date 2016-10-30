@@ -19,7 +19,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class SecurityUtils {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SecurityUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(SecurityUtils.class);
 	
 	/**
 	 * SecurityInfo存储于HttpSession中，且SecurityInfo的类型为{@link com.easycodebox.common.lang.dto.UserInfo}
@@ -116,7 +116,7 @@ public class SecurityUtils {
 	public static String getUserId() {
 		UserInfo user = getUser();
 		if(user == null) {
-			LOG.debug("User info can't obtion.");
+			log.debug("User info can't obtion.");
 			return null;
 		}
 		return user.getUserId();

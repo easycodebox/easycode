@@ -43,7 +43,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class ZooKeeperFactory implements FactoryBean<ZooKeeper>, InitializingBean, DisposableBean {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ZooKeeperFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(ZooKeeperFactory.class);
 	
 	private ZooKeeper client;
 	private CountDownLatch count = new CountDownLatch(1);
@@ -59,7 +59,7 @@ public class ZooKeeperFactory implements FactoryBean<ZooKeeper>, InitializingBea
 	@Override
 	public void destroy() throws Exception {
 		if (client != null) {
-			LOG.info("Shutdown zooKeeper.");
+			log.info("Shutdown zooKeeper.");
 			client.close();
 		}
 	}
@@ -75,7 +75,7 @@ public class ZooKeeperFactory implements FactoryBean<ZooKeeper>, InitializingBea
 			Watcher newWatcher = new Watcher() {
 				@Override
 				public void process(WatchedEvent event) {
-					LOG.info("ZooKeeper trigger event : " + event);
+					log.info("ZooKeeper trigger event : " + event);
 					if (event.getType() == Event.EventType.None
 							&& event.getState() == KeeperState.SyncConnected) {
 						count.countDown();
@@ -92,7 +92,7 @@ public class ZooKeeperFactory implements FactoryBean<ZooKeeper>, InitializingBea
 			}
 			//因ZooKeeper创建完对象直接返回，与Server连接成功是异步操作，所以加上了CountDownLatch等连接成功后再执行逻辑
 			count.await();
-			LOG.info("Create zooKeeper instance successfully.");
+			log.info("Create zooKeeper instance successfully.");
 		}
 		return client;
 	}

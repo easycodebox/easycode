@@ -86,7 +86,7 @@ public class TextCut extends TagExt {
 			}else
 				pageContext.getOut().append(remainValue);
 		} catch (IOException e) {
-			LOG.error("TextCut Tag processing error.", e);
+			log.error("TextCut Tag processing error.", e);
 		}
 		return EVAL_BODY_INCLUDE;
 	}

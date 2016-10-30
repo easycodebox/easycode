@@ -52,7 +52,7 @@ public class ImgUrl extends AbstractHtmlTag {
 		try {
 			pageContext.getOut().append(processContent(sb.toString()));
 		} catch (IOException e) {
-			LOG.error("IOException.", e);
+			log.error("IOException.", e);
 		}
 		return EVAL_BODY_INCLUDE;
 	}

@@ -32,7 +32,7 @@ import freemarker.template.TemplateException;
  */
 public class FreemarkerGenerate implements Processor, ResourceLoaderAware, ServletContextAware {
 
-	private static final Logger LOG = LoggerFactory.getLogger(FreemarkerGenerate.class);
+	private static final Logger log = LoggerFactory.getLogger(FreemarkerGenerate.class);
 	
 	private ResourceLoader resourceLoader = new DefaultResourceLoader();
 	
@@ -62,15 +62,15 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware, Servl
 		Assert.notBlank(outputPath);
 		Writer out = null;
 		try {
-			LOG.info("Start generate file '{0}' by freemarker.", outputPath);
+			log.info("Start generate file '{0}' by freemarker.", outputPath);
 			Configuration cfg = ConfigurationFactory.instance(classPathTpl ? null : servletContext);
 			Template tpl = cfg.getTemplate(ftlPath);
 			Resource resource = resourceLoader.getResource(outputPath);
 			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resource.getFile()), encoding));
 			tpl.process(properties, out);
-			LOG.info("Generate file '{0}' successfully by freemarker.", outputPath);
+			log.info("Generate file '{0}' successfully by freemarker.", outputPath);
 		} catch (TemplateException | IOException e) {
-			LOG.error("Freemarker generate file error.", e);
+			log.error("Freemarker generate file error.", e);
 		} finally {
 			IOUtils.closeQuietly(out);
 		}

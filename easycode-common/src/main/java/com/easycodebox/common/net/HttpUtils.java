@@ -67,7 +67,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  */
 public class HttpUtils {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(HttpUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 	
 	/**
 	 * 获得客户端ip
@@ -422,7 +422,7 @@ public class HttpUtils {
 				//或者直接可以使用Spring提供的工具类UriUtils.encode来进行处理，这个工具类不会把空格替换成'+'号
 				value = URLEncoder.encode(value, "UTF-8").replace(Symbol.PLUS, "%20");
 			} catch (UnsupportedEncodingException e) {
-				LOG.error("HttpUtil class addCookie method error.",e);
+				log.error("HttpUtil class addCookie method error.",e);
 			}
 		}
 		Cookie cookie = new Cookie(name, value);
@@ -474,7 +474,7 @@ public class HttpUtils {
 			out = response.getWriter();
 			out.write(str);
 		} catch (IOException e) {
-			LOG.error("The method outString in HttpUtil:" + e.getMessage());
+			log.error("The method outString in HttpUtil:" + e.getMessage());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
@@ -489,7 +489,7 @@ public class HttpUtils {
 				.createGenerator(response.getWriter())) {
 			Jacksons.COMMUNICATE.writeValue(jsonGenerator, obj);
 		} catch (Exception e) {
-			LOG.error("The method outString in HttpUtil:" + e.getMessage());
+			log.error("The method outString in HttpUtil:" + e.getMessage());
 		}
 	}
 
@@ -705,8 +705,8 @@ public class HttpUtils {
 						try {
 							return get(url, params, jsonKeys, charset);
 						} catch (Exception e) {
-							if(LOG.isErrorEnabled()) {
-								LOG.error("get " + url + " request error.", e);
+							if(log.isErrorEnabled()) {
+								log.error("get " + url + " request error.", e);
 							}
 							throw e;
 						}
@@ -812,8 +812,8 @@ public class HttpUtils {
 	    				try {
 	    					return post(url, params, jsonKeys, charset);
 						} catch (Exception e) {
-							if(LOG.isErrorEnabled()) {
-								LOG.error("post " + url + " request error.", e);
+							if(log.isErrorEnabled()) {
+								log.error("post " + url + " request error.", e);
 							}
 							throw e;
 						}

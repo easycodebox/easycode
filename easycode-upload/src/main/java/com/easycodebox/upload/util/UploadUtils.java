@@ -29,7 +29,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class UploadUtils {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(UploadUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(UploadUtils.class);
 	
 	private static AlphaNumericGenerator generator = null;
 	private static final int INCREMENT = 1, 
@@ -80,7 +80,7 @@ public class UploadUtils {
 			try {
 				PropertiesUtils.store(prop, Constants.FILENAME_PROPS_PATH);
 			} catch (IOException e) {
-				LOG.error("store properties error.", e);
+				log.error("store properties error.", e);
 			}
 		}finally {
 			lock.unlock();
@@ -150,7 +150,7 @@ public class UploadUtils {
 				imgsInfo[i].setPath(path);
 				imgsInfo[i].setName(imgName);
 			} catch (Exception e) {
-				LOG.warn("生成文件失败！", e);
+				log.warn("生成文件失败！", e);
 				/************* error **************/
 	        	if (transaction) {
 	        		throw e;
@@ -212,7 +212,7 @@ public class UploadUtils {
 				fileInfos[i].setPath(path);
 				fileInfos[i].setName(filename);
 			} catch (Exception e) {
-				LOG.warn("生成文件失败！", e);
+				log.warn("生成文件失败！", e);
 				/************* error **************/
 	        	if (transaction) {
 	        		throw e;
@@ -252,7 +252,7 @@ public class UploadUtils {
 						ori.renameTo(new File(deletePath + m.group(4)));
 					count++;
 				} catch (Exception e) {
-					LOG.error("删除图片" + original + "错误", e);
+					log.error("删除图片" + original + "错误", e);
 				}
 			}
 		}

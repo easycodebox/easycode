@@ -14,7 +14,7 @@ public class CallbackData extends CodeMsg {
 	
 	private static final long serialVersionUID = -1580285521851719262L;
 
-	private static transient final Logger LOG = LoggerFactory.getLogger(CallbackData.class);
+	private static transient final Logger log = LoggerFactory.getLogger(CallbackData.class);
 
 	/**
 	 * 回调函数执行的动作类型
@@ -100,7 +100,7 @@ public class CallbackData extends CodeMsg {
 			sb.append(",").append("\"data\"").append(":")
 			.append(Jacksons.COMMUNICATE.toJson(getData()));
 		} catch (Exception e) {
-			LOG.error("解析JSON错误", e);
+			log.error("解析JSON错误", e);
 		}
 		sb.append("}");
 		return sb.toString();
