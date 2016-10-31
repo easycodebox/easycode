@@ -28,9 +28,5 @@ public class RoleServiceTest extends BaseTest<RoleService> {
 		log.info(bean.update(role));
 	}
 	*/
-	/*
-	public static void main(String[] args) throws Exception {
-		System.out.println(ConfigTools.encrypt("root"));
-	}
-	*/
+	
 }

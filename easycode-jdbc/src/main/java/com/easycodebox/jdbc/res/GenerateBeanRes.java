@@ -1,4 +1,4 @@
-package com.easycodebox.auth.core.util.template;
+package com.easycodebox.jdbc.res;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.asm.ClassReader;
 import org.springframework.core.io.Resource;
@@ -30,10 +31,10 @@ import com.easycodebox.jdbc.GenerateRes;
 import com.easycodebox.jdbc.entity.Entity;
 
 import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-
 
 /**
  * @author WangXiaoJin
@@ -41,36 +42,36 @@ import freemarker.template.TemplateException;
  */
 public class GenerateBeanRes {
 	
-	private static final Logger log = LoggerFactory.getLogger(GenerateBeanRes.class);
+	private final Logger log = LoggerFactory.getLogger(GenerateBeanRes.class);
 	
 	/**
 	 * 要生成资源文件的Bean对象所在的路径
 	 */
-	private static final String[] basePackages = {
-		"com/easycodebox/auth/core/pojo",
-		"com/easycodebox/auth/core/bo"
-	};
+	private String[] basePackages;
 	
-	private static final String 
-			TEMPLATE = "bean_resource.ftl",
-			OUTPUT_FILE = "src/main/java/com/easycodebox/auth/core/util/R.java";
+	private String resourcePattern = "**/*.class";
 	
-	private static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
+	private String template = "bean_resource.ftl";
 	
-	public static void main(String[] args) {
-		generate();
-	}
+	private String outputFile;
+	
+	/**
+	 * 生成的R文件package名时，忽略的前缀信息
+	 */
+	private String[] ignorePrefixes = {"src/main/java/"};
+	
+	private TemplateLoader templateLoader;
 	
 	/**
 	 * 生成资源文件
 	 */
-	public static void generate() {
+	public void generate() {
 		Resource[] rs = new Resource[0];
 		int lastIndex = rs.length;
 		try {
 			for(String basePackage : basePackages) {
 				String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
-						basePackage + Symbol.SLASH + DEFAULT_RESOURCE_PATTERN;
+						basePackage + Symbol.SLASH + resourcePattern;
 				Resource[] tmp = new PathMatchingResourcePatternResolver()
 					.getResources(packageSearchPath);
 				if(tmp.length > 0) {
@@ -97,16 +98,28 @@ public class GenerateBeanRes {
 			cfg.setTemplateLoader(new FileTemplateLoader(new File(url.toURI())));*/
 			
 			//方法3
-			cfg.setTemplateLoader(new ClassTemplateLoader(GenerateBeanRes.class, ""));
+			cfg.setTemplateLoader(templateLoader == null ? new ClassTemplateLoader(GenerateBeanRes.class, Symbol.EMPTY) : templateLoader);
 			
 			//设置包装器，并将对象包装为数据模型
-			Template tpl = cfg.getTemplate(TEMPLATE, "UTF-8");
-			Map<String, List<BeanData>> root = new LinkedHashMap<>();
+			Template tpl = cfg.getTemplate(template, "UTF-8");
+			Map<String, Object> root = new LinkedHashMap<>();
 			root.put("data", processRes2BeanData(rs));
-			File outPutFile = new File(OUTPUT_FILE);
+			File outPutFile = new File(outputFile);
 			if(!outPutFile.getParentFile().exists()) {
 				outPutFile.getParentFile().mkdirs();
 			}
+			//设置R文件的package name
+			String basePathOfOutput = new File(Symbol.EMPTY).getCanonicalPath();
+			String packageName = outPutFile.getCanonicalPath().replaceFirst("\\Q" + basePathOfOutput + File.separator + "\\E", Symbol.EMPTY);
+			for (String prefix : ignorePrefixes) {
+				prefix =  FilenameUtils.separatorsToSystem(prefix);
+				if (packageName.startsWith(prefix)) {
+					packageName = packageName.substring(prefix.length());
+				}
+			}
+			packageName = FilenameUtils.getPathNoEndSeparator(packageName).replaceAll("[\\\\/]", Symbol.PERIOD);
+			root.put("packageName", packageName);
+			
 			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outPutFile),"UTF-8"));
 			if(log.isInfoEnabled()) {
 				log.info("=== ********* Begin generate template *********** =====");
@@ -125,7 +138,7 @@ public class GenerateBeanRes {
 		
 	}
 	
-	private static List<BeanData> processRes2BeanData(Resource[] rs) {
+	private List<BeanData> processRes2BeanData(Resource[] rs) {
 		Assert.notEmpty(rs);
 		List<BeanData> beanDatas = new ArrayList<>(rs.length);
 		try {
@@ -180,7 +193,7 @@ public class GenerateBeanRes {
 		return beanDatas;
 	}
 	
-	public static class BeanData {
+	public class BeanData {
 		
 		private String clazz;
 		private String className;
@@ -219,6 +232,54 @@ public class GenerateBeanRes {
 			this.properties = properties;
 		}
 		
+	}
+
+	public String[] getBasePackages() {
+		return basePackages;
+	}
+
+	public void setBasePackages(String[] basePackages) {
+		this.basePackages = basePackages;
+	}
+
+	public String getResourcePattern() {
+		return resourcePattern;
+	}
+
+	public void setResourcePattern(String resourcePattern) {
+		this.resourcePattern = resourcePattern;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
+	public String getOutputFile() {
+		return outputFile;
+	}
+
+	public void setOutputFile(String outputFile) {
+		this.outputFile = outputFile;
+	}
+
+	public String[] getIgnorePrefixes() {
+		return ignorePrefixes;
+	}
+
+	public void setIgnorePrefixes(String[] ignorePrefixes) {
+		this.ignorePrefixes = ignorePrefixes;
+	}
+
+	public TemplateLoader getTemplateLoader() {
+		return templateLoader;
+	}
+
+	public void setTemplateLoader(TemplateLoader templateLoader) {
+		this.templateLoader = templateLoader;
 	}
 	
 }
