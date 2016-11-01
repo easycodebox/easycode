@@ -15,7 +15,7 @@
 		<!-- 项目jar包 -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>easycode-jdbc</artifactId>
+			<artifactId>easycode-auth-model</artifactId>
 		</dependency>
 		<!-- 第三方jar包 -->
 		<dependency>

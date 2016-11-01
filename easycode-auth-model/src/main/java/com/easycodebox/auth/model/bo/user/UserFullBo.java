@@ -1,8 +1,11 @@
-package com.easycodebox.login.ws.bo;
+package com.easycodebox.auth.model.bo.user;
 
 import java.util.List;
 
-public class UserExtWsBo extends UserWsBo {
+import com.easycodebox.auth.model.entity.user.Operation;
+import com.easycodebox.auth.model.entity.user.User;
+
+public class UserFullBo extends User {
 
 	private static final long serialVersionUID = -3600978665605684188L;
 
@@ -18,7 +21,7 @@ public class UserExtWsBo extends UserWsBo {
 	/**
 	 * 菜单项
 	 */
-	private List<OperationWsBo> menus;
+	private List<Operation> menus;
 
 	public String getRoleNames() {
 		return roleNames;
@@ -44,11 +47,11 @@ public class UserExtWsBo extends UserWsBo {
 		this.operations = operations;
 	}
 
-	public List<OperationWsBo> getMenus() {
+	public List<Operation> getMenus() {
 		return menus;
 	}
 
-	public void setMenus(List<OperationWsBo> menus) {
+	public void setMenus(List<Operation> menus) {
 		this.menus = menus;
 	}
 

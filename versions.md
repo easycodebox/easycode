@@ -20,5 +20,5 @@
 1. 实现权限的导入/导出新版功能
 2. SqlGrammar的增删改查	增加通用Dao
 3. easycode-common包中Enums类名改为DetailEnums
-4. 通信用的UserWsBo/OperationWsBo改为User/Operation，为了以后各项目间统一使用用户信息缓存做准备
+4. 通信用的UserWsBo/OperationWsBo改为User/Operation，并分离出easycode-auth-model包，为了以后各项目间统一使用用户信息缓存做准备
 5. 日志属性名由LOG换成log，与lombok统一，方便集成

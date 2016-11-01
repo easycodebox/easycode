@@ -16,12 +16,13 @@ import com.easycodebox.auth.core.service.user.RoleService;
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.ws.UserWsService;
+import com.easycodebox.auth.model.bo.user.UserFullBo;
 import com.easycodebox.auth.model.entity.sys.Project;
 import com.easycodebox.auth.model.entity.user.Operation;
 import com.easycodebox.auth.model.entity.user.Role;
 import com.easycodebox.auth.model.entity.user.User;
-import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.StringUtils;
@@ -30,9 +31,6 @@ import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.login.ws.bo.OperationWsBo;
-import com.easycodebox.login.ws.bo.UserExtWsBo;
-import com.easycodebox.login.ws.bo.UserWsBo;
 
 /**
  * 因userWsService已被ws-client.xml中的配置占用，所以改@Service值
@@ -57,33 +55,17 @@ public class UserWsServiceImpl implements UserWsService {
 	private ProjectService projectService;
 	
 	@Override
-	public UserWsBo load(String id) throws ErrorContext {
+	public User load(String id) throws ErrorContext {
 		User user = userService.load(id);
-		UserWsBo bo = new UserWsBo();
-		bo.setId(user.getId());
-		bo.setGroupId(user.getGroupId());
-		bo.setUserNo(user.getUserNo());
-		bo.setUsername(user.getUsername());
-		bo.setNickname(user.getNickname());
-		bo.setPassword(user.getPassword());
-		bo.setRealname(user.getRealname());
-		bo.setStatus(user.getStatus());
-		bo.setIsSuperAdmin(user.getIsSuperAdmin());
-		bo.setPic(user.getPic());
-		bo.setSort(user.getSort());
-		bo.setGender(user.getGender());
-		bo.setEmail(user.getEmail());
-		bo.setMobile(user.getMobile());
-		bo.setLoginFail(user.getLoginFail());
 		if(user.getGroupId() != null) {
 			String groupName = groupService.load(user.getGroupId()).getName();
-			bo.setGroupName(groupName);
+			user.setGroupName(groupName);
 		}
-		return bo;
+		return user;
 	}
 	
 	@Override
-	public DataPage<UserWsBo> page(Integer groupId, String userNo,
+	public DataPage<User> page(Integer groupId, String userNo,
 			String username, String nickname, String realname,
 			OpenClose status, String email, String mobile, String[] ids,
 			Integer pageNo, Integer pageSize)throws ErrorContext {
@@ -107,23 +89,7 @@ public class UserWsServiceImpl implements UserWsService {
 	}
 
 	@Override
-	public int update(UserWsBo userWsBo) throws ErrorContext {
-		User user = new User();
-		user.setId(userWsBo.getId());
-		user.setEmail(userWsBo.getEmail());
-		user.setGender(userWsBo.getGender());
-		user.setGroupId(userWsBo.getGroupId());
-		user.setIsSuperAdmin(userWsBo.getIsSuperAdmin());
-		user.setLoginFail(userWsBo.getLoginFail());
-		user.setMobile(userWsBo.getMobile());
-		user.setNickname(userWsBo.getNickname());
-		user.setPassword(userWsBo.getPassword());
-		user.setPic(userWsBo.getPic());
-		user.setRealname(userWsBo.getRealname());
-		user.setSort(userWsBo.getSort());
-		user.setStatus(userWsBo.getStatus());
-		user.setUsername(userWsBo.getUsername());
-		user.setUserNo(userWsBo.getUserNo());
+	public int update(User user) throws ErrorContext {
 		return userService.update(user);
 	}
 
@@ -157,26 +123,8 @@ public class UserWsServiceImpl implements UserWsService {
 
 	@Override
 	@Transactional
-	public String add(UserWsBo user, String roleName) throws ErrorContext {
-		User pojo = new User();
-		pojo.setId(user.getId());
-		pojo.setGroupId(user.getGroupId());
-		pojo.setUserNo(user.getUserNo());
-		pojo.setUsername(user.getUsername());
-		pojo.setNickname(user.getNickname());
-		pojo.setPassword(user.getPassword());
-		pojo.setRealname(user.getRealname());
-		pojo.setStatus(user.getStatus());
-		pojo.setIsSuperAdmin(user.getIsSuperAdmin());
-		pojo.setPic(user.getPic());
-		pojo.setSort(user.getSort());
-		pojo.setGender(user.getGender());
-		pojo.setEmail(user.getEmail());
-		pojo.setMobile(user.getMobile());
-		pojo.setLoginFail(user.getLoginFail());
-		pojo.setGroupName(user.getGroupName());
-		
-		pojo = userService.add(pojo);
+	public String add(User user, String roleName) throws ErrorContext {
+		user = userService.add(user);
 		
 		if(StringUtils.isNotBlank(roleName)) {
 			List<Role> role = roleService.list(OpenClose.OPEN, roleName);
@@ -185,10 +133,10 @@ public class UserWsServiceImpl implements UserWsService {
 					log.error("There are multiple role name {0}", roleName);
 				}
 				Integer roleId = role.get(0).getId();
-				roleService.installRolesOfUser(pojo.getId(), new Integer[]{roleId});
+				roleService.installRolesOfUser(user.getId(), new Integer[]{roleId});
 			}
 		}
-		return pojo.getId();
+		return user.getId();
 	}
 
 	@Override
@@ -198,7 +146,7 @@ public class UserWsServiceImpl implements UserWsService {
 
 	
 	@Override
-	public UserExtWsBo loginSuc(String userId, String projectNo,
+	public UserFullBo loginSuc(String userId, String projectNo,
 			boolean validProjectAuth) throws ErrorContext {
 		User user = userService.load(userId);
 		Assert.notNull(user, CodeMsgExt.PARAM_ERR.fillArgs("用户名"));
@@ -228,19 +176,9 @@ public class UserWsServiceImpl implements UserWsService {
 			}
 		}
 		
-		List<Operation> treeOs = operationService.listOperationsOfUser(user.getId(), pro.getId(), YesNo.YES);
-		List<OperationWsBo> menus = new ArrayList<OperationWsBo>(treeOs.size());
-		for(Operation o : treeOs) {
-			OperationWsBo m = new OperationWsBo();
-			m.setId(o.getId());
-			m.setName(o.getName());
-			m.setIcon(o.getIcon());
-			m.setParentId(o.getParentId());
-			m.setUrl(o.getUrl());
-			menus.add(m);
-		}
+		List<Operation> menus = operationService.listOperationsOfUser(user.getId(), pro.getId(), YesNo.YES);
 		
-		UserExtWsBo bo = new UserExtWsBo();
+		UserFullBo bo = new UserFullBo();
 		bo.setId(user.getId());
 		bo.setGroupId(user.getGroupId());
 		bo.setUserNo(user.getUserNo());

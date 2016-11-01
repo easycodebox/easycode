@@ -2,12 +2,11 @@ package com.easycodebox.auth.core.service.user;
 
 import java.util.List;
 
-import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.dto.DataPage;
-import com.easycodebox.login.ws.bo.UserWsBo;
 
 /**
  * @author WangXiaoJin
@@ -73,7 +72,7 @@ public interface UserService {
 			String nickname, String realname, OpenClose status, 
 			String email, String mobile, int pageNo, int pageSize);
 	
-	DataPage<UserWsBo> page(Integer groupId, String userNo, String username, String nickname, 
+	DataPage<User> page(Integer groupId, String userNo, String username, String nickname, 
 			String realname, OpenClose status, String email, String mobile,
 			String[] ids, Integer pageNo, Integer pageSize);
 			

@@ -20,13 +20,13 @@ import org.apache.shiro.cas.CasRealm;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.easycodebox.auth.model.bo.user.UserFullBo;
+import com.easycodebox.auth.model.entity.user.Operation;
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.login.shiro.ShiroSecurityInfoHandler;
 import com.easycodebox.login.shiro.permission.GlobalPermission;
 import com.easycodebox.login.ws.UserWsService;
-import com.easycodebox.login.ws.bo.OperationWsBo;
-import com.easycodebox.login.ws.bo.UserExtWsBo;
 
 /**
  * 
@@ -110,7 +110,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 			
 			//后期考虑直接从CAS返回角色、权限等信息是否可行
 	        String userId = attributes.get(PRINCIPAL_USER_ID_KEY);
-	        UserExtWsBo user = userWsService.loginSuc(userId, projectNo, validProjectAuth);
+	        UserFullBo user = userWsService.loginSuc(userId, projectNo, validProjectAuth);
 	        //设置角色
 	        if (user.getRoleNames() != null) {
 	        	attributes.put(PRINCIPAL_ROLES_KEY, user.getRoleNames());
@@ -143,9 +143,9 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	 * @param all	所有的权限
 	 * @return
 	 */
-	private static List<OperationWsBo> treeOperations(Long parentId, List<OperationWsBo> all) {
-		List<OperationWsBo> cur = new LinkedList<OperationWsBo>();
-		for(OperationWsBo o : all) {
+	private static List<Operation> treeOperations(Long parentId, List<Operation> all) {
+		List<Operation> cur = new LinkedList<>();
+		for(Operation o : all) {
 			if(parentId == null ? o.getParentId() == null : parentId.equals(o.getParentId())) {
 				o.setChildren(treeOperations(o.getId(), all));
 				cur.add(o);

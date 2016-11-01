@@ -1,10 +1,10 @@
 package com.easycodebox.login.ws;
 
+import com.easycodebox.auth.model.bo.user.UserFullBo;
+import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.dto.DataPage;
-import com.easycodebox.login.ws.bo.UserExtWsBo;
-import com.easycodebox.login.ws.bo.UserWsBo;
 
 public interface UserWsService {
 
@@ -13,9 +13,9 @@ public interface UserWsService {
 	 * @param id
 	 * @return
 	 */
-	UserWsBo load(String id) throws ErrorContext;
+	User load(String id) throws ErrorContext;
 	
-	DataPage<UserWsBo> page(Integer groupId, String userNo, String username, String nickname, 
+	DataPage<User> page(Integer groupId, String userNo, String username, String nickname, 
 			String realname, OpenClose status, String email, String mobile,
 			String[] ids, Integer pageNo, Integer pageSize) throws ErrorContext;
 	
@@ -30,7 +30,7 @@ public interface UserWsService {
 	 */
 	int updateStatus(String[] ids, OpenClose status) throws ErrorContext;
 	
-	int update(UserWsBo userWsBo) throws ErrorContext;
+	int update(User user) throws ErrorContext;
 	
 	/**
 	 * 更新昵称
@@ -62,7 +62,7 @@ public interface UserWsService {
 	 * @param user
 	 * @return	返回主键
 	 */
-	String add(UserWsBo user, String roleName) throws ErrorContext;
+	String add(User user, String roleName) throws ErrorContext;
 	
 	/**
 	 * 逻辑删除
@@ -79,6 +79,6 @@ public interface UserWsService {
 	 * @return
 	 * @throws ErrorContext
 	 */
-	UserExtWsBo loginSuc(String userId, String projectNo, boolean validProjectAuth) throws ErrorContext;
+	UserFullBo loginSuc(String userId, String projectNo, boolean validProjectAuth) throws ErrorContext;
 	
 }

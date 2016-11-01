@@ -17,16 +17,15 @@ import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
-import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.generator.Generators;
-import com.easycodebox.jdbc.JoinType;
-import com.easycodebox.jdbc.support.AbstractServiceImpl;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.login.ws.bo.UserWsBo;
+import com.easycodebox.jdbc.JoinType;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 
 /**
  * @author WangXiaoJin
@@ -201,12 +200,12 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	}
 	
 	@Override
-	public DataPage<UserWsBo> page(Integer groupId, String userNo,
+	public DataPage<User> page(Integer groupId, String userNo,
 			String username, String nickname, String realname,
 			OpenClose status, String email, String mobile, String[] ids,
 			Integer pageNo, Integer pageSize) {
 		if(ids != null && ids.length == 0)
-			return new DataPage<UserWsBo>();
+			return new DataPage<User>();
 		return super.page(sql()
 				.eq(R.User.groupId, groupId)
 				.likeTrim(R.User.userNo, userNo)
@@ -221,7 +220,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 				.desc(R.User.sort)
 				.desc(R.User.createTime)
 				.limit(pageNo, pageSize)
-				, UserWsBo.class);
+				);
 	}
 	
 	@Override
