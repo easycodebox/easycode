@@ -6,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
-import com.easycodebox.auth.core.pojo.sys.Generator;
 import com.easycodebox.auth.core.service.sys.GeneratorService;
-import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.entity.sys.Generator;
+import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.lang.dto.DataPage;

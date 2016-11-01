@@ -2,8 +2,8 @@ package com.easycodebox.auth.core.service.sys;
 
 import java.util.List;
 
-import com.easycodebox.auth.core.enums.ModuleType;
-import com.easycodebox.auth.core.pojo.sys.Log;
+import com.easycodebox.auth.model.entity.sys.Log;
+import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.lang.dto.DataPage;
 

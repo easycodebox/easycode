@@ -60,7 +60,7 @@ public final class LogAspect implements Ordered, InitializingBean {
 	
 	@Around("@annotation(log)")
 	public Object logging(final ProceedingJoinPoint pjp, final Log log) throws Throwable {
-		com.easycodebox.auth.core.pojo.sys.Log logObj = new com.easycodebox.auth.core.pojo.sys.Log();
+		com.easycodebox.auth.model.entity.sys.Log logObj = new com.easycodebox.auth.model.entity.sys.Log();
 		if(SecurityContexts.getCurSecurityContext() != null
 				&& SecurityContexts.getCurSecurityContext().getRequest() != null) {
 			HttpServletRequest request = SecurityContexts.getCurSecurityContext().getRequest();

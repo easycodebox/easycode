@@ -1,11 +1,11 @@
-package com.easycodebox.auth.core.pojo.user;
+package com.easycodebox.auth.model.entity.user;
 
 import java.util.List;
 
 import javax.persistence.*;
 
-import com.easycodebox.auth.core.util.mybatis.GeneratedValue;
-import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.util.mybatis.GeneratedValue;
+import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.Gender;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.enums.entity.OpenClose;

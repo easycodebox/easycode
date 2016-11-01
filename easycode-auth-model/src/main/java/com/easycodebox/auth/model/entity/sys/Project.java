@@ -1,11 +1,11 @@
-package com.easycodebox.auth.core.pojo.sys;
+package com.easycodebox.auth.model.entity.sys;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.easycodebox.auth.core.util.mybatis.GeneratedValue;
-import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.util.mybatis.GeneratedValue;
+import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;

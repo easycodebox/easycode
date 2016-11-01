@@ -13,11 +13,11 @@
 	</settings>
 	
 	<typeAliases>
-		<package name="com.easycodebox.auth.core.pojo"/>
+		<package name="com.easycodebox.auth.model.entity"/>
 	</typeAliases> 
 	
 	<typeHandlers>
-		<typeHandler handler="com.easycodebox.auth.core.util.mybatis.EnumTypeHandler" />
+		<typeHandler handler="com.easycodebox.auth.model.util.mybatis.EnumTypeHandler" />
 	</typeHandlers>
 	
 	<mappers>

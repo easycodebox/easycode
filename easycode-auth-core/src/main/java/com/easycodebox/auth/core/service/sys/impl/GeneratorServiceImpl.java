@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.easycodebox.auth.core.enums.ModuleType;
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
-import com.easycodebox.auth.core.pojo.sys.Generator;
 import com.easycodebox.auth.core.service.sys.GeneratorService;
-import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
-import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.entity.sys.Generator;
+import com.easycodebox.auth.model.enums.ModuleType;
+import com.easycodebox.auth.model.util.R;
+import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.AbstractGenerator;

@@ -7,11 +7,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.easycodebox.auth.core.enums.ModuleType;
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
-import com.easycodebox.auth.core.pojo.sys.Log;
 import com.easycodebox.auth.core.service.sys.LogService;
-import com.easycodebox.auth.core.util.R;
+import com.easycodebox.auth.model.entity.sys.Log;
+import com.easycodebox.auth.model.enums.ModuleType;
+import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;

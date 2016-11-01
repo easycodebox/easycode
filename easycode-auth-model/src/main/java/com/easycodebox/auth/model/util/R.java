@@ -1,4 +1,4 @@
-package com.easycodebox.auth.core.util;
+package com.easycodebox.auth.model.util;
 
 import static com.easycodebox.jdbc.Property.instance;
 
@@ -17,7 +17,7 @@ public class R {
 
 	public static class Generator {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.sys.Generator.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.sys.Generator.class;
 		public static final Property 
 			generatorType = instance("generatorType", entity),
 			initialVal = instance("initialVal", entity),
@@ -37,7 +37,7 @@ public class R {
 	
 	public static class Log {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.sys.Log.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.sys.Log.class;
 		public static final Property 
 			id = instance("id", entity),
 			title = instance("title", entity),
@@ -57,7 +57,7 @@ public class R {
 	
 	public static class Partner {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.sys.Partner.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.sys.Partner.class;
 		public static final Property 
 			id = instance("id", entity),
 			name = instance("name", entity),
@@ -79,7 +79,7 @@ public class R {
 	
 	public static class Project {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.sys.Project.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.sys.Project.class;
 		public static final Property 
 			id = instance("id", entity),
 			name = instance("name", entity),
@@ -100,7 +100,7 @@ public class R {
 	
 	public static class Group {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.user.Group.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.Group.class;
 		public static final Property 
 			id = instance("id", entity),
 			parentId = instance("parentId", entity),
@@ -124,7 +124,7 @@ public class R {
 	
 	public static class GroupRole {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.user.GroupRole.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.GroupRole.class;
 		public static final Property 
 			roleId = instance("roleId", entity),
 			groupId = instance("groupId", entity),
@@ -138,7 +138,7 @@ public class R {
 	
 	public static class Operation {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.user.Operation.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.Operation.class;
 		public static final Property 
 			id = instance("id", entity),
 			parentId = instance("parentId", entity),
@@ -170,7 +170,7 @@ public class R {
 	
 	public static class Role {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.user.Role.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.Role.class;
 		public static final Property 
 			id = instance("id", entity),
 			name = instance("name", entity),
@@ -195,7 +195,7 @@ public class R {
 	
 	public static class RoleOperation {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.user.RoleOperation.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.RoleOperation.class;
 		public static final Property 
 			roleId = instance("roleId", entity),
 			operationId = instance("operationId", entity),
@@ -209,7 +209,7 @@ public class R {
 	
 	public static class RoleProject {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.user.RoleProject.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.RoleProject.class;
 		public static final Property 
 			roleId = instance("roleId", entity),
 			projectId = instance("projectId", entity),
@@ -223,7 +223,7 @@ public class R {
 	
 	public static class User {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.user.User.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.User.class;
 		public static final Property 
 			id = instance("id", entity),
 			groupId = instance("groupId", entity),
@@ -255,7 +255,7 @@ public class R {
 	
 	public static class UserRole {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.core.pojo.user.UserRole.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.UserRole.class;
 		public static final Property 
 			userId = instance("userId", entity),
 			roleId = instance("roleId", entity),

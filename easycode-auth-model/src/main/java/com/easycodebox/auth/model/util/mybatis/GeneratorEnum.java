@@ -1,4 +1,4 @@
-package com.easycodebox.auth.core.util.mybatis;
+package com.easycodebox.auth.model.util.mybatis;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.entity.YesNo;

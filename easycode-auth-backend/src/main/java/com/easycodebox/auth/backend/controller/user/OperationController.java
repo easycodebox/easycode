@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
-import com.easycodebox.auth.core.pojo.user.Operation;
 import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.OperationService;
 import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
+import com.easycodebox.auth.model.entity.user.Operation;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;

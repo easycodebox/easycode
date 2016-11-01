@@ -6,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
-import com.easycodebox.auth.core.pojo.sys.Partner;
 import com.easycodebox.auth.core.service.sys.PartnerService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
+import com.easycodebox.auth.model.entity.sys.Partner;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.lang.dto.DataPage;

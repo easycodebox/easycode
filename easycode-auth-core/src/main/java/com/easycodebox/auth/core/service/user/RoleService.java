@@ -2,7 +2,7 @@ package com.easycodebox.auth.core.service.user;
 
 import java.util.List;
 
-import com.easycodebox.auth.core.pojo.user.Role;
+import com.easycodebox.auth.model.entity.user.Role;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.lang.dto.DataPage;
 

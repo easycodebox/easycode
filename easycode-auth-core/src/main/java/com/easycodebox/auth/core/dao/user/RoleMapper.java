@@ -2,7 +2,7 @@ package com.easycodebox.auth.core.dao.user;
 
 import java.util.List;
 
-import com.easycodebox.auth.core.pojo.user.Role;
+import com.easycodebox.auth.model.entity.user.Role;
 
 /**
  * @author WangXiaoJin

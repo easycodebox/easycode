@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.easycodebox.auth.core.pojo.user.Operation;
+import com.easycodebox.auth.model.entity.user.Operation;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 

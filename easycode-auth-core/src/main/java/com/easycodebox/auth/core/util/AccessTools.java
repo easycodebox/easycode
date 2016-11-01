@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.easycodebox.auth.core.pojo.user.Operation;
 import com.easycodebox.auth.core.service.user.OperationService;
+import com.easycodebox.auth.model.entity.user.Operation;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.spring.BeanFactory;

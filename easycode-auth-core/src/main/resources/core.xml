@@ -79,7 +79,7 @@
 		<property name="properties" ref="properties" />
 		<property name="packagesToScan">
 			<list>
-				<value>com.easycodebox.auth.core.bo</value>
+				<value>com.easycodebox.auth.model.bo</value>
 			</list>
 		</property>
 		<property name="classes">
@@ -109,15 +109,15 @@
 		lazy-init="false">
 		<property name="packagesToScan">
 			<list>
-				<value>com.easycodebox.auth.core.enums</value>
-				<value>com.easycodebox.auth.core.util.mybatis</value>
+				<value>com.easycodebox.auth.model.enums</value>
+				<value>com.easycodebox.auth.model.util.mybatis</value>
 				<value>com.easycodebox.common.enums.entity</value>
 			</list>
 		</property>
 	</bean>
 
 	<bean id="annotatedConfig" class="com.easycodebox.jdbc.config.ConfigPojoBean"
-		lazy-init="false" p:packagesToScan="com.easycodebox.auth.core.pojo" />
+		lazy-init="false" p:packagesToScan="com.easycodebox.auth.model.entity" />
 
 	<!-- 数据源配置 -->
 	<!--

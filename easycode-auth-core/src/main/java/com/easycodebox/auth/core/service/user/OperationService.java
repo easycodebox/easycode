@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import com.easycodebox.auth.core.pojo.user.Operation;
+import com.easycodebox.auth.model.entity.user.Operation;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.dto.DataPage;

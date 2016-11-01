@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.easycodebox.auth.core.enums.ModuleType;
+import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.common.enums.entity.LogLevel;
 
 /**

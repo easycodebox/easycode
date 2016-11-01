@@ -2,8 +2,8 @@ package com.easycodebox.auth.core.service.sys;
 
 import java.util.List;
 
-import com.easycodebox.auth.core.pojo.sys.Generator;
-import com.easycodebox.auth.core.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.entity.sys.Generator;
+import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.GenerateProcess;
 import com.easycodebox.common.lang.dto.DataPage;

@@ -7,13 +7,13 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.easycodebox.auth.core.enums.ModuleType;
-import com.easycodebox.auth.core.pojo.sys.Project;
-import com.easycodebox.auth.core.pojo.user.RoleProject;
 import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.RoleProjectService;
-import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
+import com.easycodebox.auth.model.entity.sys.Project;
+import com.easycodebox.auth.model.entity.user.RoleProject;
+import com.easycodebox.auth.model.enums.ModuleType;
+import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;

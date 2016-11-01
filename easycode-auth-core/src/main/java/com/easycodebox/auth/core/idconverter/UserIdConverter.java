@@ -7,9 +7,9 @@ import javax.annotation.Resource;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 
-import com.easycodebox.auth.core.pojo.user.User;
 import com.easycodebox.auth.core.service.user.UserService;
-import com.easycodebox.auth.core.util.R;
+import com.easycodebox.auth.model.entity.user.User;
+import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.tag.IdConverter;
 import com.easycodebox.jdbc.support.JdbcHandler;

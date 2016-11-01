@@ -1,4 +1,4 @@
-package com.easycodebox.auth.core.enums;
+package com.easycodebox.auth.model.enums;
 
 import com.easycodebox.common.enums.DetailEnum;
 

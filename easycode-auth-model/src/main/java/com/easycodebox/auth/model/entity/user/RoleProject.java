@@ -1,8 +1,8 @@
-package com.easycodebox.auth.core.pojo.user;
+package com.easycodebox.auth.model.entity.user;
 
 import javax.persistence.*;
 
-import com.easycodebox.auth.core.pojo.sys.Project;
+import com.easycodebox.auth.model.entity.sys.Project;
 import com.easycodebox.jdbc.entity.AbstractCreateEntity;
 
 /**

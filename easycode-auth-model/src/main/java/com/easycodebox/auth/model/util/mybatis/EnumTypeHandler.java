@@ -1,4 +1,4 @@
-package com.easycodebox.auth.core.util.mybatis;
+package com.easycodebox.auth.model.util.mybatis;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -9,8 +9,8 @@ import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 
-import com.easycodebox.auth.core.enums.ModuleType;
-import com.easycodebox.auth.core.enums.MsgType;
+import com.easycodebox.auth.model.enums.ModuleType;
+import com.easycodebox.auth.model.enums.MsgType;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.DataType;

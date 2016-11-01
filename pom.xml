@@ -19,6 +19,7 @@
 		<module>easycode-jdbc-mybatis</module>
 		<module>easycode-auth-backend</module>
 		<module>easycode-auth-core</module>
+		<module>easycode-auth-model</module>
 		<module>easycode-upload</module>
 		<module>easycode-login</module>
 		<module>easycode-cas</module>
@@ -88,6 +89,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>easycode-jdbc-mybatis</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>easycode-auth-model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

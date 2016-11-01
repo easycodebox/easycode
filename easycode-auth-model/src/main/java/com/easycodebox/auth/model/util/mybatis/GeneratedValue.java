@@ -1,4 +1,4 @@
-package com.easycodebox.auth.core.util.mybatis;
+package com.easycodebox.auth.model.util.mybatis;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
