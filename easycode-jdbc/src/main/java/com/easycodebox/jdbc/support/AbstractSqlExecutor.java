@@ -30,7 +30,7 @@ import com.easycodebox.jdbc.util.SqlUtils;
  * @author WangXiaoJin
  *
  */
-public abstract class AbstractService<T extends Entity> {
+public abstract class AbstractSqlExecutor<T extends Entity> {
 	
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -43,7 +43,7 @@ public abstract class AbstractService<T extends Entity> {
 	private Class<T> entityClass;
 	
 	@SuppressWarnings("unchecked")
-	public AbstractService() {
+	public AbstractSqlExecutor() {
 		entityClass = ClassUtils.getSuperClassGenricType(getClass());
 	}
 	
@@ -365,6 +365,22 @@ public abstract class AbstractService<T extends Entity> {
 			sqlGrammar.eq(Property.instance(pks.get(0).getName(), entityClass, false), idVal);
 		}
 		return update(sqlGrammar);
+	}
+
+	public JdbcHandler getJdbcHandler() {
+		return jdbcHandler;
+	}
+
+	public void setJdbcHandler(JdbcHandler jdbcHandler) {
+		this.jdbcHandler = jdbcHandler;
+	}
+
+	public JdbcProcessor getJdbcProcessor() {
+		return jdbcProcessor;
+	}
+
+	public void setJdbcProcessor(JdbcProcessor jdbcProcessor) {
+		this.jdbcProcessor = jdbcProcessor;
 	}
 	
 }

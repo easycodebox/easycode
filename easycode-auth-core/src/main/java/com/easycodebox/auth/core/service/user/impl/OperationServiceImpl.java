@@ -46,7 +46,7 @@ import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.xml.XmlDataParser;
-import com.easycodebox.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
@@ -60,7 +60,7 @@ import freemarker.template.TemplateNotFoundException;
  *
  */
 @Service("operationService")
-public class OperationServiceImpl extends AbstractService<Operation> implements OperationService {
+public class OperationServiceImpl extends AbstractServiceImpl<Operation> implements OperationService {
 	
 	@Resource
 	private UserIdConverter userIdConverter;

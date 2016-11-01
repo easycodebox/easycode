@@ -23,14 +23,14 @@ import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.Generators;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 
 /**
  * @author WangXiaoJin
  *
  */
 @Service("partnerService")
-public class PartnerServiceImpl extends AbstractService<Partner> implements PartnerService {
+public class PartnerServiceImpl extends AbstractServiceImpl<Partner> implements PartnerService {
 
 	@Resource
 	private UserIdConverter userIdConverter;

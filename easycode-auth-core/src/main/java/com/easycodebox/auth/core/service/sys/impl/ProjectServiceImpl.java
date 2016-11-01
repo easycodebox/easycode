@@ -23,14 +23,14 @@ import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 
 /**
  * @author WangXiaoJin
  *
  */
 @Service("projectService")
-public class ProjectServiceImpl extends AbstractService<Project> implements ProjectService {
+public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements ProjectService {
 
 	@Resource
 	private UserIdConverter userIdConverter;

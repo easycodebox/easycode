@@ -26,14 +26,14 @@ import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 
 /**
  * @author WangXiaoJin
  *
  */
 @Service("roleService")
-public class RoleServiceImpl extends AbstractService<Role> implements RoleService {
+public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleService {
 
 	@Resource
 	private UserIdConverter userIdConverter;

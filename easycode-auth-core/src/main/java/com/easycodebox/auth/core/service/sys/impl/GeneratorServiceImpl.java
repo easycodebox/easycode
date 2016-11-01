@@ -23,7 +23,7 @@ import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.AbstractGenerator;
 import com.easycodebox.common.generator.GeneratorType;
 import com.easycodebox.jdbc.LockMode;
-import com.easycodebox.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.lang.reflect.FieldUtils;
@@ -34,7 +34,7 @@ import com.easycodebox.common.lang.reflect.FieldUtils;
  */
 @Transactional
 @Service("generatorService")
-public class GeneratorServiceImpl extends AbstractService<Generator> implements GeneratorService {
+public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> implements GeneratorService {
 
 	private Lock lock = new ReentrantLock();
 	

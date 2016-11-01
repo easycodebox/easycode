@@ -22,7 +22,7 @@ import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.generator.Generators;
 import com.easycodebox.jdbc.JoinType;
-import com.easycodebox.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
@@ -33,7 +33,7 @@ import com.easycodebox.login.ws.bo.UserWsBo;
  *
  */
 @Service("userService")
-public class UserServiceImpl extends AbstractService<User> implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
 	
 	@Override
 	public List<User> list() {

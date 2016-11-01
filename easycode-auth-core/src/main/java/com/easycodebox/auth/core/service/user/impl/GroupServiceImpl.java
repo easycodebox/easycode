@@ -27,14 +27,14 @@ import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 
 /**
  * @author WangXiaoJin
  *
  */
 @Service("groupService")
-public class GroupServiceImpl extends AbstractService<Group> implements GroupService {
+public class GroupServiceImpl extends AbstractServiceImpl<Group> implements GroupService {
 	
 	@Resource
 	private UserIdConverter userIdConverter;

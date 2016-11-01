@@ -16,14 +16,14 @@ import com.easycodebox.auth.core.util.R;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 
 /**
  * @author WangXiaoJin
  *
  */
 @Service("roleProjectService")
-public class RoleProjectServiceImpl extends AbstractService<RoleProject> implements RoleProjectService {
+public class RoleProjectServiceImpl extends AbstractServiceImpl<RoleProject> implements RoleProjectService {
 
 	@Resource
 	private ProjectService projectService;

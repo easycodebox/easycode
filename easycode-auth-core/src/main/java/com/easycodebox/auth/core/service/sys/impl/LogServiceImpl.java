@@ -15,14 +15,14 @@ import com.easycodebox.auth.core.util.R;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
-import com.easycodebox.jdbc.support.AbstractService;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
 
 /**
  * @author WangXiaoJin
  *
  */
 @Service("logService")
-public class LogServiceImpl extends AbstractService<Log> implements LogService {
+public class LogServiceImpl extends AbstractServiceImpl<Log> implements LogService {
 
 	@Resource
 	private UserIdConverter userIdConverter;
