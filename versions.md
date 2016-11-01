@@ -18,8 +18,7 @@
 ###【v0.2.4】 - 2016.10.28
 
 1. 实现权限的导入/导出新版功能
-2. 单点登出应用到Shiro Native Session
-3. SqlGrammar的增删改查	增加通用Dao
-4. easycode-common包中Enums类名改为DetailEnums
-5. 通信用的UserWsBo/OperationWsBo改为User/Operation，为了以后各项目间统一使用用户信息缓存做准备
-6. 日志属性名由LOG换成log，与lombok统一，方便集成
+2. SqlGrammar的增删改查	增加通用Dao
+3. easycode-common包中Enums类名改为DetailEnums
+4. 通信用的UserWsBo/OperationWsBo改为User/Operation，为了以后各项目间统一使用用户信息缓存做准备
+5. 日志属性名由LOG换成log，与lombok统一，方便集成
