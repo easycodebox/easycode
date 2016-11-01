@@ -43,7 +43,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class ZooKeeperFactory implements FactoryBean<ZooKeeper>, InitializingBean, DisposableBean {
 
-	private static final Logger log = LoggerFactory.getLogger(ZooKeeperFactory.class);
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private ZooKeeper client;
 	private CountDownLatch count = new CountDownLatch(1);

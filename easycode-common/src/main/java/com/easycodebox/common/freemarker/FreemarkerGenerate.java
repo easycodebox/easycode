@@ -32,7 +32,7 @@ import freemarker.template.TemplateException;
  */
 public class FreemarkerGenerate implements Processor, ResourceLoaderAware, ServletContextAware {
 
-	private static final Logger log = LoggerFactory.getLogger(FreemarkerGenerate.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private ResourceLoader resourceLoader = new DefaultResourceLoader();
 	

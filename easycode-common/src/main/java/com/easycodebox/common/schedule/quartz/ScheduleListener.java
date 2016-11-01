@@ -16,7 +16,7 @@ import com.easycodebox.common.spring.BeanFactory;
  */
 public class ScheduleListener implements ServletContextListener {
 	
-	private final Logger log = LoggerFactory.getLogger(ScheduleListener.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {

@@ -24,7 +24,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class RemoteFactory {
 
-	private static final Logger log = LoggerFactory.getLogger(RemoteFactory.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	//注册时的端口
 	public static final int REGISTRY_PORT = 1099;

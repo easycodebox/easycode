@@ -22,7 +22,7 @@ import com.easycodebox.common.zookeeper.ZkNodeNameMaker;
  */
 public class CuratorLatentIpNodeNameMaker implements ZkNodeNameMaker {
 
-	private static final Logger log = LoggerFactory.getLogger(CuratorLatentIpNodeNameMaker.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private CuratorFramework client;
 	

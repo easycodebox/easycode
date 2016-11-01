@@ -32,7 +32,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
 	
-	private static final Logger log = LoggerFactory.getLogger(DefaultRequestMappingHandlerMapping.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	/**
 	 * 当url中没有指定执行的方法名，默认执行defaultMethod方法
 	 */

@@ -14,7 +14,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
 public class DefaultConfiguration extends
 		org.apache.ibatis.session.Configuration {
 	
-	private static final Logger log = LoggerFactory.getLogger(DefaultConfiguration.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private static final ThreadLocal<MappedStatement> CUR_MAPPED_STATEMENT = new ThreadLocal<MappedStatement>();
 	

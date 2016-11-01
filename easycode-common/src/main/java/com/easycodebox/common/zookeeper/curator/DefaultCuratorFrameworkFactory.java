@@ -53,7 +53,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class DefaultCuratorFrameworkFactory implements FactoryBean<CuratorFramework>, InitializingBean, DisposableBean {
 
-	private static final Logger log = LoggerFactory.getLogger(DefaultCuratorFrameworkFactory.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private CuratorFramework client;
 	

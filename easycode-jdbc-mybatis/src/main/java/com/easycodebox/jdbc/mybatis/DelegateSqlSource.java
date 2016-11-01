@@ -18,7 +18,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class DelegateSqlSource implements SqlSource {
 	
-	private static final Logger log = LoggerFactory.getLogger(DelegateSqlSource.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private SqlSource delegate;
 	

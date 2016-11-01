@@ -28,7 +28,7 @@ import com.easycodebox.common.spring.BeanFactory;
  */
 public class DefaultCasFilter extends CasFilter {
 	
-	private static final Logger log = LoggerFactory.getLogger(DefaultCasFilter.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private String weaveName;
 	private Weave weave;

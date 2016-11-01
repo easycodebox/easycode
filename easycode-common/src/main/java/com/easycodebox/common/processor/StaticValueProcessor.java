@@ -21,7 +21,7 @@ import com.easycodebox.common.validate.Assert;
  */
 public class StaticValueProcessor implements Processor {
 	
-	//private static final Logger log = LoggerFactory.getLogger(StaticValueProcessor.class);
+	//private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	/**
 	 * 匹配${name}

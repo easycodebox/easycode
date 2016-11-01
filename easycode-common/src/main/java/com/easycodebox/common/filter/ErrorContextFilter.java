@@ -42,7 +42,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
  */
 public class ErrorContextFilter implements Filter {
 	
-	private static final Logger log = LoggerFactory.getLogger(ErrorContextFilter.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final String REDIRECT_FLAG = "redirect:";
 	private static final String SEPARATOR_PATTERN = "[,\n]";

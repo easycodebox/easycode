@@ -16,7 +16,7 @@ import com.easycodebox.common.net.InetAddresses;
  */
 public class ZkIpNodeNameMaker implements ZkNodeNameMaker {
 
-	private static final Logger log = LoggerFactory.getLogger(ZkIpNodeNameMaker.class);
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	/**
 	 * 前缀节点名

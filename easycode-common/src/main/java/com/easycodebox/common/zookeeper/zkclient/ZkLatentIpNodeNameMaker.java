@@ -23,7 +23,7 @@ import com.easycodebox.common.zookeeper.ZkNodeNameMaker;
  */
 public class ZkLatentIpNodeNameMaker implements ZkNodeNameMaker {
 
-	private static final Logger log = LoggerFactory.getLogger(ZkLatentIpNodeNameMaker.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private ZooKeeper client;
 	

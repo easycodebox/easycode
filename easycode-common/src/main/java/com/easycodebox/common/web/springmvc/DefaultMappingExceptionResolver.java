@@ -13,8 +13,6 @@ import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.jackson.Jacksons;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.HttpUtils;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -25,8 +23,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
  */
 public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResolver {
 	
-	private static final Logger log = LoggerFactory.getLogger(DefaultMappingExceptionResolver.class);
-
 	private String exceptionAttribute = DEFAULT_EXCEPTION_ATTRIBUTE;
 	public static final String MSG_ATTR = "msg";
 	
@@ -61,7 +57,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 				return null;
 			}
 			//打印此日志是因为错误已被springMVC过滤掉，到达不了ErrorContextFilter拦截器中打印
-			log.error("Execute controller error.", ex);
+			logger.error("Execute controller error.", ex);
 			return super.doResolveException(request, response, handler, ex);
 		}
 	}

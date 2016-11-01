@@ -27,7 +27,7 @@ import com.easycodebox.common.security.SecurityUtils;
 @Aspect
 public final class LogAspect implements Ordered, InitializingBean {
 	
-	//private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
+	//private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private final int DEFAULT_ORDER = 1;
 	private int order = DEFAULT_ORDER;

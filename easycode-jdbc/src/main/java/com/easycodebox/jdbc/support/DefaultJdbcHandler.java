@@ -23,7 +23,7 @@ import com.easycodebox.jdbc.grammar.SqlGrammar;
  */
 public class DefaultJdbcHandler implements JdbcHandler {
 	
-	private static final Logger log = LoggerFactory.getLogger(DefaultJdbcHandler.class);
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private final String DEFAULT_CREATOR_PROPNAME = "creator";
 	private final String DEFAULT_CREATOR_TIME_PROPNAME = "createTime";

@@ -38,7 +38,6 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.xml.XmlDataParser;
 import com.easycodebox.jdbc.mybatis.DefaultConfiguration;
 import com.easycodebox.jdbc.mybatis.DefaultXMLConfigBuilder;
 
@@ -51,7 +50,7 @@ public class MyBatisSqlSessionFactoryBean implements
 		FactoryBean<SqlSessionFactory>, InitializingBean,
 		ApplicationListener<ApplicationEvent> {
 
-	private static final Logger log = LoggerFactory.getLogger(XmlDataParser.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private Resource configLocation;
 

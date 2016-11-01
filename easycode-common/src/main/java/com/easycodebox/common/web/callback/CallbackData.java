@@ -14,7 +14,7 @@ public class CallbackData extends CodeMsg {
 	
 	private static final long serialVersionUID = -1580285521851719262L;
 
-	private static transient final Logger log = LoggerFactory.getLogger(CallbackData.class);
+	private transient final Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * 回调函数执行的动作类型

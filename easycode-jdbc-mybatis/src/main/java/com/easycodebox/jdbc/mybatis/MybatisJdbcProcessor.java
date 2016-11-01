@@ -31,7 +31,7 @@ import com.easycodebox.jdbc.support.JdbcProcessor;
  */
 public class MybatisJdbcProcessor implements JdbcProcessor {
 
-	private static final Logger log = LoggerFactory.getLogger(MybatisJdbcProcessor.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private SqlSessionTemplate sqlSessionTemplate;
 	

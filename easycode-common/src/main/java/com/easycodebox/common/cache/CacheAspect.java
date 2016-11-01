@@ -28,7 +28,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
 @Deprecated
 public final class CacheAspect implements Ordered, InitializingBean {
 	
-	private static final Logger log = LoggerFactory.getLogger(CacheAspect.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private final Integer DEFAULT_ORDER = 100;
 	private Integer order;

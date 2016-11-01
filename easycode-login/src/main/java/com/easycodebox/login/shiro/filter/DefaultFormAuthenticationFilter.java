@@ -21,7 +21,7 @@ import com.easycodebox.common.web.callback.Callbacks;
  */
 public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
 	
-	private static final Logger log = LoggerFactory.getLogger(DefaultFormAuthenticationFilter.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Override
 	protected boolean onAccessDenied(ServletRequest request,

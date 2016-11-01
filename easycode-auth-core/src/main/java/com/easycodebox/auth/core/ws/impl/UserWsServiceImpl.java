@@ -41,7 +41,7 @@ import com.easycodebox.login.ws.bo.UserWsBo;
 @Service("UserWsServer")
 public class UserWsServiceImpl implements UserWsService {
 
-	private static final Logger log = LoggerFactory.getLogger(UserWsServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Resource
 	private UserService userService;

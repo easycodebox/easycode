@@ -38,7 +38,7 @@ public class JavaTemplateDateFormatFactory extends TemplateDateFormatFactory {
     
     static final JavaTemplateDateFormatFactory INSTANCE = new JavaTemplateDateFormatFactory(); 
     
-    private static final Logger log = LoggerFactory.getLogger(JavaTemplateDateFormatFactory.class);
+    private final Logger log = LoggerFactory.getLogger(getClass());
     
     private static final ConcurrentHashMap<CacheKey, DateFormat> GLOBAL_FORMAT_CACHE
             = new ConcurrentHashMap<CacheKey, DateFormat>();

@@ -27,7 +27,7 @@ import org.springframework.webflow.execution.RequestContextHolder;
  *
  */
 public class CustomRegisteredServiceThemeBasedViewResolver extends InternalResourceViewResolver {
-    private static final Logger log = LoggerFactory.getLogger(CustomRegisteredServiceThemeBasedViewResolver.class);
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private static final String DEFAULT_PATH_PREFIX = "/WEB-INF/view/jsp";
     /**
      * add by WangXiaoJin

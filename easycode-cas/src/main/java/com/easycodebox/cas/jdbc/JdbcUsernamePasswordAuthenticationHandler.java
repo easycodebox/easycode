@@ -27,7 +27,7 @@ import com.easycodebox.cas.exception.MultipleUserException;
  */
 public class JdbcUsernamePasswordAuthenticationHandler extends AbstractJdbcUsernamePasswordAuthenticationHandler {
 
-	private static final Logger log = LoggerFactory.getLogger(JdbcUsernamePasswordAuthenticationHandler.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private ClearUserCache clearUserCache;
 	

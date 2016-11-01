@@ -17,7 +17,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class EnumClassFactory implements InitializingBean {
 	
-	private static final Logger log = LoggerFactory.getLogger(EnumClassFactory.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private static Map<String, Class<? extends Enum<?>>> enums = new ConcurrentHashMap<>();
 	

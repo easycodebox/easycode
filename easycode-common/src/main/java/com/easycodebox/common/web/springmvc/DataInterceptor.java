@@ -21,8 +21,7 @@ import com.easycodebox.common.web.CacheHisUris;
  */
 public class DataInterceptor extends HandlerInterceptorAdapter {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(DataInterceptor.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private boolean basePath = true;
 	private final String BASE_PATH_KEY = "basePath";

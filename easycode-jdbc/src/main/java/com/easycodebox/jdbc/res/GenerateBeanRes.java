@@ -42,7 +42,7 @@ import freemarker.template.TemplateException;
  */
 public class GenerateBeanRes {
 	
-	private final Logger log = LoggerFactory.getLogger(GenerateBeanRes.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	/**
 	 * 要生成资源文件的Bean对象所在的路径

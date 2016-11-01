@@ -23,7 +23,7 @@ import com.easycodebox.common.zookeeper.ZkSerializer;
  */
 public class ZkNode<T> implements InitializingBean {
 	
-	private static final Logger log = LoggerFactory.getLogger(ZkNode.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	/**
 	 * 打印load和store的数据

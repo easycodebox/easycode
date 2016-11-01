@@ -16,7 +16,7 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class SenseLoginFilter extends FormAuthenticationFilter {
 
-	private static final Logger log = LoggerFactory.getLogger(SenseLoginFilter.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final String TICKET_PARAMETER = "ticket";
 	
