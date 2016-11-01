@@ -22,6 +22,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 import com.easycodebox.common.freemarker.ConfigurationFactory;
+import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.reflect.ClassUtils;
 import com.easycodebox.common.log.slf4j.Logger;
@@ -56,9 +57,14 @@ public class GenerateBeanRes {
 	private String outputFile;
 	
 	/**
-	 * 生成的R文件package名时，忽略的前缀信息
+	 * 生成的R文件package名时，忽略的前缀信息 。设置了packageName参数时则忽略此参数
 	 */
 	private String[] ignorePrefixes = {"src/main/java/"};
+	
+	/**
+	 * 生成的R文件package名 - 设置后则忽略ignorePrefixes参数，因为ignorePrefixes是用来计算packageName使用的
+	 */
+	private String packageName;
 	
 	private TemplateLoader templateLoader;
 	
@@ -109,15 +115,18 @@ public class GenerateBeanRes {
 				outPutFile.getParentFile().mkdirs();
 			}
 			//设置R文件的package name
-			String basePathOfOutput = new File(Symbol.EMPTY).getCanonicalPath();
-			String packageName = outPutFile.getCanonicalPath().replaceFirst("\\Q" + basePathOfOutput + File.separator + "\\E", Symbol.EMPTY);
-			for (String prefix : ignorePrefixes) {
-				prefix =  FilenameUtils.separatorsToSystem(prefix);
-				if (packageName.startsWith(prefix)) {
-					packageName = packageName.substring(prefix.length());
+			if (StringUtils.isBlank(packageName)) {
+				//如果packageName参数为空则自动计算出R文件的packageName
+				String basePathOfOutput = new File(Symbol.EMPTY).getCanonicalPath();
+				packageName = outPutFile.getCanonicalPath().replaceFirst("\\Q" + basePathOfOutput + File.separator + "\\E", Symbol.EMPTY);
+				for (String prefix : ignorePrefixes) {
+					prefix =  FilenameUtils.separatorsToSystem(prefix);
+					if (packageName.startsWith(prefix)) {
+						packageName = packageName.substring(prefix.length());
+					}
 				}
+				packageName = FilenameUtils.getPathNoEndSeparator(packageName).replaceAll("[\\\\/]", Symbol.PERIOD);
 			}
-			packageName = FilenameUtils.getPathNoEndSeparator(packageName).replaceAll("[\\\\/]", Symbol.PERIOD);
 			root.put("packageName", packageName);
 			
 			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outPutFile),"UTF-8"));
@@ -272,6 +281,14 @@ public class GenerateBeanRes {
 
 	public void setIgnorePrefixes(String[] ignorePrefixes) {
 		this.ignorePrefixes = ignorePrefixes;
+	}
+
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
 	}
 
 	public TemplateLoader getTemplateLoader() {

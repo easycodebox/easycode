@@ -267,5 +267,41 @@ public class R {
 	
 	}
 	
+	public static class UserFullBo {
+	
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.bo.user.UserFullBo.class;
+		public static final Property 
+			roleNames = instance("roleNames", entity),
+			roleIds = instance("roleIds", entity),
+			operations = instance("operations", entity),
+			menus = instance("menus", entity),
+			id = instance("id", entity),
+			groupId = instance("groupId", entity),
+			userNo = instance("userNo", entity),
+			username = instance("username", entity),
+			nickname = instance("nickname", entity),
+			password = instance("password", entity),
+			realname = instance("realname", entity),
+			status = instance("status", entity),
+			deleted = instance("deleted", entity),
+			isSuperAdmin = instance("isSuperAdmin", entity),
+			pic = instance("pic", entity),
+			sort = instance("sort", entity),
+			gender = instance("gender", entity),
+			email = instance("email", entity),
+			mobile = instance("mobile", entity),
+			loginFail = instance("loginFail", entity),
+			group = instance("group", entity),
+			userRoles = instance("userRoles", entity),
+			groupName = instance("groupName", entity),
+			creator = instance("creator", entity),
+			createTime = instance("createTime", entity),
+			modifier = instance("modifier", entity),
+			modifyTime = instance("modifyTime", entity),
+			creatorName = instance("creatorName", entity),
+			modifierName = instance("modifierName", entity);
+	
+	}
+	
 	
 }
