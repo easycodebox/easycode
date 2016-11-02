@@ -7,7 +7,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:ws-client.xml,
-			classpath:spring-shiro.xml,
+			classpath:shiro.xml,
 			classpath:core.xml
         </param-value>
 	</context-param>

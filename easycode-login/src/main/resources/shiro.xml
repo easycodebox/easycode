@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<!-- 配置shiroFilter的filterChainDefinitions属性文件 -->
-	<import resource="shiro-filterChain.xml"/>
+	<import resource="shiro-custom.xml"/>
 	
 	<!-- 操作SecurityInfo -->
 	<bean id="securityInfoHandler" class="com.easycodebox.login.shiro.ShiroSecurityInfoHandler" />
@@ -97,7 +97,7 @@
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager"
 		p:sessionManager-ref="sessionManager"
 		p:cacheManager-ref="securityCacheManager"
-		p:realm-ref="casRealm"
+		p:realms="#{getObject('realms')?:{casRealm}}"
 		p:subjectFactory-ref="casSubjectFactory" />
 
 	<!-- ======================================================================================= -->
