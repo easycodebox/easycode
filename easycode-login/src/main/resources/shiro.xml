@@ -97,9 +97,9 @@
 		p:permissionAttributeNames="operations" />
 	
 	<!-- 多个realm时必须所有的realm都验证通过 -->
-	<bean id="authenticationStrategy" class="org.apache.shiro.authc.pam.AllSuccessfulStrategy" />
+	<bean id="allSuccessfulStrategy" class="org.apache.shiro.authc.pam.AllSuccessfulStrategy" />
 	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator"
-		p:authenticationStrategy-ref="authenticationStrategy" />
+		p:authenticationStrategy="#{getObject('authenticationStrategy')?:allSuccessfulStrategy}" />
 	
 	<!-- 如果要实现cas的remember me的功能，需要用到下面这个bean，并设置到securityManager的subjectFactory中 -->
 	<bean id="casSubjectFactory" class="org.apache.shiro.cas.CasSubjectFactory" />
