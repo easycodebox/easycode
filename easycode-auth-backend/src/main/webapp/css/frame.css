@@ -1,3 +1,14 @@
+/*============ 重写AdminLTE.css - 解决刷新页面时底部空白问题  ==============*/
+html, body {
+	height: 100%;
+}
+.wrapper {
+	display: flex;
+	flex-direction: column;
+}
+.content-wrapper {
+	flex-grow: 1;
+}
 /*============ popover 调整背景色  ==============*/
 .popover.blue-popover {
   background-color: #3c8dbc;
