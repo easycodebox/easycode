@@ -116,7 +116,7 @@
 		</property>
 	</bean>
 
-	<bean id="annotatedConfig" class="com.easycodebox.jdbc.config.ConfigPojoBean"
+	<bean id="annotatedConfig" class="com.easycodebox.jdbc.config.ConfigEntityBean"
 		lazy-init="false" p:packagesToScan="com.easycodebox.auth.model.entity" />
 
 	<!-- 数据源配置 -->

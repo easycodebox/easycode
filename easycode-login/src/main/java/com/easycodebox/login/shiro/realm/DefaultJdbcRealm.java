@@ -1,7 +1,5 @@
 package com.easycodebox.login.shiro.realm;
 
-import java.util.Map;
-
 import javax.sql.DataSource;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,6 +14,7 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.ErrorContext;
@@ -33,6 +32,7 @@ public class DefaultJdbcRealm extends JdbcRealm {
 	
 	private JdbcTemplate jdbcTemplate;
 	private String authFailMsg;
+	private RowMapper<?> rowMapper;
 	
 	public DefaultJdbcRealm() {
 		super();
@@ -48,8 +48,13 @@ public class DefaultJdbcRealm extends JdbcRealm {
 		String userId = (String)casToken.getPrincipal();
         try {
         	
-        	Map<String, Object> user = getJdbcTemplate().queryForMap(this.authenticationQuery, userId);
-
+        	Object user = null;
+        	if (rowMapper != null) {
+        		user = getJdbcTemplate().queryForObject(authenticationQuery, rowMapper, userId);
+			} else {
+				user = getJdbcTemplate().queryForMap(authenticationQuery, userId);
+			}
+        	
             PrincipalCollection principalCollection = new SimplePrincipalCollection(user, getName());
             return new SimpleAuthenticationInfo(principalCollection, (String)casToken.getCredentials());
             
@@ -99,5 +104,13 @@ public class DefaultJdbcRealm extends JdbcRealm {
 	public void setAuthFailMsg(String authFailMsg) {
 		this.authFailMsg = authFailMsg;
 	}
-	
+
+	public RowMapper<?> getRowMapper() {
+		return rowMapper;
+	}
+
+	public void setRowMapper(RowMapper<?> rowMapper) {
+		this.rowMapper = rowMapper;
+	}
+
 }

@@ -12,7 +12,7 @@ import com.easycodebox.common.file.Resources;
  * @author WangXiaoJin
  * 
  */
-public class ConfigPojoBean implements InitializingBean {
+public class ConfigEntityBean implements InitializingBean {
 
 	private Class<?>[] annotatedClasses;
 	private String[] packagesToScan;
