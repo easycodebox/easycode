@@ -1,7 +1,6 @@
 package com.easycodebox.cas.jdbc;
 
 import java.security.GeneralSecurityException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.security.auth.login.AccountNotFoundException;
@@ -64,10 +63,8 @@ public class JdbcUsernamePasswordAuthenticationHandler extends AbstractJdbcUsern
 								log.error("清除user(" + id + ")缓存失败！", e);
 							}
             			}
-            			Map<String, Object> attributes = new HashMap<String, Object>(1);
-            			attributes.put("id", id);
             			return createHandlerResult(credential, 
-            					this.principalFactory.createPrincipal(username, attributes), null);
+            					this.principalFactory.createPrincipal(id, user), null);
             		}else if(status == 1) {
             			throw new AccountDisabledException("此用户已被禁用  : " + username);
             		}

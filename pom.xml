@@ -61,6 +61,7 @@
 		<jdk.version>1.7</jdk.version>
 		<junit.version>4.10</junit.version>
 		<shiro.version>1.2.6</shiro.version>
+		<cas.client.version>3.4.1</cas.client.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
@@ -431,6 +432,10 @@
 						<groupId>commons-logging</groupId>
 						<artifactId>commons-logging</artifactId>
 					</exclusion>
+					<exclusion>
+						<groupId>org.jasig.cas.client</groupId>
+			    		<artifactId>cas-client-core</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 			<dependency>
@@ -448,6 +453,12 @@
 				<groupId>org.apache.shiro</groupId>
 				<artifactId>shiro-spring</artifactId>
 				<version>${shiro.version}</version>
+			</dependency>
+			<!-- cas-client -->
+			<dependency>
+			    <groupId>org.jasig.cas.client</groupId>
+			    <artifactId>cas-client-core</artifactId>
+			    <version>${cas.client.version}</version>
 			</dependency>
 			<!-- shiro end -->
 			

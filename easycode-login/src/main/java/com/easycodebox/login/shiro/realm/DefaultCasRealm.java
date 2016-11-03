@@ -17,7 +17,9 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.cas.CasAuthenticationException;
 import org.apache.shiro.cas.CasRealm;
+import org.apache.shiro.cas.CasToken;
 import org.apache.shiro.session.Session;
+import org.jasig.cas.client.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.easycodebox.auth.model.bo.user.UserFullBo;
@@ -39,10 +41,6 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 
 	//private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	public static final String PRINCIPAL_USER_ID_KEY = "id";
-	public static final String PRINCIPAL_ROLES_KEY = "roles";
-	public static final String PRINCIPAL_PERMISSIONS_KEY = "operations";
-	
 	@Resource
 	private UserWsService userWsService;
 	@Resource
@@ -58,8 +56,13 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	 */
 	private boolean globalPermissionMode;
 	
+	/**
+	 * 因为{@link CasRealm}的ticketValidator属性没有set方法，所以重写此属性增加setTicketValidator方法
+	 */
+	private TicketValidator ticketValidator;
+	
 	public DefaultCasRealm() {
-		setName("defaultCasRealm");
+		super();
 	}
 
 	@Override
@@ -92,6 +95,14 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
     }
 	
 	/**
+	 * 重载createTicketValidator方法是为了可以自定义TicketValidator
+	 */
+	@Override
+	protected TicketValidator createTicketValidator() {
+		return ticketValidator == null ? super.createTicketValidator() : ticketValidator;
+    }
+	
+	/**
 	 * 重写认证 Authenticates a user and retrieves its information.
 	 * @param token the authentication token
 	 * @throws AuthenticationException  if there is an error during authentication.
@@ -100,24 +111,25 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	@SuppressWarnings("unchecked")
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken token) throws AuthenticationException {
-
+		
 		try {
 			SimpleAuthenticationInfo info = (SimpleAuthenticationInfo)super.doGetAuthenticationInfo(token);
 			if (info == null) {
 				return null;
 			}
-			Map<String, String> attributes = (Map<String, String>)info.getPrincipals().asList().get(1);
+			CasToken casToken = (CasToken) token;
+			
+			Map<String, Object> attributes = (Map<String, Object>)info.getPrincipals().asList().get(1);
 			
 			//后期考虑直接从CAS返回角色、权限等信息是否可行
-	        String userId = attributes.get(PRINCIPAL_USER_ID_KEY);
-	        UserFullBo user = userWsService.loginSuc(userId, projectNo, validProjectAuth);
+	        UserFullBo user = userWsService.loginSuc((String)casToken.getPrincipal(), projectNo, validProjectAuth);
 	        //设置角色
 	        if (user.getRoleNames() != null) {
-	        	attributes.put(PRINCIPAL_ROLES_KEY, user.getRoleNames());
+	        	attributes.put(getRoleAttributeNames(), user.getRoleNames());
 			}
 	        //设置权限
 	        if (user.getOperations() != null) {
-	        	attributes.put(PRINCIPAL_PERMISSIONS_KEY, user.getOperations());
+	        	attributes.put(getPermissionAttributeNames(), user.getOperations());
 			}
 	        //获取当前Session
 	        Session session = SecurityUtils.getSubject().getSession(false);
@@ -160,6 +172,14 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 
 	public void setGlobalPermissionMode(boolean globalPermissionMode) {
 		this.globalPermissionMode = globalPermissionMode;
+	}
+
+	public TicketValidator getTicketValidator() {
+		return ticketValidator;
+	}
+
+	public void setTicketValidator(TicketValidator ticketValidator) {
+		this.ticketValidator = ticketValidator;
 	}
 	
 }

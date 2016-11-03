@@ -13,11 +13,10 @@
   },
   "logoutType" : "BACK_CHANNEL",
   "attributeReleasePolicy" : {
-    "@class" : "org.jasig.cas.services.ReturnAllowedAttributeReleasePolicy",
+    "@class" : "org.jasig.cas.services.ReturnAllAttributeReleasePolicy",
     "principalAttributesRepository" : {
       "@class" : "org.jasig.cas.authentication.principal.DefaultPrincipalAttributesRepository"
     },
-    "allowedAttributes" : [ "java.util.ArrayList", [ "id"] ],
     "authorizedToReleaseCredentialPassword" : false,
     "authorizedToReleaseProxyGrantingTicket" : false
   },

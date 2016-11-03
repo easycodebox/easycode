@@ -13,14 +13,11 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.cas.CasFilter;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
-import org.springframework.beans.BeansException;
 
-import com.easycodebox.common.Weave;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.spring.BeanFactory;
 
 /**
  * @author WangXiaoJin
@@ -30,9 +27,6 @@ public class DefaultCasFilter extends CasFilter {
 	
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	private String weaveName;
-	private Weave weave;
-
 	private String failureUrl;
 	private String reloginUrl;
 	private String logoutUrl;
@@ -55,14 +49,6 @@ public class DefaultCasFilter extends CasFilter {
 		}
 	}
 
-	@Override
-	protected boolean onLoginSuccess(AuthenticationToken token,
-			Subject subject, ServletRequest request, ServletResponse response)
-			throws Exception {
-		loginSucWeave(subject, request, response);
-		return super.onLoginSuccess(token, subject, request, response);
-	}
-	
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	protected boolean onLoginFailure(AuthenticationToken token, Exception exception, ServletRequest request,
                                      ServletResponse response) {
@@ -98,26 +84,6 @@ public class DefaultCasFilter extends CasFilter {
         return false;
     }
 	
-	private void loginSucWeave(Subject subject, ServletRequest request, ServletResponse response) {
-		if(weave == null && weaveName != null) {
-			Object weave = null;
-			try {
-				weave = BeanFactory.getBean(weaveName);
-			} catch (BeansException e) {
-				
-			}
-			this.weave = weave == null ? null : (Weave)weave;
-		}
-		if(weave != null) {
-			//此处不需要捕获异常
-			weave.after(subject, request, response);
-		}
-	}
-
-	public void setWeaveName(String weaveName) {
-		this.weaveName = weaveName;
-	}
-
 	public void setFailureUrl(String failureUrl) {
 		this.failureUrl = failureUrl;
 	}

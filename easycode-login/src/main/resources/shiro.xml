@@ -21,8 +21,7 @@
 	<bean id="casFilter" class="com.easycodebox.login.shiro.filter.DefaultCasFilter" 
 		p:failureUrl="${failure.url}"
 		p:reloginUrl="${cas.login.full}&amp;msg={0}"
-		p:logoutUrl="${cas.logout}"
-		p:weaveName="loginSucWeave" />
+		p:logoutUrl="${cas.logout}" />
 		
 	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter" 
 		p:redirectUrl="${cas.logout}?service=${cas.logout.callback}" />
@@ -80,17 +79,28 @@
 		p:cacheManager-ref="nativeEhcacheManager" />
 	<!-- String类型转换成Permission类型 -->
 	<bean id="urlWildcardPermissionResolver" class="com.easycodebox.login.shiro.permission.UrlWildcardPermissionResolver" />
+	<bean id="ticketValidator" class="org.jasig.cas.client.validation.Cas30ServiceTicketValidator"
+		p:encoding="UTF-8" >
+		<constructor-arg index="0" value="${cas.url}" />
+	</bean>
 	<!-- 
 		casService: 客户端的回调地址设置，必须和下面的shiro-cas过滤器拦截的地址一致
 	 -->
 	<bean id="casRealm" class="com.easycodebox.login.shiro.realm.DefaultCasRealm"
 		p:permissionResolver-ref="urlWildcardPermissionResolver"
+		p:ticketValidator-ref="ticketValidator"
+		p:name="cas"
 		p:globalPermissionMode="true"
 		p:casServerUrlPrefix="${cas.url}"
 		p:casService="${cas.login.callback}"
 		p:roleAttributeNames="roles"
 		p:permissionAttributeNames="operations" />
-		
+	
+	<!-- 多个realm时必须所有的realm都验证通过 -->
+	<bean id="authenticationStrategy" class="org.apache.shiro.authc.pam.AllSuccessfulStrategy" />
+	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator"
+		p:authenticationStrategy-ref="authenticationStrategy" />
+	
 	<!-- 如果要实现cas的remember me的功能，需要用到下面这个bean，并设置到securityManager的subjectFactory中 -->
 	<bean id="casSubjectFactory" class="org.apache.shiro.cas.CasSubjectFactory" />
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
@@ -98,6 +108,7 @@
 		p:sessionManager-ref="sessionManager"
 		p:cacheManager-ref="securityCacheManager"
 		p:realms="#{getObject('realms')?:{casRealm}}"
+		p:authenticator-ref="authenticator"
 		p:subjectFactory-ref="casSubjectFactory" />
 
 	<!-- ======================================================================================= -->
@@ -109,16 +120,10 @@
 	
 	<!-- ======================================================================================= -->
     <!-- 
-    	<bean name="ticketValidationFilter" class="org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter"
+    	<bean name="ticketValidationFilter" class="org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter"
     		p:redirectAfterValidation="true"
-    		p:serverName="${cas.login.callback}">
-	        <property name="ticketValidator">
-	            <bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
-	                <constructor-arg index="0" value="${cas.url}" />
-	                <property name="encoding" value="UTF-8" />
-	            </bean>
-	        </property>
-	    </bean> 
-   	-->
+    		p:serverName="${cas.login.callback}"
+    		p:ticketValidator-ref="ticketValidator" />
+   	 -->
 
 </beans>
