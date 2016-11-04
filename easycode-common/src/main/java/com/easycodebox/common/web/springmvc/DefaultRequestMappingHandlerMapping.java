@@ -51,9 +51,9 @@ public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMa
 	 */
 	private AtomicInteger counter = new AtomicInteger();
 	/**
-	 * counter计数器最大值
+	 * counter计数器最大值 - 缓存没有对应handler的url最大个数
 	 */
-	private final int maxCount = 512;
+	private int noHandlerCacheMaxSize = 1024;
 
 	@Override
 	protected HandlerMethod lookupHandlerMethod(String lookupPath, 
@@ -79,13 +79,13 @@ public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMa
 					methodName = null;
 			
 			if(paths.length == 0 || paths.length > 2) {
-				addNoHandlerCache(lookupPath);
+				//当path不符合自动搜Controller条件时，不需要缓存此lookupPath，减少noHandlerCache频繁存储。 - 所以注释掉以下代码。
+				//addNoHandlerCache(lookupPath);
 				return null;
-			}
-			else if(paths.length == 1) {
+			} else if(paths.length == 1) {
 				className = getControllerName(paths[0]);
 				methodName = defaultMethod;
-			}else if(paths.length == 2) {
+			} else if(paths.length == 2) {
 				className = getControllerName(paths[0]);
 				methodName = paths[1];
 			}
@@ -146,7 +146,7 @@ public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMa
 		boolean suc = noHandlerCache.add(lookupPath);
 		if(suc) {
 			int count = counter.incrementAndGet();
-			if(count > maxCount) {
+			if(count > noHandlerCacheMaxSize) {
 				String val = noHandlerCache.pollFirst();
 				if(val != null) {
 					counter.decrementAndGet();
@@ -239,6 +239,14 @@ public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMa
 
 	public void setExcludePatterns(String[] excludePatterns) {
 		this.excludePatterns = excludePatterns;
+	}
+
+	public int getNoHandlerCacheMaxSize() {
+		return noHandlerCacheMaxSize;
+	}
+
+	public void setNoHandlerCacheMaxSize(int noHandlerCacheMaxSize) {
+		this.noHandlerCacheMaxSize = noHandlerCacheMaxSize;
 	}
 	
 }
