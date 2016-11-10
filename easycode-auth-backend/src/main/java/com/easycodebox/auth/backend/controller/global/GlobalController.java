@@ -44,9 +44,4 @@ public class GlobalController extends BaseController {
 		view.render(null, request, response);
 	}
 	
-	@RequestMapping("/unauthorized")
-	public String unauthorized() throws Exception {
-		return "unauthorized";
-	}
-	
 }
