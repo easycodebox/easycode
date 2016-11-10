@@ -106,7 +106,6 @@
             <groupId>jaxen</groupId>
             <artifactId>jaxen</artifactId>
         </dependency>
-		
 		<!-- ehcache -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>

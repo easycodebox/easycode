@@ -9,6 +9,12 @@ html, body {
 .content-wrapper {
 	flex-grow: 1;
 }
+.main-header {
+	z-index: 820;
+}
+.content-wrapper, .right-side {
+	z-index: auto;
+}
 /*============ popover 调整背景色  ==============*/
 .popover.blue-popover {
   background-color: #3c8dbc;

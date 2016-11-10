@@ -2,180 +2,168 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-[#include "/WEB-INF/common/meta.html"/]
-<title>EasyCode | 主键生成器</title>
-[#include "/WEB-INF/common/styles.html"/]
+<title>主键生成器</title>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
+<body>
 
-	[#include "/WEB-INF/common/header.html"/]
-		
-	[#include "/WEB-INF/common/left.html"/]
-	
-	<div class="content-wrapper">
-		<section class="content-header">
-			<h1>
-				主键生成器 <small>主键生成器</small>
-			</h1>
-			<ol class="breadcrumb">
-				<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-				<li><a href="#">Tables</a></li>
-				<li class="active">Simple</li>
-			</ol>
-		</section>
+<section class="content-header">
+	<h1>
+		主键生成器 <small>主键生成器</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Tables</a></li>
+		<li class="active">Simple</li>
+	</ol>
+</section>
 
-		<section class="content">
-			<div class="row">
-				<div class="col-xs-12">
-					
-					<!-- 查询区域 -->
-					<div class="box">
-						<div class="box-body">
-						
-							<form id="query-form" class="form-inline search words5">
-								<div class="form-group">
-									<label>生成策略：</label>
-									[@e.selectEnum cssClass="form-control" name="generatorType" enumName="GeneratorEnum" 
-											headerKey="" headerValue="--请选择--" /]
-								</div>
-								
-								<div class="form-group">
-									<label>是否循环：</label>
-									[@e.radioEnum labelClass="radio-inline" name="isCycle" enumName="YesNo" /]
-								</div>
-								
-								<div class="form-btns">
-									<button type="button" class="toggle-icon hidden">展开/收起</button>
-									<button type="submit" class="btn btn-default">查询</button>
-			                       	<button type="reset" class="reset-btn btn btn-default">清空</button>
-								</div>
-							</form>
-						
+<section class="content">
+	<div class="row">
+		<div class="col-xs-12">
+			
+			<!-- 查询区域 -->
+			<div class="box">
+				<div class="box-body">
+				
+					<form id="query-form" class="form-inline search words5">
+						<div class="form-group">
+							<label>生成策略：</label>
+							[@e.selectEnum cssClass="form-control" name="generatorType" enumName="GeneratorEnum" 
+									headerKey="" headerValue="--请选择--" /]
 						</div>
+						
+						<div class="form-group">
+							<label>是否循环：</label>
+							[@e.radioEnum labelClass="radio-inline" name="isCycle" enumName="YesNo" /]
+						</div>
+						
+						<div class="form-btns">
+							<button type="button" class="toggle-icon hidden">展开/收起</button>
+							<button type="submit" class="btn btn-default">查询</button>
+	                       	<button type="reset" class="reset-btn btn btn-default">清空</button>
+						</div>
+					</form>
+				
+				</div>
+			</div>
+			
+			<!-- 数据区域 -->
+			<div class="box">
+				<div class="box-body">
+					
+					<div id="toolbar" class="btn-group">
 					</div>
-					
-					<!-- 数据区域 -->
-					<div class="box">
-						<div class="box-body">
-							
-							<div id="toolbar" class="btn-group">
-							</div>
-							<table id="data-table" data-toggle="table" 
-									data-toolbar="#toolbar"
-									data-query-form="query-form"
-									data-query-params="gb.table.params"
-									data-id-field="generatorType.className"
-									data-unique-id="generatorType.className"
-									data-select-item-name="generatorTypes"
-									data-url="/generator/list.json">
-								<thead>
-									<tr>
-										<th data-checkbox="true" data-click-to-select="true"></th>
-										<th data-formatter="gb.table.fmtOrder" data-click-to-select="true">序号</th>
-										<th data-field="generatorType" data-formatter="gb.table.fmtEnum">生成策略</th>
-										<th data-field="initialVal">初始值</th>
-										<th data-field="currentVal">当前值</th>
-										<th data-field="maxVal">最大值</th>
-										<th data-field="fetchSize">批次容量</th>
-										<th data-field="increment">增长值</th>
-										<th data-field="isCycle" data-formatter="gb.table.fmtIsCycle">是否循环</th>
-										<th data-field="creatorName">创建人</th>
-										<th data-field="createTime" data-formatter="gb.table.fmtDate">创建时间</th>
-										<th data-formatter="gb.table.fmtOps">操作</th>
-									</tr>
-								</thead>
-							</table>
-							<div id="table-ops" class="hidden">
-								[@shiro.hasPermission name="generator/load"]
-									<a class="btn btn-xs btn-default loadBtn" data-generator-type="{generatorType.className}" title="详情" href="#" role="button">
-										<i class="fa fa-reorder"></i>
-									</a>
-								[/@shiro.hasPermission]
-								[@shiro.hasPermission name="generator/update"]
-									<a class="btn btn-xs btn-default updBtn" data-generator-type="{generatorType.className}" title="修改" href="#" role="button">
-										<i class="fa fa-edit"></i>
-									</a>
-								[/@shiro.hasPermission]
-							</div>
-							
-						</div>
+					<table id="data-table" data-toggle="table" 
+							data-toolbar="#toolbar"
+							data-query-form="query-form"
+							data-query-params="gb.table.params"
+							data-id-field="generatorType.className"
+							data-unique-id="generatorType.className"
+							data-select-item-name="generatorTypes"
+							data-url="/generator/list.json">
+						<thead>
+							<tr>
+								<th data-checkbox="true" data-click-to-select="true"></th>
+								<th data-formatter="gb.table.fmtOrder" data-click-to-select="true">序号</th>
+								<th data-field="generatorType" data-formatter="gb.table.fmtEnum">生成策略</th>
+								<th data-field="initialVal">初始值</th>
+								<th data-field="currentVal">当前值</th>
+								<th data-field="maxVal">最大值</th>
+								<th data-field="fetchSize">批次容量</th>
+								<th data-field="increment">增长值</th>
+								<th data-field="isCycle" data-formatter="gb.table.fmtIsCycle">是否循环</th>
+								<th data-field="creatorName">创建人</th>
+								<th data-field="createTime" data-formatter="gb.table.fmtDate">创建时间</th>
+								<th data-formatter="gb.table.fmtOps">操作</th>
+							</tr>
+						</thead>
+					</table>
+					<div id="table-ops" class="hidden">
+						[@shiro.hasPermission name="generator/load"]
+							<a class="btn btn-xs btn-default loadBtn" data-generator-type="{generatorType.className}" title="详情" href="#" role="button">
+								<i class="fa fa-reorder"></i>
+							</a>
+						[/@shiro.hasPermission]
+						[@shiro.hasPermission name="generator/update"]
+							<a class="btn btn-xs btn-default updBtn" data-generator-type="{generatorType.className}" title="修改" href="#" role="button">
+								<i class="fa fa-edit"></i>
+							</a>
+						[/@shiro.hasPermission]
 					</div>
 					
 				</div>
 			</div>
-		</section>
-	</div>
-	
-	[#include "/WEB-INF/common/footer.html"/]
-	
-	[#include "/WEB-INF/common/control-sidebar.html"/]
-	
-	<!-- 模板页 -->
-	<div id="tmpls">
-		[#include "/WEB-INF/pages/sys/generator_load.html"/]
-		
-		<!-- 修改 -->
-		<form id="updDialog" class="form-validate none" action="/generator/update.json" data-suc="更新主键生成器成功" data-fail="更新主键生成器失败">
-		
-			<input type="hidden" name="generatorType" v-model="generator.generatorType.className" />
 			
-			<table class="table-edit">
-				<tr>
-					<th>
-						<label class="required">初始值：</label>
-					</th>
-					<td>
-						<input type="text" name="initialVal" class="form-control" v-model="generator.initialVal" validator="alphanum,maxlength[32],required,gb.initialVal" maxlength="32" />
-					</td>
-					<th>
-						<label class="required">当前值：</label>
-					</th>
-					<td>
-						<input type="hidden" class="oldCurVal" v-model="generator.currentVal" />
-						<input type="text" name="currentVal" class="form-control" v-model="generator.currentVal" validator="alphanum,maxlength[32],required,gb.curVal" maxlength="32" />
-					</td>
-				</tr>
-				
-				<tr>
-					<th>
-						<label>最大值：</label>
-					</th>
-					<td>
-						<input type="text" name="maxVal" class="form-control" v-model="generator.maxVal" validator="alphanum,maxlength[32],gb.maxVal" maxlength="32" />
-					</td>
-					<th>
-						<label class="required">批次容量：</label>
-					</th>
-					<td>
-						<input type="text" name="fetchSize" class="form-control" v-model="generator.fetchSize" validator="num,max[999999999],required" maxlength="9" />
-					</td>
-				</tr>
-				
-				<tr>
-					<th>
-						<label class="required">增长值：</label>
-					</th>
-					<td>
-						<input type="text" name="increment" class="form-control" v-model="generator.increment" validator="num,max[999999999],required" maxlength="9" />
-					</td>
-					<th>
-						<label class="required">是否循环：</label>
-					</th>
-					<td>
-						[@e.radioEnum name="isCycle" enumName="YesNo"
-								tagAttr='{
-									last: "validator=\'minlength[1],required\' validator-msg=\'请选择是否循环\'",
-									all: "v-model=\'generator.isCycle.className\'"
-								}'/]
-					</td>
-				</tr>
-			</table>
-		</form>
+		</div>
 	</div>
+</section>
+	
+<!-- 模板页 -->
+<div id="tmpls">
+	[#include "/WEB-INF/pages/sys/generator_load.html"/]
+	
+	<!-- 修改 -->
+	<form id="updDialog" class="form-validate none" action="/generator/update.json" data-suc="更新主键生成器成功" data-fail="更新主键生成器失败">
+	
+		<input type="hidden" name="generatorType" v-model="generator.generatorType.className" />
+		
+		<table class="table-edit">
+			<tr>
+				<th>
+					<label class="required">初始值：</label>
+				</th>
+				<td>
+					<input type="text" name="initialVal" class="form-control" v-model="generator.initialVal" validator="alphanum,maxlength[32],required,gb.initialVal" maxlength="32" />
+				</td>
+				<th>
+					<label class="required">当前值：</label>
+				</th>
+				<td>
+					<input type="hidden" class="oldCurVal" v-model="generator.currentVal" />
+					<input type="text" name="currentVal" class="form-control" v-model="generator.currentVal" validator="alphanum,maxlength[32],required,gb.curVal" maxlength="32" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>
+					<label>最大值：</label>
+				</th>
+				<td>
+					<input type="text" name="maxVal" class="form-control" v-model="generator.maxVal" validator="alphanum,maxlength[32],gb.maxVal" maxlength="32" />
+				</td>
+				<th>
+					<label class="required">批次容量：</label>
+				</th>
+				<td>
+					<input type="text" name="fetchSize" class="form-control" v-model="generator.fetchSize" validator="num,max[999999999],required" maxlength="9" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>
+					<label class="required">增长值：</label>
+				</th>
+				<td>
+					<input type="text" name="increment" class="form-control" v-model="generator.increment" validator="num,max[999999999],required" maxlength="9" />
+				</td>
+				<th>
+					<label class="required">是否循环：</label>
+				</th>
+				<td>
+					[@e.radioEnum name="isCycle" enumName="YesNo"
+							tagAttr='{
+								last: "validator=\'minlength[1],required\' validator-msg=\'请选择是否循环\'",
+								all: "v-model=\'generator.isCycle.className\'"
+							}'/]
+				</td>
+			</tr>
+		</table>
+	</form>
 </div>
 	
-[#include "/WEB-INF/common/scripts.html"/]
-[@e.script src="/js/??sys/generator.js" /]
+<inner-js>
+	[@e.script src="/js/??sys/generator.js" /]
+</inner-js>
+
 </body>
 </html>

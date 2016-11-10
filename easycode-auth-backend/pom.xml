@@ -18,10 +18,6 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>easycode-auth-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>easycode-login</artifactId>
-		</dependency>
 		<!-- 第三方jar包 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -35,7 +31,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
-		
+		<!-- Sitemesh -->
+		<dependency>
+			<groupId>org.sitemesh</groupId>
+			<artifactId>sitemesh</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

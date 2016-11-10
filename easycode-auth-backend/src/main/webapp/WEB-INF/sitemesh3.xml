@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+
+	<!-- Map default decorator. This shall be applied to all paths if no other paths match. -->
+	<mapping decorator="/decorator" />
+
+	<!-- Exclude path from decoration. -->
+	<mapping path="/css/*" exclue="true" />
+	<mapping path="/error/*" exclue="true" />
+	<mapping path="/imgs/*" exclue="true" />
+	<mapping path="/js/*" exclue="true" />
+
+	<content-processor>
+		<tag-rule-bundle class="com.easycodebox.common.sitemesh3.InnerJsTagRuleBundle" />
+	</content-processor>
+	
+</sitemesh>

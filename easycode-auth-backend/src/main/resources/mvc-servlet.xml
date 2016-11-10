@@ -37,6 +37,8 @@
 		</property>
 	</bean>
 	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver" />
+	
 	<!-- JSP配置 -->
 	<!-- <bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"

@@ -239,6 +239,12 @@
 				<artifactId>spring-batch-admin-resources</artifactId>
 				<version>${spring.batch.admin.version}</version>
 			</dependency>
+			<!-- Sitemesh -->
+			<dependency>
+				<groupId>org.sitemesh</groupId>
+				<artifactId>sitemesh</artifactId>
+				<version>3.0.1</version>
+			</dependency>
 			<!-- quartz -->
 			<dependency>
 				<groupId>org.quartz-scheduler</groupId>
@@ -292,6 +298,11 @@
 				<groupId>commons-beanutils</groupId>
 				<artifactId>commons-beanutils</artifactId>
 				<version>1.9.2</version>
+			</dependency>
+			<dependency>
+			    <groupId>commons-collections</groupId>
+			    <artifactId>commons-collections</artifactId>
+			    <version>3.2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-codec</groupId>
