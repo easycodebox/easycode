@@ -221,6 +221,120 @@ window.gb = {
 	            }
 	        });
 		});
+	},
+	/**
+	 * 子页面框架初始化
+	 */
+	subframe: function() {
+		/************  搜索区域  *****************/
+		//初始化搜索区域
+		(function() {
+			var dowm = 'glyphicon-chevron-down',
+	        	up = 'glyphicon-chevron-up';
+			//当宽度改变时，重置表单项的显示/影藏状态
+			window.gb.resetFormGroupStatus = function($form) {
+				var $form = $form || $(".search"),
+					hidable = 'hidable';
+				//显示小标签，为了计算宽度时包含它
+				$form.children(".form-btns").children(".toggle-icon").show();
+				$form.has(".toggle-icon").each(function() {
+					var $this = $(this),
+						$formGroups = $this.children(".form-group"),
+						$formBtns = $this.children(".form-btns"),
+						$funBtns = $this.children(".fun-btns"),
+						usableWidth = $form.width() - $formBtns.outerWidth(true) - $funBtns.outerWidth(true),
+						hasHide = false,
+						sum = 0;
+					for (var i = 0; i < $formGroups.length; i++) {
+						var $fg = $($formGroups[i]);
+						if (!hasHide) {
+							sum += $fg.outerWidth(true);
+							if (sum > usableWidth) {
+								hasHide = true;
+								$fg.before($formBtns).addClass(hidable).hide();
+								if ($funBtns.length) {
+									$fg.before($funBtns);
+								}
+							} else {
+								$fg.removeClass(hidable).show();
+							}
+						} else {
+							$fg.addClass(hidable).hide();
+						}
+					}
+					if (!hasHide) {
+						$formBtns.children(".toggle-icon").hide();
+					}
+				});
+			};
+			
+			//当浏览器窗口改变时，重置搜索区域选项显示/影藏状态
+	        if(!utils.bindedEvent($(window), "resize", "frame")) {
+	        	$(window).off(".frame").on("resize.frame", utils.debounce(gb.resetFormGroupStatus));
+	        }
+	        //当左侧菜单项展开/收缩时，重置搜索区域选项显示/影藏状态【AdminLTE.js触发此事件】
+	        $("body").off(".pushMenu").on("expanded.pushMenu collapsed.pushMenu", function() {
+	        	//因为左侧菜单显示/影藏有一个滑动效果，所以0.3s后计算执行逻辑
+	        	setTimeout(function() {
+	        		gb.resetFormGroupStatus();
+	        	}, 300);
+	        });
+	        //右侧控制面板中修改页面布局
+	        $("body").off("layout.frame").on("layout.frame", function() {
+	        	//因为左侧菜单显示/影藏有一个滑动效果，所以0.3s后计算执行逻辑
+	        	setTimeout(function() {
+	        		gb.resetFormGroupStatus();
+	        	}, 300);
+	        });
+	        
+			//展开、收起搜索功能区
+	        $(".toggle-icon").each(function() {
+	            var $this = $(this),
+	                $form = $this.closest(".search"),
+	                $content = $('<span class="glyphicon {0} toggle-icon" title="展开" aria-hidden="true"></span>'.format(dowm));
+	            if ($form.length == 0) {
+	                if (console)
+	                    console.error("展开/收起", "功能需要提供.search对象");
+	                return;
+	            }
+	            $this.replaceWith($content);
+	            gb.resetFormGroupStatus($form);
+	            
+	            $content.off(".frame").on("click.frame", function() {
+	                var $this = $(this);
+	                if ($this.hasClass(dowm)) {
+	                    $this.removeClass(dowm).addClass(up).attr("title", "收起");
+	                    $form.children(".hidable").show();
+	                } else {
+	                    $this.removeClass(up).addClass(dowm).attr("title", "展开");
+	                    $form.children(".hidable").hide();
+	                }
+	            });
+	        });
+		})();
+		
+		/************  绑定事件  *****************/
+		(function() {
+	        
+			//清空form表单的数据,如果想不清空指定的对象，则加上class="not-reset"
+			$(".reset-btn").off(".frame").on("click.frame", function() {
+				gb.resetForm($(this).closest("form"));
+				return false;
+			});
+			
+			//绑定表单验证
+			$(".form-validate").bValidator();
+			
+			//绑定搜索区域的查询按钮
+			$(".search").off(".frame").on("submit.frame", function() {
+				var id = $(this).attr("id");
+				if (id) {
+					$("table[data-query-form={}]".format(id)).bootstrapTable("refresh");
+				}
+				return false;
+			});
+			
+		})();
 	}
 };
 /**
@@ -230,6 +344,16 @@ $(function() {
 	
 	/************  左侧菜单  *****************/
 	(function() {
+		//初始化菜单的显示
+		var showStatus = function() {
+			var memus = localStorage[BaseData.menus] ? JSON.parse(localStorage[BaseData.menus]) : {};
+				menuId = memus[BaseData.path];
+			if (menuId) {
+				$(".treeview").removeClass("active");
+				$(".treeview[data-menu-id=" + menuId + "]").parents(".treeview").andSelf().addClass("active");
+			}
+		};
+		showStatus();
 		$(".treeview").off(".frame").on("click.frame", function() {
 			var $this = $(this),
 				url = $this.children("a").attr("href");
@@ -240,13 +364,8 @@ $(function() {
 				memus = localStorage[BaseData.menus] ? JSON.parse(localStorage[BaseData.menus]) : {};
 			memus[BaseData.path] = menuId;
 			localStorage[BaseData.menus] = JSON.stringify(memus);
+			showStatus();
 		});
-		//初始化菜单的显示
-		var memus = localStorage[BaseData.menus] ? JSON.parse(localStorage[BaseData.menus]) : {};
-			menuId = memus[BaseData.path];
-		if (menuId) {
-			$(".treeview[data-menu-id=" + menuId + "]").parents(".treeview").andSelf().addClass("active");
-		}
 	})();
 	
 	/************  右侧面板菜单  *****************/
@@ -333,134 +452,24 @@ $(function() {
 		
 	})($.AdminLTE);
 	
-	/************  搜索区域  *****************/
-	//初始化搜索区域
-	(function() {
-		var dowm = 'glyphicon-chevron-down',
-        	up = 'glyphicon-chevron-up';
-		//当宽度改变时，重置表单项的显示/影藏状态
-		window.gb.resetFormGroupStatus = function($form) {
-			var $form = $form || $(".search"),
-				hidable = 'hidable';
-			//显示小标签，为了计算宽度时包含它
-			$form.children(".form-btns").children(".toggle-icon").show();
-			$form.has(".toggle-icon").each(function() {
-				var $this = $(this),
-					$formGroups = $this.children(".form-group"),
-					$formBtns = $this.children(".form-btns"),
-					$funBtns = $this.children(".fun-btns"),
-					usableWidth = $form.width() - $formBtns.outerWidth(true) - $funBtns.outerWidth(true),
-					hasHide = false,
-					sum = 0;
-				for (var i = 0; i < $formGroups.length; i++) {
-					var $fg = $($formGroups[i]);
-					if (!hasHide) {
-						sum += $fg.outerWidth(true);
-						if (sum > usableWidth) {
-							hasHide = true;
-							$fg.before($formBtns).addClass(hidable).hide();
-							if ($funBtns.length) {
-								$fg.before($funBtns);
-							}
-						} else {
-							$fg.removeClass(hidable).show();
-						}
-					} else {
-						$fg.addClass(hidable).hide();
-					}
-				}
-				if (!hasHide) {
-					$formBtns.children(".toggle-icon").hide();
-				}
-			});
-		};
-		
-		//当浏览器窗口改变时，重置搜索区域选项显示/影藏状态
-        if(!utils.bindedEvent($(window), "resize", "frame")) {
-        	$(window).off(".frame").on("resize.frame", utils.debounce(gb.resetFormGroupStatus));
-        }
-        //当左侧菜单项展开/收缩时，重置搜索区域选项显示/影藏状态【AdminLTE.js触发此事件】
-        $("body").off(".pushMenu").on("expanded.pushMenu collapsed.pushMenu", function() {
-        	//因为左侧菜单显示/影藏有一个滑动效果，所以0.3s后计算执行逻辑
-        	setTimeout(function() {
-        		gb.resetFormGroupStatus();
-        	}, 300);
-        });
-        //右侧控制面板中修改页面布局
-        $("body").off("layout.frame").on("layout.frame", function() {
-        	//因为左侧菜单显示/影藏有一个滑动效果，所以0.3s后计算执行逻辑
-        	setTimeout(function() {
-        		gb.resetFormGroupStatus();
-        	}, 300);
-        });
-        
-		//展开、收起搜索功能区
-        $(".toggle-icon").each(function() {
-            var $this = $(this),
-                $form = $this.closest(".search"),
-                $content = $('<span class="glyphicon {0} toggle-icon" title="展开" aria-hidden="true"></span>'.format(dowm));
-            if ($form.length == 0) {
-                if (console)
-                    console.error("展开/收起", "功能需要提供.search对象");
-                return;
-            }
-            $this.replaceWith($content);
-            gb.resetFormGroupStatus($form);
-            
-            $content.off(".frame").on("click.frame", function() {
-                var $this = $(this);
-                if ($this.hasClass(dowm)) {
-                    $this.removeClass(dowm).addClass(up).attr("title", "收起");
-                    $form.children(".hidable").show();
-                } else {
-                    $this.removeClass(up).addClass(dowm).attr("title", "展开");
-                    $form.children(".hidable").hide();
-                }
-            });
-        });
-	})();
-	
-	/************  绑定事件  *****************/
-	(function() {
-        
-		//清空form表单的数据,如果想不清空指定的对象，则加上class="not-reset"
-		$(".reset-btn").off(".frame").on("click.frame", function() {
-			gb.resetForm($(this).closest("form"));
-			return false;
-		});
-		
-		//修改密码
-		$("#updPwdBtn").off(".frame").on("click.frame", function() {
-			var $btn = $(this),
-				$dialog = $("#updPwdDialog");
-			if($dialog.length) {
-				//重置form表单
-				gb.resetForm($dialog);
+	/************  修改密码  *****************/
+	$("#updPwdBtn").off(".frame").on("click.frame", function() {
+		var $btn = $(this),
+			$dialog = $("#updPwdDialog");
+		if($dialog.length) {
+			//重置form表单
+			gb.resetForm($dialog);
+			gb.show(gb.title($btn), $dialog);
+		}else {
+			$.get("/user/updatePwd.html", function(data) {
+				$("body").append($dialog = $(data));
+				//绑定表单验证
+				$dialog.bValidator();
+				
 				gb.show(gb.title($btn), $dialog);
-			}else {
-				$.get("/user/updatePwd.html", function(data) {
-					$("body").append($dialog = $(data));
-					//绑定表单验证
-					$dialog.bValidator();
-					
-					gb.show(gb.title($btn), $dialog);
-				});
-			}
-		});
-		
-		//绑定表单验证
-		$(".form-validate").bValidator();
-		
-		//绑定搜索区域的查询按钮
-		$(".search").off(".frame").on("submit.frame", function() {
-			var id = $(this).attr("id");
-			if (id) {
-				$("table[data-query-form={}]".format(id)).bootstrapTable("refresh");
-			}
-			return false;
-		});
-		
-	})();
+			});
+		}
+	});
 	
 });
 
@@ -470,6 +479,17 @@ $(function() {
 	$.ajaxSetup({
     	traditional: true, //Jquery ajax请求时，用传统方式组装参数。设置此值后，参数不能传嵌套数组
     });
+	
+	/*******************************  配置pjax  **************************************/
+	$.pjax.defaults.timeout = 2000;
+	$(document).pjax('a[data-pjax]', '#pjax-container').on({
+		'pjax:send': function(contents, opts) {
+			//$('#loading').show();
+		},
+		'pjax:complete': function(contents, opts) {
+			//$('#loading').hide();
+		}
+	});
 	
 	/*******************************  table  **************************************/
 	$.extend($.fn.bootstrapTable.defaults, {

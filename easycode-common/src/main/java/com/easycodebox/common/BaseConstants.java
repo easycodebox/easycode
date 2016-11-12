@@ -35,6 +35,11 @@ public abstract class BaseConstants {
 	@StaticValue("${dialog_req_flag}")
 	public static String DIALOG_REQ = "DIALOG_REQ";
 	
+	/**
+	 * pjax请求的header key值
+	 */
+	@StaticValue("${pjax_key}")
+	public static String pjaxKey = "X-PJAX";
 	
 	
 	/********************* 数据库配置 *******************************************/

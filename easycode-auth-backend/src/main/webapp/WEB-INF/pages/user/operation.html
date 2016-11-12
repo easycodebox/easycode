@@ -1,11 +1,7 @@
 [#include "/WEB-INF/common/core.ftl"/]
-<!DOCTYPE HTML>
-<html>
-<head>
-<title>权限</title>
 [@e.link href="http://cdn.easycodebox.com/jquery-file-upload/9.12.3/css/??jquery.fileupload.css" /]
-</head>
-<body>
+
+<title>EasyCode | 权限</title>
 
 <section class="content-header">
 	<h1>
@@ -102,7 +98,7 @@
 							</button>
 						[/@shiro.hasPermission]
 					</div>
-					<table id="data-table" data-toggle="table" 
+					<table id="data-table" 
 							data-toolbar="#toolbar"
 							data-query-form="query-form"
 							data-query-params="gb.table.params"
@@ -366,6 +362,3 @@
 		jquery.fileupload-validate.js" /]
 	[@e.script src="/js/??user/operation.js" /]
 </inner-js>
-
-</body>
-</html>

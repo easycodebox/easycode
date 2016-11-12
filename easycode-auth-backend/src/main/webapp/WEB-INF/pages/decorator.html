@@ -3,7 +3,7 @@
 <html>
 <head>
 [#include "/WEB-INF/common/meta.html"/]
-<title>EasyCode | <sitemesh:write property='title' /></title>
+<title><sitemesh:write property='title' /></title>
 [#include "/WEB-INF/common/styles.html"/]
 <sitemesh:write property='head' />
 </head>
@@ -14,7 +14,7 @@
 	
 	[#include "/WEB-INF/common/left.html"/]
 	
-	<div class="content-wrapper">
+	<div id="pjax-container" class="content-wrapper">
 		
 		<sitemesh:write property='body' />
 		

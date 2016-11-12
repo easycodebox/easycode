@@ -22,6 +22,8 @@ import com.easycodebox.common.web.callback.Callbacks;
 public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
 	
 	private final Logger log = LoggerFactory.getLogger(getClass());
+	
+	private String pjaxKey;
 
 	@Override
 	protected boolean onAccessDenied(ServletRequest request,
@@ -41,7 +43,8 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
         	HttpServletRequest req = (HttpServletRequest)request;
         	HttpServletResponse resp = (HttpServletResponse)response;
         	
-        	if(HttpUtils.isAjaxRequest(req)) {
+        	if(HttpUtils.isAjaxRequest(req) && 
+        			req.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
     			HttpUtils.outJson(CodeMsg.NO_LOGIN, resp);
         	}
         	else if(req.getParameter(BaseConstants.DIALOG_REQ) != null) {
@@ -53,4 +56,12 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
         }
 	}
 
+	public String getPjaxKey() {
+		return pjaxKey;
+	}
+
+	public void setPjaxKey(String pjaxKey) {
+		this.pjaxKey = pjaxKey;
+	}
+	
 }

@@ -97,7 +97,7 @@
 	
 	<filter>
 		<filter-name>sitemesh</filter-name>
-		<filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
+		<filter-class>com.easycodebox.common.sitemesh3.DefaultConfigurableSiteMeshFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>sitemesh</filter-name>

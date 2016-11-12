@@ -6,6 +6,10 @@ $.extend(true, window.gb || (window.gb = {}), {
 		
 	},
 	init: function() {
+		//子页面框架初始化
+		this.subframe();
+		//初始化表格
+		$("#data-table").bootstrapTable();
 		//缓存表格操作列html
 		this.table.cacheOps();
 		//初始化模板

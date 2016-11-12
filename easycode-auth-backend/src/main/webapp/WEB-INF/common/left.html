@@ -3,7 +3,7 @@
 		[#list children as child]
 			[#local hasChildren = child.children?? && child.children?size gt 0]
 			<li class="treeview" data-menu-id="${child.id}">
-				<a href="${child.url???string('/' + child.url + '.html', '#')}">
+				<a data-pjax href="${child.url???string('/' + child.url + '.html', '#')}">
 					<i class="${child.icon!'fa fa-circle-o'}"></i>
 					<span>${child.name}</span>
 					<!-- 显示右侧小标记  -->
