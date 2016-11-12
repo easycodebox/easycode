@@ -30,7 +30,7 @@ public class GlobalController extends BaseController {
 	 */
 	@RequestMapping("/")
 	public String index() throws Exception {
-		return "main";
+		return "welcome";
 	}
 	
 	@RequestMapping("/decorator")
