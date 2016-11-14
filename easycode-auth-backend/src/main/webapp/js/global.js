@@ -482,14 +482,7 @@ $(function() {
 	
 	/*******************************  配置pjax  **************************************/
 	$.pjax.defaults.timeout = 2000;
-	$(document).pjax('a[data-pjax]', '#pjax-container').on({
-		'pjax:send': function(contents, opts) {
-			//$('#loading').show();
-		},
-		'pjax:complete': function(contents, opts) {
-			//$('#loading').hide();
-		}
-	});
+	$(document).pjax('a[data-pjax]', '#pjax-container');
 	
 	/*******************************  table  **************************************/
 	$.extend($.fn.bootstrapTable.defaults, {
