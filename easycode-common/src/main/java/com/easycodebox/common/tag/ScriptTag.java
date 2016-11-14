@@ -132,19 +132,11 @@ public class ScriptTag extends AbstractHtmlTag {
 	}
 
 	public void setAsync(String async) {
-		if(StringUtils.isNotBlank(async)) {
-			async = async.toLowerCase();
-			if("async".equals(async) || "true".equals(async))
-				this.async = "async";
-		}
+		this.async = async;
 	}
 
 	public void setDefer(String defer) {
-		if(StringUtils.isNotBlank(defer)) {
-			defer = defer.toLowerCase();
-			if("defer".equals(defer) || "true".equals(defer))
-				this.defer = "defer";
-		}
+		this.defer = defer;
 	}
 
 	public void setEnv(String env) {

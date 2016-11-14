@@ -354,11 +354,11 @@
 </div>
 
 <inner-js>
-	[@e.script src="http://cdn.easycodebox.com/jquery-file-upload/9.12.3/js/??
+	[@e.script env="PROD" src="http://cdn.easycodebox.com/jquery-file-upload/9.12.3/js/??
 		vendor/jquery.ui.widget.js,
 		jquery.iframe-transport.js,
 		jquery.fileupload.js,
 		jquery.fileupload-process.js,
 		jquery.fileupload-validate.js" /]
-	[@e.script src="/js/??user/operation.js" /]
+	[@e.script tagAttr="transient='true'" src="/js/??user/operation.js" /]
 </inner-js>
