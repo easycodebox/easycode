@@ -227,8 +227,8 @@ public class PermissionController extends BaseController {
 	}
 	
 	@ResponseBody
-	public CodeMsg addPermissionsOfRole(Long[] oprtds, Integer[] projectIds, Integer roleId) throws Exception {
-		permissionService.addPermissionsOfRole(roleId, oprtds == null ? new Long[0] : oprtds);
+	public CodeMsg authoriseRole(Long[] oprtds, Integer[] projectIds, Integer roleId) throws Exception {
+		permissionService.authoriseRole(roleId, oprtds == null ? new Long[0] : oprtds);
 		roleProjectService.updateRoleProjectByRoleId(roleId, projectIds);
 		return CodeMsg.SUC;
 	}

@@ -73,7 +73,7 @@
 				<permission name="添加角色" url="role/add" description="添加角色" />
 				<permission name="删除角色" url="role/remove" description="删除角色" />
 				<permission name="启用/禁用角色" url="role/openClose" description="启用/禁用角色" />
-				<permission name="角色授权" url="permission/addPermissionsOfRole" description="角色授权" />
+				<permission name="角色授权" url="permission/authoriseRole" description="角色授权" />
 			</permissions>
 		</menu2>
 		

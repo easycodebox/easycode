@@ -207,7 +207,7 @@ public interface PermissionService {
 	 * @param permissionIds
 	 * @throws Exception
 	 */
-	void addPermissionsOfRole(int roleId, Long[] permissionIds);
+	void authoriseRole(int roleId, Long[] permissionIds);
 	
 	/**
 	 * 修改是否是菜单

@@ -104,7 +104,7 @@ $(function(){
 				}
 				$.ajax({
 					type: "post",
-			        url: "/permission/addPermissionsOfRole.json",
+			        url: "/permission/authoriseRole.json",
 			        data: {
 						oprtds: oprtds,
 						projectIds: projectIds,

@@ -490,7 +490,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	@Override
 	@Log(title = "配置指定角色权限", moduleType = ModuleType.USER)
 	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
-	public void addPermissionsOfRole(int roleId, Long[] permissionIds) {
+	public void authoriseRole(int roleId, Long[] permissionIds) {
 		super.deletePhy(sql(RolePermission.class).eq(R.RolePermission.roleId, roleId));
 		for(int i = 0; i < permissionIds.length; i++) {
 			RolePermission ro = new RolePermission();
