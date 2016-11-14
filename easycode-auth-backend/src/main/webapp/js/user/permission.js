@@ -29,7 +29,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 			el: '#tmpls',
 			data: {
 				projects: null,
-				operation: {}
+				permission: {}
 			}
 		});
 	},
@@ -48,13 +48,13 @@ $.extend(true, window.gb || (window.gb = {}), {
 			});
 		}
 	},
-	operationValidateTime: function(validator) {
+	permissionValidateTime: function(validator) {
 		var $self = $(this);
 		$self.focus(function() {
 			validator.validate(false, $self);
 		});
 	},
-	operationValidator: function(val) {
+	permissionValidator: function(val) {
 		var $form = $(this).closest("form");
 		if(!$form.find(".projectId").val()) {
 			return "请先选择项目";
@@ -102,8 +102,8 @@ $.extend(true, window.gb || (window.gb = {}), {
 		};
 		$tree = $.fn.zTree.init($form.find(".ztree"), setting, array);
 	},
-	listOperations: function($form, $parentName, projectId) {
-		$.post("/operation/listByProject.json", {projectId: projectId}, function(data) {
+	listPermissions: function($form, $parentName, projectId) {
+		$.post("/permission/listByProject.json", {projectId: projectId}, function(data) {
 			data = JSON.parse(data);
 			gb.refreshTree($form, $parentName, data);
 		});
@@ -118,7 +118,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		$.ajax({
 			async: false,
 			type: "POST",
-			url: "/operation/existName.json",
+			url: "/permission/existName.json",
 			data: {
 				projectId: projectId,
 				name: val,
@@ -144,7 +144,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		$.ajax({
 			async: false,
 			type: "POST",
-			url: "/operation/existUrl.json",
+			url: "/permission/existUrl.json",
 			data: {
 				projectId: projectId,
 				url: val,
@@ -177,7 +177,7 @@ $(function(){
 			}
 			layer.page2("导出", $("#exportDiv"), function() {
 				if ($export.val()) {
-					location.href = "/operation/exports/" + $export.val();
+					location.href = "/permission/exports/" + $export.val();
 				} else {
 					$.msg("warn", "请选择您要导出权限的项目")
 				}
@@ -190,12 +190,12 @@ $(function(){
 		srcSelector: ".handler",//触发事件的对象
 		scopeSelector: "#data-table",//操作的dom范围
 		targetClass: "status",	//操作成功后修改的目标对象
-		url: "/operation/openClose.json"
+		url: "/permission/openClose.json"
 	});
 	
 	//导入
 	$('#importsOper').fileupload({
-    	url: "/operation/imports",
+    	url: "/permission/imports",
     	singleFileUploads: false,	//所有文件作为一个请求上传至服务端
     	acceptFileTypes: /(\.|\/)xml$/i,
     	messages: {
@@ -254,7 +254,7 @@ $(function(){
 		scopeSelector: "#data-table",//操作的dom范围
 		targetClass: "isMenu",	//操作成功后修改的目标对象
 		ajaxKey: "id",
-		url: "/operation/changeIsMenu.json",
+		url: "/permission/changeIsMenu.json",
 		change: {
 			"switch-open": {
 				confirmMsg	: "设置为菜单？",
@@ -271,20 +271,20 @@ $(function(){
 	
 	$("#data-table").on("click", ".loadBtn", function() {
 		var $btn = $(this);
-		$.post("/operation/load.json",{id: $btn.data("id")}, function(data) {
-			gb.vm.operation = data.data;
-			layer.page1(gb.title($btn), $('#loadDialogOperation'));
+		$.post("/permission/load.json",{id: $btn.data("id")}, function(data) {
+			gb.vm.permission = data.data;
+			layer.page1(gb.title($btn), $('#loadDialogPermission'));
 		});
 	}).on("click", ".updBtn", function() {
 		var $btn = $(this),
 			id = $btn.data("id");
 		gb.initProjects(function() {
-			$.post("/operation/load.json",{id: id}, function(data) {
-				gb.vm.operation = data.data;
+			$.post("/permission/load.json",{id: id}, function(data) {
+				gb.vm.permission = data.data;
 				
 				var $form = $('#updDialog');
 				if(data.data.projectId) {
-					gb.listOperations($form, $form.find(".parentName"), data.data.projectId);
+					gb.listPermissions($form, $form.find(".parentName"), data.data.projectId);
 				}
 				gb.show(gb.title($btn), $form);
 			});
@@ -295,7 +295,7 @@ $(function(){
 		var $btn = $(this);
 		gb.initProjects(function() {
 			//初始化选项默认值
-			gb.vm.operation = {
+			gb.vm.permission = {
 					status: {
 						className: "OPEN"
 					},
@@ -331,7 +331,7 @@ $(function(){
 		valid.reset($parentName);
 		valid.reset($form.find("input[name=url]"));
 		if(val) {
-			gb.listOperations($form, $parentName, val);
+			gb.listPermissions($form, $parentName, val);
 		}else {
 			gb.refreshTree($form, $parentName, false);
 		}

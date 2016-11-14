@@ -55,9 +55,9 @@ public class Constants extends BaseConstants {
 		public static final String GROUP_ROLE = PREFIX + "group_role";
 		
 		/**
-		 * key:mix(混合) value:operations
+		 * key:mix(混合) value:permissions
 		 */
-		public static final String OPERATION = PREFIX + "operation";
+		public static final String PERMISSION = PREFIX + "permission";
 		
 		/**
 		 * key:roleId value:role

@@ -2,7 +2,7 @@ package com.easycodebox.auth.model.bo.user;
 
 import java.util.List;
 
-import com.easycodebox.auth.model.entity.user.Operation;
+import com.easycodebox.auth.model.entity.user.Permission;
 import com.easycodebox.auth.model.entity.user.User;
 
 public class UserFullBo extends User {
@@ -16,12 +16,12 @@ public class UserFullBo extends User {
 	/**
 	 * 所有的权限
 	 */
-	private String operations;
+	private String permissions;
 	
 	/**
 	 * 菜单项
 	 */
-	private List<Operation> menus;
+	private List<Permission> menus;
 
 	public String getRoleNames() {
 		return roleNames;
@@ -39,19 +39,19 @@ public class UserFullBo extends User {
 		this.roleIds = roleIds;
 	}
 
-	public String getOperations() {
-		return operations;
+	public String getPermissions() {
+		return permissions;
 	}
 
-	public void setOperations(String operations) {
-		this.operations = operations;
+	public void setPermissions(String permissions) {
+		this.permissions = permissions;
 	}
 
-	public List<Operation> getMenus() {
+	public List<Permission> getMenus() {
 		return menus;
 	}
 
-	public void setMenus(List<Operation> menus) {
+	public void setMenus(List<Permission> menus) {
 		this.menus = menus;
 	}
 

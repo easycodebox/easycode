@@ -108,7 +108,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 			//由于有可能修改group，导致角色有所变动
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, key="#user.id"),
 			//由于有可能修改group，导致权限有所变动
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int update(User user) {
 		
@@ -159,7 +159,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.USER, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int remove(String[] ids) {
 		return super.delete(ids);
@@ -170,7 +170,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.USER, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int removePhy(String[] ids) {
 		return super.deletePhy(ids);
@@ -228,7 +228,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.USER, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int openClose(String[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);

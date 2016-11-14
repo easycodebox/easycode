@@ -18,7 +18,7 @@ import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.user.GroupRole;
 import com.easycodebox.auth.model.entity.user.Role;
-import com.easycodebox.auth.model.entity.user.RoleOperation;
+import com.easycodebox.auth.model.entity.user.RolePermission;
 import com.easycodebox.auth.model.entity.user.UserRole;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
@@ -109,12 +109,12 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 			@CacheEvict(cacheNames=Constants.CN.ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, allEntries=true),
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, allEntries=true),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int remove(Integer[] ids) {
 		super.deletePhy(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
 		super.deletePhy(sql(UserRole.class).in(R.UserRole.roleId, ids));
-		super.deletePhy(sql(RoleOperation.class).in(R.RoleOperation.roleId, ids));
+		super.deletePhy(sql(RolePermission.class).in(R.RolePermission.roleId, ids));
 		return super.delete(ids);
 	}
 	
@@ -125,12 +125,12 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 			@CacheEvict(cacheNames=Constants.CN.ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, allEntries=true),
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, allEntries=true),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int removePhy(Integer[] ids) {
 		super.deletePhy(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
 		super.deletePhy(sql(UserRole.class).in(R.UserRole.roleId, ids));
-		super.deletePhy(sql(RoleOperation.class).in(R.RoleOperation.roleId, ids));
+		super.deletePhy(sql(RolePermission.class).in(R.RolePermission.roleId, ids));
 		return super.deletePhy(ids);
 	}
 	
@@ -140,7 +140,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 			@CacheEvict(cacheNames=Constants.CN.ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, allEntries=true),
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, allEntries=true),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int openClose(Integer[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);
@@ -213,7 +213,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, key="#groupId"),
 			//用户拥有角色的逻辑也与group有关
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, allEntries=true),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public void installRolesOfGroup(int groupId, Integer[] roleIds) {
 		super.deletePhy(sql(GroupRole.class)
@@ -234,7 +234,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 	@Log(title = "配置用户的角色", moduleType = ModuleType.USER)
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, key="#userId"),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public void installRolesOfUser(String userId, Integer[] roleIds) {
 		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK.fillArgs("用户ID"));

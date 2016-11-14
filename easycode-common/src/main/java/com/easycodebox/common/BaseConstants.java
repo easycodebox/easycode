@@ -27,7 +27,7 @@ public abstract class BaseConstants {
 	/**
 	 * 权限KEY值
 	 */
-	public static String OPERATION_KEY = "operation_key";
+	public static String PERMISSION_KEY = "permission_key";
 	
 	/**
 	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据

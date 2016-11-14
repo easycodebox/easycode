@@ -21,10 +21,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.easycodebox.auth.core.dao.user.OperationMapper;
+import com.easycodebox.auth.core.dao.user.PermissionMapper;
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.ProjectService;
-import com.easycodebox.auth.core.service.user.OperationService;
+import com.easycodebox.auth.core.service.user.PermissionService;
 import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.service.user.RoleService;
 import com.easycodebox.auth.core.service.user.UserService;
@@ -33,8 +33,8 @@ import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.sys.Project;
-import com.easycodebox.auth.model.entity.user.Operation;
-import com.easycodebox.auth.model.entity.user.RoleOperation;
+import com.easycodebox.auth.model.entity.user.Permission;
+import com.easycodebox.auth.model.entity.user.RolePermission;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.OpenClose;
@@ -59,8 +59,8 @@ import freemarker.template.TemplateNotFoundException;
  * @author WangXiaoJin
  *
  */
-@Service("operationService")
-public class OperationServiceImpl extends AbstractServiceImpl<Operation> implements OperationService {
+@Service("permissionService")
+public class PermissionServiceImpl extends AbstractServiceImpl<Permission> implements PermissionService {
 	
 	@Resource
 	private UserIdConverter userIdConverter;
@@ -75,27 +75,27 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 	private RoleProjectService roleProjectService;
 	
 	@Resource
-	private OperationMapper operationMapper;
+	private PermissionMapper permissionMapper;
 	
 	@Override
-	public List<Operation> list(Integer projectId, OpenClose status, YesNo isMenu) {
+	public List<Permission> list(Integer projectId, OpenClose status, YesNo isMenu) {
 		return super.list(sql()
-				.eq(R.Operation.projectId, projectId)
-				.eq(R.Operation.status, status)
-				.eq(R.Operation.isMenu, isMenu)
-				.eq(R.Operation.deleted, YesNo.NO)
-				.desc(R.Operation.isMenu)
-				.desc(R.Operation.sort)
-				.desc(R.Operation.createTime)
+				.eq(R.Permission.projectId, projectId)
+				.eq(R.Permission.status, status)
+				.eq(R.Permission.isMenu, isMenu)
+				.eq(R.Permission.deleted, YesNo.NO)
+				.desc(R.Permission.isMenu)
+				.desc(R.Permission.sort)
+				.desc(R.Permission.createTime)
 				);
 	}
 
 	@Override
-	public Operation load(Long id, Integer projectId, String url) {
+	public Permission load(Long id, Integer projectId, String url) {
 		if(id == null && (projectId == null || StringUtils.isBlank(url)))
 			throw new BaseException("param id or projectId or url is null.");
 		
-		Operation data = operationMapper.load(id, projectId, url);
+		Permission data = permissionMapper.load(id, projectId, url);
 		if (data != null) {
 			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
 			data.setModifierName(userIdConverter.id2RealOrNickname(data.getModifier()));
@@ -107,130 +107,130 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 	@Transactional
 	@Log(title = "添加权限", moduleType = ModuleType.USER)
 	//超级管理员具有所有的权限，所以新增权限后要更新缓存
-	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
-	public Operation add(Operation operation) {
+	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
+	public Permission add(Permission permission) {
 		
-		/*Assert.isFalse(this.existName(operation.getProjectId(), operation.getName(), operation.getId()),
-				ErrorCode.FAIL.msg("权限名{0}已被占用", operation.getName()));*/
+		/*Assert.isFalse(this.existName(permission.getProjectId(), permission.getName(), permission.getId()),
+				ErrorCode.FAIL.msg("权限名{0}已被占用", permission.getName()));*/
 		
-		if(StringUtils.isNotBlank(operation.getUrl()))
-			Assert.isFalse(this.existUrl(operation.getProjectId(), operation.getUrl(), operation.getId()),
-					CodeMsgExt.FAIL.msg("url{0}已被占用", operation.getUrl()));
+		if(StringUtils.isNotBlank(permission.getUrl()))
+			Assert.isFalse(this.existUrl(permission.getProjectId(), permission.getUrl(), permission.getId()),
+					CodeMsgExt.FAIL.msg("url{0}已被占用", permission.getUrl()));
 		
-		if(operation.getStatus() == null)
-			operation.setStatus(OpenClose.OPEN);
-		operation.setDeleted(YesNo.NO);
-		super.save(operation);
-		return operation;
+		if(permission.getStatus() == null)
+			permission.setStatus(OpenClose.OPEN);
+		permission.setDeleted(YesNo.NO);
+		super.save(permission);
+		return permission;
 	}
 	
 	@Override
 	@Log(title = "修改权限", moduleType = ModuleType.USER)
-	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
-	public int update(Operation operation) {
+	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
+	public int update(Permission permission) {
 		
-		/*Assert.isFalse(this.existName(operation.getProjectId(), operation.getName(), operation.getId()),
-				ErrorCode.FAIL.msg("权限名{0}已被占用", operation.getName()));*/
+		/*Assert.isFalse(this.existName(permission.getProjectId(), permission.getName(), permission.getId()),
+				ErrorCode.FAIL.msg("权限名{0}已被占用", permission.getName()));*/
 		
-		if(StringUtils.isNotBlank(operation.getUrl()))
-			Assert.isFalse(this.existUrl(operation.getProjectId(), operation.getUrl(), operation.getId()),
-					CodeMsgExt.FAIL.msg("url{0}已被占用", operation.getUrl()));
+		if(StringUtils.isNotBlank(permission.getUrl()))
+			Assert.isFalse(this.existUrl(permission.getProjectId(), permission.getUrl(), permission.getId()),
+					CodeMsgExt.FAIL.msg("url{0}已被占用", permission.getUrl()));
 		
-		if(operation.getStatus() != null) {
+		if(permission.getStatus() != null) {
 			log.info("The update method can not update status property.");
 		}
 		
 		return super.update(sql()
-				.updateNeed(R.Operation.projectId, operation.getProjectId())
-				.updateNeed(R.Operation.parentId, operation.getParentId())
-				.updateNeed(R.Operation.name, operation.getName())
-				//.update(R.Operation.status, operation.getStatus())
-				.updateNeed(R.Operation.isMenu, operation.getIsMenu())
-				.updateNeed(R.Operation.url, operation.getUrl())
-				.updateNeed(R.Operation.sort, operation.getSort())
-				.updateNeed(R.Operation.icon, operation.getIcon())
-				.updateNeed(R.Operation.description, operation.getDescription())
-				.updateNeed(R.Operation.remark, operation.getRemark())
-				.eqAst(R.Operation.id, operation.getId())
+				.updateNeed(R.Permission.projectId, permission.getProjectId())
+				.updateNeed(R.Permission.parentId, permission.getParentId())
+				.updateNeed(R.Permission.name, permission.getName())
+				//.update(R.Permission.status, permission.getStatus())
+				.updateNeed(R.Permission.isMenu, permission.getIsMenu())
+				.updateNeed(R.Permission.url, permission.getUrl())
+				.updateNeed(R.Permission.sort, permission.getSort())
+				.updateNeed(R.Permission.icon, permission.getIcon())
+				.updateNeed(R.Permission.description, permission.getDescription())
+				.updateNeed(R.Permission.remark, permission.getRemark())
+				.eqAst(R.Permission.id, permission.getId())
 				);
 	}
 
 	@Override
 	@Log(title = "逻辑删除权限", moduleType = ModuleType.USER)
-	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int remove(Long[] ids) {
 		return super.delete(ids);
 	}
 	
 	@Override
 	@Log(title = "物理删除权限", moduleType = ModuleType.USER)
-	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int removePhy(Long[] ids) {
 		return super.deletePhy(ids);
 	}
 	
 	@Override
 	@Log(title = "开启关闭权限", moduleType = ModuleType.USER)
-	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int openClose(Long[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);
 	}
 
 	@Override
-	public DataPage<Operation> page(String parentName, String projectName, 
-			String operationName, YesNo isMenu, OpenClose status, 
+	public DataPage<Permission> page(String parentName, String projectName, 
+			String permissionName, YesNo isMenu, OpenClose status, 
 			String url, int pageNo, int pageSize) {
 		
 		parentName = StringUtils.trimToNull(parentName);
 		projectName = StringUtils.trimToNull(projectName);
-		operationName = StringUtils.trimToNull(operationName);
+		permissionName = StringUtils.trimToNull(permissionName);
 		url = StringUtils.trimToNull(url);
 		
-		List<Operation> os = operationMapper.page(parentName, projectName, 
-				operationName, isMenu, status, url, pageNo, pageSize);
-		long totalCount = operationMapper.pageTotalCount(parentName, projectName, operationName, isMenu, status, url);
-		return new DataPage<Operation>(pageNo, pageSize, totalCount, os);
+		List<Permission> os = permissionMapper.page(parentName, projectName, 
+				permissionName, isMenu, status, url, pageNo, pageSize);
+		long totalCount = permissionMapper.pageTotalCount(parentName, projectName, permissionName, isMenu, status, url);
+		return new DataPage<Permission>(pageNo, pageSize, totalCount, os);
 	}
 	
 	@Override
-	public List<Long> listOperationIds(String userId, Integer projectId) {
+	public List<Long> listPermissionIds(String userId, Integer projectId) {
 		YesNo isSuperAdmin = userId == null ? YesNo.YES : userService.isSuperAdmin(userId);
 		if(isSuperAdmin == YesNo.YES) 
 			return super.list(sql()
-					.column(R.Operation.id)
-					.eq(R.Operation.projectId, projectId)
-					.eq(R.Operation.deleted, YesNo.NO)
-					.eq(R.Operation.status, OpenClose.OPEN)
-					.desc(R.Operation.sort)
-					.desc(R.Operation.createTime)
+					.column(R.Permission.id)
+					.eq(R.Permission.projectId, projectId)
+					.eq(R.Permission.deleted, YesNo.NO)
+					.eq(R.Permission.status, OpenClose.OPEN)
+					.desc(R.Permission.sort)
+					.desc(R.Permission.createTime)
 					, Long.class);
 		else {
 			Integer[] roleIds = roleService.listOpenedRoleIdsByUserId(userId);
 			return super.list(sql()
-					.join(R.Operation.roleOperations, "ro")
-					.distinct(R.Operation.id)
-					.eq(R.Operation.projectId, projectId)
-					.eq(R.Operation.deleted, YesNo.NO)
-					.eq(R.Operation.status, OpenClose.OPEN)
-					.in(R.RoleOperation.roleId, roleIds)
-					.desc(R.Operation.sort)
-					.desc(R.Operation.createTime)
+					.join(R.Permission.rolePermissions, "ro")
+					.distinct(R.Permission.id)
+					.eq(R.Permission.projectId, projectId)
+					.eq(R.Permission.deleted, YesNo.NO)
+					.eq(R.Permission.status, OpenClose.OPEN)
+					.in(R.RolePermission.roleId, roleIds)
+					.desc(R.Permission.sort)
+					.desc(R.Permission.createTime)
 					, Long.class);
 		}
 	}
 	
 	@Override
 	public Map<Long, Long> listOperateCode(String userId, Integer projectId) {
-		List<Long> ors = this.listOperationIds(userId, projectId);
+		List<Long> ors = this.listPermissionIds(userId, projectId);
 		/* 将操作集合转化为用户操作码 */
-		return AccessTools.convertOperationNosToOperationCode(ors);
+		return AccessTools.convertPermissionNosToPermissionCode(ors);
 	}
 
 	@Override
 	@Transactional
 	@SuppressWarnings("unchecked")
 	@Log(title = "导入权限", moduleType = ModuleType.USER)
-	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public synchronized void importFromXml(InputStream streams) throws Exception {
 		//此处不用truncate，因truncate不能被事务回滚，而且此接口改成操作单个项目的权限了
 		//super.truncate();
@@ -248,7 +248,7 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 		Project pro = projectService.load(project);
 		Assert.notNull(pro, CodeMsg.FAIL.msg("没有项目编号为({})的授权项目", project));
 		//删除原有权限
-		super.deletePhy(sql().eq(R.Operation.projectId, pro.getId()));
+		super.deletePhy(sql().eq(R.Permission.projectId, pro.getId()));
 		
 		long cal0 = (pro.getNum())*100000000L;
 		//列出以及菜单
@@ -263,7 +263,7 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 					menu1Status = XmlDataParser.getXmlAttributeVal(menu1, "status"),
 					menu1Sort = XmlDataParser.getXmlAttributeVal(menu1, "sort"),
 					menu1Description = XmlDataParser.getXmlAttributeVal(menu1, "description", menu1Name);
-			Operation o1 = new Operation(StringUtils.isNotBlank(menu1Id) ? Long.parseLong(menu1Id) : cal1 , 
+			Permission o1 = new Permission(StringUtils.isNotBlank(menu1Id) ? Long.parseLong(menu1Id) : cal1 , 
 					null, menu1Name, pro.getId(), YesNo.YES, menu1Url, menu1Description, menu1Icon);
 			if(StringUtils.isNotBlank(menu1Status)) {
 				OpenClose st = Enum.valueOf(OpenClose.class, menu1Status);
@@ -285,7 +285,7 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 						menu2Status = XmlDataParser.getXmlAttributeVal(menu2, "status"),
 						menu2Sort = XmlDataParser.getXmlAttributeVal(menu2, "sort"),
 						menu2Description = XmlDataParser.getXmlAttributeVal(menu2, "description", menu2Name);
-				Operation o2 = new Operation(StringUtils.isNotBlank(menu2Id) ? Long.parseLong(menu2Id) : cal2 , 
+				Permission o2 = new Permission(StringUtils.isNotBlank(menu2Id) ? Long.parseLong(menu2Id) : cal2 , 
 						o1.getId(), menu2Name,
 						pro.getId(), YesNo.YES, menu2Url, menu2Description, menu2Icon);
 				if(StringUtils.isNotBlank(menu2Status)) {
@@ -308,7 +308,7 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 							menu3Status = XmlDataParser.getXmlAttributeVal(menu3, "status"),
 							menu3Sort = XmlDataParser.getXmlAttributeVal(menu3, "sort"),
 							menu3Description = XmlDataParser.getXmlAttributeVal(menu3, "description", menu3Name);
-					Operation o3 = new Operation(StringUtils.isNotBlank(menu3Id) ? Long.parseLong(menu3Id) : cal3 , 
+					Permission o3 = new Permission(StringUtils.isNotBlank(menu3Id) ? Long.parseLong(menu3Id) : cal3 , 
 							o2.getId(), menu3Name, 
 							pro.getId(), YesNo.YES, menu3Url, menu3Description, menu3Icon);
 					if(StringUtils.isNotBlank(menu3Status)) {
@@ -319,31 +319,31 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 						o3.setSort(Integer.parseInt(menu3Sort));
 					}
 					this.add(o3);
-					analysisOperationTag(o3.getId(), pro.getId(), cal3 + 50L, 1, menu3);
+					analysisPermissionTag(o3.getId(), pro.getId(), cal3 + 50L, 1, menu3);
 				}
-				analysisOperationTag(o2.getId(), pro.getId(), cal2 + 5000L, 100, menu2);
+				analysisPermissionTag(o2.getId(), pro.getId(), cal2 + 5000L, 100, menu2);
 			}
-			analysisOperationTag(o1.getId(), pro.getId(), cal1 + 500000L, 10000, menu1);
+			analysisPermissionTag(o1.getId(), pro.getId(), cal1 + 500000L, 10000, menu1);
 		}
-		analysisOperationTag(null, pro.getId(), cal0 + 50000000L, 1000000, root);
+		analysisPermissionTag(null, pro.getId(), cal0 + 50000000L, 1000000, root);
 	}
 	/**
-	 * 解析operation标签
+	 * 解析permission标签
 	 * @throws Exception 
 	 */
 	@SuppressWarnings("unchecked")
-	private void analysisOperationTag(Long menuId, Integer projectId, long begin, int multiple, Element menu) throws Exception {
+	private void analysisPermissionTag(Long menuId, Integer projectId, long begin, int multiple, Element menu) throws Exception {
 		//列出三级菜单
-		List<Element> operations =  menu.selectNodes("operations/operation");
-		for(int x = 0; x < operations.size(); x++) {
-			Element operation = operations.get(x);
-			String id = XmlDataParser.getXmlAttributeVal(operation, "id"),
-					url = XmlDataParser.getXmlAttributeVal(operation, "url"),
-					name = XmlDataParser.getXmlAttributeVal(operation, "name"),
-					status = XmlDataParser.getXmlAttributeVal(operation, "status"),
-					sort = XmlDataParser.getXmlAttributeVal(operation, "sort"),
-					description = XmlDataParser.getXmlAttributeVal(operation, "description", name);
-			Operation o = new Operation(StringUtils.isNotBlank(id) ? Long.parseLong(id) : begin + x*multiple , 
+		List<Element> permissions =  menu.selectNodes("permissions/permission");
+		for(int x = 0; x < permissions.size(); x++) {
+			Element permission = permissions.get(x);
+			String id = XmlDataParser.getXmlAttributeVal(permission, "id"),
+					url = XmlDataParser.getXmlAttributeVal(permission, "url"),
+					name = XmlDataParser.getXmlAttributeVal(permission, "name"),
+					status = XmlDataParser.getXmlAttributeVal(permission, "status"),
+					sort = XmlDataParser.getXmlAttributeVal(permission, "sort"),
+					description = XmlDataParser.getXmlAttributeVal(permission, "description", name);
+			Permission o = new Permission(StringUtils.isNotBlank(id) ? Long.parseLong(id) : begin + x*multiple , 
 					menuId, name, projectId, YesNo.NO, url, description, null);
 			if(StringUtils.isNotBlank(status)) {
 				OpenClose st = Enum.valueOf(OpenClose.class, status);
@@ -361,7 +361,7 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 	public void exportToXml(String ftlRes, Integer projectId, Writer writer) 
 			throws TemplateException, TemplateNotFoundException, MalformedTemplateNameException, 
 			ParseException, IOException {
-		List<Operation> os = treeOperations(null, this.list(projectId, null, null), null);
+		List<Permission> os = treePermissions(null, this.list(projectId, null, null), null);
 		Project project = projectService.load(projectId);
 		Configuration cfg = ConfigurationFactory.instance();
 		//设置包装器，并将对象包装为数据模型
@@ -373,51 +373,51 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 	}
 
 	@Override
-	@Cacheable(cacheNames=Constants.CN.OPERATION, keyGenerator=Constants.METHOD_ARGS_KEY_GENERATOR)
-	public List<Operation> listOperationsOfUser(String userId, Integer projectId, YesNo isMenu) {
+	@Cacheable(cacheNames=Constants.CN.PERMISSION, keyGenerator=Constants.METHOD_ARGS_KEY_GENERATOR)
+	public List<Permission> listPermissionsOfUser(String userId, Integer projectId, YesNo isMenu) {
 		Assert.notNull(userId, "userId can not be null.");
 		YesNo isSuperAdmin = userService.isSuperAdmin(userId);
 		if(isSuperAdmin == YesNo.YES)
 			return this.list(projectId, OpenClose.OPEN, isMenu);
 		else {
 			Integer[] roleIds = roleService.listOpenedRoleIdsByUserId(userId);
-			return this.listOperationsOfRoles(roleIds, projectId, isMenu);
+			return this.listPermissionsOfRoles(roleIds, projectId, isMenu);
 		}
 	}
 
 	@Override
-	public List<Operation> listTreeOperationsOfUser(String userId, Integer projectId, YesNo isMenu) {
-		List<Operation> os = this.listOperationsOfUser(userId, projectId, isMenu);
-		return treeOperations(null, os, null);
+	public List<Permission> listTreePermissionsOfUser(String userId, Integer projectId, YesNo isMenu) {
+		List<Permission> os = this.listPermissionsOfUser(userId, projectId, isMenu);
+		return treePermissions(null, os, null);
 	}
 	
 	@Override
-	public List<Operation> listTreeOperationsByRoleId(Integer roleId, YesNo isMenu) {
-		List<Operation> os = null;
+	public List<Permission> listTreePermissionsByRoleId(Integer roleId, YesNo isMenu) {
+		List<Permission> os = null;
 		if(roleId == null)
 			os =  this.list(null, OpenClose.OPEN, isMenu);
 		else
-			os = this.listOperationsOfRole(roleId, isMenu);
-		return treeOperations(null, os, null);
+			os = this.listPermissionsOfRole(roleId, isMenu);
+		return treePermissions(null, os, null);
 	}
 
 	@Override
-	public List<Operation> listAllTreeOperationsByRoleId(Integer roleId, YesNo isMenu) {
-		List<Operation> allOs = this.list(null, OpenClose.OPEN, isMenu);
-		List<Operation> userOs = this.listOperationsOfRole(roleId, isMenu);
-		return treeOperations(null, allOs, userOs);
+	public List<Permission> listAllTreePermissionsByRoleId(Integer roleId, YesNo isMenu) {
+		List<Permission> allOs = this.list(null, OpenClose.OPEN, isMenu);
+		List<Permission> userOs = this.listPermissionsOfRole(roleId, isMenu);
+		return treePermissions(null, allOs, userOs);
 	}
 	
 	@Override
-	@Cacheable(cacheNames=Constants.CN.OPERATION, keyGenerator=Constants.METHOD_ARGS_KEY_GENERATOR)
-	public List<Operation> listAllGroupByProject(Integer roleId) {
-		List<Operation> newOs = new ArrayList<Operation>();
-		List<Operation> os = roleId == null ? treeOperations(null, this.list(null, null, null), null)
-				: this.listAllTreeOperationsByRoleId(roleId, null);
-		Map<Integer, List<Operation>> mapping = new HashMap<>();
-		for(Operation o : os) {
+	@Cacheable(cacheNames=Constants.CN.PERMISSION, keyGenerator=Constants.METHOD_ARGS_KEY_GENERATOR)
+	public List<Permission> listAllGroupByProject(Integer roleId) {
+		List<Permission> newOs = new ArrayList<Permission>();
+		List<Permission> os = roleId == null ? treePermissions(null, this.list(null, null, null), null)
+				: this.listAllTreePermissionsByRoleId(roleId, null);
+		Map<Integer, List<Permission>> mapping = new HashMap<>();
+		for(Permission o : os) {
 			if(!mapping.containsKey(o.getProjectId())) {
-				mapping.put(o.getProjectId(), new ArrayList<Operation>());
+				mapping.put(o.getProjectId(), new ArrayList<Permission>());
 			}
 			mapping.get(o.getProjectId()).add(o);
 		}
@@ -430,7 +430,7 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 		List<Project> pros = projectService.list(null, null);
 		
 		for(Project p : pros) {
-			Operation o = new Operation();
+			Permission o = new Permission();
 			o.setName(p.getName());
 			o.setIsMenu(YesNo.YES);
 			o.setChildren(mapping.get(p.getId()));
@@ -458,14 +458,14 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 	 * @param owns	拥有的权限
 	 * @return
 	 */
-	private List<Operation> treeOperations(Long parentId, List<Operation> all, List<Operation> owns) {
-		List<Operation> cur = new LinkedList<Operation>();
-		for(Operation o : all) {
+	private List<Permission> treePermissions(Long parentId, List<Permission> all, List<Permission> owns) {
+		List<Permission> cur = new LinkedList<Permission>();
+		for(Permission o : all) {
 			if(parentId == null ? o.getParentId() == null : parentId.equals(o.getParentId())) {
-				o.setChildren(treeOperations(o.getId(), all, owns));
+				o.setChildren(treePermissions(o.getId(), all, owns));
 				if(owns != null) {
 					YesNo isOwn = YesNo.NO;
-					for(Operation own : owns) {
+					for(Permission own : owns) {
 						if(o.getId() != null && o.getId().equals(own.getId())) {
 							isOwn = YesNo.YES;
 							break;
@@ -480,60 +480,60 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 	}
 
 	@Override
-	public List<Operation> listAllTreeOperationsByUserId(String userId, Integer projectId, YesNo isMenu) {
+	public List<Permission> listAllTreePermissionsByUserId(String userId, Integer projectId, YesNo isMenu) {
 		Assert.notBlank(userId, CodeMsgExt.PARAM_BLANK.fillArgs("用户ID"));
-		List<Operation> allOs = this.list(projectId, OpenClose.OPEN, isMenu);
-		List<Operation> userOs = this.listOperationsOfUser(userId, projectId, isMenu);
-		return treeOperations(null, allOs, userOs);
+		List<Permission> allOs = this.list(projectId, OpenClose.OPEN, isMenu);
+		List<Permission> userOs = this.listPermissionsOfUser(userId, projectId, isMenu);
+		return treePermissions(null, allOs, userOs);
 	}
 	
 	@Override
 	@Log(title = "配置指定角色权限", moduleType = ModuleType.USER)
-	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
-	public void addOperationsOfRole(int roleId, Long[] operationIds) {
-		super.deletePhy(sql(RoleOperation.class).eq(R.RoleOperation.roleId, roleId));
-		for(int i = 0; i < operationIds.length; i++) {
-			RoleOperation ro = new RoleOperation();
+	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
+	public void addPermissionsOfRole(int roleId, Long[] permissionIds) {
+		super.deletePhy(sql(RolePermission.class).eq(R.RolePermission.roleId, roleId));
+		for(int i = 0; i < permissionIds.length; i++) {
+			RolePermission ro = new RolePermission();
 			ro.setRoleId(roleId);
-			ro.setOperationId(operationIds[i]);
-			super.save(ro, RoleOperation.class);
+			ro.setPermissionId(permissionIds[i]);
+			super.save(ro, RolePermission.class);
 		}
 	}
 
 	@Override
-	public List<Operation> listOperationsOfRole(int roleId, YesNo isMenu) {
-		return this.listOperationsOfRoles(new Integer[]{roleId}, null, isMenu);
+	public List<Permission> listPermissionsOfRole(int roleId, YesNo isMenu) {
+		return this.listPermissionsOfRoles(new Integer[]{roleId}, null, isMenu);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Operation> listOperationsOfRoles(Integer[] roleIds, Integer projectId, YesNo isMenu) {
+	public List<Permission> listPermissionsOfRoles(Integer[] roleIds, Integer projectId, YesNo isMenu) {
 		if(roleIds == null || roleIds.length == 0)
 			return Collections.EMPTY_LIST;
-		return operationMapper.listOperationsOfRoles(roleIds, projectId, isMenu);
+		return permissionMapper.listPermissionsOfRoles(roleIds, projectId, isMenu);
 	}
 	
 	@Override
-	public List<Operation> listAllOpsOfRoles(Integer[] roleIds,
+	public List<Permission> listAllOpsOfRoles(Integer[] roleIds,
 			Integer projectId, YesNo isMenu) {
-		List<Operation> all = this.list(projectId, OpenClose.OPEN, isMenu);
-		List<Operation> owns = this.listOperationsOfRoles(roleIds, projectId, isMenu);
+		List<Permission> all = this.list(projectId, OpenClose.OPEN, isMenu);
+		List<Permission> owns = this.listPermissionsOfRoles(roleIds, projectId, isMenu);
 		return analyzeOps(all, owns);
 	}
 
 	@Override
-	@Cacheable(cacheNames=Constants.CN.OPERATION, keyGenerator=Constants.METHOD_ARGS_KEY_GENERATOR)
-	public List<Operation> listAllOpsOfUser(String userId, Integer projectId,
+	@Cacheable(cacheNames=Constants.CN.PERMISSION, keyGenerator=Constants.METHOD_ARGS_KEY_GENERATOR)
+	public List<Permission> listAllOpsOfUser(String userId, Integer projectId,
 			YesNo isMenu) {
-		List<Operation> all = this.list(projectId, OpenClose.OPEN, isMenu);
-		List<Operation> owns = this.listOperationsOfUser(userId, projectId, isMenu);
+		List<Permission> all = this.list(projectId, OpenClose.OPEN, isMenu);
+		List<Permission> owns = this.listPermissionsOfUser(userId, projectId, isMenu);
 		return analyzeOps(all, owns);
 	}
 	
-	private List<Operation> analyzeOps(List<Operation> all, List<Operation> owns) {
+	private List<Permission> analyzeOps(List<Permission> all, List<Permission> owns) {
 		if(all != null && all.size() > 0) {
-			for(Operation o : all) {
-				for(Operation t : owns) {
+			for(Permission o : all) {
+				for(Permission t : owns) {
 					if(o.getId().equals(t.getId())) {
 						o.setIsOwn(YesNo.YES);
 						break;
@@ -546,31 +546,31 @@ public class OperationServiceImpl extends AbstractServiceImpl<Operation> impleme
 
 	@Override
 	@Log(title = "修改权限是否为菜单项", moduleType = ModuleType.USER)
-	@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int changeIsMenu(Long id, YesNo isMenu) {
 		return super.update(sql()
-				.updateAst(R.Operation.isMenu, isMenu)
-				.eqAst(R.Operation.id, id)
+				.updateAst(R.Permission.isMenu, isMenu)
+				.eqAst(R.Permission.id, id)
 				);
 	}
 
 	@Override
 	public boolean existName(Integer projectId, String name, Long excludeId) {
 		return this.exist(sql()
-				.eqAst(R.Operation.name, name)
-				.eq(R.Operation.projectId, projectId)
-				.eq(R.Operation.deleted, YesNo.NO)
-				.ne(R.Operation.id, excludeId)
+				.eqAst(R.Permission.name, name)
+				.eq(R.Permission.projectId, projectId)
+				.eq(R.Permission.deleted, YesNo.NO)
+				.ne(R.Permission.id, excludeId)
 				);
 	}
 
 	@Override
 	public boolean existUrl(Integer projectId, String url, Long excludeId) {
 		return this.exist(sql()
-				.eqAst(R.Operation.url, url)
-				.eq(R.Operation.projectId, projectId)
-				.eq(R.Operation.deleted, YesNo.NO)
-				.ne(R.Operation.id, excludeId)
+				.eqAst(R.Permission.url, url)
+				.eq(R.Permission.projectId, projectId)
+				.eq(R.Permission.deleted, YesNo.NO)
+				.ne(R.Permission.id, excludeId)
 				);
 	}
 	

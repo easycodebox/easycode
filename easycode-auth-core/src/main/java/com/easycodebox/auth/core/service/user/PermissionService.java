@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import com.easycodebox.auth.model.entity.user.Operation;
+import com.easycodebox.auth.model.entity.user.Permission;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.dto.DataPage;
@@ -20,34 +20,34 @@ import freemarker.template.TemplateNotFoundException;
  * @author WangXiaoJin
  *
  */
-public interface OperationService {
+public interface PermissionService {
 	
 	/**
 	 * 权限列表
 	 * @return
 	 */
-	List<Operation> list(Integer projectId, OpenClose status, YesNo isMenu);
+	List<Permission> list(Integer projectId, OpenClose status, YesNo isMenu);
 	
 	/**
 	 * 权限详情  - 两种获取方式 1.只需要id 2.只需要projectId和url
 	 * @param id
 	 * @return
 	 */
-	Operation load(Long id, Integer projectId, String url);
+	Permission load(Long id, Integer projectId, String url);
 	
 	/**
 	 * 新增权限
-	 * @param operation
+	 * @param permission
 	 * @return	应该实现返回数据能获取到主键
 	 */
-	Operation add(Operation operation);
+	Permission add(Permission permission);
 	
 	/**
 	 * 修改权限
-	 * @param operation
+	 * @param permission
 	 * @return
 	 */
-	int update(Operation operation);
+	int update(Permission permission);
 	
 	/**
 	 * 逻辑删除权限
@@ -77,8 +77,8 @@ public interface OperationService {
 	 * @param pageSize
 	 * @return
 	 */
-	DataPage<Operation> page(String parentName, String projectName, 
-			String operationName, YesNo isMenu, OpenClose status, 
+	DataPage<Permission> page(String parentName, String projectName, 
+			String permissionName, YesNo isMenu, OpenClose status, 
 			String url, int pageNo, int pageSize);
 	
 	/**
@@ -87,7 +87,7 @@ public interface OperationService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Long> listOperationIds(String userId, Integer projectId);
+	List<Long> listPermissionIds(String userId, Integer projectId);
 	
 	/**
 	 * 列出已开放权限
@@ -103,7 +103,7 @@ public interface OperationService {
 	 * @param isMenu
 	 * @return
 	 */
-	List<Operation> listOperationsOfRole(int roleId, YesNo isMenu);
+	List<Permission> listPermissionsOfRole(int roleId, YesNo isMenu);
 	
 	/**
 	 * 列出已开放的权限
@@ -112,7 +112,7 @@ public interface OperationService {
 	 * @param isMenu
 	 * @return
 	 */
-	List<Operation> listOperationsOfRoles(Integer[] roleIds, Integer projectId, YesNo isMenu);
+	List<Permission> listPermissionsOfRoles(Integer[] roleIds, Integer projectId, YesNo isMenu);
 	
 	/**
 	 * 列出所有已开放的权限，每个权限上都标记了指定的用户是否有该权限
@@ -121,7 +121,7 @@ public interface OperationService {
 	 * @param isMenu
 	 * @return
 	 */
-	List<Operation> listAllOpsOfRoles(Integer[] roleIds, Integer projectId, YesNo isMenu);
+	List<Permission> listAllOpsOfRoles(Integer[] roleIds, Integer projectId, YesNo isMenu);
 	
 	/**
 	 * 从XML文件导入操作到数据库
@@ -148,7 +148,7 @@ public interface OperationService {
 	 * @param isMenu
 	 * @return
 	 */
-	List<Operation> listOperationsOfUser(String userId, Integer projectId, YesNo isMenu);
+	List<Permission> listPermissionsOfUser(String userId, Integer projectId, YesNo isMenu);
 	
 	/**
 	 * 列出所有已开放权限，每个权限上都标记了指定的用户是否有该权限
@@ -157,7 +157,7 @@ public interface OperationService {
 	 * @param isMenu
 	 * @return
 	 */
-	List<Operation> listAllOpsOfUser(String userId, Integer projectId, YesNo isMenu);
+	List<Permission> listAllOpsOfUser(String userId, Integer projectId, YesNo isMenu);
 	
 	/**
 	 * 列出已开放权限
@@ -166,7 +166,7 @@ public interface OperationService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Operation> listTreeOperationsOfUser(String userId, Integer projectId, YesNo isMenu);
+	List<Permission> listTreePermissionsOfUser(String userId, Integer projectId, YesNo isMenu);
 	
 	/**
 	 * 列出已开放权限
@@ -175,7 +175,7 @@ public interface OperationService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Operation> listTreeOperationsByRoleId(Integer roleId, YesNo isMenu);
+	List<Permission> listTreePermissionsByRoleId(Integer roleId, YesNo isMenu);
 	
 	/**
 	 * 列出已开放权限
@@ -184,7 +184,7 @@ public interface OperationService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Operation> listAllTreeOperationsByUserId(String userId, Integer projectId, YesNo isMenu);
+	List<Permission> listAllTreePermissionsByUserId(String userId, Integer projectId, YesNo isMenu);
 	
 	/**
 	 * 列出已开放权限
@@ -193,21 +193,21 @@ public interface OperationService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Operation> listAllTreeOperationsByRoleId(Integer roleId, YesNo isMenu);
+	List<Permission> listAllTreePermissionsByRoleId(Integer roleId, YesNo isMenu);
 	
 	/**
 	 * 列出所有的权限（树形结构）。与其他方法不一样的是，最顶级是project
 	 * @return
 	 */
-	List<Operation> listAllGroupByProject(Integer roleId);
+	List<Permission> listAllGroupByProject(Integer roleId);
 	
 	/**
 	 * 为指定角色设置权限
 	 * @param roleId
-	 * @param operationIds
+	 * @param permissionIds
 	 * @throws Exception
 	 */
-	void addOperationsOfRole(int roleId, Long[] operationIds);
+	void addPermissionsOfRole(int roleId, Long[] permissionIds);
 	
 	/**
 	 * 修改是否是菜单

@@ -136,9 +136,9 @@ public class R {
 	
 	}
 	
-	public static class Operation {
+	public static class Permission {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.Operation.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.Permission.class;
 		public static final Property 
 			id = instance("id", entity),
 			parentId = instance("parentId", entity),
@@ -155,7 +155,7 @@ public class R {
 			parent = instance("parent", entity),
 			project = instance("project", entity),
 			children = instance("children", entity),
-			roleOperations = instance("roleOperations", entity),
+			rolePermissions = instance("rolePermissions", entity),
 			isOwn = instance("isOwn", entity),
 			parentName = instance("parentName", entity),
 			projectName = instance("projectName", entity),
@@ -179,7 +179,7 @@ public class R {
 			deleted = instance("deleted", entity),
 			description = instance("description", entity),
 			remark = instance("remark", entity),
-			roleOperations = instance("roleOperations", entity),
+			rolePermissions = instance("rolePermissions", entity),
 			userRoles = instance("userRoles", entity),
 			groupRoles = instance("groupRoles", entity),
 			isOwn = instance("isOwn", entity),
@@ -193,13 +193,13 @@ public class R {
 	
 	}
 	
-	public static class RoleOperation {
+	public static class RolePermission {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.RoleOperation.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.user.RolePermission.class;
 		public static final Property 
 			roleId = instance("roleId", entity),
-			operationId = instance("operationId", entity),
-			operation = instance("operation", entity),
+			permissionId = instance("permissionId", entity),
+			permission = instance("permission", entity),
 			role = instance("role", entity),
 			creator = instance("creator", entity),
 			createTime = instance("createTime", entity),
@@ -273,7 +273,7 @@ public class R {
 		public static final Property 
 			roleNames = instance("roleNames", entity),
 			roleIds = instance("roleIds", entity),
-			operations = instance("operations", entity),
+			permissions = instance("permissions", entity),
 			menus = instance("menus", entity),
 			id = instance("id", entity),
 			groupId = instance("groupId", entity),

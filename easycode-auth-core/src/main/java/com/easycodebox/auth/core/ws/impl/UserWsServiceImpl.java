@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.GroupService;
-import com.easycodebox.auth.core.service.user.OperationService;
+import com.easycodebox.auth.core.service.user.PermissionService;
 import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.service.user.RoleService;
 import com.easycodebox.auth.core.service.user.UserService;
@@ -18,7 +18,7 @@ import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.ws.UserWsService;
 import com.easycodebox.auth.model.bo.user.UserFullBo;
 import com.easycodebox.auth.model.entity.sys.Project;
-import com.easycodebox.auth.model.entity.user.Operation;
+import com.easycodebox.auth.model.entity.user.Permission;
 import com.easycodebox.auth.model.entity.user.Role;
 import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.common.enums.entity.OpenClose;
@@ -48,7 +48,7 @@ public class UserWsServiceImpl implements UserWsService {
 	@Resource
 	private RoleService roleService;
 	@Resource
-	private OperationService operationService;
+	private PermissionService permissionService;
 	@Resource
 	private RoleProjectService roleProjectService;
 	@Resource
@@ -168,15 +168,15 @@ public class UserWsServiceImpl implements UserWsService {
 		
 		Project pro = projectService.load(projectNo);
 		Assert.notNull(pro, CodeMsgExt.PARAM_ERR.fillArgs("项目编号"));
-		List<Operation> allOs = operationService.listAllOpsOfUser(user.getId(), pro.getId(), null);
+		List<Permission> allOs = permissionService.listAllOpsOfUser(user.getId(), pro.getId(), null);
 		List<String> strOps = new ArrayList<>(allOs.size());
-		for(Operation o : allOs) {
+		for(Permission o : allOs) {
 			if (o.getUrl() != null) {
 				strOps.add(o.getUrl() + (o.getIsOwn() == YesNo.YES ? Symbol.EMPTY : ":0"));
 			}
 		}
 		
-		List<Operation> menus = operationService.listOperationsOfUser(user.getId(), pro.getId(), YesNo.YES);
+		List<Permission> menus = permissionService.listPermissionsOfUser(user.getId(), pro.getId(), YesNo.YES);
 		
 		UserFullBo bo = new UserFullBo();
 		bo.setId(user.getId());
@@ -201,7 +201,7 @@ public class UserWsServiceImpl implements UserWsService {
 		
 		bo.setRoleIds(StringUtils.join(roleIds, Symbol.COMMA));
 		bo.setRoleNames(StringUtils.join(roleNames, Symbol.COMMA));
-		bo.setOperations(StringUtils.join(strOps, Symbol.COMMA));
+		bo.setPermissions(StringUtils.join(strOps, Symbol.COMMA));
 		bo.setMenus(menus);
 		return bo;
 	}

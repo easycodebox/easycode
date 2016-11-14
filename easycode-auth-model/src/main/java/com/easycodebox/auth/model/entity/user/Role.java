@@ -60,7 +60,7 @@ public class Role extends AbstractOperateEntity {
 	
 
 	@OneToMany(mappedBy="role")
-	private List<RoleOperation> roleOperations;
+	private List<RolePermission> rolePermissions;
 	
 	@OneToMany(mappedBy="role")
 	private List<UserRole> userRoles;
@@ -143,12 +143,12 @@ public class Role extends AbstractOperateEntity {
 		this.remark = remark;
 	}
 	
-	public void setRoleOperations(List<RoleOperation> roleOperations){
-		this.roleOperations = roleOperations;
+	public void setRolePermissions(List<RolePermission> rolePermissions){
+		this.rolePermissions = rolePermissions;
 	}
 	
-	public List<RoleOperation> getRoleOperations() {
-		return roleOperations;
+	public List<RolePermission> getRolePermissions() {
+		return rolePermissions;
 	}
 	public void setUserRoles(List<UserRole> userRoles){
 		this.userRoles = userRoles;

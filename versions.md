@@ -20,7 +20,8 @@
 1. 实现权限的导入/导出新版功能
 2. SqlGrammar的增删改查	增加通用Dao
 3. easycode-common包中Enums类名改为DetailEnums
-4. 通信用的UserWsBo/OperationWsBo改为User/Operation，并分离出easycode-auth-model包，为了以后各项目间统一使用用户信息缓存做准备
+4. 通信用的UserWsBo/OperationWsBo改为User/Permission，并分离出easycode-auth-model包，为了以后各项目间统一使用用户信息缓存做准备
 5. 日志属性名由LOG换成log，与lombok统一，方便集成
 6. Shiro + CAS 提供多reamls验证
 7. CAS ticketValidator由Cas20ServiceTicketValidator改为Cas30ServiceTicketValidator
+8. 重构权限表

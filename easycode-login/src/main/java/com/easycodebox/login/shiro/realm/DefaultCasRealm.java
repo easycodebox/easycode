@@ -23,7 +23,6 @@ import org.jasig.cas.client.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.easycodebox.auth.model.bo.user.UserFullBo;
-import com.easycodebox.auth.model.entity.user.Operation;
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.login.shiro.ShiroSecurityInfoHandler;
@@ -128,8 +127,8 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	        	attributes.put(getRoleAttributeNames(), user.getRoleNames());
 			}
 	        //设置权限
-	        if (user.getOperations() != null) {
-	        	attributes.put(getPermissionAttributeNames(), user.getOperations());
+	        if (user.getPermissions() != null) {
+	        	attributes.put(getPermissionAttributeNames(), user.getPermissions());
 			}
 	        //获取当前Session
 	        Session session = SecurityUtils.getSubject().getSession(false);
@@ -139,7 +138,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	        //存储用户信息
 	        securityInfoHandler.storeSecurityInfo(session, userInfo);
 	        //存储菜单
-	        session.setAttribute(BaseConstants.LEFT_MENU_KEY, treeOperations(null, user.getMenus()));
+	        session.setAttribute(BaseConstants.LEFT_MENU_KEY, treePermissions(null, user.getMenus()));
 	        
 			return info;
 		} catch (CasAuthenticationException e) {
@@ -155,11 +154,12 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	 * @param all	所有的权限
 	 * @return
 	 */
-	private static List<Operation> treeOperations(Long parentId, List<Operation> all) {
-		List<Operation> cur = new LinkedList<>();
-		for(Operation o : all) {
+	private static List<com.easycodebox.auth.model.entity.user.Permission> 
+		treePermissions(Long parentId, List<com.easycodebox.auth.model.entity.user.Permission> all) {
+		List<com.easycodebox.auth.model.entity.user.Permission> cur = new LinkedList<>();
+		for(com.easycodebox.auth.model.entity.user.Permission o : all) {
 			if(parentId == null ? o.getParentId() == null : parentId.equals(o.getParentId())) {
-				o.setChildren(treeOperations(o.getId(), all));
+				o.setChildren(treePermissions(o.getId(), all));
 				cur.add(o);
 			}
 		}

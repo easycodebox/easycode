@@ -135,7 +135,7 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.GROUP, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int remove(Integer[] ids) {
 		int count = super.delete(ids);
@@ -154,7 +154,7 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.GROUP, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int removePhy(Integer[] ids) {
 		int count = super.deletePhy(ids);
@@ -184,7 +184,7 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.GROUP, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int openClose(Integer[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);

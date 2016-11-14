@@ -17,8 +17,8 @@ import com.easycodebox.jdbc.entity.AbstractOperateEntity;
  *
  */
 @Entity
-@Table(name="u_operation")
-public class Operation extends AbstractOperateEntity {
+@Table(name="u_permission")
+public class Permission extends AbstractOperateEntity {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 	
@@ -26,7 +26,7 @@ public class Operation extends AbstractOperateEntity {
 	 * 主键
 	 */
 	@Id
-	@GeneratedValue(GeneratorEnum.OPERATION_ID)
+	@GeneratedValue(GeneratorEnum.PERMISSION_ID)
 	private Long id;
 	
 	/**
@@ -86,17 +86,17 @@ public class Operation extends AbstractOperateEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="parentId") 
-	private Operation parent;
+	private Permission parent;
 	
 	@ManyToOne
 	@JoinColumn(name="projectId") 
 	private Project project;
 	
 	@OneToMany(mappedBy="parent")
-	private List<Operation> children;
+	private List<Permission> children;
 
-	@OneToMany(mappedBy="operation")
-	private List<RoleOperation> roleOperations;
+	@OneToMany(mappedBy="permission")
+	private List<RolePermission> rolePermissions;
 	
 	/************ 冗余字段 *******************/
 	/**
@@ -117,11 +117,11 @@ public class Operation extends AbstractOperateEntity {
 	@Transient
 	private String projectName;
 	
-	public Operation(){
+	public Permission(){
 	
 	}
 	
-	public Operation(Long id, Long parentId, String name, 
+	public Permission(Long id, Long parentId, String name, 
 			Integer projectId, YesNo isMenu, String url, String description,
 			String icon){
 		this.id = id;
@@ -135,7 +135,7 @@ public class Operation extends AbstractOperateEntity {
 		this.sort = 0;
 	}
 
-	public Operation(Long id){
+	public Permission(Long id){
 		this.id = id;
 	}
 	public Long getId() {
@@ -234,11 +234,11 @@ public class Operation extends AbstractOperateEntity {
 		this.remark = remark;
 	}
 	
-	public Operation getParent() {
+	public Permission getParent() {
 		return parent;
 	}
 
-	public void setParent(Operation parent) {
+	public void setParent(Permission parent) {
 		this.parent = parent;
 	}
 
@@ -250,20 +250,20 @@ public class Operation extends AbstractOperateEntity {
 		this.project = project;
 	}
 
-	public List<Operation> getChildren() {
+	public List<Permission> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Operation> children) {
+	public void setChildren(List<Permission> children) {
 		this.children = children;
 	}
 
-	public void setRoleOperations(List<RoleOperation> roleOperations){
-		this.roleOperations = roleOperations;
+	public void setRolePermissions(List<RolePermission> rolePermissions){
+		this.rolePermissions = rolePermissions;
 	}
 	
-	public List<RoleOperation> getRoleOperations() {
-		return roleOperations;
+	public List<RolePermission> getRolePermissions() {
+		return rolePermissions;
 	}
 
 	public YesNo getIsOwn() {

@@ -94,7 +94,7 @@
 		p:casServerUrlPrefix="${cas.url}"
 		p:casService="${cas.login.callback}"
 		p:roleAttributeNames="roles"
-		p:permissionAttributeNames="operations" />
+		p:permissionAttributeNames="permissions" />
 	
 	<!-- 多个realm时必须所有的realm都验证通过 -->
 	<bean id="allSuccessfulStrategy" class="org.apache.shiro.authc.pam.AllSuccessfulStrategy" />

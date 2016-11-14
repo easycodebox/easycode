@@ -29,13 +29,13 @@
 				<#if m3.isMenu.className == "YES">
 			<menu3 id="${m3.id?c}" name="${m3.name}"<@notNull key="url" value=m3 /><@status value=m3 /><@notNull key="icon" value=m3 /><@sort value=m3 /><@notNull key="description" value=m3 />>
 					<#if m3.children?size gt 0>
-				<operations>
+				<permissions>
 						<#list m3.children as o4>
 							<#if o4.isMenu.className == "NO">
-					<operation id="${o4.id?c}" name="${o4.name}"<@notNull key="url" value=o4 /><@status value=o4 /><@notNull key="icon" value=o4 /><@sort value=o4 /><@notNull key="description" value=o4 />/>
+					<permission id="${o4.id?c}" name="${o4.name}"<@notNull key="url" value=o4 /><@status value=o4 /><@notNull key="icon" value=o4 /><@sort value=o4 /><@notNull key="description" value=o4 />/>
 							</#if>
 						</#list>
-				</operations>
+				</permissions>
 					</#if>
 			</menu3>
 			
@@ -44,13 +44,13 @@
 				</#if>
 			</#list>
 			<#if tmp3>
-			<operations>
+			<permissions>
 				<#list m2.children as o3>
 					<#if o3.isMenu.className == "NO">
-				<operation id="${o3.id?c}" name="${o3.name}"<@notNull key="url" value=o3 /><@status value=o3 /><@notNull key="icon" value=o3 /><@sort value=o3 /><@notNull key="description" value=o3 />/>		
+				<permission id="${o3.id?c}" name="${o3.name}"<@notNull key="url" value=o3 /><@status value=o3 /><@notNull key="icon" value=o3 /><@sort value=o3 /><@notNull key="description" value=o3 />/>		
 					</#if>
 				</#list>
-			</operations>
+			</permissions>
 			</#if>
 		</menu2>
 		
@@ -59,13 +59,13 @@
 			</#if>
 		</#list>
 		<#if tmp2>
-		<operations>
+		<permissions>
 			<#list m1.children as o2>
 				<#if o2.isMenu.className == "NO">
-			<operation id="${o2.id?c}" name="${o2.name}"<@notNull key="url" value=o2 /><@status value=o2 /><@notNull key="icon" value=o2 /><@sort value=o2 /><@notNull key="description" value=o2 />/>		
+			<permission id="${o2.id?c}" name="${o2.name}"<@notNull key="url" value=o2 /><@status value=o2 /><@notNull key="icon" value=o2 /><@sort value=o2 /><@notNull key="description" value=o2 />/>		
 				</#if>
 			</#list>
-		</operations>
+		</permissions>
 		</#if>
 	</menu1>
 	
@@ -74,12 +74,12 @@
 		</#if>
 	</#list>
 	<#if tmp1>
-	<operations>
+	<permissions>
 		<#list os as o1>
 			<#if o1.isMenu.className == "NO">
-		<operation id="${o1.id?c}" name="${o1.name}"<@notNull key="url" value=o1 /><@status value=o1 /><@notNull key="icon" value=o1 /><@sort value=o1 /><@notNull key="description" value=o1 />/>		
+		<permission id="${o1.id?c}" name="${o1.name}"<@notNull key="url" value=o1 /><@status value=o1 /><@notNull key="icon" value=o1 /><@sort value=o1 /><@notNull key="description" value=o1 />/>		
 			</#if>
 		</#list>
-	</operations>
+	</permissions>
 	</#if>
 </menu>

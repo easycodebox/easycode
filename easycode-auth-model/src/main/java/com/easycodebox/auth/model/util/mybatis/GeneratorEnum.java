@@ -37,7 +37,7 @@ public enum GeneratorEnum implements DetailEnum<String>, GeneratorType {
 	PARTNER_ID("partner_id", "合作商表ID字段", new AlphaNumericGenerator(59, 500, "a15b6", "a15b6", null, YesNo.NO)),
 	
 	GROUP_ID("group_id", "用户组表ID字段", new IntegerGenerator()),
-	OPERATION_ID("operation_id", "权限表ID字段", new LongGenerator(1, 500, "300000000000", "300000000000", null, YesNo.NO)),
+	PERMISSION_ID("permission_id", "权限表ID字段", new LongGenerator(1, 500, "300000000000", "300000000000", null, YesNo.NO)),
 	ROLE_ID("role_id", "角色表ID字段", new IntegerGenerator()),
 	USER_ID("user_id", "用户表ID字段", new AlphaNumericGenerator()),
 	

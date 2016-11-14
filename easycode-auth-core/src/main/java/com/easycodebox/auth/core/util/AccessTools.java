@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.easycodebox.auth.core.service.user.OperationService;
-import com.easycodebox.auth.model.entity.user.Operation;
+import com.easycodebox.auth.core.service.user.PermissionService;
+import com.easycodebox.auth.model.entity.user.Permission;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.spring.BeanFactory;
@@ -18,9 +18,9 @@ public class AccessTools {
 	
 	private static final Logger log = LoggerFactory.getLogger(AccessTools.class);
 	
-	private static OperationService operationService;
+	private static PermissionService permissionService;
 	
-	private static final long[] operationNoToCode = {
+	private static final long[] permissionNoToCode = {
 		0x0000000000000001L, 0x0000000000000002L, 0x0000000000000004L, 0x0000000000000008L,
 		0x0000000000000010L, 0x0000000000000020L, 0x0000000000000040L, 0x0000000000000080L,	
 		0x0000000000000100L, 0x0000000000000200L, 0x0000000000000400L, 0x0000000000000800L,
@@ -38,49 +38,49 @@ public class AccessTools {
 		0x0100000000000000L, 0x0200000000000000L, 0x0400000000000000L, 0x0800000000000000L,
 		0x1000000000000000L, 0x2000000000000000L, 0x4000000000000000L, 0x8000000000000000L };
 	
-	public static Map<Long, Long> convertOperationNosToOperationCode(List<Long> operationNos) {
-		Map<Long, Long> operationCode = new HashMap<Long, Long>();
+	public static Map<Long, Long> convertPermissionNosToPermissionCode(List<Long> permissionNos) {
+		Map<Long, Long> permissionCode = new HashMap<Long, Long>();
 		
-		for(int i = 0; i < operationNos.size(); i ++) {
-			long m = operationNos.get(i) / 64;
-			int n = (int)(operationNos.get(i) % 64);
-			Long val = operationCode.get(m);
-			operationCode.put(m, (val == null ? 0 : val) | operationNoToCode[n]);
+		for(int i = 0; i < permissionNos.size(); i ++) {
+			long m = permissionNos.get(i) / 64;
+			int n = (int)(permissionNos.get(i) % 64);
+			Long val = permissionCode.get(m);
+			permissionCode.put(m, (val == null ? 0 : val) | permissionNoToCode[n]);
 		}
 		
-		return operationCode;
+		return permissionCode;
 	}
 	
-	public static boolean canDo(long operationNo, Map<Long, Long> operationCode) {
-		long m = operationNo / 64;
-		int n = (int)(operationNo % 64);
-		long val = operationCode.get(m) == null ? 0 : operationCode.get(m);
-		return ((val & operationNoToCode[n]) == operationNoToCode[n]);
+	public static boolean canDo(long permissionNo, Map<Long, Long> permissionCode) {
+		long m = permissionNo / 64;
+		int n = (int)(permissionNo % 64);
+		long val = permissionCode.get(m) == null ? 0 : permissionCode.get(m);
+		return ((val & permissionNoToCode[n]) == permissionNoToCode[n]);
 	}
 	
 	/**
 	 * 判断当前用户能否执行某一操作。
 	 * 注意：如果权限列表里面没有对应的权限则默认通过
-	 * @param operationId 操作标识
-	 * @param operationCodes 当前用户的操作码
+	 * @param permissionId 操作标识
+	 * @param permissionCodes 当前用户的操作码
 	 * @return 可以执行该操作返回true；不能执行该操作返回false。
 	 * @throws Exception
 	 */
-	public static boolean canDo(Integer projectId, String url, Map<Long, Long> operationCodes) {
-		if(operationService == null) {
-			operationService = BeanFactory.getBean(OperationService.class);
+	public static boolean canDo(Integer projectId, String url, Map<Long, Long> permissionCodes) {
+		if(permissionService == null) {
+			permissionService = BeanFactory.getBean(PermissionService.class);
 		}
 		boolean valid = false;
-		Operation o = null;
+		Permission o = null;
 		try {
-			o = operationService.load(null, projectId, url);
+			o = permissionService.load(null, projectId, url);
 			if(o != null)
 				valid = true;
 		} catch (Exception e) {
-			log.error("get operation id error.", e);
+			log.error("get permission id error.", e);
 		}
 		if(valid)
-			return AccessTools.canDo(o.getId(), operationCodes);
+			return AccessTools.canDo(o.getId(), permissionCodes);
 		else
 			return true;
 	}

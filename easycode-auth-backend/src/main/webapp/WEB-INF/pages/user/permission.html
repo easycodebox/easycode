@@ -68,17 +68,17 @@
 				<div class="box-body">
 					
 					<div id="toolbar" class="btn-group">
-						[@shiro.hasPermission name="operation/add"]
+						[@shiro.hasPermission name="permission/add"]
                        		<button type="button" title="新增" id="addBtn" class="btn btn-default">
                        			<i class="fa fa-plus"></i>
                        		</button>
                        	[/@shiro.hasPermission]
-                       	[@shiro.hasPermission name="operation/remove"]
-                       		<button type="button" title="批量删除" class="btn btn-default" onclick="gb.remove('/operation/remove.json')">
+                       	[@shiro.hasPermission name="permission/remove"]
+                       		<button type="button" title="批量删除" class="btn btn-default" onclick="gb.remove('/permission/remove.json')">
                        			<i class="fa fa-remove"></i>
                        		</button>
                        	[/@shiro.hasPermission]
-                       	[@shiro.hasPermission name="operation/openClose"]
+                       	[@shiro.hasPermission name="permission/openClose"]
                        		<button type="button" title="启用" class="handler switch-open batch btn btn-default">
                         		<i class="fa fa-toggle-on"></i>
                         	</button>
@@ -86,13 +86,13 @@
 								<i class="fa fa-toggle-off"></i>
 							</button>
 						[/@shiro.hasPermission]
-                       	[@shiro.hasPermission name="operation/imports"]
+                       	[@shiro.hasPermission name="permission/imports"]
 							<span title="导入" class="btn btn-default fileinput-button">
 								<i class="fa fa-upload"></i>
 								<input id="importsOper" name="files[]" multiple="multiple" type="file">
 							</span>
 						[/@shiro.hasPermission]
-                       	[@shiro.hasPermission name="operation/exports"]
+                       	[@shiro.hasPermission name="permission/exports"]
 							<button type="button" title="导出" class="btn btn-default" id="exportsOper">
 								<i class="fa fa-download"></i>
 							</button>
@@ -105,7 +105,7 @@
 							data-id-field="id"
 							data-unique-id="id"
 							data-select-item-name="ids"
-							data-url="/operation/list.json">
+							data-url="/permission/list.json">
 						<thead>
 							<tr>
 								<th data-checkbox="true" data-click-to-select="true"></th>
@@ -125,18 +125,18 @@
 						</thead>
 					</table>
 					<div id="table-ops" class="hidden">
-						[@shiro.hasPermission name="operation/load"]
+						[@shiro.hasPermission name="permission/load"]
 							<a class="btn btn-xs btn-default loadBtn" data-id="{id}" title="详情" href="#" role="button">
 								<i class="fa fa-reorder"></i>
 							</a>
 						[/@shiro.hasPermission]
-						[@shiro.hasPermission name="operation/update"]
+						[@shiro.hasPermission name="permission/update"]
 							<a class="btn btn-xs btn-default updBtn" data-id="{id}" title="修改" href="#" role="button">
 								<i class="fa fa-edit"></i>
 							</a>
 						[/@shiro.hasPermission]
-						[@shiro.hasPermission name="operation/remove"]
-							<a class="btn btn-xs btn-default" href="javascript:gb.remove('/operation/remove.json', '{id}');" title="删除" role="button">
+						[@shiro.hasPermission name="permission/remove"]
+							<a class="btn btn-xs btn-default" href="javascript:gb.remove('/permission/remove.json', '{id}');" title="删除" role="button">
 								<i class="fa fa-remove"></i>
 							</a>
 						[/@shiro.hasPermission]
@@ -156,10 +156,10 @@
 
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/WEB-INF/pages/user/operation_load.html"/]
+	[#include "/WEB-INF/pages/user/permission_load.html"/]
 	
 	<!-- 新增 -->
-	<form id="addDialog" class="form-validate none" action="/operation/add.json" data-suc="新增权限成功" data-fail="新增权限失败">
+	<form id="addDialog" class="form-validate none" action="/permission/add.json" data-suc="新增权限成功" data-fail="新增权限失败">
 		<table class="table-edit">
 			
 			<tr>
@@ -167,7 +167,7 @@
 					<label class="required">项目：</label>
 				</th>
 				<td>
-					<select class="form-control projectId" name="projectId" v-model="operation.projectId" validator="min[1],required" validator-msg="请选择项目类型">
+					<select class="form-control projectId" name="projectId" v-model="permission.projectId" validator="min[1],required" validator-msg="请选择项目类型">
 						<option value="">--请选择项目--</option>
 						<option v-for="pro in projects" :value="pro.id">{{pro.name}}</option>
 					</select>
@@ -177,8 +177,8 @@
 				</th>
 				<td>
 					<div class="tree-tip-wrap">
-						<input type="text" class="form-control parentName" v-model="operation.parentName" validator="gb.operationValidator,valempty" validator-on="gb.operationValidateTime" readonly />
-						<input type="hidden" class="parentId" name="parentId" v-model="operation.parentId" readonly />
+						<input type="text" class="form-control parentName" v-model="permission.parentName" validator="gb.permissionValidator,valempty" validator-on="gb.permissionValidateTime" readonly />
+						<input type="hidden" class="parentId" name="parentId" v-model="permission.parentId" readonly />
 						<div class="tree-tip-div">
 							<ul class="ztree tree-tip"></ul>
 						</div>
@@ -191,7 +191,7 @@
 					<label class="required">权限名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="operation.name" validator="maxlength[128],required" maxlength="128" />
+					<input type="text" name="name" class="form-control" v-model="permission.name" validator="maxlength[128],required" maxlength="128" />
 				</td>
 				<th>
 					<label class="required">状态：</label>
@@ -200,7 +200,7 @@
 					[@e.radioEnum name="status" enumName="OpenClose" 
 							tagAttr='{
 								last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
-								all: "v-model=\'operation.status.className\'"
+								all: "v-model=\'permission.status.className\'"
 							}'/]
 				</td>
 			</tr>
@@ -213,14 +213,14 @@
 					[@e.radioEnum name="isMenu" enumName="YesNo"
 							tagAttr='{
 								last: "validator=\'minlength[1],required\' validator-msg=\'请选择是否为菜单\'",
-								all: "v-model=\'operation.isMenu.className\'"
+								all: "v-model=\'permission.isMenu.className\'"
 							}'/]
 				</td>
 				<th>
 					<label>地址：</label>
 				</th>
 				<td>
-					<input type="text" name="url" class="form-control" v-model="operation.url" validator="maxlength[128],gb.existUrl" maxlength="128" />
+					<input type="text" name="url" class="form-control" v-model="permission.url" validator="maxlength[128],gb.existUrl" maxlength="128" />
 				</td>
 			</tr>
 			
@@ -229,13 +229,13 @@
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="operation.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="permission.sort" validator="num,max[999999999],required" maxlength="9" />
 				</td>
 				<th>
 					<label>图标 ：</label>
 				</th>
 				<td>
-					<input type="text" name="icon" class="form-control" v-model="operation.icon" validator="maxlength[128]" maxlength="128" />
+					<input type="text" name="icon" class="form-control" v-model="permission.icon" validator="maxlength[128]" maxlength="128" />
 				</td>
 			</tr>
 			
@@ -244,7 +244,7 @@
 					<label>描述：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="description" class="form-control" v-model="operation.description" validator="maxlength[512]" maxlength="512"> </textarea>
+					<textarea name="description" class="form-control" v-model="permission.description" validator="maxlength[512]" maxlength="512"> </textarea>
 				</td>
 			</tr>
 			
@@ -253,16 +253,16 @@
 					<label>备注：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="remark" class="form-control" v-model="operation.remark" validator="maxlength[512]" maxlength="512"> </textarea>
+					<textarea name="remark" class="form-control" v-model="permission.remark" validator="maxlength[512]" maxlength="512"> </textarea>
 				</td>
 			</tr>
 		</table>
 	</form>
 	
 	<!-- 修改 -->
-	<form id="updDialog" class="form-validate none" action="/operation/update.json" data-suc="更新权限成功" data-fail="更新权限失败">
+	<form id="updDialog" class="form-validate none" action="/permission/update.json" data-suc="更新权限成功" data-fail="更新权限失败">
 	
-		<input type="hidden" name="id" v-model="operation.id" />
+		<input type="hidden" name="id" v-model="permission.id" />
 		
 		<table class="table-edit">
 			<tr>
@@ -270,7 +270,7 @@
 					<label class="required">项目：</label>
 				</th>
 				<td>
-					<select class="form-control projectId" name="projectId" v-model="operation.projectId" validator="min[1],required" validator-msg="请选择项目类型">
+					<select class="form-control projectId" name="projectId" v-model="permission.projectId" validator="min[1],required" validator-msg="请选择项目类型">
 						<option value="">--请选择项目--</option>
 						<option v-for="pro in projects" :value="pro.id">{{pro.name}}</option>
 					</select>
@@ -280,8 +280,8 @@
 				</th>
 				<td>
 					<div class="tree-tip-wrap">
-						<input type="text" class="form-control parentName" v-model="operation.parentName" validator="gb.operationValidator,valempty" validator-on="gb.operationValidateTime" readonly />
-						<input type="hidden" class="parentId" name="parentId" v-model="operation.parentId" readonly />
+						<input type="text" class="form-control parentName" v-model="permission.parentName" validator="gb.permissionValidator,valempty" validator-on="gb.permissionValidateTime" readonly />
+						<input type="hidden" class="parentId" name="parentId" v-model="permission.parentId" readonly />
 						<div class="tree-tip-div">
 							<ul class="ztree tree-tip"></ul>
 						</div>
@@ -294,13 +294,13 @@
 					<label class="required">权限名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="operation.name" validator="maxlength[128],required" maxlength="128" />
+					<input type="text" name="name" class="form-control" v-model="permission.name" validator="maxlength[128],required" maxlength="128" />
 				</td>
 				<th>
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="operation.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="permission.sort" validator="num,max[999999999],required" maxlength="9" />
 				</td>
 			</tr>
 			
@@ -312,14 +312,14 @@
 					[@e.radioEnum name="isMenu" enumName="YesNo" 
 							tagAttr='{
 								last: "validator=\'minlength[1],required\' validator-msg=\'请选择是否为菜单\'",
-								all: "v-model=\'operation.isMenu.className\'"
+								all: "v-model=\'permission.isMenu.className\'"
 							}'/]
 				</td>
 				<th>
 					<label>地址：</label>
 				</th>
 				<td>
-					<input type="text" name="url" class="form-control" v-model="operation.url" validator="maxlength[128],gb.existUrl" maxlength="128" />
+					<input type="text" name="url" class="form-control" v-model="permission.url" validator="maxlength[128],gb.existUrl" maxlength="128" />
 				</td>
 			</tr>
 			
@@ -328,7 +328,7 @@
 					<label>图标 ：</label>
 				</th>
 				<td>
-					<input type="text" name="icon" class="form-control" v-model="operation.icon" validator="maxlength[128]" maxlength="128" />
+					<input type="text" name="icon" class="form-control" v-model="permission.icon" validator="maxlength[128]" maxlength="128" />
 				</td>
 			</tr>
 			
@@ -337,7 +337,7 @@
 					<label>描述：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="description" class="form-control" v-model="operation.description" validator="maxlength[512]" maxlength="512"></textarea>
+					<textarea name="description" class="form-control" v-model="permission.description" validator="maxlength[512]" maxlength="512"></textarea>
 				</td>
 			</tr>
 			
@@ -346,7 +346,7 @@
 					<label>备注：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="remark" class="form-control" v-model="operation.remark" validator="maxlength[512]" maxlength="512"></textarea>
+					<textarea name="remark" class="form-control" v-model="permission.remark" validator="maxlength[512]" maxlength="512"></textarea>
 				</td>
 			</tr>
 		</table>
@@ -360,5 +360,5 @@
 		jquery.fileupload.js,
 		jquery.fileupload-process.js,
 		jquery.fileupload-validate.js" /]
-	[@e.script tagAttr="transient='true'" src="/js/??user/operation.js" /]
+	[@e.script tagAttr="transient='true'" src="/js/??user/permission.js" /]
 </inner-js>

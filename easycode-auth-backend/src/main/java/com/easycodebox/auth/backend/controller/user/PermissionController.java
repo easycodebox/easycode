@@ -19,10 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.ProjectService;
-import com.easycodebox.auth.core.service.user.OperationService;
+import com.easycodebox.auth.core.service.user.PermissionService;
 import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
-import com.easycodebox.auth.model.entity.user.Operation;
+import com.easycodebox.auth.model.entity.user.Permission;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
@@ -43,12 +43,12 @@ import com.fasterxml.jackson.databind.SerializerProvider;
  *
  */
 @Controller
-public class OperationController extends BaseController {
+public class PermissionController extends BaseController {
 	
 	@Resource
 	private UserIdConverter userIdConverter;
 	@Resource
-	private OperationService operationService;
+	private PermissionService permissionService;
 	@Resource
 	private ProjectService projectService;
 	@Resource
@@ -58,12 +58,12 @@ public class OperationController extends BaseController {
 	 * 列表
 	 */
 	@ResponseBody
-	public CodeMsg list(Operation operation, DataPage<Operation> dataPage) throws Exception {
-		DataPage<Operation> data = operationService.page(operation.getParentName(), 
-				operation.getProjectName(), operation.getName(), 
-				operation.getIsMenu(), operation.getStatus(), operation.getUrl(), 
+	public CodeMsg list(Permission permission, DataPage<Permission> dataPage) throws Exception {
+		DataPage<Permission> data = permissionService.page(permission.getParentName(), 
+				permission.getProjectName(), permission.getName(), 
+				permission.getIsMenu(), permission.getStatus(), permission.getUrl(), 
 				dataPage.getPageNo(), dataPage.getPageSize()); 
-		for (Operation item : data.getData()) {
+		for (Permission item : data.getData()) {
 			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
 		}
 		return none(data);
@@ -75,7 +75,7 @@ public class OperationController extends BaseController {
 	@ResponseBody
 	public CodeMsg load(Long id) throws Exception {
 		Assert.notNull(id, CodeMsg.FAIL.msg("主键参数不能为空"));
-		Operation data = operationService.load(id, null, null);
+		Permission data = permissionService.load(id, null, null);
 		return isTrueNone(data != null, "没有对应的权限").data(data);
 	}
 	
@@ -83,8 +83,8 @@ public class OperationController extends BaseController {
 	 * 新增
 	 */
 	@ResponseBody
-	public CodeMsg add(Operation operation) throws Exception {
-		operationService.add(operation);
+	public CodeMsg add(Permission permission) throws Exception {
+		permissionService.add(permission);
 		return CodeMsg.SUC;
 	}
 	
@@ -92,8 +92,8 @@ public class OperationController extends BaseController {
 	 * 修改
 	 */
 	@ResponseBody
-	public CodeMsg update(Operation operation) throws Exception {
-		int count = operationService.update(operation);
+	public CodeMsg update(Permission permission) throws Exception {
+		int count = permissionService.update(permission);
 		return isTrue(count > 0);
 	}
 	
@@ -105,7 +105,7 @@ public class OperationController extends BaseController {
 		Validators.instance(ids)
 			.minLength(1, "主键参数不能传空值")
 			.notEmptyInside("主键参数不能传空值");
-		int count = operationService.remove(ids);
+		int count = permissionService.remove(ids);
 		return isTrue(count > 0);
 	}
 	
@@ -117,7 +117,7 @@ public class OperationController extends BaseController {
 		Validators.instance(ids)
 			.minLength(1, "主键参数不能传空值")
 			.notEmptyInside("主键参数不能传空值");
-		int count = operationService.removePhy(ids);
+		int count = permissionService.removePhy(ids);
 		return isTrue(count > 0);
 	}
 	
@@ -126,14 +126,14 @@ public class OperationController extends BaseController {
 	 */
 	@ResponseBody
 	public CodeMsg imports(@RequestParam("files[]")MultipartFile[] files) throws Exception {
-		//List<InputStream> streams = Resources.scan2InputStream("operations/*.xml");
+		//List<InputStream> streams = Resources.scan2InputStream("permissions/*.xml");
 		List<FileInfo> fileInfos = new ArrayList<>(files.length);
 		for (MultipartFile file : files) {
 			FileInfo fileInfo = new FileInfo();
 			fileInfo.setName(file.getOriginalFilename());
 			if (!file.isEmpty()) {
 				try {
-					operationService.importFromXml(file.getInputStream());
+					permissionService.importFromXml(file.getInputStream());
 					fileInfo.setError("上传成功");
 				} catch (ErrorContext e) {
 					fileInfo.setError(e.getError().getMsg());
@@ -151,7 +151,7 @@ public class OperationController extends BaseController {
 	/**
 	 * 导出权限
 	 */
-	@RequestMapping("/operation/exports/{projectId}")
+	@RequestMapping("/permission/exports/{projectId}")
 	public void exports(@PathVariable("projectId")Integer projectId, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String filename = projectService.load(projectId).getProjectNo() + ".xml";
@@ -163,7 +163,7 @@ public class OperationController extends BaseController {
 		response.setContentType(request.getServletContext().getMimeType(filename));
 		response.setHeader("Content-Disposition", "attachment;fileName=" + filename);
 		try (Writer writer = response.getWriter()) {
-			operationService.exportToXml("operations.ftl", projectId, writer);
+			permissionService.exportToXml("permissions.ftl", projectId, writer);
 		}
 	}
 	
@@ -175,15 +175,15 @@ public class OperationController extends BaseController {
 	 */
 	@ResponseBody
 	public String listByProject(Integer projectId) throws Exception {
-		List<Operation> os = operationService.list(projectId, null, null);
-		Operation no = new Operation();
+		List<Permission> os = permissionService.list(projectId, null, null);
+		Permission no = new Permission();
 		no.setId(-1L);
 		no.setName("--无--");
 		os.add(0, no);
-		Jacksons j = Jacksons.nonNull().addJsonSerializer(Operation.class, new JsonSerializer<Operation>(){
+		Jacksons j = Jacksons.nonNull().addJsonSerializer(Permission.class, new JsonSerializer<Permission>(){
 
 			@Override
-			public void serialize(Operation value, JsonGenerator gen,
+			public void serialize(Permission value, JsonGenerator gen,
 					SerializerProvider serializers) throws IOException,
 					JsonProcessingException {
 				gen.writeStartObject();
@@ -200,12 +200,12 @@ public class OperationController extends BaseController {
 	}
 	
 	@ResponseBody
-	public String cfgOperationByRoleId(Integer roleId) throws Exception {
-		List<Operation> os = operationService.listAllGroupByProject(roleId);
-		Jacksons j = Jacksons.nonNull().addJsonSerializer(Operation.class, new JsonSerializer<Operation>(){
+	public String cfgPermissionByRoleId(Integer roleId) throws Exception {
+		List<Permission> os = permissionService.listAllGroupByProject(roleId);
+		Jacksons j = Jacksons.nonNull().addJsonSerializer(Permission.class, new JsonSerializer<Permission>(){
 
 			@Override
-			public void serialize(Operation value, JsonGenerator gen,
+			public void serialize(Permission value, JsonGenerator gen,
 					SerializerProvider serializers) throws IOException,
 					JsonProcessingException {
 				gen.writeStartObject();
@@ -227,8 +227,8 @@ public class OperationController extends BaseController {
 	}
 	
 	@ResponseBody
-	public CodeMsg addOperationsOfRole(Long[] oprtds, Integer[] projectIds, Integer roleId) throws Exception {
-		operationService.addOperationsOfRole(roleId, oprtds == null ? new Long[0] : oprtds);
+	public CodeMsg addPermissionsOfRole(Long[] oprtds, Integer[] projectIds, Integer roleId) throws Exception {
+		permissionService.addPermissionsOfRole(roleId, oprtds == null ? new Long[0] : oprtds);
 		roleProjectService.updateRoleProjectByRoleId(roleId, projectIds);
 		return CodeMsg.SUC;
 	}
@@ -238,14 +238,14 @@ public class OperationController extends BaseController {
 		Validators.instance(ids)
 			.minLength(1, "主键参数不能传空值")
 			.notEmptyInside("主键参数不能传空值");
-		int count = operationService.openClose(ids, status);
+		int count = permissionService.openClose(ids, status);
 		return isTrueNone(count > 0);
 	}
 	
 	@ResponseBody
 	public CodeMsg changeIsMenu(Long id, YesNo isMenu) throws Exception {
 		Assert.notNull(id, CodeMsgExt.PARAM_BLANK.fillArgs("主键"));
-		int count = operationService.changeIsMenu(id, isMenu);
+		int count = permissionService.changeIsMenu(id, isMenu);
 		return isTrueNone(count > 0);
 	}
 	
@@ -253,7 +253,7 @@ public class OperationController extends BaseController {
 	public CodeMsg existName(Integer projectId, String name, Long excludeId) throws Exception {
 		Assert.notNull(projectId, CodeMsgExt.PARAM_BLANK.fillArgs("项目ID"));
 		Assert.notBlank(name, CodeMsgExt.PARAM_BLANK.fillArgs("权限名"));
-		boolean exist = operationService.existName(projectId, name, excludeId);
+		boolean exist = permissionService.existName(projectId, name, excludeId);
 		return none(exist);
 	}
 	
@@ -261,7 +261,7 @@ public class OperationController extends BaseController {
 	public CodeMsg existUrl(Integer projectId, String url, Long excludeId) throws Exception {
 		Assert.notNull(projectId, CodeMsgExt.PARAM_BLANK.fillArgs("项目ID"));
 		Assert.notBlank(url, CodeMsgExt.PARAM_BLANK.fillArgs("url"));
-		boolean exist = operationService.existUrl(projectId, url, excludeId);
+		boolean exist = permissionService.existUrl(projectId, url, excludeId);
 		return none(exist);
 	}
 	

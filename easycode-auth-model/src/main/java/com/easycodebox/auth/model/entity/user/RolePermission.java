@@ -10,8 +10,8 @@ import com.easycodebox.jdbc.entity.AbstractCreateEntity;
  *
  */
 @Entity
-@Table(name="u_role_operation")
-public class RoleOperation extends AbstractCreateEntity {
+@Table(name="u_role_permission")
+public class RolePermission extends AbstractCreateEntity {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 	
@@ -25,25 +25,26 @@ public class RoleOperation extends AbstractCreateEntity {
 	 * 权限ID
 	 */
 	@Id
-	private Long operationId;
+	private Long permissionId;
 	
 
 	@ManyToOne
-	@JoinColumn(name="operationId") 
-	private Operation operation;
+	@JoinColumn(name="permissionId") 
+	private Permission permission;
 	
 	@ManyToOne
 	@JoinColumn(name="roleId") 
 	private Role role;
 	
-	public RoleOperation(){
+	public RolePermission(){
 	
 	}
 
-	public RoleOperation(Integer roleId, Long operationId){
+	public RolePermission(Integer roleId, Long permissionId) {
 		this.roleId = roleId;
-		this.operationId = operationId;
+		this.permissionId = permissionId;
 	}
+	
 	public Integer getRoleId() {
 		return roleId;
 	}
@@ -52,20 +53,20 @@ public class RoleOperation extends AbstractCreateEntity {
 		this.roleId = roleId;
 	}
 	
-	public Long getOperationId() {
-		return operationId;
+	public Long getPermissionId() {
+		return permissionId;
 	}
 	
-	public void setOperationId(Long operationId) {
-		this.operationId = operationId;
+	public void setPermissionId(Long permissionId) {
+		this.permissionId = permissionId;
 	}
 	
-	public void setOperation(Operation operation){
-		this.operation = operation;
+	public void setPermission(Permission permission){
+		this.permission = permission;
 	}
 	
-	public Operation getOperation() {
-		return operation;
+	public Permission getPermission() {
+		return permission;
 	}
 	public void setRole(Role role){
 		this.role = role;

@@ -77,7 +77,7 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	@Log(title = "添加授权项目", moduleType = ModuleType.SYS)
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public Project add(Project project) {
 		
@@ -101,7 +101,7 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT, key="#project.id"),
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int update(Project project) {
 		
@@ -127,7 +127,7 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int remove(Integer[] ids) {
 		roleProjectService.removePhyByProjectIds(ids);
@@ -140,7 +140,7 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int removePhy(Integer[] ids) {
 		roleProjectService.removePhyByProjectIds(ids);
@@ -165,7 +165,7 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
-			@CacheEvict(cacheNames=Constants.CN.OPERATION, allEntries=true)
+			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	})
 	public int openClose(Integer[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);

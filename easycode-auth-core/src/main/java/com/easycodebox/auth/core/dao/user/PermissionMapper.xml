@@ -3,13 +3,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-<mapper namespace="com.easycodebox.auth.core.dao.user.OperationMapper">
+<mapper namespace="com.easycodebox.auth.core.dao.user.PermissionMapper">
 
-	<select id="load" resultType="Operation">
+	<select id="load" resultType="Permission">
 		SELECT o.*, pa.name AS parentName, p.name AS projectName
-		FROM u_operation o 
+		FROM u_permission o 
 		LEFT JOIN sys_project p ON o.projectId = p.id
-		LEFT JOIN u_operation pa ON o.parentId = pa.id
+		LEFT JOIN u_permission pa ON o.parentId = pa.id
 		WHERE o.deleted = %{YesNo.NO}
 		<if test="id != null">
 			AND o.id = #{id}
@@ -23,9 +23,9 @@
 	</select>
 	
 	<sql id="pageSql">
-		FROM u_operation o 
+		FROM u_permission o 
 		LEFT JOIN sys_project p ON o.projectId = p.id
-		LEFT JOIN u_operation pa ON o.parentId = pa.id
+		LEFT JOIN u_permission pa ON o.parentId = pa.id
 		WHERE o.deleted = %{YesNo.NO}
 		<if test="parentName != null">
 			AND pa.name LIKE CONCAT('%',#{parentName},'%')
@@ -33,8 +33,8 @@
 		<if test="projectName != null">
 			AND p.name LIKE CONCAT('%',#{projectName},'%')
 		</if>
-		<if test="operationName != null">
-			AND o.name LIKE CONCAT('%',#{operationName},'%')
+		<if test="permissionName != null">
+			AND o.name LIKE CONCAT('%',#{permissionName},'%')
 		</if>
 		<if test="url != null">
 			AND o.url LIKE CONCAT('%',#{url},'%')
@@ -46,7 +46,7 @@
 			AND o.status = #{status}
 		</if>
 	</sql>
-	<select id="page" resultType="Operation">
+	<select id="page" resultType="Permission">
 		SELECT o.id, o.parentId, o.projectId, o.name, o.status, o.isMenu,
 		o.url, o.sort, o.icon, o.remark, o.creator, o.createTime,
 		pa.name AS parentName, p.name AS projectName
@@ -58,8 +58,8 @@
 		SELECT count(1) <include refid="pageSql"/>
 	</select>
 	
-	<select id="listOperationsOfRoles" resultType="Operation">
-		SELECT * FROM u_operation o 
+	<select id="listPermissionsOfRoles" resultType="Permission">
+		SELECT * FROM u_permission o 
 		WHERE o.deleted = %{YesNo.NO}
 		<if test="projectId != null">
 			AND o.projectId = #{projectId}
@@ -68,7 +68,7 @@
 			AND o.isMenu = #{isMenu}
 		</if>
 		<if test="roleIds != null">
-			AND EXISTS ( SELECT * FROM u_role_operation ro WHERE ro.operationId = o.id 
+			AND EXISTS ( SELECT * FROM u_role_permission ro WHERE ro.permissionId = o.id 
 				AND ro.roleId IN 
 				<foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
 					#{roleId}

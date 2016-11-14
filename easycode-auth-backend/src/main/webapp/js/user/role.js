@@ -71,7 +71,7 @@ $(function(){
 	}).on("click", ".cfgOpsBtn", function() {
 		var $btn = $(this),
 			id = $btn.data("id");
-		$.post("/operation/cfgOperationByRoleId.json", {roleId: id}, function(data) {
+		$.post("/permission/cfgPermissionByRoleId.json", {roleId: id}, function(data) {
 			data = JSON.parse(data);
 			if(!$("#treeUl").length) {
 				$("body").append('<ul id="treeUl" class="ztree" style="display: none;height: 255px;overflow-y: auto;" ></ul>');
@@ -104,7 +104,7 @@ $(function(){
 				}
 				$.ajax({
 					type: "post",
-			        url: "/operation/addOperationsOfRole.json",
+			        url: "/permission/addPermissionsOfRole.json",
 			        data: {
 						oprtds: oprtds,
 						projectIds: projectIds,

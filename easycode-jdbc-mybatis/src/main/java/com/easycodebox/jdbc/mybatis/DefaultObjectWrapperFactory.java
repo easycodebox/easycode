@@ -18,7 +18,7 @@ import com.easycodebox.common.lang.StringUtils;
 
 /**
  * 此类是为了解决MyBatis的XML文件中SQL语句出现枚举值而定义的
- * 例子:	SELECT * FROM u_operation o WHERE o.status != #{OpenClose.CLOSE} 
+ * 例子:	SELECT * FROM u_permission o WHERE o.status != #{OpenClose.CLOSE} 
  * 		ORDER BY o.sort DESC, o.createTime DESC
  * 		会把#{OpenClose.CLOSE} 自动转换成对应的枚举值
  * 注意：当MAPPER文件中statementType="STATEMENT" 时，此类不会生效。建议使用替代类DelegateSqlSource
