@@ -84,13 +84,6 @@ public interface UserService {
 	 */
 	int openClose(String[] ids, OpenClose status);
 	
-	/**
-	 * 登录统一使用CAS系统
-	 * @return	返回对应的用户（包括被锁的用户），返回null说明不存在或者已被删除
-	 */
-	@Deprecated
-	User login(String username, String password);
-	
 	boolean existUsername(String username, String excludeId);
 	
 	boolean existNickname(String nickname, String excludeId);

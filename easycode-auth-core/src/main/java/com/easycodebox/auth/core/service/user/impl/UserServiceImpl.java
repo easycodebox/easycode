@@ -235,33 +235,6 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	}
 	
 	@Override
-	public User login(String username, String password) {
-		User u = this.loadByUsername(username);
-		if(u == null)
-			return null;
-		else if (!u.getPassword().equals(DigestUtils.md5Hex(password))) {
-			Integer loginFail = u.getLoginFail() + 1;
-			//用户状态为开启下，登录超过指定次数，则锁住该用户
-			if(loginFail > Constants.loginFail
-					&& u.getStatus() == OpenClose.OPEN)
-				
-				super.update(sql()
-						.update(R.User.loginFail, loginFail)
-						.update(R.User.status, OpenClose.CLOSE)
-						.eq(R.User.id, u.getId())
-						);
-			return null;
-		} else if (u.getStatus() == OpenClose.OPEN
-					&& u.getLoginFail() > 0) {
-			super.update(sql()
-					.update(R.User.loginFail, 0)
-					.eq(R.User.id, u.getId())
-					);
-		}
-		return u;
-	}
-	
-	@Override
 	public boolean existUsername(String username, String excludeId) {
 		return this.exist(sql()
 				.eqAst(R.User.username, username)

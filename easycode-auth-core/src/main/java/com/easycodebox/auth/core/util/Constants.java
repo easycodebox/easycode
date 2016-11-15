@@ -9,9 +9,6 @@ import com.easycodebox.common.processor.StaticValue;
  */
 public class Constants extends BaseConstants {
 	
-	//登录失败指定次数就锁住该用户
-	@StaticValue("${login_fail}")
-	public static Integer loginFail;
 	//重置后的新密码
 	@StaticValue("${reset_pwd}")
 	public static String resetPwd;
