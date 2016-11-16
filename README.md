@@ -12,13 +12,38 @@
 	简单例子：
 	
 	```java
-	//等价于： SELECT * FROM user WHERE id = '1'
+	//返回单条数据 - 等价于： SELECT * FROM user WHERE id = '1'
 	super.get(sql()
-	.eq(R.User.id, '1')
+		.eq(R.User.id, "1")
+	);
+	
+	//返回单条数据 - 等价于： SELECT realname FROM user WHERE id = '1'
+	super.get(sql()
+		.column(R.User.realname)
+		.eq(R.User.id, "1")
+	);
+	
+	//返回多条数据 - 等价于： SELECT * FROM user WHERE deleted = 0 ORDER BY createTime DESC
+	//枚举YesNo.NO转成SQL时为 0
+	super.list(sql()
+		.eq(R.User.deleted, YesNo.NO)
+		.desc(R.User.createTime)
 	);
 	
 	//等价于： INSERT INTO user (...) values (...)
 	super.save(user);
+	
+	//全表更新 - 等价于： UPDATE user SET ... WHERE id = ?
+	super.update(user);
+	
+	//等价于：  UPDATE user SET realname = '张三' WHERE id = '1'
+	super.update(sql()
+		.update(R.User.realname, "张三")
+		.eq(R.User.id, "1")
+	);
+	
+	//物理删除
+	super.deletePhy("1");
 	```
 	
 	> 执行insert、update时，自动帮你把创建人、创建时间、修改人、修改时间属性设置好
