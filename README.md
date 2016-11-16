@@ -94,9 +94,10 @@
 1. MySql
 2. Mybatis + EasyCodeJdbc
 3. CAS + Shiro
-4. SpringMVC + Freemarker
-5. Sitemesh3 + Pjax
-6. Vuejs + Bootstrap3
+4. Spring + Logback + Ehcache
+5. SpringMVC + Freemarker
+6. Sitemesh3 + Pjax
+7. Vuejs + Bootstrap3
 
 > 注意：项目中使用的公共JS、CSS在[easycode-static](https://github.com/easycodebox/easycode-static)项目下
 
