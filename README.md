@@ -30,6 +30,14 @@
 		.desc(R.User.createTime)
 	);
 	
+	//分页查询 - 返回多条数据 - 等价于： SELECT * FROM user WHERE deleted = 0 ORDER BY createTime DESC LIMIT ?, ?
+	//枚举YesNo.NO转成SQL时为 0
+	super.page(sql()
+		.eq(R.User.deleted, YesNo.NO)
+		.desc(R.User.createTime)
+		.limit(pageNo, pageSize)
+	);
+	
 	//等价于： INSERT INTO user (...) values (...)
 	super.save(user);
 	
