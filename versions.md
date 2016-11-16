@@ -15,7 +15,7 @@
 3. 增强ErrorContextFilter功能，提供各种配置
 4. 重构easycode-login
 
-###【v0.2.4】 - 2016.10.28
+###【v0.2.4】 - 2016.11.13
 
 1. 实现权限的导入/导出新版功能
 2. SqlGrammar的增删改查	增加通用Dao
@@ -25,3 +25,4 @@
 6. Shiro + CAS 提供多reamls验证
 7. CAS ticketValidator由Cas20ServiceTicketValidator改为Cas30ServiceTicketValidator
 8. 重构权限表
+9. 集成Sitemesh3 + Pjax
