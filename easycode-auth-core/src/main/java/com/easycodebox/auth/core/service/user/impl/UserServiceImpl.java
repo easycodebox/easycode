@@ -37,6 +37,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@Override
 	public List<User> list() {
 		return super.list(sql()
+				.eq(R.User.isSuperAdmin, Constants.operateSuperAdmin ? null : YesNo.NO)
 				.eq(R.User.deleted, YesNo.NO)
 				.desc(R.User.sort)
 				.desc(R.User.createTime)
@@ -192,6 +193,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 				.likeTrim(R.User.email, email)
 				.likeTrim(R.User.mobile, mobile)
 				.eq(R.User.status, status)
+				.eq(R.User.isSuperAdmin, Constants.operateSuperAdmin ? null : YesNo.NO)
 				.eq(R.User.deleted, YesNo.NO)
 				.desc(R.User.sort)
 				.desc(R.User.createTime)
@@ -215,6 +217,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 				.likeTrim(R.User.email, email)
 				.likeTrim(R.User.mobile, mobile)
 				.eq(R.User.status, status)
+				.eq(R.User.isSuperAdmin, Constants.operateSuperAdmin ? null : YesNo.NO)
 				.eq(R.User.deleted, YesNo.NO)
 				.in(R.User.id, ids)
 				.desc(R.User.sort)

@@ -461,7 +461,7 @@ $(function() {
 			gb.resetForm($dialog);
 			gb.show(gb.title($btn), $dialog);
 		}else {
-			$.get("/user/updatePwd.html", function(data) {
+			$.get("/user/updatePwd", function(data) {
 				$("body").append($dialog = $(data));
 				//绑定表单验证
 				$dialog.bValidator();

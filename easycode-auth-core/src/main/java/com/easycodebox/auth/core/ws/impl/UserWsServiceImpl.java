@@ -76,9 +76,9 @@ public class UserWsServiceImpl implements UserWsService {
 	@Override
 	public int updatePwd(String id, String oldPwd, String newPwd)
 			throws ErrorContext {
-		String tmpPwd = userService.getPwd(id);
-		Assert.notNull(tmpPwd, CodeMsg.FAIL.msg("没有此用户"));
-		Assert.isTrue(tmpPwd.equals(oldPwd), CodeMsg.FAIL.msg("密码错误"));
+		User user = userService.load(id);
+		Assert.notNull(user, CodeMsg.FAIL.msg("没有此用户"));
+		Assert.isTrue(user.getPassword().equals(oldPwd), CodeMsg.FAIL.msg("密码错误"));
 		return userService.updatePwd(newPwd, id);
 	}
 

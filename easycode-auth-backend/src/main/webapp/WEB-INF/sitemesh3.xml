@@ -9,6 +9,8 @@
 	<mapping path="/errors/*" exclude="true" />
 	<mapping path="/imgs/*" exclude="true" />
 	<mapping path="/js/*" exclude="true" />
+	
+	<mapping path="/user/updatePwd" exclude="true" />
 
 	<content-processor>
 		<tag-rule-bundle class="com.easycodebox.common.sitemesh3.InnerJsTagRuleBundle" />

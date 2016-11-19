@@ -14,6 +14,12 @@ public class Constants extends BaseConstants {
 	public static String resetPwd;
 	
 	/**
+	 * 是否可以修改super admin信息
+	 */
+	@StaticValue("${operate_super_admin}")
+	public static boolean operateSuperAdmin;
+	
+	/**
 	 * 混合存储缓存的KeyGenerator bean name
 	 */
 	public static final String METHOD_ARGS_KEY_GENERATOR = "methodArgsKeyGenerator";

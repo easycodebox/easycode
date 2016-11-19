@@ -12,9 +12,11 @@ import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.user.GroupService;
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
+import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.model.entity.user.Group;
 import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.security.SecurityUtils;
@@ -155,14 +157,16 @@ public class UserController extends BaseController {
 	 */
 	@ResponseBody
 	public CodeMsg updatingPwd(String oldPwd, String pwd) throws Exception {
-		String tmpPwd = userService.getPwd(SecurityUtils.getUserId());
+		User user = userService.load(SecurityUtils.getUserId());
 		oldPwd = DigestUtils.md5Hex(oldPwd);
 		
-		if(tmpPwd == null) {
-			return CodeMsg.FAIL.msg("不能修改此用户的密码");
-		}else if(!tmpPwd.equals(oldPwd))
+		if(user == null) {
+			return CodeMsg.FAIL.msg("请重新登录");
+		} else if(!user.getPassword().equals(oldPwd)) {
 			return CodeMsg.FAIL.msg("原密码输入错误");
-		else {
+		} else if (!Constants.operateSuperAdmin && user.getIsSuperAdmin() == YesNo.YES) {
+			return CodeMsg.FAIL.msg("您不能修改超级管理员密码");
+		} else {
 			int num = userService.updatePwd(DigestUtils.md5Hex(pwd), SecurityUtils.getUserId());
 			return isTrue(num > 0);
 		}
