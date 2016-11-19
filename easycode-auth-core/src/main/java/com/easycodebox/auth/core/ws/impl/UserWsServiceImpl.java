@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.service.user.RoleService;
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
+import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.ws.UserWsService;
 import com.easycodebox.auth.model.bo.user.UserFullBo;
 import com.easycodebox.auth.model.entity.sys.Project;
@@ -78,8 +80,13 @@ public class UserWsServiceImpl implements UserWsService {
 			throws ErrorContext {
 		User user = userService.load(id);
 		Assert.notNull(user, CodeMsg.FAIL.msg("没有此用户"));
+		oldPwd = DigestUtils.md5Hex(oldPwd);
 		Assert.isTrue(user.getPassword().equals(oldPwd), CodeMsg.FAIL.msg("密码错误"));
-		return userService.updatePwd(newPwd, id);
+		if (!Constants.operateSuperAdmin && user.getIsSuperAdmin() == YesNo.YES) {
+			throw ErrorContext.instance("您不能修改超级管理员密码");
+		} else {
+			return userService.updatePwd(newPwd, id);
+		}
 	}
 
 	@Override

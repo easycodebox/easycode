@@ -98,6 +98,10 @@
 	<filter>
 		<filter-name>sitemesh</filter-name>
 		<filter-class>com.easycodebox.common.sitemesh3.DefaultConfigurableSiteMeshFilter</filter-class>
+		<init-param>
+			<param-name>decoratedKey</param-name>
+			<param-value>decorated</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>sitemesh</filter-name>
