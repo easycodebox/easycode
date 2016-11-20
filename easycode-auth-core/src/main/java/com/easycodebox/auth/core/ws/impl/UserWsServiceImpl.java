@@ -85,7 +85,7 @@ public class UserWsServiceImpl implements UserWsService {
 		if (!Constants.operateSuperAdmin && user.getIsSuperAdmin() == YesNo.YES) {
 			throw ErrorContext.instance("您不能修改超级管理员密码");
 		} else {
-			return userService.updatePwd(newPwd, id);
+			return userService.updatePwd(DigestUtils.md5Hex(newPwd), id);
 		}
 	}
 
