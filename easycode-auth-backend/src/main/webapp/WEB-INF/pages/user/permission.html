@@ -167,7 +167,7 @@
 					<label class="required">项目：</label>
 				</th>
 				<td>
-					<select class="form-control projectId" name="projectId" v-model="permission.projectId" validator="min[1],required" validator-msg="请选择项目类型">
+					<select class="form-control projectId" name="projectId" v-model="permission.projectId" required data-bvalidator-msg="请选择项目类型">
 						<option value="">--请选择项目--</option>
 						<option v-for="pro in projects" :value="pro.id">{{pro.name}}</option>
 					</select>
@@ -177,7 +177,7 @@
 				</th>
 				<td>
 					<div class="tree-tip-wrap">
-						<input type="text" class="form-control parentName" v-model="permission.parentName" validator="gb.permissionValidator,valempty" validator-on="gb.permissionValidateTime" readonly />
+						<input type="text" class="form-control parentName" v-model="permission.parentName" data-bvalidator="gb.permissionValidator" readonly />
 						<input type="hidden" class="parentId" name="parentId" v-model="permission.parentId" readonly />
 						<div class="tree-tip-div">
 							<ul class="ztree tree-tip"></ul>
@@ -191,7 +191,7 @@
 					<label class="required">权限名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="permission.name" validator="maxlength[128],required" maxlength="128" />
+					<input type="text" name="name" class="form-control" v-model="permission.name" required maxlength="128" />
 				</td>
 				<th>
 					<label class="required">状态：</label>
@@ -199,7 +199,7 @@
 				<td>
 					[@e.radioEnum name="status" enumName="OpenClose" 
 							tagAttr='{
-								last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
+								last: "required data-bvalidator-msg=\'请选择状态\'",
 								all: "v-model=\'permission.status.className\'"
 							}'/]
 				</td>
@@ -212,7 +212,7 @@
 				<td>
 					[@e.radioEnum name="isMenu" enumName="YesNo"
 							tagAttr='{
-								last: "validator=\'minlength[1],required\' validator-msg=\'请选择是否为菜单\'",
+								last: "required data-bvalidator-msg=\'请选择是否为菜单\'",
 								all: "v-model=\'permission.isMenu.className\'"
 							}'/]
 				</td>
@@ -220,7 +220,7 @@
 					<label>地址：</label>
 				</th>
 				<td>
-					<input type="text" name="url" class="form-control" v-model="permission.url" validator="maxlength[128],gb.existUrl" maxlength="128" />
+					<input type="text" name="url" class="form-control" v-model="permission.url" data-bvalidator="gb.existUrl" maxlength="128" />
 				</td>
 			</tr>
 			
@@ -229,13 +229,13 @@
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="permission.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="permission.sort" data-bvalidator="digit" maxlength="9" required />
 				</td>
 				<th>
 					<label>图标 ：</label>
 				</th>
 				<td>
-					<input type="text" name="icon" class="form-control" v-model="permission.icon" validator="maxlength[128]" maxlength="128" />
+					<input type="text" name="icon" class="form-control" v-model="permission.icon" maxlength="128" />
 				</td>
 			</tr>
 			
@@ -244,7 +244,7 @@
 					<label>描述：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="description" class="form-control" v-model="permission.description" validator="maxlength[512]" maxlength="512"> </textarea>
+					<textarea name="description" class="form-control" v-model="permission.description" maxlength="512"> </textarea>
 				</td>
 			</tr>
 			
@@ -253,7 +253,7 @@
 					<label>备注：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="remark" class="form-control" v-model="permission.remark" validator="maxlength[512]" maxlength="512"> </textarea>
+					<textarea name="remark" class="form-control" v-model="permission.remark" maxlength="512"> </textarea>
 				</td>
 			</tr>
 		</table>
@@ -270,7 +270,7 @@
 					<label class="required">项目：</label>
 				</th>
 				<td>
-					<select class="form-control projectId" name="projectId" v-model="permission.projectId" validator="min[1],required" validator-msg="请选择项目类型">
+					<select class="form-control projectId" name="projectId" v-model="permission.projectId" required data-bvalidator-msg="请选择项目类型">
 						<option value="">--请选择项目--</option>
 						<option v-for="pro in projects" :value="pro.id">{{pro.name}}</option>
 					</select>
@@ -280,7 +280,7 @@
 				</th>
 				<td>
 					<div class="tree-tip-wrap">
-						<input type="text" class="form-control parentName" v-model="permission.parentName" validator="gb.permissionValidator,valempty" validator-on="gb.permissionValidateTime" readonly />
+						<input type="text" class="form-control parentName" v-model="permission.parentName" data-bvalidator="gb.permissionValidator" readonly />
 						<input type="hidden" class="parentId" name="parentId" v-model="permission.parentId" readonly />
 						<div class="tree-tip-div">
 							<ul class="ztree tree-tip"></ul>
@@ -294,13 +294,13 @@
 					<label class="required">权限名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="permission.name" validator="maxlength[128],required" maxlength="128" />
+					<input type="text" name="name" class="form-control" v-model="permission.name" maxlength="128" required />
 				</td>
 				<th>
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="permission.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="permission.sort" data-bvalidator="digit" maxlength="9" required />
 				</td>
 			</tr>
 			
@@ -311,7 +311,7 @@
 				<td>
 					[@e.radioEnum name="isMenu" enumName="YesNo" 
 							tagAttr='{
-								last: "validator=\'minlength[1],required\' validator-msg=\'请选择是否为菜单\'",
+								last: "required data-bvalidator-msg=\'请选择是否为菜单\'",
 								all: "v-model=\'permission.isMenu.className\'"
 							}'/]
 				</td>
@@ -319,7 +319,7 @@
 					<label>地址：</label>
 				</th>
 				<td>
-					<input type="text" name="url" class="form-control" v-model="permission.url" validator="maxlength[128],gb.existUrl" maxlength="128" />
+					<input type="text" name="url" class="form-control" v-model="permission.url" data-bvalidator="gb.existUrl" maxlength="128" />
 				</td>
 			</tr>
 			
@@ -328,7 +328,7 @@
 					<label>图标 ：</label>
 				</th>
 				<td>
-					<input type="text" name="icon" class="form-control" v-model="permission.icon" validator="maxlength[128]" maxlength="128" />
+					<input type="text" name="icon" class="form-control" v-model="permission.icon" maxlength="128" />
 				</td>
 			</tr>
 			
@@ -337,7 +337,7 @@
 					<label>描述：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="description" class="form-control" v-model="permission.description" validator="maxlength[512]" maxlength="512"></textarea>
+					<textarea name="description" class="form-control" v-model="permission.description" maxlength="512"></textarea>
 				</td>
 			</tr>
 			
@@ -346,7 +346,7 @@
 					<label>备注：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="remark" class="form-control" v-model="permission.remark" validator="maxlength[512]" maxlength="512"></textarea>
+					<textarea name="remark" class="form-control" v-model="permission.remark" maxlength="512"></textarea>
 				</td>
 			</tr>
 		</table>

@@ -48,12 +48,6 @@ $.extend(true, window.gb || (window.gb = {}), {
 			});
 		}
 	},
-	permissionValidateTime: function(validator) {
-		var $self = $(this);
-		$self.focus(function() {
-			validator.validate(false, $self);
-		});
-	},
 	permissionValidator: function(val) {
 		var $form = $(this).closest("form");
 		if(!$form.find(".projectId").val()) {
@@ -88,15 +82,15 @@ $.extend(true, window.gb || (window.gb = {}), {
 						$parentId = $form.find(".parentId");
 					if(nodes[0].id == "-1") {
 						$parentId.val("");
-						$parentName.val("").change(); //change是为了主动出发校验
+						$parentName.val("");
 					}else {
 						$parentId.val(nodes[0].id);
-						$parentName.val(nodes[0].name).change(); //change是为了主动出发校验
+						$parentName.val(nodes[0].name);
 					}
 					$form.find(".tree-tip-div").hide();
 					//验证选择的树是否有效
 					if($form.find("input[name=id]").val())
-						$form.data('bValidator').validate(false, $parentName);
+						$form.data('bValidator').validate($parentName);
 				}
 			}
 		};

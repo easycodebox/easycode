@@ -46,11 +46,12 @@ $.extend(true, window.gb || (window.gb = {}), {
 									$parentId = $wrap.find(".parentId");
 								if(nodes[0].id == "-1") {
 									$parentId.val("");
-									$parentName.val("").change(); //change是为了主动出发校验
+									$parentName.val("");
 								}else {
 									$parentId.val(nodes[0].id);
-									$parentName.val(nodes[0].name).change(); //change是为了主动出发校验
+									$parentName.val(nodes[0].name);
 								}
+								$wrap.closest("form").data('bValidator').validate($parentName);
 								$wrap.find(".tree-tip-div").hide();
 							}
 						}

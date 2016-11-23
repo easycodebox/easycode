@@ -131,13 +131,13 @@
 					<label class="required">项目名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="project.name" validator="maxlength[32],required,gb.existName" maxlength="32" />
+					<input type="text" name="name" class="form-control" v-model="project.name" data-bvalidator="gb.existName" maxlength="32" required />
 				</td>
 				<th>
 					<label class="required">项目编号：</label>
 				</th>
 				<td>
-					<input type="text" name="projectNo" class="form-control" v-model="project.projectNo" validator="maxlength[32],required,gb.existProjectNo" maxlength="32" />
+					<input type="text" name="projectNo" class="form-control" v-model="project.projectNo" data-bvalidator="gb.existProjectNo" maxlength="32" required />
 				</td>
 			</tr>
 			
@@ -146,7 +146,7 @@
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="project.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="project.sort" data-bvalidator="digit" maxlength="9" required />
 				</td>
 				<th>
 					<label class="required">状态：</label>
@@ -154,7 +154,7 @@
 				<td>
 					[@e.radioEnum name="status" enumName="OpenClose" 
 							tagAttr='{
-								last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
+								last: "required data-bvalidator-msg=\'请选择状态\'",
 								all: "v-model=\'project.status.className\'"
 							}'/]
 				</td>
@@ -165,7 +165,7 @@
 					<label>备注：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="remark" class="form-control" v-model="project.remark" validator="maxlength[512]" maxlength="512"> </textarea>
+					<textarea name="remark" class="form-control" v-model="project.remark" maxlength="512"> </textarea>
 				</td>
 			</tr>
 		</table>
@@ -182,13 +182,13 @@
 					<label class="required">项目名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="project.name" validator="maxlength[32],required,gb.existName" maxlength="32" />
+					<input type="text" name="name" class="form-control" v-model="project.name" data-bvalidator="gb.existName" maxlength="32" required />
 				</td>
 				<th>
 					<label class="required">项目编号：</label>
 				</th>
 				<td>
-					<input type="text" name="projectNo" class="form-control" v-model="project.projectNo" validator="maxlength[32],required,gb.existProjectNo" maxlength="32" />
+					<input type="text" name="projectNo" class="form-control" v-model="project.projectNo" data-bvalidator="gb.existProjectNo" maxlength="32" required />
 				</td>
 			</tr>
 			
@@ -197,7 +197,7 @@
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="project.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="project.sort" data-bvalidator="digit" maxlength="9" required />
 				</td>
 				<th>
 					<label class="required">状态：</label>
@@ -205,7 +205,7 @@
 				<td>
 					[@e.radioEnum name="status" enumName="OpenClose" 
 							tagAttr='{
-								last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
+								last: "required data-bvalidator-msg=\'请选择状态\'",
 								all: "v-model=\'project.status.className\'"
 							}'/]
 				</td>
@@ -216,7 +216,7 @@
 					<label>备注：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="remark" class="form-control" v-model="project.remark" validator="maxlength[512]" maxlength="512"></textarea>
+					<textarea name="remark" class="form-control" v-model="project.remark" maxlength="512"></textarea>
 				</td>
 			</tr>
 		</table>

@@ -158,7 +158,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 				index++;
 				val = args.length > index ? args[index] == null ? null : args[index].toString() : null;
 			} 
-			if (val == null && (model & NUM_INDEX_MODEL) > 0 && Pattern.matches(Regex.NUM.getRegex(), key)) {
+			if (val == null && (model & NUM_INDEX_MODEL) > 0 && Pattern.matches(Regex.DIGIT.getRegex(), key)) {
 				int intKey = Integer.parseInt(key);
 				val = args.length > intKey ? args[intKey] == null ? null : args[intKey].toString() : null;
 			}

@@ -178,7 +178,7 @@
 					<label>员工编号：</label>
 				</th>
 				<td>
-					<input type="text" name="userNo" class="form-control" v-model="user.userNo" validator="maxlength[32]" maxlength="32" />
+					<input type="text" name="userNo" class="form-control" v-model="user.userNo" maxlength="32" />
 				</td>
 			</tr>
 			
@@ -187,13 +187,13 @@
 					<label class="required">用户名：</label>
 				</th>
 				<td>
-					<input type="text" name="username" class="form-control" v-model="user.username" validator="word,maxlength[32],required,gb.existUsername" maxlength="32" />
+					<input type="text" name="username" class="form-control" v-model="user.username" data-bvalidator="word,gb.existUsername" maxlength="32" required />
 				</td>
 				<th>
 					<label>昵称：</label>
 				</th>
 				<td>
-					<input type="text" name="nickname" class="form-control" v-model="user.nickname" validator="word_zh,maxlength[32],gb.existNickname" maxlength="32" />
+					<input type="text" name="nickname" class="form-control" v-model="user.nickname" data-bvalidator="word_zh,gb.existNickname" maxlength="32" />
 				</td>
 			</tr>
 			
@@ -202,13 +202,13 @@
 					<label class="required">密码：</label>
 				</th>
 				<td>
-					<input type="password" id="pwdAdd" name="password" class="form-control" v-model="user.password" validator="maxlength[32],required" maxlength="32" />
+					<input type="password" id="pwdAdd" name="password" class="form-control" v-model="user.password" maxlength="32" required />
 				</td>
 				<th>
 					<label class="required">确认密码：</label>
 				</th>
 				<td>
-					<input type="password" class="form-control" v-model="user.password2" validator="maxlength[32],equalto[pwdAdd],required" maxlength="32" />
+					<input type="password" class="form-control" v-model="user.password2" data-bvalidator="equal[pwdAdd]" maxlength="32" required />
 				</td>
 			</tr>
 			
@@ -217,7 +217,7 @@
 					<label>真实姓名：</label>
 				</th>
 				<td>
-					<input type="text" name="realname" class="form-control" v-model="user.realname" validator="word_zh,maxlength[32]" maxlength="32" />
+					<input type="text" name="realname" class="form-control" v-model="user.realname" data-bvalidator="word_zh" maxlength="32" />
 				</td>
 				<th>
 					<label class="required">状态：</label>
@@ -225,7 +225,7 @@
 				<td>
 					[@e.radioEnum name="status" enumName="OpenClose" 
 							tagAttr='{
-								last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
+								last: "required data-bvalidator-msg=\'请选择状态\'",
 								all: "v-model=\'user.status.className\'"
 							}'/]
 				</td>
@@ -236,13 +236,13 @@
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="user.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="user.sort" data-bvalidator="digit" maxlength="9" required />
 				</td>
 				<th>
 					<label>手机号：</label>
 				</th>
 				<td>
-					<input type="text" name="mobile" class="form-control" v-model="user.mobile" validator="maxlength[11],mobile" maxlength="11" />
+					<input type="text" name="mobile" class="form-control" v-model="user.mobile" data-bvalidator="mobile" maxlength="11" />
 				</td>
 			</tr>
 			
@@ -257,7 +257,7 @@
 					<label>邮箱：</label>
 				</th>
 				<td>
-					<input type="text" name="email" class="form-control" v-model="user.email" validator="maxlength[512],email" maxlength="512" />
+					<input type="email" name="email" class="form-control" v-model="user.email" maxlength="512" />
 				</td>
 			</tr>
 		</table>
@@ -286,7 +286,7 @@
 					<label>员工编号：</label>
 				</th>
 				<td>
-					<input type="text" name="userNo" class="form-control" v-model="user.userNo" validator="maxlength[32]" maxlength="32" />
+					<input type="text" name="userNo" class="form-control" v-model="user.userNo" maxlength="32" />
 				</td>
 			</tr>
 			
@@ -295,13 +295,13 @@
 					<label class="required">用户名：</label>
 				</th>
 				<td>
-					<input type="text" name="username" class="form-control" v-model="user.username" validator="word,maxlength[32],required,gb.existUsername" maxlength="32" />
+					<input type="text" name="username" class="form-control" v-model="user.username" data-bvalidator="word,gb.existUsername" maxlength="32" required />
 				</td>
 				<th>
 					<label>昵称：</label>
 				</th>
 				<td>
-					<input type="text" name="nickname" class="form-control" v-model="user.nickname" validator="word_zh,maxlength[32],gb.existNickname" maxlength="32" />
+					<input type="text" name="nickname" class="form-control" v-model="user.nickname" data-bvalidator="word_zh,gb.existNickname" maxlength="32" />
 				</td>
 			</tr>
 			
@@ -310,13 +310,13 @@
 					<label>真实姓名：</label>
 				</th>
 				<td>
-					<input type="text" name="realname" class="form-control" v-model="user.realname" validator="word_zh,maxlength[32]" maxlength="32" />
+					<input type="text" name="realname" class="form-control" v-model="user.realname" data-bvalidator="word_zh" maxlength="32" />
 				</td>
 				<th>
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="user.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="user.sort" data-bvalidator="digit" maxlength="9" required />
 				</td>
 			</tr>
 			
@@ -325,13 +325,13 @@
 					<label>手机号：</label>
 				</th>
 				<td>
-					<input type="text" name="mobile" class="form-control" v-model="user.mobile" validator="maxlength[11],mobile" maxlength="11" />
+					<input type="text" name="mobile" class="form-control" v-model="user.mobile" data-bvalidator="mobile" maxlength="11" />
 				</td>
 				<th>
 					<label>邮箱：</label>
 				</th>
 				<td>
-					<input type="text" name="email" class="form-control" v-model="user.email" validator="maxlength[512],email" maxlength="512" />
+					<input type="email" name="email" class="form-control" v-model="user.email" maxlength="512" />
 				</td>
 			</tr>
 			

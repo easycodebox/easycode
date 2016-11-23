@@ -109,14 +109,14 @@
 					<label class="required">初始值：</label>
 				</th>
 				<td>
-					<input type="text" name="initialVal" class="form-control" v-model="generator.initialVal" validator="alphanum,maxlength[32],required,gb.initialVal" maxlength="32" />
+					<input type="text" name="initialVal" class="form-control" v-model="generator.initialVal" data-bvalidator="alphanum,gb.initialVal" maxlength="32" required />
 				</td>
 				<th>
 					<label class="required">当前值：</label>
 				</th>
 				<td>
 					<input type="hidden" class="oldCurVal" v-model="generator.currentVal" />
-					<input type="text" name="currentVal" class="form-control" v-model="generator.currentVal" validator="alphanum,maxlength[32],required,gb.curVal" maxlength="32" />
+					<input type="text" name="currentVal" class="form-control" v-model="generator.currentVal" data-bvalidator="alphanum,gb.curVal" maxlength="32" required />
 				</td>
 			</tr>
 			
@@ -125,13 +125,13 @@
 					<label>最大值：</label>
 				</th>
 				<td>
-					<input type="text" name="maxVal" class="form-control" v-model="generator.maxVal" validator="alphanum,maxlength[32],gb.maxVal" maxlength="32" />
+					<input type="text" name="maxVal" class="form-control" v-model="generator.maxVal" data-bvalidator="alphanum,gb.maxVal" maxlength="32" />
 				</td>
 				<th>
 					<label class="required">批次容量：</label>
 				</th>
 				<td>
-					<input type="text" name="fetchSize" class="form-control" v-model="generator.fetchSize" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="fetchSize" class="form-control" v-model="generator.fetchSize" data-bvalidator="digit" maxlength="9" required />
 				</td>
 			</tr>
 			
@@ -140,7 +140,7 @@
 					<label class="required">增长值：</label>
 				</th>
 				<td>
-					<input type="text" name="increment" class="form-control" v-model="generator.increment" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="increment" class="form-control" v-model="generator.increment" data-bvalidator="digit" maxlength="9" required />
 				</td>
 				<th>
 					<label class="required">是否循环：</label>
@@ -148,7 +148,7 @@
 				<td>
 					[@e.radioEnum name="isCycle" enumName="YesNo"
 							tagAttr='{
-								last: "validator=\'minlength[1],required\' validator-msg=\'请选择是否循环\'",
+								last: "required data-bvalidator-msg=\'请选择是否循环\'",
 								all: "v-model=\'generator.isCycle.className\'"
 							}'/]
 				</td>

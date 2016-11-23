@@ -137,7 +137,7 @@
 				</th>
 				<td>
 					<div class="tree-tip-wrap">
-						<input type="text" class="form-control parentName" v-model="group.parentName" validator="gb.parentValidator" validator-on="change" readonly />
+						<input type="text" class="form-control parentName" v-model="group.parentName" data-bvalidator="gb.parentValidator" readonly />
 						<input type="hidden" class="parentId" name="parentId" v-model="group.parentId" readonly />
 						<div class="tree-tip-div">
 							<ul class="ztree tree-tip"></ul>
@@ -148,7 +148,7 @@
 					<label class="required">组名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="group.name" validator="maxlength[32],required,gb.existName" maxlength="32" />
+					<input type="text" name="name" class="form-control" v-model="group.name" data-bvalidator="gb.existName" maxlength="32" required />
 				</td>
 			</tr>
 			
@@ -157,7 +157,7 @@
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="group.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="group.sort" data-bvalidator="digit" maxlength="9" required />
 				</td>
 				<th>
 					<label class="required">状态：</label>
@@ -165,7 +165,7 @@
 				<td>
 					[@e.radioEnum name="status" enumName="OpenClose" 
 							tagAttr='{
-								last: "validator=\'minlength[1],required\' validator-msg=\'请选择状态\'",
+								last: "required data-bvalidator-msg=\'请选择状态\'",
 								all: "v-model=\'group.status.className\'"
 							}'/]
 				</td>
@@ -185,7 +185,7 @@
 				</th>
 				<td>
 					<div class="tree-tip-wrap">
-						<input type="text" class="form-control parentName" v-model="group.parentName" validator="gb.parentValidator" validator-on="change" readonly />
+						<input type="text" class="form-control parentName" v-model="group.parentName" data-bvalidator="gb.parentValidator" readonly />
 						<input type="hidden" class="parentId" name="parentId" v-model="group.parentId" readonly />
 						<div class="tree-tip-div">
 							<ul class="ztree tree-tip"></ul>
@@ -196,7 +196,7 @@
 					<label class="required">组名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="group.name" validator="maxlength[32],required,gb.existName" maxlength="32" />
+					<input type="text" name="name" class="form-control" v-model="group.name" data-bvalidator="gb.existName" maxlength="32" required />
 				</td>
 			</tr>
 			
@@ -205,7 +205,7 @@
 					<label class="required">排序值：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="group.sort" validator="num,max[999999999],required" maxlength="9" />
+					<input type="text" name="sort" class="form-control" v-model="group.sort" data-bvalidator="digit" maxlength="9" required />
 				</td>
 			</tr>
 		</table>

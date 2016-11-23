@@ -513,7 +513,7 @@ public class Validators implements Serializable {
 			boolean va = false;
 			if(data != null) {
 				if(data instanceof String) {
-					if(Pattern.matches(Regex.DECEMAL.getRegex(), data.toString())) {
+					if(Pattern.matches(Regex.NUMBER.getRegex(), data.toString())) {
 						double value = Double.valueOf(data.toString());
 						va = value >= min.doubleValue();
 					}
@@ -539,7 +539,7 @@ public class Validators implements Serializable {
 			boolean va = false;
 			if(data != null) {
 				if(data instanceof String) {
-					if(Pattern.matches(Regex.DECEMAL.getRegex(), data.toString())) {
+					if(Pattern.matches(Regex.NUMBER.getRegex(), data.toString())) {
 						double value = Double.valueOf(data.toString());
 						va = value <= max.doubleValue();
 					}
@@ -566,7 +566,7 @@ public class Validators implements Serializable {
 			boolean va = false;
 			if(data != null) {
 				if(data instanceof String) {
-					if(Pattern.matches(Regex.DECEMAL.getRegex(), data.toString())) {
+					if(Pattern.matches(Regex.NUMBER.getRegex(), data.toString())) {
 						double value = Double.valueOf(data.toString());
 						va = value >= min.doubleValue() && value <= max.doubleValue();
 					}
@@ -586,8 +586,8 @@ public class Validators implements Serializable {
 	 * @param msg
 	 * @return
 	 */
-	public Validators num(String... msg) {
-		return regex(Regex.NUM, msg);
+	public Validators digit(String... msg) {
+		return regex(Regex.DIGIT, msg);
 	}
 	
 	/**
@@ -676,8 +676,8 @@ public class Validators implements Serializable {
 	 * @param msg
 	 * @return
 	 */
-	public Validators decemal(String... msg) {
-		return regex(Regex.DECEMAL, msg);
+	public Validators number(String... msg) {
+		return regex(Regex.NUMBER, msg);
 	}
 	
 	public Boolean isValid() {

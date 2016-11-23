@@ -709,4 +709,10 @@ $(function() {
 		return value;
 	});
 	
+	/*******************************  bvalidator  **************************************/
+	$.extend(bValidator.defaultOptions, {
+		validateTillInvalid: true,
+		priorHtml5RequiredAttr: true
+	});
+	
 })(jQuery);
