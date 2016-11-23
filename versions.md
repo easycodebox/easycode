@@ -26,3 +26,8 @@
 7. CAS ticketValidator由Cas20ServiceTicketValidator改为Cas30ServiceTicketValidator
 8. 重构权限表
 9. 集成Sitemesh3 + Pjax
+
+###【v0.2.5】 - 2016.11.20
+
+1. DefaultConfigurableSiteMeshFilter增加是否启用装饰的规则
+2. 升级bvalidator插件
