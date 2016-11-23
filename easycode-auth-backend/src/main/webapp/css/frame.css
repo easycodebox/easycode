@@ -134,4 +134,10 @@ table.table-edit textarea {height: 100px;}
 .none {
 	display: none;
 }
-
+.submiting {
+	cursor: not-allowed !important;
+	filter: alpha(opacity=65) !important;
+	-webkit-box-shadow: none !important;
+    		box-shadow: none !important;
+	opacity: .65 !important;
+}

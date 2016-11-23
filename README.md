@@ -5,9 +5,9 @@
 
 1. 单点登录 - 所有系统共用同一个登录系统，可根据不同系统切换主题，甚至可以根据不同的系统显示不同的登录页面
 
-2. 统一权限验证/分配 - 所有的系统都可以接入进来，共用同一个权限系统
+2. 统一权限验证/分配 - 所有的系统都可以接入进来，共用同一个权限系统，可视化分配权限
 
-3. easycode-jdbc面向对象编写SQL语句 - 编写SQL时代码补全；高度抽象出增删查改通用接口；编写Service层/Dao层非常简单、非常快捷
+3. easycode-jdbc面向对象编写SQL语句 - 编写SQL时代码补全；高度抽象出增删查改通用接口；编写Service层/Dao层非常简单、非常快捷，效率提升了好几倍
 
 	简单例子：
 	
@@ -84,12 +84,14 @@
 
 	> 当时我是用 `Nginx + Lua + GraphicsMagick`来实现的，现在已经有开源的Nginx模块提供了类似的功能，不过我觉得如果你想更好的控制的话还是自己写Lua脚本更灵活点
 	
-	### **由于时间有限，只能说些大概，后期会补充使用文档。如果你对项目中某些功能有兴趣的话，建议你看下代码，相信你能得到点启发的**
+	### **由于时间有限，只能说些大概，后期会提供使用文档。建议看下代码，相信你能得到点启发的，如有`问题/建议`请联系本人**
 
 ### 下一版本集成功能
 
 1. Ehcache换成Redis
 2. 提供代码生成工具，生成Model、Dao、Service、Controller、Html、Js等代码。相信集成此功能后，开发将变得更快捷
+
+> 注：后期版本会集成更多的技术
 
 ### 使用技术
 
@@ -101,7 +103,7 @@
 6. Sitemesh3 + Pjax
 7. Vuejs + Bootstrap3
 
-> 注意：项目中使用的公共JS、CSS在[easycode-static](https://github.com/easycodebox/easycode-static)项目下
+> 注意：项目中使用的公共JS、CSS在[easycode-static](https://github.com/easycodebox/easycode-static)项目下，使用最频繁的是`easycode/utils/utils-*.js`，里面提供了日常开发中80%需要的JS工具函数。
 
 ### Demo
 
