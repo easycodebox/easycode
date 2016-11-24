@@ -21,6 +21,12 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>easycode-common</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- 第三方jar包 -->
 		<dependency>
@@ -49,21 +55,9 @@
 		    <version>${cas.version}</version>
 		    <exclusions>
 		    	<exclusion>
-		    		<groupId>com.mchange</groupId>
-            		<artifactId>c3p0</artifactId>
+		    		<groupId>*</groupId>
+            		<artifactId>*</artifactId>
 		    	</exclusion>
-		    	<exclusion>
-	                <artifactId>commons-logging</artifactId>
-	                <groupId>commons-logging</groupId>
-	            </exclusion>
-	            <exclusion>
-	            	<groupId>org.ldaptive</groupId>
-            		<artifactId>ldaptive</artifactId>
-	            </exclusion>
-	            <exclusion>
-	            	<groupId>xml-apis</groupId>
-      				<artifactId>xml-apis</artifactId>
-	            </exclusion>
 		    </exclusions>
 		</dependency>
 		<dependency>
