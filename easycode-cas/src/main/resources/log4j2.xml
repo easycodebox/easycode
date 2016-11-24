@@ -2,7 +2,7 @@
 <Configuration>
 	
 	<Properties>
-		<Property name="basePath">${web:rootDir}</Property>
+		<Property name="log.basepath">/logs/cas</Property>
 	</Properties>
 	
     <Appenders>
@@ -10,8 +10,8 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n" />
         </Console>
         
-        <RollingFile name="infoFile" fileName="${basePath}/logs/info.log" append="true"
-                     filePattern="${basePath}/logs/info-%d{yyyy-MM-dd}.(%i).log">
+        <RollingFile name="infoFile" fileName="${log.basepath}/info.log" append="true"
+                     filePattern="${log.basepath}/info-%d{yyyy-MM-dd}.(%i).log">
             <!-- ThresholdFilter的验证规则是等于level或大于level则onMatch -->
             <ThresholdFilter level="INFO" onMatch="NEUTRAL" onMismatch="DENY"/>
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n"/>
@@ -21,8 +21,8 @@
             </Policies>
         </RollingFile>
         
-        <RollingFile name="warnFile" fileName="${basePath}/logs/warn.log" append="true"
-                     filePattern="${basePath}/logs/warn-%d{yyyy-MM-dd}.(%i).log">
+        <RollingFile name="warnFile" fileName="${log.basepath}/warn.log" append="true"
+                     filePattern="${log.basepath}/warn-%d{yyyy-MM-dd}.(%i).log">
             <Filters>
 	            <!-- 因为此日志文件只想存放warn信息，所以需要过滤掉error。ThresholdFilter的验证规则是等于level或大于level则onMatch -->
 	            <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
@@ -35,8 +35,8 @@
             </Policies>
         </RollingFile>
         
-        <RollingFile name="errorFile" fileName="${basePath}/logs/error.log" append="true"
-                     filePattern="${basePath}/logs/error-%d{yyyy-MM-dd}.(%i).log">
+        <RollingFile name="errorFile" fileName="${log.basepath}/error.log" append="true"
+                     filePattern="${log.basepath}/error-%d{yyyy-MM-dd}.(%i).log">
             <ThresholdFilter level="ERROR" onMatch="NEUTRAL" onMismatch="DENY"/>
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n"/>
             <Policies>
@@ -45,8 +45,8 @@
             </Policies>
         </RollingFile>
         
-        <RollingFile name="perfFile" fileName="${basePath}/logs/perfStats.log" append="true"
-                     filePattern="${basePath}/logs/perfStats-%d{yyyy-MM-dd}.(%i).log">
+        <RollingFile name="perfFile" fileName="${log.basepath}/perfStats.log" append="true"
+                     filePattern="${log.basepath}/perfStats-%d{yyyy-MM-dd}.(%i).log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="20 MB"/>

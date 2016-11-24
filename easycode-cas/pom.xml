@@ -83,6 +83,7 @@
 				<version>2.6</version>
 				<configuration>
 					<!-- <warName>easycode-cas</warName> -->
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<overlays>
 						<overlay>
 							<groupId>org.jasig.cas</groupId>

@@ -117,8 +117,9 @@
 
 1. 下载[easycode](https://github.com/easycodebox/easycode)和[easycode-example](https://github.com/easycodebox/easycode-example)[【下载链接】](https://github.com/easycodebox/easycode-example)代码
 
-2. 在本地数据库中新增加`easycode-auth`和`easycode-example`两个库，然后把数据导入数据库，SQL脚本在各自项目的/docs/db/easycode-***.sql(`easycode-auth.sql`,`easycode-example.sql`)。项目中数据库相关配置在`jdbc.properties`文件中，
-账号：root 密码：root 。相关配置可自行修改，但密码需要配置为加密的值，用`ConfigTools.encrypt("password")`加密
+2. 在本地数据库中新增加`easycode-auth`和`easycode-example`两个库，分别把`/easycode/docs/db/auth/easycode-auth.sql`、`/easycode-example/docs/db/easycode-example.sql`sql文件数据导入数据库。项目中数据库相关配置在`jdbc.properties`和`cas.properties`文件中。默认配置，账号：root 密码：root 
+
+	> 相关配置可自行修改，但密码需要配置为加密的值，用`ConfigTools.encrypt("password")`加密。修改时一定要改全，最好是全局搜索properties文件中包含**jdbc.username**关键字
 
 3. `easycode-auth-backend`项目端口号改为`7080`，`easycode-cas`项目端口号改为`7081`，`easycode-example-app`项目端口号改为`8080`。这三个项目的Context Path 全部修改为`/`。最后启动这三个项目，启动顺序随意。启动成功后你就可以访问了：
 
