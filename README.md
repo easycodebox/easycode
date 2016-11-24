@@ -120,7 +120,10 @@
 2. 在本地数据库中新增加`easycode-auth`和`easycode-example`两个库，然后把数据导入数据库，SQL脚本在各自项目的/docs/db/easycode-***.sql(`easycode-auth.sql`,`easycode-example.sql`)。项目中数据库相关配置在`jdbc.properties`文件中，
 账号：root 密码：root 。相关配置可自行修改，但密码需要配置为加密的值，用`ConfigTools.encrypt("password")`加密
 
-3. `easycode-auth-backend`项目端口号改为`7080`，`easycode-cas`项目端口号改为`7081`，`easycode-example-app`项目端口号改为`8080`。这三个项目的Context Path 全部修改为`/`。最后启动这三个项目，启动顺序随意。启动成功后你就可以访问了：1. `http://localhost:7080/` - 权限系统     2. `http://localhost:8080/` - 集成easycode的demo
+3. `easycode-auth-backend`项目端口号改为`7080`，`easycode-cas`项目端口号改为`7081`，`easycode-example-app`项目端口号改为`8080`。这三个项目的Context Path 全部修改为`/`。最后启动这三个项目，启动顺序随意。启动成功后你就可以访问了：
+
+	* `http://localhost:7080/` - 权限系统     
+	* `http://localhost:8080/` - 集成easycode的demo
 
 	>注意： 项目的根路径一定要修改为'/'，不要带项目名。修改这个是为了方便开发，特别是与前端交叉开发时，因为前端使用的项目的根路径一般都是'/'，你如果想集成前端开发的页面就需要修改url地址了，这很蛋疼。我以前试过很多方案，什么用Filter在request请求中增加basePath参数，用JSP获取basePath，设置base标签，js中定义basePath变量等等，用过后都非常不爽，还不如直接修改web容器的Context path来的干脆直接。    
 	> 端口号是可以自己修改的，修改后一定要记得把项目中`login.properties`配置修改下，因为这些URL CAS需要使用
