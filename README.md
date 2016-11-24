@@ -54,9 +54,9 @@
 	super.deletePhy("1");
 	```
 	
-	> 执行insert、update时，自动帮你把创建人、创建时间、修改人、修改时间属性设置好
-	> 上述例子中`R`是通过`easycode-auth-model`（各自项目model包）中`SysTest`测试类的`testGenerateRes`方法生成的。只需要运行此测试方法自动生成R文件
-	> 如果想在Dao层使用此功能，只需要继承AbstractDaoImpl类；如果在Service层使用，则Service实现类继承AbstractServiceImpl
+	> 执行insert、update时，自动帮你把创建人、创建时间、修改人、修改时间属性设置好  
+	> 上述例子中`R`是通过`easycode-auth-model`（各自项目model包）中`SysTest`测试类的`testGenerateRes`方法生成的。只需要运行此测试方法自动生成R文件  
+	> 如果想在Dao层使用此功能，只需要继承AbstractDaoImpl类；如果在Service层使用，则Service实现类继承AbstractServiceImpl  
 
 4. 主键生成策略 - 主键生成控制权完全由开发者自己控制，不依赖于数据库的主键生成策略。并且可以自由控制生成规则，提供了Integer、Long、纯字母、字母和数字组合等各种生成策略。应用场景：1.数据库的分表分库  2.数据库的更换不需要修改任何代码  3.需要自己控制主键生成规则
 
@@ -110,7 +110,7 @@
 1. 权限系统 - http://auth.easycodebox.com
 2. 集成单点登录、权限系统的Example - http://example.easycodebox.com
 
-> 账号：`superadmin` 密码：`111111` - 如果测试用户的权限配置，不要配置超级管理员，因为没有特殊条件的前提下超级管理员拥有所有权限
+> 账号：`superadmin` 密码：`111111` - 如果测试用户的权限配置，不要配置超级管理员，因为没有特殊条件的前提下超级管理员拥有所有权限    
 > 注意：每天会初始化数据库数据，不会保留之前的操作数据。因本人经济能力有限，服务器硬件和带宽都是最低配。如果你访问时发现服务端响应较慢的话，请不用怀疑你自己的网速  :joy:
 
 ### 安装
@@ -121,7 +121,7 @@
 
 3. `easycode-auth-backend`项目端口号改为`7080`，`easycode-cas`项目端口号改为`7081`，`easycode-example-app`项目端口号改为`8080`。这三个项目的Context Path 全部修改为`/`
 
-	>注意： 项目的根路径一定要修改为'/'，不要带项目名。修改这个是为了方便开发，特别是与前端交叉开发时，因为前端使用的项目的根路径一般都是'/'，你如果想集成前端开发的页面就需要修改url地址了，这很蛋疼。我以前试过很多方案，什么用Filter在request请求中增加basePath参数，用JSP获取basePath，设置base标签，js中定义basePath变量等等，用过后都非常不爽，还不如直接修改web容器的Context path来的干脆直接。
+	>注意： 项目的根路径一定要修改为'/'，不要带项目名。修改这个是为了方便开发，特别是与前端交叉开发时，因为前端使用的项目的根路径一般都是'/'，你如果想集成前端开发的页面就需要修改url地址了，这很蛋疼。我以前试过很多方案，什么用Filter在request请求中增加basePath参数，用JSP获取basePath，设置base标签，js中定义basePath变量等等，用过后都非常不爽，还不如直接修改web容器的Context path来的干脆直接。    
 	> 端口号是可以自己修改的，修改后一定要记得把项目中`login.properties`配置修改下，因为这些URL CAS需要使用
 
 ### 直接引用easycode jar包
