@@ -62,7 +62,7 @@
 
 5. 枚举类型的使用 - 项目中任何地方（Dao、Service、Controller、Html等）都是使用的枚举类型，入库时自动把枚举值转换成对应的数字或字符窜（这可以自己定义），枚举类型的好处想必大家都知道，开发快捷、看一眼就知道这个字段可能会出现哪些值、Html页面显示对应的中文含义时直接取枚举值对应的属性就行，以前的做法是需要开发人员自己来写判断逻辑：如果值为1显示啥；值为2显示啥。
 
-6. 监控JS、CSS资源文件，当文件被修改/新增后立即生成对应的压缩文件，压缩文件名自动加上`.min`后缀。如果想研究的话请阅读[easycode-static-watcher](https://github.com/easycodebox/easycode-static-watcher)[下载链接](https://github.com/easycodebox/easycode-static-watcher)项目，里面提供了安装使用文档
+6. 监控JS、CSS资源文件，当文件被修改/新增后立即生成对应的压缩文件，压缩文件名自动加上`.min`后缀。如果想研究的话请阅读[easycode-static-watcher](https://github.com/easycodebox/easycode-static-watcher)[【下载链接】](https://github.com/easycodebox/easycode-static-watcher)项目，里面提供了安装使用文档
 
 	多数公司的前端开发是这样搞的，JS、CSS等静态资源文件由前端来管理，等前端开发好相关功能后，该压缩的压缩该合并的合并，然后上传至服务器或者交由后端。当在测试环境或生产环境出了问题了，前端把源码从代码服务器上download下来，在本地测试，解决问题后再压缩合并上传至服务器。太繁琐了，难道压缩合并这种事不能直接交给服务器处理吗？难道就不能直接在服务器端修改一个配置参数后，刷新一下页面直接请求JS源文件，然后前端直接用测试环境或预发环境直接调试（有些现象是和数据有关的，你在本地测试就测不出相关问题）？  
 	
@@ -103,7 +103,7 @@
 6. Sitemesh3 + Pjax
 7. Vuejs + Bootstrap3
 
-> 注意：项目中使用的公共JS、CSS在[easycode-static](https://github.com/easycodebox/easycode-static)[下载链接](https://github.com/easycodebox/easycode-static)项目下，使用最频繁的是`easycode/utils/utils-*.js`，里面提供了日常开发中80%需要的JS工具函数。
+> 注意：项目中使用的公共JS、CSS在[easycode-static](https://github.com/easycodebox/easycode-static)[【下载链接】](https://github.com/easycodebox/easycode-static)项目下，使用最频繁的是`easycode/utils/utils-*.js`，里面提供了日常开发中80%需要的JS工具函数。
 
 ### Demo
 
@@ -115,7 +115,7 @@
 
 ### 安装
 
-1. 下载[easycode](https://github.com/easycodebox/easycode)和[easycode-example](https://github.com/easycodebox/easycode-example)[下载链接](https://github.com/easycodebox/easycode-example)代码
+1. 下载[easycode](https://github.com/easycodebox/easycode)和[easycode-example](https://github.com/easycodebox/easycode-example)[【下载链接】](https://github.com/easycodebox/easycode-example)代码
 
 2. 在本地数据库中新增加`easycode-auth`和`easycode-example`两个库，然后数据导入数据库，SQL脚本在各自项目的/docs/db/easycode-***.sql
 
