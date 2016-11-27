@@ -2,7 +2,7 @@
 <Configuration>
 	
 	<Properties>
-		<Property name="log.basepath">/logs/cas</Property>
+		<Property name="log.basepath">/data/logs/cas</Property>
 	</Properties>
 	
     <Appenders>

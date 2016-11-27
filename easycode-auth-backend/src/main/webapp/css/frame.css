@@ -9,9 +9,6 @@ html, body {
 .content-wrapper {
 	flex-grow: 1;
 }
-.main-header {
-	z-index: 820;
-}
 .content-wrapper, .right-side {
 	z-index: auto;
 }
