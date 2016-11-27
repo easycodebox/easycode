@@ -121,7 +121,7 @@
 
 	> 相关配置可自行修改，但密码需要配置为加密的值，用`ConfigTools.encrypt("password")`加密。修改时一定要改全，最好是全局搜索properties文件中包含**jdbc.username**关键字
 
-3. `easycode-auth-backend`项目端口号改为`7080`，`easycode-cas`项目端口号改为`7081`，`easycode-example-app`项目端口号改为`8080`。这三个项目的Context Path 全部修改为`/`。最后启动这三个项目，启动顺序随意。启动成功后你就可以访问了：
+3. `easycode-auth-backend`项目端口号改为`7080`，`easycode-cas`项目端口号改为`7081`，`easycode-example-app`项目端口号改为`8080`。这三个项目的Context Path 全部修改为`/`。（如果你是用jetty:run启动的话，端口号和根路径默认已经配置好了。jetty启动easycode-cas项目会有点慢，因为这个项目中依赖了很多jar包，jetty会扫描这些jar包加载`web-fragment.xml`，你可以自定义jetty加载规则来提高启动速度。）最后启动这三个项目，启动顺序随意。启动成功后你就可以访问了：
 
 	* `http://localhost:7080/` - 权限系统     
 	* `http://localhost:8080/` - 集成easycode的demo
