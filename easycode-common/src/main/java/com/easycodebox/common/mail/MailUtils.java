@@ -176,7 +176,6 @@ public class MailUtils {
 	public static void main(String[] args) throws AddressException {
 		System.out.println("xx" + " <" + new InternetAddress("rdj2eelogdev@easycodebox.com") + ">");
 		String content = "test";
-		// sendText("418262405@qq.com", "德赢快点订-订单提醒", content);// 发送文体格式
-		asynSendHtml("VV", "381954728@qq.com", "订单提醒", content);// 发送html格式
+		asynSendHtml("VV", "111@qq.com", "订单提醒", content);// 发送html格式
 	}
 }
