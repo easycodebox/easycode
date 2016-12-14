@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
 
 import com.easycodebox.auth.core.service.sys.LogService;
+import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.lang.StringUtils;
@@ -65,7 +66,7 @@ public final class LogAspect implements Ordered, InitializingBean {
 				&& SecurityContexts.getCurSecurityContext().getRequest() != null) {
 			HttpServletRequest request = SecurityContexts.getCurSecurityContext().getRequest();
 			logObj.setUrl(request.getRequestURL().toString());
-			logObj.setParams(StringUtils.substring(HttpUtils.getRequestParams(request, false), 0, 2048));
+			logObj.setParams(StringUtils.substring(HttpUtils.getRequestParams(request, 0, BaseConstants.httpParamTradition), 0, 2048));
 			logObj.setClientIp(SecurityUtils.getIp());
 		}
 		logObj.setTitle(log.title());

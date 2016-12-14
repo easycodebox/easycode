@@ -129,10 +129,11 @@ public class HttpUtils {
 	 * @param encode 编码参数
 	 * @throws UnsupportedEncodingException 
 	 */
-	public static String getFullRequestUri(HttpServletRequest request, boolean encode, String... excludeKeys) throws UnsupportedEncodingException {
+	public static String getFullRequestUri(HttpServletRequest request, int encodeNum, 
+			boolean tradition, String... excludeKeys) throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
 		sb.append(request.getRequestURI()).append(Symbol.QUESTION);
-		sb.append(getRequestParams(request, encode, excludeKeys));
+		sb.append(getRequestParams(request, encodeNum, tradition, excludeKeys));
 		String tmp = sb.toString();
 		if(tmp.lastIndexOf(Symbol.QUESTION) == tmp.length() - 1)
 			tmp = tmp.substring(0, tmp.length() - 1);
@@ -145,10 +146,11 @@ public class HttpUtils {
 	 * @param encode 编码参数
 	 * @throws UnsupportedEncodingException 
 	 */
-	public static String getFullRequestUrl(HttpServletRequest request, boolean encode, String... excludeKeys) throws UnsupportedEncodingException {
+	public static String getFullRequestUrl(HttpServletRequest request, int encodeNum, 
+			boolean tradition, String... excludeKeys) throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
 		sb.append(request.getRequestURL()).append(Symbol.QUESTION);
-		sb.append(getRequestParams(request, encode, excludeKeys));
+		sb.append(getRequestParams(request, encodeNum, tradition, excludeKeys));
 		String tmp = sb.toString();
 		if(tmp.lastIndexOf(Symbol.QUESTION) == tmp.length() - 1)
 			tmp = tmp.substring(0, tmp.length() - 1);
@@ -234,11 +236,15 @@ public class HttpUtils {
 	/**
 	 * 获取请求的参数 例：name=wangxj&shop=wxj
 	 * @param request
+	 * @param encodeNum	encode value的次数，某些场景下需要经过两次encode才能正确GET形式传中文
+	 * @param tradition	是否已传统格式传数组。传统格式：name=wang&name=zhang，非传统格式：name[]=wang&name[]=zhang
+	 * @param excludeKeys
 	 * @return
-	 * @throws UnsupportedEncodingException 
+	 * @throws UnsupportedEncodingException
 	 */
 	@SuppressWarnings("rawtypes")
-	public static String getRequestParams(HttpServletRequest request, boolean encode, String... excludeKeys) throws UnsupportedEncodingException {
+	public static String getRequestParams(HttpServletRequest request, int encodeNum, 
+			boolean tradition, String... excludeKeys) throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
 		Enumeration keys = request.getParameterNames();
 		
@@ -254,10 +260,15 @@ public class HttpUtils {
 			String[] values = request.getParameterValues(key);
 			if(values == null) continue;
 			for(int i = 0; i < values.length; i++) {
-				sb.append(key).append(values.length > 1 && !BaseConstants.httpParamTradition ? "[]" : "")
-				.append(Symbol.EQ)
-				.append(encode ? URLEncoder.encode(URLEncoder.encode(values[i], "UTF-8"), "UTF-8") : values[i])
-				.append("&");
+				String val = values[i];
+				int count = encodeNum;
+				while (count-- > 0) {
+					val = URLEncoder.encode(val, "UTF-8");
+				}
+				sb.append(key).append(values.length > 1 && !tradition ? "[]" : Symbol.EMPTY)
+					.append(Symbol.EQ)
+					.append(val)
+					.append(Symbol.AND_MARK);
 			}
 		}
 		if(sb.length() > 0 && sb.charAt(sb.length() - 1) == '&')

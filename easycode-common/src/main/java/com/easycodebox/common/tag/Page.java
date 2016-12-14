@@ -10,9 +10,9 @@ import javax.servlet.jsp.JspException;
 
 import org.apache.taglibs.standard.tag.common.core.ParamParent;
 
+import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.HttpUtils;
-import com.easycodebox.common.web.CacheHisUris;
 
 /**
  * @author WangXiaoJin
@@ -78,18 +78,16 @@ public class Page extends AbstractHtmlTag implements ParamParent {
 			
 			Set<String> keys = params.keySet();
 			for (String key : keys) {
-				paramStr.append("&").append(key).append(Symbol.EQ)
+				paramStr.append(Symbol.AND_MARK).append(key).append(Symbol.EQ)
 					.append(params.get(key));
 			}
 			
 			//自动添加上次请求的参数
 			if(antoAddParam) {
 				HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-				//新版中应废弃后面的CacheHisUris参数，现保留是为兼容之前的版本
-				String ps = HttpUtils.getRequestParams(request, true, CacheHisUris.FLUSH_CACHED_URI, CacheHisUris.BACK_CACHED_URI);
-				ps = ps.replaceAll("pageNo=\\d+", "").replace("&&", "&");
+				String ps = HttpUtils.getRequestParams(request, 2, BaseConstants.httpParamTradition, "pageNo");
 				if(ps.length() > 0)
-					paramStr.append("&").append(ps);
+					paramStr.append(paramStr.length() > 0 ? Symbol.AND_MARK : Symbol.EMPTY).append(ps);
 			}
 			String param = paramStr.toString();
 	

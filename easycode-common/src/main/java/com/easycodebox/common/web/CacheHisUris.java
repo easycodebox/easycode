@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
@@ -79,7 +80,7 @@ public class CacheHisUris {
 					while(uris.size() >= CACHE_NUM) {
 						uris.remove(0);
 					}
-					String fullUri = HttpUtils.getFullRequestUri(request, true);
+					String fullUri = HttpUtils.getFullRequestUri(request, 2, BaseConstants.httpParamTradition);
 					//缓存uri地址
 					uris.add(fullUri);
 					log.debug("cache hisUri = {0}", fullUri);

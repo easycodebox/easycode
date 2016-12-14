@@ -115,7 +115,7 @@ public abstract class BaseConstants {
 	public static String rmiIp;
 	
 	/**
-	 * http请求参数已传统格式传送：
+	 * http请求参数以传统格式传送：
 	 * true	== url.do?name=wang&name=zhang
 	 * false == url.do?name[]=wang&name[]=zhang
 	 */

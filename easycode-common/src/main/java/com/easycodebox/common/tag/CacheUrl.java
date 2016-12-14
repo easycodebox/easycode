@@ -10,6 +10,7 @@ import javax.servlet.jsp.JspException;
 
 import org.apache.taglibs.standard.tag.common.core.ParamParent;
 
+import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.HttpUtils;
@@ -83,7 +84,7 @@ public class CacheUrl extends TagExt implements ParamParent {
 		try {
 			//添加当前请求的参数
 			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-			String url = HttpUtils.getFullRequestUrl(request, true, excludeParams);
+			String url = HttpUtils.getFullRequestUrl(request, 2, BaseConstants.httpParamTradition, excludeParams);
 			url = HttpUtils.addParams2Url(url, params.toString());
 			pageContext.getOut().append(String.format(content, url));
 		} catch (IOException e) {
