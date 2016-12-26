@@ -31,8 +31,8 @@ public class Constants extends BaseConstants {
 	 * CacheName的缩写
 	 */
 	public static final class CN {
-		
-		private static final String PREFIX = "auth_";
+
+		public static final String PREFIX = "auth:";
 		
 		/**
 		 * key:partnerId value:partner
