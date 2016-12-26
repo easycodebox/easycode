@@ -82,6 +82,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 	
 	@Override
 	@Log(title = "修改角色", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.ROLE, key="#role.id")
 	public int update(Role role) {
 		
@@ -136,6 +137,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 	
 	@Override
 	@Log(title = "开启关闭角色", moduleType = ModuleType.USER)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, allEntries=true),

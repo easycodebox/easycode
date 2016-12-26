@@ -110,6 +110,7 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	
 	@Override
 	@Log(title = "修改组织", moduleType = ModuleType.USER)
+    @Transactional
 	@CacheEvict(cacheNames=Constants.CN.GROUP, key="#group.id")
 	public int update(Group group) {
 
@@ -130,8 +131,8 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	}
 
 	@Override
-	@Transactional
 	@Log(title = "逻辑删除组织", moduleType = ModuleType.USER)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.GROUP, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
@@ -149,8 +150,8 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	}
 	
 	@Override
-	@Transactional
 	@Log(title = "物理删除组织", moduleType = ModuleType.USER)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.GROUP, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
@@ -181,6 +182,7 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	
 	@Override
 	@Log(title = "开启关闭组织", moduleType = ModuleType.USER)
+    @Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.GROUP, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.GROUP_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),

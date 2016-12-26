@@ -115,6 +115,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	
 	@Override
 	@Log(title = "修改权限", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int update(Permission permission) {
 		
@@ -146,6 +147,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 
 	@Override
 	@Log(title = "逻辑删除权限", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int remove(Long[] ids) {
 		return super.delete(ids);
@@ -153,6 +155,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	
 	@Override
 	@Log(title = "物理删除权限", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int removePhy(Long[] ids) {
 		return super.deletePhy(ids);
@@ -160,6 +163,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	
 	@Override
 	@Log(title = "开启关闭权限", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int openClose(Long[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);
@@ -477,6 +481,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	
 	@Override
 	@Log(title = "配置指定角色权限", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public void authoriseRole(int roleId, Long[] permissionIds) {
 		super.deletePhy(sql(RolePermission.class).eq(R.RolePermission.roleId, roleId));
@@ -534,6 +539,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 
 	@Override
 	@Log(title = "修改权限是否为菜单项", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int changeIsMenu(Long id, YesNo isMenu) {
 		return super.update(sql()

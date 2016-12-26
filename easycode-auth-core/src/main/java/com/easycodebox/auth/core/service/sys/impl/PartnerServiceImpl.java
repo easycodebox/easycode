@@ -78,6 +78,7 @@ public class PartnerServiceImpl extends AbstractServiceImpl<Partner> implements 
 	
 	@Override
 	@Log(title = "修改合作商", moduleType = ModuleType.SYS)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PARTNER, key="#partner.id")
 	public int update(Partner partner) {
 		Assert.isFalse(this.existName(partner.getName(), partner.getId()),
@@ -99,6 +100,7 @@ public class PartnerServiceImpl extends AbstractServiceImpl<Partner> implements 
 
 	@Override
 	@Log(title = "逻辑删除合作商", moduleType = ModuleType.SYS)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PARTNER, keyGenerator=Constants.MULTI_KEY_GENERATOR)
 	public int remove(String[] ids) {
 		return super.delete(ids);
@@ -106,6 +108,7 @@ public class PartnerServiceImpl extends AbstractServiceImpl<Partner> implements 
 	
 	@Override
 	@Log(title = "物理删除合作商", moduleType = ModuleType.SYS)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PARTNER, keyGenerator=Constants.MULTI_KEY_GENERATOR)
 	public int removePhy(String[] ids) {
 		return super.deletePhy(ids);
@@ -136,6 +139,7 @@ public class PartnerServiceImpl extends AbstractServiceImpl<Partner> implements 
 	
 	@Override
 	@Log(title = "开启关闭合作商", moduleType = ModuleType.SYS)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.PARTNER, keyGenerator=Constants.MULTI_KEY_GENERATOR)
 	public int openClose(String[] ids, OpenClose status) {
 		return super.updateStatus(ids, status);

@@ -104,6 +104,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	
 	@Override
 	@Log(title = "修改用户", moduleType = ModuleType.USER)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.USER, key="#user.id"),
 			//由于有可能修改group，导致角色有所变动
@@ -157,6 +158,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 
 	@Override
 	@Log(title = "逻辑删除用户", moduleType = ModuleType.USER)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.USER, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
@@ -168,6 +170,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	
 	@Override
 	@Log(title = "物理删除用户", moduleType = ModuleType.USER)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.USER, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
@@ -228,6 +231,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	
 	@Override
 	@Log(title = "开启关闭用户", moduleType = ModuleType.USER)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.USER, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.USER_ROLE, keyGenerator=Constants.MULTI_KEY_GENERATOR),
@@ -257,6 +261,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 
 	@Override
 	@Log(title = "修改用户昵称", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.USER, key="#id")
 	public int updateNickname(String nickname, String id) {
 		Assert.notBlank(id, CodeMsgExt.PARAM_BLANK.fillArgs("主键"));
@@ -280,6 +285,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 
 	@Override
 	@Log(title = "修改用户密码", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.USER, key="#id")
 	public int updatePwd(String newPwd, String id) {
 		return super.update(sql()
@@ -291,6 +297,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 
 	@Override
 	@Log(title = "修改用户头像", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.USER, key="#id")
 	public int updatePortrait(String id, String portrait) {
 		return super.update(sql()
@@ -301,6 +308,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 
 	@Override
 	@Log(title = "修改用户基本信息", moduleType = ModuleType.USER)
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.USER, key="#id")
 	public int updateBaseInfo(String id, String nickname, String realname,
 			String email, String mobile) {
@@ -332,6 +340,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	}
 	
 	@Override
+	@Transactional
 	@CacheEvict(cacheNames=Constants.CN.USER)
 	public boolean clearCache(String userId) throws ErrorContext {
 		log.info("清除用户缓存 userId:{0}", userId);

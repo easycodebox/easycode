@@ -73,8 +73,8 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	}
 
 	@Override
-	@Transactional
 	@Log(title = "添加授权项目", moduleType = ModuleType.SYS)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
 			@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
@@ -98,6 +98,7 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	
 	@Override
 	@Log(title = "修改授权项目", moduleType = ModuleType.SYS)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT, key="#project.id"),
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
@@ -122,8 +123,8 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	}
 
 	@Override
-	@Transactional
 	@Log(title = "逻辑删除授权项目", moduleType = ModuleType.SYS)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
@@ -135,8 +136,8 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	}
 	
 	@Override
-	@Transactional
 	@Log(title = "物理删除授权项目", moduleType = ModuleType.SYS)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
@@ -162,6 +163,7 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 	
 	@Override
 	@Log(title = "开启关闭授权项目", moduleType = ModuleType.SYS)
+	@Transactional
 	@Caching(evict={
 			@CacheEvict(cacheNames=Constants.CN.PROJECT, keyGenerator=Constants.MULTI_KEY_GENERATOR),
 			@CacheEvict(cacheNames=Constants.CN.PROJECT_NO, allEntries=true),
