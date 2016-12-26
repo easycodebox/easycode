@@ -1,26 +1,5 @@
 package com.easycodebox.auth.core.service.user.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.io.IOUtils;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.easycodebox.auth.core.dao.user.PermissionMapper;
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.ProjectService;
@@ -47,13 +26,23 @@ import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.xml.XmlDataParser;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
-
-import freemarker.core.ParseException;
 import freemarker.template.Configuration;
-import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateNotFoundException;
+import org.apache.commons.io.IOUtils;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -189,7 +178,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 		List<Permission> os = permissionMapper.page(parentName, projectName, 
 				permissionName, isMenu, status, url, pageNo, pageSize);
 		long totalCount = permissionMapper.pageTotalCount(parentName, projectName, permissionName, isMenu, status, url);
-		return new DataPage<Permission>(pageNo, pageSize, totalCount, os);
+		return new DataPage<>(pageNo, pageSize, totalCount, os);
 	}
 	
 	@Override
@@ -359,14 +348,13 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	@Override
 	@Log(title = "导出权限", moduleType = ModuleType.USER)
 	public void exportToXml(String ftlRes, Integer projectId, Writer writer) 
-			throws TemplateException, TemplateNotFoundException, MalformedTemplateNameException, 
-			ParseException, IOException {
+			throws TemplateException, IOException {
 		List<Permission> os = treePermissions(null, this.list(projectId, null, null), null);
 		Project project = projectService.load(projectId);
 		Configuration cfg = ConfigurationFactory.instance();
 		//设置包装器，并将对象包装为数据模型
 		Template tpl = cfg.getTemplate(ftlRes);
-		Map<String, Object> root = new HashMap<String, Object>();
+		Map<String, Object> root = new HashMap<>();
 		root.put("project", project.getProjectNo());
 		root.put("os", os);
 		tpl.process(root, writer);
@@ -393,7 +381,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	
 	@Override
 	public List<Permission> listTreePermissionsByRoleId(Integer roleId, YesNo isMenu) {
-		List<Permission> os = null;
+		List<Permission> os;
 		if(roleId == null)
 			os =  this.list(null, OpenClose.OPEN, isMenu);
 		else
@@ -411,7 +399,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	@Override
 	@Cacheable(cacheNames=Constants.CN.PERMISSION, keyGenerator=Constants.METHOD_ARGS_KEY_GENERATOR)
 	public List<Permission> listAllGroupByProject(Integer roleId) {
-		List<Permission> newOs = new ArrayList<Permission>();
+		List<Permission> newOs = new ArrayList<>();
 		List<Permission> os = roleId == null ? treePermissions(null, this.list(null, null, null), null)
 				: this.listAllTreePermissionsByRoleId(roleId, null);
 		Map<Integer, List<Permission>> mapping = new HashMap<>();
@@ -459,7 +447,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	 * @return
 	 */
 	private List<Permission> treePermissions(Long parentId, List<Permission> all, List<Permission> owns) {
-		List<Permission> cur = new LinkedList<Permission>();
+		List<Permission> cur = new LinkedList<>();
 		for(Permission o : all) {
 			if(parentId == null ? o.getParentId() == null : parentId.equals(o.getParentId())) {
 				o.setChildren(treePermissions(o.getId(), all, owns));
@@ -492,10 +480,10 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public void authoriseRole(int roleId, Long[] permissionIds) {
 		super.deletePhy(sql(RolePermission.class).eq(R.RolePermission.roleId, roleId));
-		for(int i = 0; i < permissionIds.length; i++) {
+		for (Long permissionId : permissionIds) {
 			RolePermission ro = new RolePermission();
 			ro.setRoleId(roleId);
-			ro.setPermissionId(permissionIds[i]);
+			ro.setPermissionId(permissionId);
 			super.save(ro, RolePermission.class);
 		}
 	}
