@@ -21,7 +21,7 @@ import com.easycodebox.common.lang.Symbol;
  */
 public class MultiKeyGenerator implements KeyGenerator {
 	
-	private ConcurrentHashMap<String, Integer> multiKeyIndexMap = new ConcurrentHashMap<String, Integer>(16);
+	private ConcurrentHashMap<String, Integer> multiKeyIndexMap = new ConcurrentHashMap<>(16);
 	
 	private final Integer NON_MULTI_KEY_ANNO = NumberUtils.INTEGER_MINUS_ONE;
 
