@@ -178,6 +178,13 @@
 			<artifactId>ehcache-core</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- Redis -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<optional>true</optional>
+		</dependency>
 		
 		<!-- curator for zookeeper client -->
 		<dependency>
