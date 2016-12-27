@@ -1,39 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
-	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
-	default-lazy-init="true">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
 
-	<!-- 启用Spring Cache功能 -->
-	<cache:annotation-driven />
-	
-	<!-- 
-		如果CacheManager没有对应name的cache，则会动态创建一个新Cache，这个new Cache配置为ehcache.xml中的defaultCache。
-		如果你想覆盖defaultCache默认配置，则可以用如下配置：
-		
-		<bean id="cacheManager" class="com.easycodebox.common.cache.spring.ehcache.EhCacheDynamicCacheManager" 
-			p:cache-manager-ref="nativeEhcacheManager" p:std-ehcache-cfg-ref="stdEhcacheCfg"/>
-		
-		<bean id="stdEhcacheCfg" class="net.sf.ehcache.config.CacheConfiguration" 
-			p:maxEntriesLocalHeap="10000" p:maxElementsOnDisk="10000000"
-			p:timeToLiveSeconds="120" p:timeToIdleSeconds="120" />
-	 -->
-	<bean id="cacheManager" class="com.easycodebox.common.cache.spring.ehcache.EhCacheDynamicCacheManager" 
-		p:cache-manager-ref="nativeEhcacheManager" />
-		
-	<bean id="nativeEhcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" 
-		p:config-location="classpath:ehcache.xml" p:cacheManagerName="serviceCacheManager"
-		p:shared="true" />
-	
-	<!-- 带方法名的KeyGenerator，适用于混合存储格式 -->
-	<bean id="methodArgsKeyGenerator" class="com.easycodebox.common.cache.spring.MethodArgsKeyGenerator" />
-	<!-- 适用于批量删除缓存的情况 -->
-	<bean id="multiKeyGenerator" class="com.easycodebox.common.cache.spring.MultiKeyGenerator" />
-		
+    <!-- 启用Spring Cache功能 -->
+    <cache:annotation-driven/>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
+          p:maxTotal="50"
+          p:maxIdle="10"
+          p:maxWaitMillis="3000"
+          p:testOnBorrow="false"/>
+    <!-- Jedis ConnectionFactory -->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          c:poolConfig-ref="jedisPoolConfig"
+          p:hostName="192.168.206.130"
+          p:port="6381"/>
+
+    <!-- JSON序列化 -->
+    <bean id="jacksonRedisSerializer"
+          class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
+    <!-- redis template definition -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+          p:connection-factory-ref="jedisConnectionFactory"
+          p:valueSerializer-ref="jacksonRedisSerializer"
+          p:hashValueSerializer-ref="jacksonRedisSerializer"/>
+
+    <bean id="cacheManager" class="com.easycodebox.common.cache.spring.redis.CustomRedisCacheManager"
+          c:redisOperations-ref="redisTemplate"
+          p:usePrefix="true"/>
+
+    <!-- 带方法名的KeyGenerator，适用于混合存储格式 -->
+    <bean id="methodArgsKeyGenerator" class="com.easycodebox.common.cache.spring.MethodArgsKeyGenerator"/>
+    <!-- 适用于批量删除缓存的情况 -->
+    <bean id="multiKeyGenerator" class="com.easycodebox.common.cache.spring.MultiKeyGenerator"/>
+
+
+    <!-- **********************************  Shiro Session  ************************************************** -->
+    <!-- 提供给Shiro缓存Session使用 -->
+    <bean id="shiroRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+          p:connection-factory-ref="jedisConnectionFactory"/>
+    <bean id="shiroCacheManager" class="com.easycodebox.common.cache.spring.redis.CustomRedisCacheManager"
+          c:redisOperations-ref="shiroRedisTemplate"
+          p:usePrefix="true"
+          p:defaultExpiration="1800"/>
+
+    <bean id="cacheStats" class="com.easycodebox.login.shiro.cache.spring.RedisTemplateCacheStats"
+          p:usePrefix="true"/>
+
 </beans>
