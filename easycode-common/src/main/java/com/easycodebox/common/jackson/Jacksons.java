@@ -1,16 +1,7 @@
 package com.easycodebox.common.jackson;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.easycodebox.common.validate.Assert;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
@@ -21,19 +12,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.InjectableValues;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.cfg.HandlerInstantiator;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.fasterxml.jackson.databind.introspect.Annotated;
@@ -52,6 +31,10 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter.FilterEx
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter.SerializeExceptFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -164,7 +147,7 @@ public class Jacksons extends ObjectMapper {
 	 */
 	public Jacksons exclude(Class<?> dataType, String... propertyArray) {
 		validate();
-		HashSet<String> properties = new HashSet<String>(propertyArray.length);
+		HashSet<String> properties = new HashSet<>(propertyArray.length);
         Collections.addAll(properties, propertyArray);
         return exclude(dataType, properties);  
     }
@@ -176,10 +159,10 @@ public class Jacksons extends ObjectMapper {
 	 */
 	public Jacksons exclude(Class<?> dataType, Set<String> properties) {
 		validate();
-		FilterProvider fp = new SimpleFilterProvider().addFilter(
-				dataType.getName(), new SerializeExceptFilter(properties))
-				.setFailOnUnknownId(false);
-		this.setFilters(fp);
+        FilterProvider provider = this.getSerializationConfig().getFilterProvider();
+        final SimpleFilterProvider sfp = provider instanceof SimpleFilterProvider ? (SimpleFilterProvider) provider : new SimpleFilterProvider();
+        sfp.addFilter(dataType.getName(), new SerializeExceptFilter(properties)).setFailOnUnknownId(false);
+        this.setFilters(sfp);
 		this.setAnnotationIntrospector(new JacksonAnnotationIntrospector(){
 			
 			private static final long serialVersionUID = 1L;
@@ -187,7 +170,7 @@ public class Jacksons extends ObjectMapper {
 			@Override
 			public Object findFilterId(Annotated a) {
 				Object filterId = super.findFilterId(a);
-				return filterId == null ? a.getName() : filterId;
+                return filterId == null && sfp.findPropertyFilter(a.getName(), null) != null ? a.getName() : filterId;
 			}
 			
 		});
@@ -201,7 +184,7 @@ public class Jacksons extends ObjectMapper {
 	 */
 	public Jacksons include(Class<?> dataType, String... propertyArray) {
 		validate();
-		HashSet<String> properties = new HashSet<String>(propertyArray.length);
+		HashSet<String> properties = new HashSet<>(propertyArray.length);
         Collections.addAll(properties, propertyArray);
         return include(dataType, properties);  
     }
@@ -213,29 +196,29 @@ public class Jacksons extends ObjectMapper {
 	 */
 	public Jacksons include(Class<?> dataType, Set<String> properties) {
 		validate();
-		FilterProvider fp = new SimpleFilterProvider().addFilter(
-				dataType.getName(), new FilterExceptFilter(properties))
-				.setFailOnUnknownId(false);
-		this.setFilters(fp);
+        FilterProvider provider = this.getSerializationConfig().getFilterProvider();
+        final SimpleFilterProvider sfp = provider instanceof SimpleFilterProvider ? (SimpleFilterProvider) provider : new SimpleFilterProvider();
+		sfp.addFilter(dataType.getName(), new FilterExceptFilter(properties)).setFailOnUnknownId(false);
+        this.setFilters(sfp);
 		this.setAnnotationIntrospector(new JacksonAnnotationIntrospector(){
-			
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Object findFilterId(Annotated a) {
 				Object filterId = super.findFilterId(a);
-				return filterId == null ? a.getName() : filterId;
+				return filterId == null && sfp.findPropertyFilter(a.getName(), null) != null ? a.getName() : filterId;
 			}
-			
+
 		});
-        return this;  
+        return this;
     }
 	
 	/**
 	 * 当类型为clazz时
 	 * 序列化数据时始终以传入的JsonSerializer序列化，并不会用系统自带的。
 	 * 此方法可以不受限制的序列化任意对象
-	 * @param js
+	 * @param jsonSerializer
 	 * @return
 	 */
 	public <T> Jacksons addJsonSerializer(Class<? extends T> type, JsonSerializer<T> jsonSerializer) {
