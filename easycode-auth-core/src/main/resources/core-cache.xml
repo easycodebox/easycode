@@ -22,12 +22,34 @@
 
     <!--
         Sentinel Mode:
+            1. XML配置
             <bean id="redisSentinelConfiguration" class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
                 <constructor-arg name="propertySource">
                     <bean class="org.springframework.core.env.PropertiesPropertySource"
-                        c:name="RedisSentinelConfiguration" c:source-ref="properties"/>
+                          c:name="RedisSentinelConfiguration" c:source-ref="properties"/>
                 </constructor-arg>
             </bean>
+            <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  c:sentinelConfig-ref="redisSentinelConfiguration" c:poolConfig-ref="jedisPoolConfig"/>
+            2. redis.properties文件增加配置项
+                spring.redis.sentinel.master=easycode
+                spring.redis.sentinel.nodes=192.168.206.130:26379,192.168.206.130:26380,192.168.206.130:26381
+
+        Cluster Mode:
+            1. XML配置
+                <bean id="redisClusterConfiguration" class="org.springframework.data.redis.connection.RedisClusterConfiguration">
+                    <constructor-arg name="propertySource">
+                        <bean class="org.springframework.core.env.PropertiesPropertySource"
+                              c:name="RedisClusterConfiguration" c:source-ref="properties"/>
+                    </constructor-arg>
+                </bean>
+                <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                      c:clusterConfig-ref="redisClusterConfiguration" c:poolConfig-ref="jedisPoolConfig"/>
+            2. redis.properties文件增加配置项
+                spring.redis.cluster.nodes=192.168.206.130:6379,192.168.206.130:6380,192.168.206.130:6381
+                spring.redis.cluster.max-redirects=5
+
+        注：目前Jedis版本不支持读写分离，读写都是走Master，有兴趣的朋友可以换成redisson，redisson实现了读写分离。
     -->
     <!-- Jedis ConnectionFactory -->
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
