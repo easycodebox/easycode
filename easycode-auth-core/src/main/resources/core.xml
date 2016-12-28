@@ -54,6 +54,7 @@
 			<list>
 				<value>classpath:core.properties</value>
 				<value>classpath:jdbc.properties</value>
+				<value>classpath:redis.properties</value>
 				<value>classpath:url.properties</value>
 				<value>classpath:mail.properties</value>
 				<value>classpath:login.properties</value>
@@ -134,22 +135,22 @@
 		p:url="${jdbc.url}"
 		p:username="${jdbc.username}"
 		p:password="${jdbc.password}"
-		p:initialSize="${pool.initialSize}"
-		p:minIdle="${pool.minIdle}"
-		p:maxActive="${pool.maxActive}"
-		p:maxWait="${pool.maxWait}"
-		p:timeBetweenEvictionRunsMillis="${pool.timeBetweenEvictionRunsMillis}"
-		p:minEvictableIdleTimeMillis="${pool.minEvictableIdleTimeMillis}"
+		p:initialSize="${jdbc.pool.initialSize}"
+		p:minIdle="${jdbc.pool.minIdle}"
+		p:maxActive="${jdbc.pool.maxActive}"
+		p:maxWait="${jdbc.pool.maxWait}"
+		p:timeBetweenEvictionRunsMillis="${jdbc.pool.timeBetweenEvictionRunsMillis}"
+		p:minEvictableIdleTimeMillis="${jdbc.pool.minEvictableIdleTimeMillis}"
 		
-		p:validationQuery="${pool.validationQuery}"
-		p:testWhileIdle="${pool.testWhileIdle}"
-		p:testOnBorrow="${pool.testOnBorrow}"
-		p:testOnReturn="${pool.testOnReturn}"
+		p:validationQuery="${jdbc.pool.validationQuery}"
+		p:testWhileIdle="${jdbc.pool.testWhileIdle}"
+		p:testOnBorrow="${jdbc.pool.testOnBorrow}"
+		p:testOnReturn="${jdbc.pool.testOnReturn}"
 		
-		p:poolPreparedStatements="${pool.poolPreparedStatements}"
-		p:maxPoolPreparedStatementPerConnectionSize="${pool.maxPoolPreparedStatementPerConnectionSize}"
+		p:poolPreparedStatements="${jdbc.pool.poolPreparedStatements}"
+		p:maxPoolPreparedStatementPerConnectionSize="${jdbc.pool.maxPoolPreparedStatementPerConnectionSize}"
 		
-		p:filters="${pool.filters}"
+		p:filters="${jdbc.pool.filters}"
 		p:connectionProperties="config.decrypt=true" />
 
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"

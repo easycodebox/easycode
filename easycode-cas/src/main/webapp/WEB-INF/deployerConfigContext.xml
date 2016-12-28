@@ -184,31 +184,31 @@
 		<property name="password" value="${jdbc.password}" />
 	
 		<!-- 配置初始化大小、最小、最大 -->
-		<property name="initialSize" value="${pool.initialSize}" />
-		<property name="minIdle" value="${pool.minIdle}" />
-		<property name="maxActive" value="${pool.maxActive}" />
+		<property name="initialSize" value="${jdbc.pool.initialSize}" />
+		<property name="minIdle" value="${jdbc.pool.minIdle}" />
+		<property name="maxActive" value="${jdbc.pool.maxActive}" />
 	
 		<!-- 配置获取连接等待超时的时间 -->
-		<property name="maxWait" value="${pool.maxWait}" />
+		<property name="maxWait" value="${jdbc.pool.maxWait}" />
 	
 		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-		<property name="timeBetweenEvictionRunsMillis" value="${pool.timeBetweenEvictionRunsMillis}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.pool.timeBetweenEvictionRunsMillis}" />
 	
 		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-		<property name="minEvictableIdleTimeMillis" value="${pool.minEvictableIdleTimeMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${jdbc.pool.minEvictableIdleTimeMillis}" />
 	
-		<property name="validationQuery" value="${pool.validationQuery}" />
-		<property name="testWhileIdle" value="${pool.testWhileIdle}" />
-		<property name="testOnBorrow" value="${pool.testOnBorrow}" />
-		<property name="testOnReturn" value="${pool.testOnReturn}" />
+		<property name="validationQuery" value="${jdbc.pool.validationQuery}" />
+		<property name="testWhileIdle" value="${jdbc.pool.testWhileIdle}" />
+		<property name="testOnBorrow" value="${jdbc.pool.testOnBorrow}" />
+		<property name="testOnReturn" value="${jdbc.pool.testOnReturn}" />
 	
 		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-		<property name="poolPreparedStatements" value="${pool.poolPreparedStatements}" />
+		<property name="poolPreparedStatements" value="${jdbc.pool.poolPreparedStatements}" />
 		<property name="maxPoolPreparedStatementPerConnectionSize"
-			value="${pool.maxPoolPreparedStatementPerConnectionSize}" />
+			value="${jdbc.pool.maxPoolPreparedStatementPerConnectionSize}" />
 	
 		<!-- 配置监控统计拦截的filters -->
-		<property name="filters" value="${pool.filters}" />
+		<property name="filters" value="${jdbc.pool.filters}" />
 		<!-- config.decrypt用于解密数据库密码 -->
 		<property name="connectionProperties" value="config.decrypt=true" />
 	</bean>
