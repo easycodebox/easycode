@@ -1,13 +1,5 @@
 package com.easycodebox.auth.backend.controller.user;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.user.GroupService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
@@ -23,6 +15,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
