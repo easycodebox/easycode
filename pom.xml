@@ -58,7 +58,7 @@
 		<httpclient.version>4.4.1</httpclient.version>
 		<aspectj.version>1.8.9</aspectj.version>
 		<jdk.version>1.7</jdk.version>
-		<junit.version>4.10</junit.version>
+		<junit.version>4.12</junit.version>
 		<shiro.version>1.2.6</shiro.version>
 		<cas.client.version>3.4.1</cas.client.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
