@@ -9,6 +9,7 @@ public class Symbol {
 	public static final String LINE = System.getProperty("line.separator");
 	public static final String PERIOD = ".";
 	public static final String COLON = ":";
+	public static final String SEMICOLON = ";";
 	public static final String COMMA = ",";
 	public static final String EMPTY = "";		//空字符串
 	public static final String QUOTES = "\"";	//双引号
