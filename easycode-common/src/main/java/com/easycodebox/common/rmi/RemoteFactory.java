@@ -1,27 +1,25 @@
 package com.easycodebox.common.rmi;
 
+import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.log.slf4j.*;
+import com.easycodebox.common.validate.Assert;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.rmi.AlreadyBoundException;
-import java.rmi.Naming;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import java.net.*;
+import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.RMISocketFactory;
 import java.util.List;
 
-import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.validate.Assert;
-
 /**
+ * 请使用Spring提供的RMI工具类
+ * <p>参考类：{@link org.springframework.remoting.rmi.RmiServiceExporter RmiServiceExporter}、
+ * {@link org.springframework.remoting.rmi.RmiProxyFactoryBean RmiProxyFactoryBean}
+ *
  * @author WangXiaoJin
- * 
  */
+@Deprecated
 public class RemoteFactory {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());

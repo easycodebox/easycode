@@ -1,18 +1,19 @@
 package com.easycodebox.common.rmi;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import com.easycodebox.common.log.slf4j.*;
+
+import java.net.MalformedURLException;
+import java.rmi.*;
 
 /**
+ * 请使用Spring提供的RMI工具类
+ * <p>参考类：{@link org.springframework.remoting.rmi.RmiServiceExporter RmiServiceExporter}、
+ * {@link org.springframework.remoting.rmi.RmiProxyFactoryBean RmiProxyFactoryBean}
+ *
  * @author WangXiaoJin
- * 
  */
+@Deprecated
 public class LookupRemote {
 	
 	private static final Logger log = LoggerFactory.getLogger(LookupRemote.class);
