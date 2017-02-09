@@ -1,21 +1,16 @@
 package com.easycodebox.upload.servlet;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.upload.util.CodeMsgExt;
-import com.easycodebox.upload.util.FileType;
-import com.easycodebox.upload.util.UploadUtils;
+import com.easycodebox.upload.util.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -23,8 +18,6 @@ import com.easycodebox.upload.util.UploadUtils;
  */
 public class DeleteServlet extends BaseServlet {
 
-	private static final long serialVersionUID = -15202551101895656L;
-	
 	private static final String FILES_KEY = "files";
 	/**
 	 * 默认是图片类型

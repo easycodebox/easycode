@@ -1,18 +1,16 @@
 package com.easycodebox.upload.util;
 
-import java.io.File;
-
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.PropertiesPool;
 import com.easycodebox.common.lang.Symbol;
+
+import java.io.File;
 
 /**
  * @author WangXiaoJin
  *
  */
 public class CodeMsgExt extends CodeMsg {
-	
-	private static final long serialVersionUID = -5441037069812286310L;
 	
 	public static CodeMsg PARAM_ERROR_TYPE 	= new CodeMsgExt("1001", "文件类型参数错误");
 	public static CodeMsg FORM_ERROR 		= new CodeMsgExt("1002", "表单格式错误");

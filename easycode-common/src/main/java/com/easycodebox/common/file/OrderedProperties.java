@@ -33,8 +33,6 @@ import java.util.*;
  */
 public final class OrderedProperties implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     private transient Map<String, String> properties;
     private transient boolean suppressDate;
 
@@ -338,8 +336,6 @@ public final class OrderedProperties implements Serializable {
      */
     private static final class CustomProperties extends Properties {
 
-		private static final long serialVersionUID = 6486502778377971110L;
-		
 		private final Map<String, String> targetProperties;
 
         private CustomProperties(Map<String, String> targetProperties) {

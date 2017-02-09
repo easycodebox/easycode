@@ -8,8 +8,6 @@ import com.easycodebox.common.lang.Strings;
  */
 public class BaseException extends RuntimeException {
 
-	private static final long serialVersionUID = 8710681426899865033L;
-	
 	public BaseException() {
 		super();
 	}

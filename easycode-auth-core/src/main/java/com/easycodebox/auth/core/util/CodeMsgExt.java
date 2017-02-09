@@ -12,8 +12,6 @@ import java.io.File;
  */
 public class CodeMsgExt extends CodeMsg {
 	
-	private static final long serialVersionUID = -1063652479110560177L;
-	
 	public static CodeMsg PARAM_ERR 	= new CodeMsgExt("1002", "{0}参数错误");
 	public static CodeMsg PARAM_BLANK 	= new CodeMsgExt("1003", "{0}参数不能为空");
 	

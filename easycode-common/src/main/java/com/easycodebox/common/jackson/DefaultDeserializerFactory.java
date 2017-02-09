@@ -22,8 +22,6 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 @Deprecated
 public class DefaultDeserializerFactory extends BeanDeserializerFactory {
 
-	private static final long serialVersionUID = -2726900213010448694L;
-
 	/**
 	 * @param config
 	 */

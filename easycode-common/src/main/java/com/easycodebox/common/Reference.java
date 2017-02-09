@@ -11,8 +11,6 @@ import java.io.ObjectOutput;
  */
 public class Reference<T> implements Copyable, Externalizable {
 	
-	private static final long serialVersionUID = 4576376399671156792L;
-	
 	private T value;
 
 	public Reference() {

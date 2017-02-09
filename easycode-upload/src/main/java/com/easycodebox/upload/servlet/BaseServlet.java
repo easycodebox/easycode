@@ -1,11 +1,5 @@
 package com.easycodebox.upload.servlet;
 
-import java.io.IOException;
-import java.net.URLEncoder;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletResponse;
-
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.Strings;
@@ -15,14 +9,17 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.Https;
 import com.easycodebox.common.validate.Assert;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+
 /**
  * @author WangXiaoJin
  * 
  */
 public abstract class BaseServlet extends HttpServlet {
 
-	private static final long serialVersionUID = -1064465770862657698L;
-	
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	protected void outData(CodeMsg error, String responseUrl, HttpServletResponse resp) throws IOException {

@@ -252,8 +252,6 @@ public class CodeMsg implements Serializable {
 			
 			Properties p = new Properties() {
 				
-				private static final long serialVersionUID = 2380710761701073981L;
-				
 				/**
 				 * 为了生成的属性文件内容排序
 				 */

@@ -163,8 +163,6 @@ public class Jacksons extends ObjectMapper {
         this.setFilters(sfp);
 		this.setAnnotationIntrospector(new JacksonAnnotationIntrospector(){
 			
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public Object findFilterId(Annotated a) {
 				Object filterId = super.findFilterId(a);
@@ -199,8 +197,6 @@ public class Jacksons extends ObjectMapper {
 		sfp.addFilter(dataType.getName(), new FilterExceptFilter(properties)).setFailOnUnknownId(false);
         this.setFilters(sfp);
 		this.setAnnotationIntrospector(new JacksonAnnotationIntrospector(){
-
-			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Object findFilterId(Annotated a) {

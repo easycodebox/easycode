@@ -1,18 +1,11 @@
 package com.easycodebox.upload.servlet;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.easycodebox.common.enums.DetailEnums;
+import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.*;
 import com.easycodebox.common.lang.Strings;
+import com.easycodebox.upload.util.*;
+import com.easycodebox.upload.util.FileType;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -20,21 +13,18 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.io.IOUtils;
 
-import com.easycodebox.common.enums.DetailEnums;
-import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.file.Files;
-import com.easycodebox.upload.util.CodeMsgExt;
-import com.easycodebox.upload.util.Constants;
-import com.easycodebox.upload.util.FileType;
-import com.easycodebox.upload.util.UploadUtils;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
  * 
  */
 public class UploadServlet extends BaseServlet {
-
-	private static final long serialVersionUID = 2962493472282327250L;
 
 	/**
 	 * 如果上传图片需要传入PIC_TYPE参数 ，如 PIC_TYPE=food
