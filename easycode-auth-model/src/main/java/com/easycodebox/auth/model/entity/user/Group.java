@@ -1,14 +1,12 @@
 package com.easycodebox.auth.model.entity.user;
 
-import java.util.List;
+import com.easycodebox.auth.model.util.mybatis.GeneratedValue;
+import com.easycodebox.auth.model.util.mybatis.*;
+import com.easycodebox.common.enums.entity.*;
+import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
 import javax.persistence.*;
-
-import com.easycodebox.auth.model.util.mybatis.GeneratedValue;
-import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
-import com.easycodebox.common.enums.entity.OpenClose;
-import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.jdbc.entity.AbstractOperateEntity;
+import java.util.List;
 
 /**
  * 用户组 - 用户组
@@ -19,8 +17,6 @@ import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 @Table(name="u_group")
 public class Group extends AbstractOperateEntity {
 
-	private static final long serialVersionUID = 5454155825314635342L;
-	
 	/**
 	 * 主键
 	 */

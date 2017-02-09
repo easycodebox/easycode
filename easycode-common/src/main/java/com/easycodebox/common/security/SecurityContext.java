@@ -1,21 +1,14 @@
 package com.easycodebox.common.security;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.io.Serializable;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
 /**
  * @author WangXiaoJin
  * 
  */
 public class SecurityContext<T extends Serializable> implements Externalizable{
-	
-	private static final long serialVersionUID = 7396550641375652577L;
 	
 	private transient HttpServletRequest request;
 	private transient HttpServletResponse response;

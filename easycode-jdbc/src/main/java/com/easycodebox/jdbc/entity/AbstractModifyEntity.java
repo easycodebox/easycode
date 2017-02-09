@@ -1,11 +1,7 @@
 package com.easycodebox.jdbc.entity;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 /**
  * @author WangXiaoJin
@@ -13,8 +9,6 @@ import javax.persistence.Transient;
  */
 @MappedSuperclass
 public abstract class AbstractModifyEntity extends AbstractEntity implements ModifyEntity {
-
-	private static final long serialVersionUID = 1850564296369846490L;
 
 	private String modifier;
 	

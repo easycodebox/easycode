@@ -11,7 +11,7 @@ public interface RoleProjectService {
 	
 	/**
 	 * 指定的角色和项目编号是否存在对应关系，如果projectNo指定的项目不存在或已被禁用，则return false
-	 * @param roleId
+	 * @param roleIds
 	 * @param projectNo
 	 * @return
 	 */

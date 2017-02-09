@@ -24,7 +24,7 @@ public enum LockMode {
 	
 	private String name;
 	
-	private LockMode(String name) {
+	LockMode(String name) {
 		this.name=name;
 	}
 	

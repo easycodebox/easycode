@@ -10,7 +10,7 @@ public enum Gender implements DetailEnum<Integer> {
 	private Integer value;
 	private String desc;
    
-    private Gender(Integer value, String desc) {
+    Gender(Integer value, String desc) {
 
         this.value = value;
         this.desc = desc;

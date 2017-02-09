@@ -1,26 +1,5 @@
 package com.easycodebox.jdbc.res;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.springframework.asm.ClassReader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
-
 import com.easycodebox.common.freemarker.ConfigurationFactory;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
@@ -30,12 +9,20 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.GenerateRes;
 import com.easycodebox.jdbc.entity.Entity;
-
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import freemarker.template.*;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.springframework.asm.ClassReader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -137,11 +124,9 @@ public class GenerateBeanRes {
 			if(log.isInfoEnabled()) {
 				log.info("=== ********* End generate template *********** =====");
 			}
-		} catch (IOException e) {
+		} catch (IOException | TemplateException e) {
 			log.error("generate value-object resource error.", e);
-		} catch (TemplateException e) {
-			log.error("generate value-object resource error.", e);
-		}finally {
+		} finally {
 			IOUtils.closeQuietly(out);
 		}
 		
@@ -166,7 +151,7 @@ public class GenerateBeanRes {
 					if (res != null && !res.value()) {
 						continue;
 					}
-					List<String> properties = new ArrayList<String>();
+					List<String> properties = new ArrayList<>();
 					data.setClazz(clazz.getName() + ".class");
 					data.setClassName(clazz.getSimpleName());
 					if(ClassUtils.isAssignable(clazz, Entity.class))
@@ -194,9 +179,7 @@ public class GenerateBeanRes {
 					beanDatas.add(data);
 				}
 			}
-		} catch (IOException e) {
-			log.error("generate value-object resource error.", e);
-		} catch (ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			log.error("generate value-object resource error.", e);
 		}
 		return beanDatas;

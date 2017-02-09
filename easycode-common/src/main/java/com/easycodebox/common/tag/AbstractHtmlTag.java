@@ -1,10 +1,10 @@
 package com.easycodebox.common.tag;
 
-import java.util.Map;
-
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
+
+import java.util.Map;
 
 /**
  * @author WangXiaoJin
@@ -12,8 +12,6 @@ import com.easycodebox.common.lang.Symbol;
  */
 public abstract class AbstractHtmlTag extends TagExt {
 
-	private static final long serialVersionUID = 5416226129998370809L;
-	
 	protected String name;
 	protected String title;
 	protected String cssClass;

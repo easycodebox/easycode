@@ -1,12 +1,12 @@
 package com.easycodebox.auth.model.entity.sys;
 
-import javax.persistence.*;
-
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.mybatis.GeneratedValue;
-import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.util.mybatis.*;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.jdbc.entity.AbstractCreateEntity;
+
+import javax.persistence.*;
 
 /**
  * 日志 - 记录系统日志
@@ -17,8 +17,6 @@ import com.easycodebox.jdbc.entity.AbstractCreateEntity;
 @Table(name="sys_log")
 public class Log extends AbstractCreateEntity {
 
-	private static final long serialVersionUID = 5454155825314635342L;
-	
 	/**
 	 * 主键
 	 */

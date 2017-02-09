@@ -9,8 +9,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class AtomicBigDecimal extends AtomicReference<BigDecimal>{
 
-	private static final long serialVersionUID = 1L;
-	
 	public AtomicBigDecimal() {
 		super(BigDecimal.ZERO);
 	}

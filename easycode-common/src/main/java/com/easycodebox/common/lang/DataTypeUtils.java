@@ -16,15 +16,12 @@ public class DataTypeUtils {
 	 * @return
 	 */
 	public static boolean isBasicType(Object data) {
-		if(data == null || isBasicType(data.getClass())){
-			return true;
-		}
-		return false;
+		return data == null || isBasicType(data.getClass());
 	}
 	
 	/**
 	 * data==null return true;
-	 * @param data
+	 * @param clazz
 	 * @return
 	 */
 	public static boolean isBasicType(Class<?> clazz) {

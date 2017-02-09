@@ -23,7 +23,7 @@ public interface JdbcHandler {
 	
 	/**
 	 * 在执行update（update sql）前执行的逻辑
-	 * @param entity
+	 * @param sqlGrammar
 	 */
 	void beforeUpdate(SqlGrammar sqlGrammar);
 	

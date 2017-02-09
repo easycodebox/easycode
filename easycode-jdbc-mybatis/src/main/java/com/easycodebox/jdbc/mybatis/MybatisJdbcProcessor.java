@@ -1,20 +1,5 @@
 package com.easycodebox.jdbc.mybatis;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.ibatis.builder.StaticSqlSource;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ParameterMap;
-import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.mapping.ResultMap;
-import org.apache.ibatis.mapping.ResultMapping;
-import org.apache.ibatis.mapping.ResultSetType;
-import org.apache.ibatis.mapping.SqlSource;
-import org.apache.ibatis.scripting.LanguageDriver;
-import org.apache.ibatis.session.Configuration;
-import org.mybatis.spring.SqlSessionTemplate;
-
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.log.slf4j.Logger;
@@ -23,6 +8,14 @@ import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.SqlCommandType;
 import com.easycodebox.jdbc.grammar.SqlGrammar;
 import com.easycodebox.jdbc.support.JdbcProcessor;
+import org.apache.ibatis.builder.StaticSqlSource;
+import org.apache.ibatis.mapping.*;
+import org.apache.ibatis.scripting.LanguageDriver;
+import org.apache.ibatis.session.Configuration;
+import org.mybatis.spring.SqlSessionTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -175,7 +168,7 @@ public class MybatisJdbcProcessor implements JdbcProcessor {
 				throw new BaseException("Could not find parameter map " + parameterMap, e);
 			}
 		} else if (parameterTypeClass != null) {
-			List<ParameterMapping> parameterMappings = new ArrayList<ParameterMapping>();
+			List<ParameterMapping> parameterMappings = new ArrayList<>();
 			ParameterMap.Builder inlineParameterMapBuilder = new ParameterMap.Builder(
 					sqlSessionTemplate.getConfiguration(), statementBuilder.id()
 							+ "-Inline", parameterTypeClass, parameterMappings);
@@ -187,7 +180,7 @@ public class MybatisJdbcProcessor implements JdbcProcessor {
 			ResultSetType resultSetType,
 			MappedStatement.Builder statementBuilder) {
 
-		List<ResultMap> resultMaps = new ArrayList<ResultMap>();
+		List<ResultMap> resultMaps = new ArrayList<>();
 		if (resultMap != null) {
 			String[] resultMapNames = resultMap.split(",");
 			for (String resultMapName : resultMapNames) {

@@ -1,10 +1,10 @@
 package com.easycodebox.auth.model.entity.sys;
 
-import javax.persistence.*;
-
 import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
+
+import javax.persistence.*;
 
 /**
  * @author WangXiaoJin
@@ -14,8 +14,6 @@ import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 @Table(name="sys_generator")
 public class Generator extends AbstractOperateEntity {
 
-	private static final long serialVersionUID = 5454155825314635342L;
-	
 	@Id
 	private GeneratorEnum generatorType;
 	

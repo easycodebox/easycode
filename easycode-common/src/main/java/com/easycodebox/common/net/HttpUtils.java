@@ -1,42 +1,23 @@
 package com.easycodebox.common.net;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.file.MimeTypes;
+import com.easycodebox.common.file.UploadFileInfo;
+import com.easycodebox.common.jackson.Jacksons;
+import com.easycodebox.common.lang.*;
+import com.easycodebox.common.log.slf4j.Logger;
+import com.easycodebox.common.log.slf4j.LoggerFactory;
+import com.easycodebox.common.validate.Assert;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -47,19 +28,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.web.util.WebUtils;
 
-import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.file.MimeTypes;
-import com.easycodebox.common.file.UploadFileInfo;
-import com.easycodebox.common.jackson.Jacksons;
-import com.easycodebox.common.lang.DataConvert;
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.validate.Assert;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import javax.servlet.http.*;
+import java.io.*;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * @author WangXiaoJin
@@ -111,7 +85,7 @@ public class HttpUtils {
 	}
 	
 	public static Map<String, String> convertQueryParams2Map(String query) {
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		if(StringUtils.isBlank(query)) return params;
 		int index = query.indexOf(Symbol.QUESTION);
 		query = index > -1 ? query.substring(0, index) : query;
@@ -126,8 +100,6 @@ public class HttpUtils {
 	/**
 	 * 获取请求地址信息，包含参数。例：/backend/group/list.html?name=xxx
 	 * 直接封装成有效的请求地址
-	 * @param encode 编码参数
-	 * @throws UnsupportedEncodingException 
 	 */
 	public static String getFullRequestUri(HttpServletRequest request, int encodeNum, 
 			boolean tradition, String... excludeKeys) throws UnsupportedEncodingException {
@@ -143,8 +115,6 @@ public class HttpUtils {
 	/**
 	 * 获取请求地址信息，包含参数。例：http://localhost:8080/backend/group/list.html?name=xxx
 	 * 直接封装成有效的请求地址
-	 * @param encode 编码参数
-	 * @throws UnsupportedEncodingException 
 	 */
 	public static String getFullRequestUrl(HttpServletRequest request, int encodeNum, 
 			boolean tradition, String... excludeKeys) throws UnsupportedEncodingException {
@@ -259,16 +229,15 @@ public class HttpUtils {
 			}
 			String[] values = request.getParameterValues(key);
 			if(values == null) continue;
-			for(int i = 0; i < values.length; i++) {
-				String val = values[i];
+			for (String val : values) {
 				int count = encodeNum;
 				while (count-- > 0) {
 					val = URLEncoder.encode(val, "UTF-8");
 				}
 				sb.append(key).append(values.length > 1 && !tradition ? "[]" : Symbol.EMPTY)
-					.append(Symbol.EQ)
-					.append(val)
-					.append(Symbol.AND_MARK);
+						.append(Symbol.EQ)
+						.append(val)
+						.append(Symbol.AND_MARK);
 			}
 		}
 		if(sb.length() > 0 && sb.charAt(sb.length() - 1) == '&')
@@ -286,8 +255,7 @@ public class HttpUtils {
 	 * @throws JsonMappingException 
 	 * @throws JsonGenerationException 
 	 */
-	public static String assembleParams(Map<?, ?> params, Collection<?> jsonKeys, String... excludeKeys) 
-			throws JsonGenerationException, JsonMappingException, IOException  {
+	public static String assembleParams(Map<?, ?> params, Collection<?> jsonKeys, String... excludeKeys) throws IOException  {
 		StringBuilder sb = new StringBuilder();
 		if(params != null && params.size() > 0) {
 			loopKey:
@@ -374,11 +342,8 @@ public class HttpUtils {
 	 * @return
 	 */
 	public static boolean isAjaxRequest(HttpServletRequest request) { 
-		    String header = request.getHeader("X-Requested-With"); 
-		    if (header != null && "XMLHttpRequest".equals(header)) 
-		        return true; 
-		    else 
-		        return false; 
+		    String header = request.getHeader("X-Requested-With");
+		return header != null && "XMLHttpRequest".equals(header);
 	}
 	
 	/**
@@ -387,11 +352,8 @@ public class HttpUtils {
 	 * @return
 	 */
 	public static boolean isResponseJson(HttpServletRequest request) { 
-		String accept = request.getHeader("Accept"); 
-		if (accept != null && accept.trim().startsWith("application/json")) 
-			return true; 
-		else 
-			return false; 
+		String accept = request.getHeader("Accept");
+		return accept != null && accept.trim().startsWith("application/json");
 	}
 	
 	/**
@@ -400,11 +362,8 @@ public class HttpUtils {
 	 * @return
 	 */
 	public static boolean isResponseHtml(HttpServletRequest request) { 
-		String accept = request.getHeader("Accept"); 
-		if (accept != null && accept.trim().startsWith("text/html")) 
-			return true; 
-		else 
-			return false; 
+		String accept = request.getHeader("Accept");
+		return accept != null && accept.trim().startsWith("text/html");
 	}
 	
 	/**
@@ -632,7 +591,7 @@ public class HttpUtils {
 		String fn = filename;
 		try {
 			fn = new String(fn.getBytes("UTF-8"),"ISO-8859-1");
-		} catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException ignored) {
 			
 		}
 		response.setContentType(MimeTypes.getMimeTypeByExt(FilenameUtils.getExtension(filename)));
@@ -653,8 +612,7 @@ public class HttpUtils {
 		 * @throws ExecutionException 
 		 * @throws InterruptedException 
 	     */
-		public static String get(String url) 
-				throws ClientProtocolException, IOException, InterruptedException, ExecutionException {
+		public static String get(String url) throws IOException, InterruptedException, ExecutionException {
 			return get(url, false);
 		}
 		
@@ -667,8 +625,7 @@ public class HttpUtils {
 		 * @throws ExecutionException 
 		 * @throws InterruptedException 
 		 */
-		public static String get(String url, boolean asyn) 
-				throws ClientProtocolException, IOException, InterruptedException, ExecutionException {
+		public static String get(String url, boolean asyn) throws IOException, InterruptedException, ExecutionException {
 			return get(url, asyn, null);
 		}
 		
@@ -682,8 +639,7 @@ public class HttpUtils {
 		 * @throws ExecutionException 
 		 * @throws InterruptedException 
 	     */
-		public static String get(String url, boolean asyn, Map<String, ?> params) 
-				throws ClientProtocolException, IOException, InterruptedException, ExecutionException {
+		public static String get(String url, boolean asyn, Map<String, ?> params) throws IOException, InterruptedException, ExecutionException {
 			return get(url, asyn, params, null);
 		}
 		
@@ -699,14 +655,13 @@ public class HttpUtils {
 		 * @throws InterruptedException 
 	     */
 		public static String get(String url, boolean asyn, Map<String, ?> params, Collection<Object> jsonKeys) 
-				throws ClientProtocolException, IOException, InterruptedException, ExecutionException {
+				throws IOException, InterruptedException, ExecutionException {
 			return get(url, asyn, params, jsonKeys, "UTF-8");
 		}
 		
 		public static String get(final String url, boolean asyn,
 				final Map<String, ?> params, final Collection<Object> jsonKeys,
-				final String charset) throws ClientProtocolException,
-				IOException, InterruptedException, ExecutionException {
+				final String charset) throws IOException, InterruptedException, ExecutionException {
 			if(asyn) {
 				final ExecutorService e = Executors.newSingleThreadExecutor();
 				Future<String> f = e.submit(new Callable<String>() {
@@ -743,7 +698,7 @@ public class HttpUtils {
 		 * @throws IOException 
 	     */
 	    public static String get(String url, Map<String, ?> params, Collection<Object> jsonKeys, String charset) 
-	    		throws ClientProtocolException, IOException {
+	    		throws IOException {
 	        if(StringUtils.isBlank(url)) return null;
 	        if(params != null && !params.isEmpty()) {
 	        	String paramStr = assembleParams(params, jsonKeys);
@@ -762,8 +717,7 @@ public class HttpUtils {
 	     * @throws ExecutionException 
 	     * @throws InterruptedException 
 	     */
-		public static String post(String url) 
-				throws ClientProtocolException, IOException, InterruptedException, ExecutionException {
+		public static String post(String url) throws IOException, InterruptedException, ExecutionException {
 			return post(url, false);
 		}
 		
@@ -776,8 +730,7 @@ public class HttpUtils {
 		 * @throws ExecutionException 
 		 * @throws InterruptedException 
 		 */
-		public static String post(String url, boolean asyn) 
-				throws ClientProtocolException, IOException, InterruptedException, ExecutionException {
+		public static String post(String url, boolean asyn) throws IOException, InterruptedException, ExecutionException {
 			return post(url, asyn, null);
 		}
 		
@@ -792,7 +745,7 @@ public class HttpUtils {
 		 * @throws InterruptedException 
 	     */
 		public static String post(String url, boolean asyn, Map<String, ?> params) 
-				throws ClientProtocolException, IOException, InterruptedException, ExecutionException {
+				throws IOException, InterruptedException, ExecutionException {
 			return post(url, asyn, params, null);
 		}
 		
@@ -802,18 +755,17 @@ public class HttpUtils {
 	     * @param params 请求的参数
 	     * @param jsonKeys 指定哪些key的值用json解析
 	     * @return    页面内容
-		 * @throws ClientProtocolException 
-		 * @throws IOException 
+		 * @throws IOException
 		 * @throws ExecutionException 
 		 * @throws InterruptedException 
 	     */
 		public static String post(String url, boolean asyn, Map<String, ?> params, Collection<Object> jsonKeys) 
-				throws ClientProtocolException, IOException, InterruptedException, ExecutionException {
+				throws IOException, InterruptedException, ExecutionException {
 			return post(url, asyn, params, jsonKeys, "UTF-8");
 		}
 	    
 		public static String post(final String url, boolean asyn, final Map<String, ?> params, final Collection<?> jsonKeys, final String charset) 
-	    		throws ClientProtocolException, IOException, InterruptedException, ExecutionException {
+	    		throws IOException, InterruptedException, ExecutionException {
 	    	if(asyn) {
 	    		final ExecutorService e = Executors.newSingleThreadExecutor();
 	    		Future<String> f = e.submit(new Callable<String>(){
@@ -845,14 +797,13 @@ public class HttpUtils {
 	     * @param charset    编码格式
 	     * @return    页面内容
 	     * @throws IOException 
-	     * @throws ClientProtocolException 
 	     */
 	    public static String post(String url, Map<String, ?> params, Collection<?> jsonKeys, String charset) 
-	    		throws ClientProtocolException, IOException {
+	    		throws IOException {
 	        if(StringUtils.isBlank(url)) return null;
             List<NameValuePair> pairs = null;
             if(params != null && !params.isEmpty()) {
-                pairs = new ArrayList<NameValuePair>();
+                pairs = new ArrayList<>();
                 for(Map.Entry<String, ?> entry : params.entrySet()) {
                 	String key = entry.getKey();
                 	boolean isJsonKey = false;
@@ -894,11 +845,10 @@ public class HttpUtils {
 	     * @param files
 	     * @param params
 	     * @return
-	     * @throws ClientProtocolException
 	     * @throws IOException
 	     */
 	    public static String multipart(String url, List<UploadFileInfo> files, Map<String, ?> params) 
-	    		throws ClientProtocolException, IOException {
+	    		throws IOException {
 	    	return multipart(url, files, params, "UTF-8");
 	    }
 	    /**
@@ -907,11 +857,10 @@ public class HttpUtils {
 	     * @param files
 	     * @param params
 	     * @return
-	     * @throws ClientProtocolException
 	     * @throws IOException
 	     */
 	    public static String multipart(String url, List<UploadFileInfo> files, Map<String, ?> params, String charset) 
-	    		throws ClientProtocolException, IOException {
+	    		throws IOException {
 	    	MultipartEntityBuilder builder = MultipartEntityBuilder.create()
 	    				.setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
 	    				.setCharset(Charset.forName(charset));

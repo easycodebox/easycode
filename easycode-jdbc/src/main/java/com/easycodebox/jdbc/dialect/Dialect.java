@@ -54,7 +54,6 @@ public abstract class Dialect {
 	
 	/**
 	 * 把param参数的特殊符号转义
-	 * @param param
 	 * @return
 	 */
 	public abstract String escapeString(String val);

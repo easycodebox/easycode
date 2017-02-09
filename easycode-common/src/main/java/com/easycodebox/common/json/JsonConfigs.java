@@ -1,9 +1,9 @@
 package com.easycodebox.common.json;
 
-import java.util.Date;
-
 import net.sf.json.JsonConfig;
 import net.sf.json.util.PropertyFilter;
+
+import java.util.Date;
 
 /**
  * @author WangXiaoJin
@@ -14,7 +14,6 @@ public class JsonConfigs extends JsonConfig {
 	
 	/**
 	 * 为JsonConfig添加去除null属性的功能
-	 * @param jc 为null时，自动创建一个默认的JsonConfig
 	 * @return
 	 */
 	public JsonConfigs filterNullProp() {
@@ -23,9 +22,7 @@ public class JsonConfigs extends JsonConfig {
 
 			@Override
 			public boolean apply(Object source, String name, Object value) {
-				if(value == null)
-					return true;
-				return false;
+				return value == null;
 			}
 			
 		});

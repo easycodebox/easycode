@@ -1,19 +1,17 @@
 package com.easycodebox.jdbc;
 
-import java.io.Serializable;
-
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.jdbc.config.Configuration;
 import com.easycodebox.jdbc.dialect.Dialect;
+
+import java.io.Serializable;
 
 /**
  * @author WangXiaoJin
  *
  */
 public class Property implements Serializable {
-	
-	private static final long serialVersionUID = -8153752533287263315L;
 	
 	/**
 	 * 表明此对象是原型,原型对象提供给R资源文件使用

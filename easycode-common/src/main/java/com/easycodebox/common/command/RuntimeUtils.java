@@ -1,14 +1,9 @@
 package com.easycodebox.common.command;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
+import com.easycodebox.common.log.slf4j.*;
 import org.apache.commons.io.IOUtils;
 
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import java.io.*;
 
 /**
  * @author WangXiaoJin
@@ -92,7 +87,7 @@ public abstract class RuntimeUtils {
         }
         
         public void run() {
-            BufferedReader reader = null;
+            BufferedReader reader;
             try {
                 reader = new BufferedReader(new InputStreamReader(is, handler.getEncoding()));
                 while(true) {

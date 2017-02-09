@@ -1,8 +1,8 @@
 package com.easycodebox.auth.model.entity.user;
 
-import javax.persistence.*;
-
 import com.easycodebox.jdbc.entity.AbstractCreateEntity;
+
+import javax.persistence.*;
 
 /**
  * 用户组角色 - 用户组与角色对应的关系
@@ -13,8 +13,6 @@ import com.easycodebox.jdbc.entity.AbstractCreateEntity;
 @Table(name="u_group_role")
 public class GroupRole extends AbstractCreateEntity {
 
-	private static final long serialVersionUID = 5454155825314635342L;
-	
 	/**
 	 * 角色ID
 	 */

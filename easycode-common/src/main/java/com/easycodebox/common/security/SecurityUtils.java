@@ -1,17 +1,14 @@
 package com.easycodebox.common.security;
 
-import java.io.Serializable;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.HttpUtils;
 import com.easycodebox.common.validate.Assert;
+
+import javax.servlet.http.*;
+import java.io.Serializable;
 
 /**
  * @author WangXiaoJin
@@ -35,7 +32,7 @@ public class SecurityUtils {
 				storage = request.getSession();
 			}
 			Assert.notNull(storage);
-			SecurityContext<UserInfo> context = new SecurityContext<UserInfo>();
+			SecurityContext<UserInfo> context = new SecurityContext<>();
 			UserInfo user = getSecurityInfo(storage);
 			context.setSessionId(storage.getId());
 			if(user != null) {
@@ -64,7 +61,7 @@ public class SecurityUtils {
 			storage.setAttribute(BaseConstants.USER_KEY, securityInfo);
 			SecurityContext<UserInfo> sc = (SecurityContext<UserInfo>)SecurityContexts.getCurSecurityContext();
 			if(sc == null) {
-				SecurityContext<UserInfo> tmp = new SecurityContext<UserInfo>();
+				SecurityContext<UserInfo> tmp = new SecurityContext<>();
 				tmp.setSecurity(securityInfo);
 				tmp.setSessionId(storage.getId());
 				SecurityContexts.setCurSecurityContext(tmp);
@@ -85,8 +82,6 @@ public class SecurityUtils {
 	
 	/**
 	 * SecurityInfo保存到仓库中
-	 * @param session
-	 * @param user
 	 */
 	public static <S, T extends Serializable> void storeSecurityInfo(SecurityInfoHandler<S, T> handler, S storage, T securityInfo) {
 		handler.storeSecurityInfo(storage, securityInfo);
@@ -94,8 +89,6 @@ public class SecurityUtils {
 	
 	/**
 	 * 获取SecurityInfo
-	 * @param session
-	 * @return
 	 */
 	public static <S, T extends Serializable> T getSecurityInfo(SecurityInfoHandler<S, T> handler, S storage) {
 		return handler.getSecurityInfo(storage);
@@ -103,7 +96,6 @@ public class SecurityUtils {
 	
 	/**
 	 * 摧毁SecurityInfo
-	 * @param session
 	 */
 	public static <S, T extends Serializable> void destroySecurityInfo(SecurityInfoHandler<S, T> handler, S storage) {
 		handler.destroySecurityInfo(storage);
@@ -147,7 +139,7 @@ public class SecurityUtils {
 	 * @param <S>	storage仓库类型
 	 * @param <T>	securityInfo类型
 	 */
-	public static interface SecurityInfoHandler<S, T extends Serializable> {
+	public interface SecurityInfoHandler<S, T extends Serializable> {
 		
 		/**
 		 * 根据storage创建一个新的SecurityContext实例
@@ -173,7 +165,6 @@ public class SecurityUtils {
 		/**
 		 * 摧毁securityInfo
 		 * @param storage
-		 * @param securityInfo
 		 */
 		void destroySecurityInfo(S storage);
 		

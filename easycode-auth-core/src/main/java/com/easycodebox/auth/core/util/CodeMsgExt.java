@@ -1,10 +1,10 @@
 package com.easycodebox.auth.core.util;
 
-import java.io.File;
-
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.PropertiesPool;
 import com.easycodebox.common.lang.Symbol;
+
+import java.io.File;
 
 /**
  * @author WangXiaoJin
@@ -33,10 +33,10 @@ public class CodeMsgExt extends CodeMsg {
 	
 	public static void main(String[] args) throws Exception {
 		
-		/************* 生成properties文件 ************************/
+		/* ------------ 生成properties文件 BEGIN -------------- */
 		File file = new File("src/main/resources" + (FILE_PATH.startsWith(Symbol.SLASH) ? "" : Symbol.SLASH) + FILE_PATH);
 		CodeMsgUtils.storePropertiesFile(CodeMsgExt.class, file);
-		/************* 生成properties文件 ************************/
+		/* ------------ 生成properties文件 END ---------------- */
 		
 		CodeMsg code = CodeMsgExt.NONE;
 		System.out.println(code.getMsg());

@@ -1,18 +1,11 @@
 package com.easycodebox.common.file;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
+import com.easycodebox.common.log.slf4j.*;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
+import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
-
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import java.io.*;
+import java.util.Iterator;
 
 
 /**
@@ -35,15 +28,15 @@ public class FileTypes {
         StringBuilder stringBuilder = new StringBuilder();  
         if (src == null || src.length <= 0) {  
             return null;  
-        }  
-        for (int i = 0; i < src.length; i++) {  
-            int v = src[i] & 0xFF;  
-            String hv = Integer.toHexString(v);  
-            if (hv.length() < 2) {  
-                stringBuilder.append(0);  
-            }  
-            stringBuilder.append(hv);  
-        }  
+        }
+	    for (byte b : src) {
+		    int v = b & 0xFF;
+		    String hv = Integer.toHexString(v);
+		    if (hv.length() < 2) {
+			    stringBuilder.append(0);
+		    }
+		    stringBuilder.append(hv);
+	    }
         return stringBuilder.toString();  
     }  
     
@@ -82,11 +75,11 @@ public class FileTypes {
             else
             	fileCode = fileCode.toUpperCase();
             FileType[] types = FileType.values();
-            for(int i = 0; i < types.length; i++) {
-            	if (fileCode.startsWith(types[i].getValue())) {  
-                    return types[i];  
-                }
-            }
+	        for (FileType type : types) {
+		        if (fileCode.startsWith(type.getValue())) {
+			        return type;
+		        }
+	        }
         } catch (IOException e) {  
         	log.error("IOException", e);
         } finally {
@@ -104,7 +97,7 @@ public class FileTypes {
      * @param file
      * @return
      */
-    public final static String getImageFileType(File file) {
+    public static String getImageFileType(File file) {
     	try(ImageInputStream iis = ImageIO.createImageInputStream(file)) {
     		Iterator<ImageReader> iter = ImageIO.getImageReaders(iis);  
     		if (!iter.hasNext()) {
@@ -131,11 +124,13 @@ public class FileTypes {
 	private static void testShowFileType(File file) {
     	if(file.isDirectory()){
     		File[] fs = file.listFiles();
-    		for(int i = 0; i < fs.length; i++) {
-    			testShowFileType(fs[i]);
-    		}
-    	}else
+		    if (fs == null) return;
+		    for (File f : fs) {
+			    testShowFileType(f);
+		    }
+    	} else {
     		System.out.println(getFileType(file));
+	    }
     }
 	
 }

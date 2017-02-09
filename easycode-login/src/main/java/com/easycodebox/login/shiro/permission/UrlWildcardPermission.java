@@ -17,8 +17,6 @@ import com.easycodebox.common.lang.Symbol;
  */
 public class UrlWildcardPermission implements GlobalPermission {
 
-	private static final long serialVersionUID = -5844939019312129337L;
-	
     protected static final String DIVIDER_TOKEN = ",";
     protected static final String NO_PERMITTED_FLAG = ":0";
     

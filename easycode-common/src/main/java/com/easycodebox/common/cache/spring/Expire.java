@@ -19,7 +19,7 @@ public @interface Expire {
 	/**
 	 * 没有过期限制
 	 */
-	public static final int NO_LIMIT = -1;
+	int NO_LIMIT = -1;
 	
 	/**
 	 * 自创建缓存起能存活多少秒

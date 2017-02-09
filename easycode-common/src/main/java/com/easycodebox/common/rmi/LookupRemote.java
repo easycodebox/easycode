@@ -22,11 +22,7 @@ public class LookupRemote {
 	public static <T> T lookup(Class<T> result, String rmiIp) {
 		try {
 			return (T)Naming.lookup("rmi://" + rmiIp + ":" + RemoteFactory.REGISTRY_PORT + Symbol.SLASH + result.getSimpleName());
-		} catch (MalformedURLException e) {
-			log.error("LookupRemote for {0} error.", e, result.getSimpleName());
-		} catch (RemoteException e) {
-			log.error("LookupRemote for {0} error.", e, result.getSimpleName());
-		} catch (NotBoundException e) {
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			log.error("LookupRemote for {0} error.", e, result.getSimpleName());
 		}
 		return null;

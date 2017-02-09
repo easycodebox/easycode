@@ -1,15 +1,5 @@
 package com.easycodebox.jdbc.support;
 
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.Generators;
@@ -18,13 +8,17 @@ import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.lang.reflect.ClassUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.jdbc.LockMode;
-import com.easycodebox.jdbc.PkColumn;
-import com.easycodebox.jdbc.Property;
+import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.entity.Entity;
 import com.easycodebox.jdbc.grammar.SqlGrammar;
 import com.easycodebox.jdbc.util.AnnotateUtils;
 import com.easycodebox.jdbc.util.SqlUtils;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import javax.annotation.Resource;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -245,17 +239,11 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 		}else {
 			sqlGrammar.eq(Property.instance(pks.get(0).getName(), entityClass, false), idVal);
 		}
-		if(count(sqlGrammar) < valCount)
-			return false;
-		else
-			return true;
+		return count(sqlGrammar) >= valCount;
 	}
 	
 	protected boolean exist(SqlGrammar sqlGrammar) {
-		if(count(sqlGrammar) > 0)
-			return true;
-		else
-			return false;
+		return count(sqlGrammar) > 0;
 	}
 	
 	@SafeVarargs

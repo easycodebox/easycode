@@ -6,8 +6,6 @@ package com.easycodebox.common.file.exception;
  */
 public class NonEnlargedException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
-	
 	public NonEnlargedException() {
 		super();
 	}

@@ -12,7 +12,7 @@ public enum DataType implements DetailEnum<Integer> {
 	private Integer value;
 	private String desc;
    
-    private DataType(Integer value, String desc) {
+    DataType(Integer value, String desc) {
 
         this.value = value;
         this.desc = desc;

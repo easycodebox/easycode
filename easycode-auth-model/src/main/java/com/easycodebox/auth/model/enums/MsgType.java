@@ -12,7 +12,7 @@ public enum MsgType implements DetailEnum<Integer> {
 	private final Integer value;
 	private final String desc;
 	
-	private MsgType(int value, String desc) {
+	MsgType(int value, String desc) {
 		this.value = value;
 		this.desc = desc;
 	}

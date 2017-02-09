@@ -42,8 +42,6 @@ import java.util.*;
  */
 public class Jacksons extends ObjectMapper {
 	
-	private static final long serialVersionUID = -7195120894069424979L;
-	
 	/**
 	 *  简单JSON转换
 	 */
@@ -139,7 +137,7 @@ public class Jacksons extends ObjectMapper {
 	}
 	
 	
-	/***************************   ObjectMapper扩展函数        ***********************************************/
+	/* -----------------------   ObjectMapper扩展函数   ------------------- */
 	/**
 	 * 排除指定的属性。注意：调用此方法时不能应用于应该用SIMPLE/NON_NULL/COMMUNICATE，不然会影响到全局的json转换
 	 * @param propertyArray
@@ -250,7 +248,7 @@ public class Jacksons extends ObjectMapper {
 	 * @throws IOException 
 	 * @throws JsonProcessingException 
 	 */
-	public <T> T toBean(String value, Class<T> valueType) throws JsonProcessingException, IOException {
+	public <T> T toBean(String value, Class<T> valueType) throws IOException {
     	return this.reader(valueType).readValue(value);  
 	}
 	
@@ -263,7 +261,7 @@ public class Jacksons extends ObjectMapper {
 	 * @throws IOException 
 	 * @throws JsonProcessingException 
 	 */
-	public <T> T toBean(String value, TypeReference<T> valueType) throws JsonProcessingException, IOException {
+	public <T> T toBean(String value, TypeReference<T> valueType) throws IOException {
     	return this.reader(valueType).readValue(value);  
 	}
 	

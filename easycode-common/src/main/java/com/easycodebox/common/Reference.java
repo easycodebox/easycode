@@ -23,10 +23,7 @@ public class Reference<T> implements Copyable, Externalizable {
 	}
 	
 	public String toString() {
-		StringBuilder s = new StringBuilder();
-		s.append(value == null ? "-" : value.getClass().getSimpleName());
-		s.append("[").append(value).append("]");
-		return s.toString();
+		return (value == null ? "-" : value.getClass().getSimpleName()) + "[" + value + "]";
 	}
 	
 	public T getValue() {

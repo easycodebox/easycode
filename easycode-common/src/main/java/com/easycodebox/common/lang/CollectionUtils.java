@@ -1,9 +1,6 @@
 package com.easycodebox.common.lang;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -11,21 +8,15 @@ import java.util.Set;
  */
 public abstract class CollectionUtils extends org.apache.commons.collections.CollectionUtils {
 
-	/**
-	 * 
-	 */
 	@SafeVarargs
 	public static <T> Set<T> toSet(T... values) {
 		// Precondition checking
 		if(values == null) {
-			return new HashSet<T>(0);
+			return new HashSet<>(0);
 		}
 		
-		//
-		Set<T> r = new HashSet<T>(values.length);
-		for(T t : values) {
-			r.add(t);
-		}
+		Set<T> r = new HashSet<>(values.length);
+		Collections.addAll(r, values);
 		return r;
 	}
 	
@@ -33,14 +24,12 @@ public abstract class CollectionUtils extends org.apache.commons.collections.Col
 	public static <T> List<T> toList(T... values) {
 		// Precondition checking
 		if(values == null) {
-			return new ArrayList<T>(0);
+			return new ArrayList<>(0);
 		}
 		
 		//
-		List<T> r = new ArrayList<T>(values.length);
-		for(T t : values) {
-			r.add(t);
-		}
+		List<T> r = new ArrayList<>(values.length);
+		Collections.addAll(r, values);
 		return r;
 	}
 }

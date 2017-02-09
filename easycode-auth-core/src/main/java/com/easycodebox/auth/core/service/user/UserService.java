@@ -1,12 +1,11 @@
 package com.easycodebox.auth.core.service.user;
 
-import java.util.List;
-
 import com.easycodebox.auth.model.entity.user.User;
-import com.easycodebox.common.enums.entity.OpenClose;
-import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.dto.DataPage;
+
+import java.util.List;
 
 /**
  * @author WangXiaoJin
@@ -89,9 +88,9 @@ public interface UserService {
 	boolean existNickname(String nickname, String excludeId);
 	
 	/**
-	 * 西瓜用户昵称
+	 * 修改用户昵称
 	 * @param nickname
-	 * @param userId
+	 * @param id
 	 */
 	int updateNickname(String nickname, String id);
 	

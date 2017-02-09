@@ -79,7 +79,7 @@ public final class DetailEnums {
     	T data = null;
 		try {
 			data = (T)Enum.valueOf((Class<Enum>)enumType, value);
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 			
 		}
 		if(data == null) {
@@ -97,7 +97,7 @@ public final class DetailEnums {
 	        		//根据DetailEnum的desc属性赋值
 	        		for(DetailEnum e : (DetailEnum[])enumType.getEnumConstants()) {
 	        			if(e.getDesc() == null && value == null
-	        					|| value != null && e.getDesc() != null && value.equals(e.getDesc().toString())) {
+	        					|| value != null && e.getDesc() != null && value.equals(e.getDesc())) {
 	        				data = (T)e;
 	        				break;
 	        			}
@@ -115,7 +115,7 @@ public final class DetailEnums {
 	    					break;
 	    				}
 	    			}
-				} catch (NumberFormatException e1) {
+				} catch (NumberFormatException ignored) {
 					
 				}
         	}

@@ -33,7 +33,7 @@ public class DelegateSqlSource implements SqlSource {
 		BoundSql boundSql = delegate.getBoundSql(parameterObject);
 		String sql = boundSql.getSql();
 		StringFormatToken token = new StringFormatToken("%{", "}", sql, true);
-		String key = null;
+		String key;
 		while((key = token.nextKey()) != null) {
 			String[] frags = key.split("\\.");
 			if(frags.length == 2) {

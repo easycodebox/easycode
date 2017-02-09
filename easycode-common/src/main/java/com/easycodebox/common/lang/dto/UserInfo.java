@@ -8,8 +8,6 @@ import com.easycodebox.common.enums.DetailEnum;
  */
 public class UserInfo extends AbstractBo {
 
-	private static final long serialVersionUID = 1L;
-	
 	private String userId;
 	private String username;
 	private String nickname;
@@ -33,9 +31,9 @@ public class UserInfo extends AbstractBo {
 	/**
 	 * 
 	 * @param userId
-	 * @param operator	执行操作后记录的名字，即POJO类的creator、modifier
-	 * @param loginName
-	 * @param state
+	 * @param username	执行操作后记录的名字，即POJO类的creator、modifier
+	 * @param nickname
+	 * @param realname
 	 */
 	public UserInfo(String userId, String username, String nickname, String realname, String pic, 
 			DetailEnum<Integer> status) {

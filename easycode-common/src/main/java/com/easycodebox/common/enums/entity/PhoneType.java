@@ -13,7 +13,7 @@ public enum PhoneType implements DetailEnum<Integer> {
 	private final Integer value;
 	private final String desc;
 	
-	private PhoneType(int value, String desc) {
+	PhoneType(int value, String desc) {
 		this.value = value;
 		this.desc = desc;
 	}

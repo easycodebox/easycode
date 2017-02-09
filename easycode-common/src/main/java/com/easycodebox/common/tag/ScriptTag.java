@@ -1,16 +1,15 @@
 package com.easycodebox.common.tag;
 
-import java.io.IOException;
-import java.util.regex.Pattern;
-
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.ProjectEnv;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * @author WangXiaoJin
@@ -18,8 +17,6 @@ import com.easycodebox.common.lang.Symbol;
  */
 public class ScriptTag extends AbstractHtmlTag {
 	
-	private static final long serialVersionUID = -1586374485223953984L;
-
 	private String type;
 	private String src;
 	/**

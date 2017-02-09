@@ -12,8 +12,6 @@ import java.util.Map;
  */
 public class Table implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
 	private Class<?> entityType;
 	/**
 	 * 表名
@@ -24,12 +22,12 @@ public class Table implements Serializable {
 	/**
 	 * 包含主键
 	 */
-	private Map<String, Column> columns = new HashMap<String, Column>(4);
+	private Map<String, Column> columns = new HashMap<>(4);
 	/**
 	 * 关联字段
 	 */
-	private Map<String, AssociatedColumn> associatedColumns = new HashMap<String, AssociatedColumn>(4);
-	private List<PkColumn> primaryKeys = new ArrayList<PkColumn>(4);
+	private Map<String, AssociatedColumn> associatedColumns = new HashMap<>(4);
+	private List<PkColumn> primaryKeys = new ArrayList<>(4);
 	
 
 	public Table() { }

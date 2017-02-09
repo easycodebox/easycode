@@ -1,24 +1,12 @@
 package com.easycodebox.common.lang.reflect;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
+
+import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -28,12 +16,9 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils {
 	
 	private static final Logger log = LoggerFactory.getLogger(ClassUtils.class);
 	
-    /**
-     * 
-     */
     public static List<Class<?>> getAllTypes(Class<?> clazz) {
         //
-    	List<Class<?>> clazzes = new ArrayList<Class<?>>();
+    	List<Class<?>> clazzes = new ArrayList<>();
     	List<Class<?>> list = getAllClasses(clazz);
     	clazzes.addAll(list);
         
@@ -163,7 +148,7 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils {
 	}
 	
     public static List<Class<?>> getAllClasses(Class<?> clazz, boolean ignoreObjectClass) {
-    	List<Class<?>> clazzes = new ArrayList<Class<?>>();
+    	List<Class<?>> clazzes = new ArrayList<>();
     	clazzes.add(clazz);
         for (Class<?> superClass = clazz.getSuperclass(); superClass != null; superClass = superClass.getSuperclass()) {
         	if(ignoreObjectClass && superClass == Object.class)
@@ -174,11 +159,11 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils {
     }
 
     private static List<Class<?>> getInterfaces(Class<?> clazz) {
-    	List<Class<?>> r = new ArrayList<Class<?>>();
-        LinkedList<Class<?>> stack = new LinkedList<Class<?>>();
+    	List<Class<?>> r = new ArrayList<>();
+        LinkedList<Class<?>> stack = new LinkedList<>();
         stack.addAll(Arrays.asList(clazz.getInterfaces()));
         while (!stack.isEmpty()) {
-            Class<?> intf = (Class<?>) stack.removeFirst();
+            Class<?> intf = stack.removeFirst();
             if (!r.contains(intf)) {
                 r.add(intf);
                 stack.addAll(Arrays.asList(intf.getInterfaces()));
@@ -254,17 +239,6 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils {
 	 */
 	public static String getLastPkg(Class<?> clazz) {
 		return getLastPkg(getPackageName(clazz));
-	}
-	
-	public static void main(String[] args) throws NoSuchMethodException, SecurityException {
-		System.out.println(isAssignable(Boolean.class, boolean.class, true));
-		
-		class A {
-			
-			private A(int a){}
-		}
-		
-		System.out.println(A.class.getDeclaredConstructor());
 	}
 	
 }

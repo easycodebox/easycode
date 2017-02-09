@@ -1,14 +1,11 @@
 package com.easycodebox.auth.model.entity.sys;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import com.easycodebox.auth.model.util.mybatis.GeneratedValue;
-import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
-import com.easycodebox.common.enums.entity.OpenClose;
-import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.auth.model.util.mybatis.*;
+import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
+
+import javax.persistence.*;
 
 /**
  * 合作商 - 合作商调用接口配置
@@ -19,8 +16,6 @@ import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 @Table(name="sys_partner")
 public class Partner extends AbstractOperateEntity {
 
-	private static final long serialVersionUID = 5454155825314635342L;
-	
 	/**
 	 * 主键
 	 */

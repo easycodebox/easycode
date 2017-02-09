@@ -8,13 +8,10 @@ import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.dto.DataPage;
-import com.easycodebox.common.validate.Assert;
-import com.easycodebox.common.validate.Validators;
+import com.easycodebox.common.validate.*;
 import com.easycodebox.common.web.BaseController;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -119,8 +116,7 @@ public class GroupController extends BaseController {
 
 			@Override
 			public void serialize(Group value, JsonGenerator gen,
-					SerializerProvider serializers) throws IOException,
-					JsonProcessingException {
+					SerializerProvider serializers) throws IOException {
 				gen.writeStartObject();
 				gen.writeObjectField("id", value.getId());
 				gen.writeObjectField("pId", value.getParentId());

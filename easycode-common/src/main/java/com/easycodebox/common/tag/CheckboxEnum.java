@@ -1,13 +1,12 @@
 package com.easycodebox.common.tag;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.jsp.JspException;
-
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
+
+import javax.servlet.jsp.JspException;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
@@ -15,8 +14,6 @@ import com.easycodebox.common.lang.Symbol;
  */
 public class CheckboxEnum extends EnumGroupTag {
 	
-	private static final long serialVersionUID = -6544626999455987482L;
-
 	private String labelClass;
 	private String labelStyle;
 	

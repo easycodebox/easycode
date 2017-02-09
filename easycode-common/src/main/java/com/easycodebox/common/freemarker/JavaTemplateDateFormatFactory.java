@@ -1,29 +1,16 @@
 package com.easycodebox.common.freemarker;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.StringTokenizer;
-import java.util.TimeZone;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.easycodebox.common.lang.NullDate;
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.lang.*;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
-
-import freemarker.core.Environment;
-import freemarker.core.InvalidFormatParametersException;
-import freemarker.core.TemplateDateFormat;
-import freemarker.core.TemplateDateFormatFactory;
-import freemarker.core.TemplateFormatUtil;
-import freemarker.core.UnknownDateTypeFormattingUnsupportedException;
-import freemarker.core.UnparsableValueException;
+import freemarker.core.*;
 import freemarker.template.TemplateDateModel;
 import freemarker.template.TemplateModelException;
+
+import java.text.*;
+import java.text.ParseException;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 重写freemarker.core.JavaTemplateDateFormatFactory类。当表达式${obj.birth?datetime}中birth属性为null且classic_compatible=true时
@@ -40,8 +27,7 @@ public class JavaTemplateDateFormatFactory extends TemplateDateFormatFactory {
     
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    private static final ConcurrentHashMap<CacheKey, DateFormat> GLOBAL_FORMAT_CACHE
-            = new ConcurrentHashMap<CacheKey, DateFormat>();
+    private static final ConcurrentHashMap<CacheKey, DateFormat> GLOBAL_FORMAT_CACHE = new ConcurrentHashMap<>();
     private static final int LEAK_ALERT_NUMBER_FORMAT_CACHE_SIZE = 1024;
     
     private JavaTemplateDateFormatFactory() {

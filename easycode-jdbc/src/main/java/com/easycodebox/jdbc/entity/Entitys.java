@@ -1,25 +1,20 @@
 package com.easycodebox.jdbc.entity;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.easycodebox.common.error.BaseException;
+import com.easycodebox.common.lang.reflect.FieldUtils;
+import com.easycodebox.common.validate.Assert;
+import com.easycodebox.jdbc.config.Configuration;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 
-import com.easycodebox.common.error.BaseException;
-
 import javax.persistence.Column;
 import javax.persistence.Table;
-import com.easycodebox.common.lang.reflect.FieldUtils;
-import com.easycodebox.common.validate.Assert;
-import com.easycodebox.jdbc.config.Configuration;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author WangXiaoJin
@@ -27,25 +22,20 @@ import com.easycodebox.jdbc.config.Configuration;
  */
 public final class Entitys {
 	//
-	private static final ConcurrentHashMap<Class<?>, BeanCopier> BEAN_COPIERS = new ConcurrentHashMap<Class<?>, BeanCopier>();
-	private static final ConcurrentHashMap<Class<?>, List<ColumnField>> COLUMN_FIELD_CACHE = new ConcurrentHashMap<Class<?>, List<ColumnField>>();
+	private static final ConcurrentHashMap<Class<?>, BeanCopier> BEAN_COPIERS = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Class<?>, List<ColumnField>> COLUMN_FIELD_CACHE = new ConcurrentHashMap<>();
 
-	/**
-	 * 
-	 */
 	public static String getTableName(Class<? extends Entity> clazz) {
 		// Precondition checking
 		if(!clazz.isAnnotationPresent(Table.class)) {
 			throw new IllegalArgumentException("failed to get table name for class: " + clazz.getName());
 		}
-		
-		//
 		return clazz.getAnnotation(Table.class).name();
 	}
 	
 	/**
 	 * 获取主键的值
-	 * @param clazz	Entity的class类型
+	 * @param target	Entity的class类型
 	 * @return	如果该Entity没有@Id注解，则return null，如果有一个则返回{val}，两个则返回{val1, val2}
 	 * 			其中的val值可能为null，所以需要实时判断下
 	 */
@@ -58,7 +48,7 @@ public final class Entitys {
 			if(pks != null && pks.size() > 0) {
 				Object[] vals = new Object[pks.size()];
 				for(int i = 0; i < pks.size(); i++) {
-					Object val = null;
+					Object val;
 					try {
 						val = PropertyUtils.getSimpleProperty(target, pks.get(i).getName());
 					} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -113,29 +103,22 @@ public final class Entitys {
 		if(entity == null) {
 			throw new IllegalArgumentException("invalid parameter entity");
 		}
-		
-		//
 		final Class<?> clazz = entity.getClass();
 		try {
-			//
 			List<ColumnField> columnFields = COLUMN_FIELD_CACHE.get(clazz);
 			if(columnFields == null) {
 				//
-				columnFields = new ArrayList<ColumnField>();
+				columnFields = new ArrayList<>();
 				List<Field> fields = FieldUtils.getAllFields(clazz, true);
 				for(Field field : fields) {
 					columnFields.addAll(getColumnFields(field));
 				}
-				
-				//
 				List<ColumnField> existing = COLUMN_FIELD_CACHE.putIfAbsent(clazz, columnFields);
 				if(existing != null) {
 					columnFields = existing;
 				}
 			}
-			
-			//
-			Map<String, Object> r = new HashMap<String, Object>();
+			Map<String, Object> r = new HashMap<>();
 			for(ColumnField cf : columnFields) {
 				r.put(cf.getColumn(), cf.getFieldValue(entity));
 			}
@@ -146,11 +129,8 @@ public final class Entitys {
 	}
 	
 	protected static List<ColumnField> getColumnFields(Field field) throws Exception {
-		//
 		field.setAccessible(true);
-		
-		//
-		List<ColumnField> r = new ArrayList<ColumnField>();
+		List<ColumnField> r = new ArrayList<>();
 		if(field.isAnnotationPresent(Column.class)) {
 			Column c = field.getAnnotation(Column.class);
 			r.add(new ColumnField(c.name(), field));			
@@ -158,17 +138,11 @@ public final class Entitys {
 		return r;
 	}
 
-	/**
-	 * 
-	 */
 	protected static class ColumnField {
 		//
 		private String column;
-		private List<Field> fields = new ArrayList<Field>();
+		private List<Field> fields = new ArrayList<>();
 
-		/**
-		 * 
-		 */
 		public ColumnField() {
 		}
 		

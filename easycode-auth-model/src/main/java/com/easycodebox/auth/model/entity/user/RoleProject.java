@@ -1,9 +1,9 @@
 package com.easycodebox.auth.model.entity.user;
 
-import javax.persistence.*;
-
 import com.easycodebox.auth.model.entity.sys.Project;
 import com.easycodebox.jdbc.entity.AbstractCreateEntity;
+
+import javax.persistence.*;
 
 /**
  * 角色项目 - 角色与项目的对应关系
@@ -14,8 +14,6 @@ import com.easycodebox.jdbc.entity.AbstractCreateEntity;
 @Table(name="u_role_project")
 public class RoleProject extends AbstractCreateEntity {
 
-	private static final long serialVersionUID = 5454155825314635342L;
-	
 	/**
 	 * 角色ID
 	 */

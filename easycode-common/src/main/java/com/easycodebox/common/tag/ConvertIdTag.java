@@ -1,22 +1,19 @@
 package com.easycodebox.common.tag;
 
+import com.easycodebox.common.spring.BeanFactory;
+import com.easycodebox.common.validate.Assert;
+
+import javax.servlet.jsp.JspException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import javax.servlet.jsp.JspException;
-
-import com.easycodebox.common.spring.BeanFactory;
-import com.easycodebox.common.validate.Assert;
 
 /**
  * @author WangXiaoJin
  * 
  */
 public class ConvertIdTag extends TagExt {
-	
-	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * ID转换器
@@ -57,7 +54,7 @@ public class ConvertIdTag extends TagExt {
 	 * @author WangXiaoJin
 	 *
 	 */
-	public static interface IdConverterMap {
+	public interface IdConverterMap {
 		
 		/**
 		 * 

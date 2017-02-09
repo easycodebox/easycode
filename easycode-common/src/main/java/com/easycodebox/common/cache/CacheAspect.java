@@ -1,23 +1,17 @@
 package com.easycodebox.common.cache;
 
-import java.io.Serializable;
-
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
+import com.easycodebox.common.enums.DetailEnum;
+import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.log.slf4j.*;
+import net.sf.ehcache.*;
 import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
-
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.Resource;
 
-import com.easycodebox.common.enums.DetailEnum;
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import java.io.Serializable;
 
 /**
  * 此功能有优化空间。建议改用spring + ehcache注解功能。
@@ -151,16 +145,15 @@ public final class CacheAspect implements Ordered, InitializingBean {
         sb.append(pjp.getTarget().getClass().getName()).append(Symbol.PERIOD).append(pjp.getSignature().getName());
         Object[] arguments = pjp.getArgs();
         if (arguments != null && arguments.length > 0) {
-            for (int i = 0; i < arguments.length; i++) {
-                sb.append(Symbol.PERIOD);
-                Object arg = arguments[i];
-                if(arg instanceof DetailEnum)
-                	sb.append(((DetailEnum<?>)arg).getClassName());
-                //else if(arg instanceof Entity) 
-                //arg.getClass().getAnnotation(javax.persistence.Id.class);
-                else
-                	sb.append(arg);
-            }
+	        for (Object argument : arguments) {
+		        sb.append(Symbol.PERIOD);
+		        if (argument instanceof DetailEnum)
+			        sb.append(((DetailEnum<?>) argument).getClassName());
+			        //else if(arg instanceof Entity)
+			        //arg.getClass().getAnnotation(javax.persistence.Id.class);
+		        else
+			        sb.append(argument);
+	        }
         }
         return sb.toString();
     }

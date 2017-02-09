@@ -1,31 +1,15 @@
 package com.easycodebox.common.file;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
-import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import com.easycodebox.common.lang.*;
+import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.log.slf4j.*;
 
 import javax.activation.FileTypeMap;
-
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.lang.reflect.ClassUtils;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import java.io.*;
+import java.net.URL;
+import java.security.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * 修改自javax.activation.MimetypesFileTypeMap类 <p>
@@ -75,7 +59,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 	 */
 	private MimetypesFileTypeMap() {
 		List<MimeTypeFile> dbv = new ArrayList<>(5);
-		MimeTypeFile mf = null;
+		MimeTypeFile mf;
 		dbv.add(null);
 
 		log.info("MimetypesFileTypeMap: load HOME");
@@ -88,7 +72,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 				if (mf != null)
 					dbv.add(mf);
 			}
-		} catch (SecurityException ex) {
+		} catch (SecurityException ignored) {
 		}
 
 		log.info("MimetypesFileTypeMap: load SYS");
@@ -99,7 +83,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 			mf = loadFile(system_mimetypes);
 			if (mf != null)
 				dbv.add(mf);
-		} catch (SecurityException ex) {
+		} catch (SecurityException ignored) {
 		}
 
 		log.info("MimetypesFileTypeMap: load JAR");
@@ -167,8 +151,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 						ret = new URL[v.size()];
 						ret = v.toArray(ret);
 					}
-				} catch (IOException ioex) {
-				} catch (SecurityException ex) {
+				} catch (IOException | SecurityException ignored) {
 				}
 				return ret;
 			}
@@ -183,10 +166,9 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		URL[] urls = getResources(ClassUtils.getClassLoader(), name);
 		if (urls != null) {
 			log.info("MimetypesFileTypeMap: getResources");
-			for (int i = 0; i < urls.length; i++) {
-				URL url = urls[i];
+			for (URL url : urls) {
 				log.info("MimetypesFileTypeMap: URL " + url);
-				try(InputStream clis = url.openStream()) {
+				try (InputStream clis = url.openStream()) {
 					if (clis != null) {
 						v.add(new MimeTypeFile(clis));
 						anyLoaded = true;
@@ -217,7 +199,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 
 		try {
 			mtf = new MimeTypeFile(name);
-		} catch (IOException e) {
+		} catch (IOException ignored) {
 			
 		}
 		return mtf;
@@ -389,7 +371,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		 * Parse a stream of mime.types entries.
 		 */
 		private void parse(BufferedReader buf_reader) throws IOException {
-			String line = null, prev = null;
+			String line, prev = null;
 			while ((line = buf_reader.readLine()) != null) {
 				if (prev == null)
 					prev = line;
@@ -412,7 +394,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		 */
 		private void parseEntry(String line) {
 			String mime_type = null;
-			String file_ext = null;
+			String file_ext;
 			List<String> exts = new ArrayList<>(4);
 			line = line.trim();
 
@@ -528,7 +510,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		public String nextToken() {
 			int size = stack.size();
 			if (size > 0) {
-				String t = (String) stack.elementAt(size - 1);
+				String t = stack.elementAt(size - 1);
 				stack.removeElementAt(size - 1);
 				return t;
 			}

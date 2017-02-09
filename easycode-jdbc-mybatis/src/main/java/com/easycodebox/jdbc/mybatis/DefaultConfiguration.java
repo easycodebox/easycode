@@ -16,7 +16,7 @@ public class DefaultConfiguration extends
 	
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	private static final ThreadLocal<MappedStatement> CUR_MAPPED_STATEMENT = new ThreadLocal<MappedStatement>();
+	private static final ThreadLocal<MappedStatement> CUR_MAPPED_STATEMENT = new ThreadLocal<>();
 	
 	/**
 	 * 处理SqlSource，用DelegateSqlSource 代理SqlSource
@@ -45,7 +45,7 @@ public class DefaultConfiguration extends
 		if (validateIncompleteStatements) {
 			buildAllStatements();
 		}
-		MappedStatement ms = null;
+		MappedStatement ms;
 		try{
 			ms = mappedStatements.get(id);
 		}catch(Exception e) {

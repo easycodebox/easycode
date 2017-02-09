@@ -9,7 +9,7 @@ public enum Status implements DetailEnum<Integer>{
 	private Integer value;
 	private String desc;
    
-    private Status(Integer value, String desc) {
+    Status(Integer value, String desc) {
 
         this.value = value;
         this.desc = desc;

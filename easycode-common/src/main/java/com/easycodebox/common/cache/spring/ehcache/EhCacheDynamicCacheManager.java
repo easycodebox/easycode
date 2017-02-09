@@ -1,14 +1,11 @@
 package com.easycodebox.common.cache.spring.ehcache;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Status;
+import net.sf.ehcache.*;
 import net.sf.ehcache.config.CacheConfiguration;
-
 import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
+
+import java.util.*;
 
 /**
  * EhCacheCacheManager默认只会加载ehcache.xml配置中的cache，不会动态new cache。
@@ -32,7 +29,7 @@ public class EhCacheDynamicCacheManager extends EhCacheCacheManager {
 		}
 
 		String[] names = getCacheManager().getCacheNames();
-		Collection<Cache> caches = new LinkedHashSet<Cache>(names.length);
+		Collection<Cache> caches = new LinkedHashSet<>(names.length);
 		for (String name : names) {
 			caches.add(new CustomEhCacheCache(getCacheManager().getEhcache(name)));
 		}

@@ -1,38 +1,21 @@
 package com.easycodebox.common.file;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.exception.NonEnlargedException;
-import com.easycodebox.common.lang.DecimalUtils;
-import com.easycodebox.common.lang.RegularUtils;
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import com.easycodebox.common.lang.*;
+import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.validate.Assert;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.io.*;
+
+import javax.imageio.*;
+import javax.imageio.stream.ImageInputStream;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
@@ -107,7 +90,7 @@ public class ImageTools {
 		rules = RegularUtils.getQueryString(rules);
 		Double wl = null, wg = null, hl = null, hg = null, re = null, 
 				rl = null, rg = null, sl = null, sg = null;
-		String type = null, error = null;
+		String type = null, error;
 		if(StringUtils.isNotBlank(rules)) {
 			wl = FileUtils.processRule(rules, "wl", false, Double.class);
 			wg = FileUtils.processRule(rules, "wg", true, Double.class);
@@ -134,7 +117,7 @@ public class ImageTools {
 				
 				Iterator<ImageReader> iter = ImageIO.getImageReaders(imgs[i]);
 		        if (!iter.hasNext()) {
-		        	/************* error **************/
+		        	/* ------ error ------ */
 		        	error = "文件类型错误";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -142,9 +125,9 @@ public class ImageTools {
 		        		im.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 		        }
-		        reader = (ImageReader)iter.next();
+		        reader = iter.next();
 		        
 		        String imgType = reader.getFormatName().toLowerCase();
 		        String mimeType = MimeTypes.getMimeTypeByExt(imgType);
@@ -165,7 +148,7 @@ public class ImageTools {
 				int h = img.getHeight();
 				BigDecimal ratio = new BigDecimal(1.0*w/h).setScale(2, BigDecimal.ROUND_HALF_UP);
 				if(wl != null && w > wl) {
-					/************* error **************/
+					/* ------ error ------ */
 					error = "图片宽度不能大于" + DecimalUtils.fmt(wl, 2, true) + "像素";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -173,10 +156,10 @@ public class ImageTools {
 		        		im.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				}
 				if(wg != null && w < wg) {
-					/************* error **************/
+					/* ------ error ------ */
 					error = "图片宽度不能小于" + DecimalUtils.fmt(wg, 2, true) + "像素";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -184,10 +167,10 @@ public class ImageTools {
 		        		im.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				}
 				if(hl != null && h > hl) {
-					/************* error **************/
+					/* ------ error ------ */
 					error = "图片高度不能大于" + DecimalUtils.fmt(hl, 2, true) + "像素";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -195,10 +178,10 @@ public class ImageTools {
 		        		im.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				} 
 				if(hg != null && h < hg) {
-					/************* error **************/
+					/* ------ error ------ */
 					error = "图片高度不能小于" + DecimalUtils.fmt(hg, 2, true) + "像素";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -206,7 +189,7 @@ public class ImageTools {
 		        		im.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				} 
 				if(re != null) {
 					BigDecimal reDec = new BigDecimal(re.toString())
@@ -214,7 +197,7 @@ public class ImageTools {
 					//图片宽高比例的容错为0.1
 					if(ratio.compareTo(reDec.subtract(new BigDecimal("0.1"))) < 0
 							|| ratio.compareTo(reDec.add(new BigDecimal("0.1"))) > 0) {
-						/************* error **************/
+						/* ------ error ------ */
 						error = "请确定图片的宽高比例是" + DecimalUtils.fmt(reDec, 2, true);
 			        	if (transaction) {
 			        		return CodeMsg.FAIL.msg(error);
@@ -222,11 +205,11 @@ public class ImageTools {
 			        		im.setError(error);
 			        		continue;
 			        	}
-			        	/************* error **************/
+			        	/* ------ error ------ */
 					}
 				} 
 				if(rl != null && ratio.doubleValue() > rl) {
-					/************* error **************/
+					/* ------ error ------ */
 					error = "图片的宽高比例不能大于" + DecimalUtils.fmt(rl, 2, true);
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -234,10 +217,10 @@ public class ImageTools {
 		        		im.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				} 
 				if(rg != null && ratio.doubleValue() < rg) {
-					/************* error **************/
+					/* ------ error ------ */
 					error = "图片的宽高比例不能小于" + DecimalUtils.fmt(rg, 2, true);
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -245,10 +228,10 @@ public class ImageTools {
 		        		im.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				}
 				if(sl != null && FileUtils.byte2m(fileSizes[i], 6) > sl) {
-					/************* error **************/
+					/* ------ error ------ */
 					error = "图片不能大于" + DecimalUtils.fmt(sl, 2, true) + "M";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -256,10 +239,10 @@ public class ImageTools {
 		        		im.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				} 
 				if(sg != null && FileUtils.byte2m(fileSizes[i], 6) < sg) {
-					/************* error **************/
+					/* ------ error ------ */
 					error = "图片不能小于" + DecimalUtils.fmt(sg, 2, true) + "M";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -267,7 +250,7 @@ public class ImageTools {
 		        		im.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				}
 				if(StringUtils.isNotBlank(type)) {
 					boolean auth = false;
@@ -277,7 +260,7 @@ public class ImageTools {
 							auth = true;
 					}
 					if(!auth) {
-						/************* error **************/
+						/* ------ error ------ */
 						error = "图片格式只能为" + type;
 			        	if (transaction) {
 			        		return CodeMsg.FAIL.msg(error);
@@ -285,7 +268,7 @@ public class ImageTools {
 			        		im.setError(error);
 			        		continue;
 			        	}
-			        	/************* error **************/
+			        	/* ------ error ------ */
 					}
 				}
 				
@@ -294,15 +277,14 @@ public class ImageTools {
 				
 			} catch (IOException e) {
 				log.error("解析图片错误", e);
-				/************* error **************/
+				/* ------ error ------ */
 				error = "解析图片错误，请上传有效图片。";
 	        	if (transaction) {
 	        		return CodeMsg.FAIL.msg(error);
 	        	} else {
 	        		im.setError(error);
-	        		continue;
-	        	}
-	        	/************* error **************/
+		        }
+	        	/* ------ error ------ */
 			} finally {
 				if(reader != null)
 					reader.dispose();
@@ -455,15 +437,8 @@ public class ImageTools {
 	}
 	
 	
+	/* ---------------------------（以下规则已被废弃） ---------------------------------- */
 	
-	
-	
-	
-	
-	
-	
-	
-	/*************************（以下规则已被废弃） *******************************************/
 	/**
 	 * 
 	 * 为每个上传图片生成一个大图的规则
@@ -549,12 +524,10 @@ public class ImageTools {
 	 * @param imgPath	大图的地址 upload/img/gift/1.png
 	 * @param baseRealPath	
 	 * @param filePath	upload/img/gift=300c0
-	 * @param boundw	裁剪图片宽度
-	 * @param boundh	裁剪图片高度
-	 * @param cx		裁剪图片的x点
-	 * @param cy		裁剪图片的y点
-	 * @param cw		裁剪的宽度
-	 * @param ch		裁剪高度
+	 * @param x		裁剪图片的x点
+	 * @param y		裁剪图片的y点
+	 * @param width		裁剪的宽度
+	 * @param height		裁剪高度
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
@@ -586,26 +559,24 @@ public class ImageTools {
 	@SuppressWarnings("unused")
 	private static void testGenerateSmallImg(File path) {
 		File[] files = path.listFiles();
+		if (files == null) return;
 		String absolutePath = path.getAbsolutePath().replace("D:\\back\\imgs", "D:\\back\\imgs\\g");
-		for(int i = 0; i < files.length; i++) {
-			File f = files[i];
-			if(f.isFile()) {
-					try {
-						List<Image> resizeImg = new ArrayList<Image>(1);
-						Image img = new Image();
-						img.setPath("");	//替换当前文件
-						img.setWidth(960);
-						img.setHeight(760);
-						resizeImg.add(img);
-						BufferedImage tmpImg = ImageIO.read(files[i]);
-						resizeImage(tmpImg, f.getName(), absolutePath, true, false, resizeImg);
-						tmpImg.flush();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-			}else if(!f.getName().equals("mobilePath")) {
+		for (File f : files) {
+			if (f.isFile()) {
+				try {
+					List<Image> resizeImg = new ArrayList<>(1);
+					Image img = new Image();
+					img.setPath("");    //替换当前文件
+					img.setWidth(960);
+					img.setHeight(760);
+					resizeImg.add(img);
+					BufferedImage tmpImg = ImageIO.read(f);
+					resizeImage(tmpImg, f.getName(), absolutePath, true, false, resizeImg);
+					tmpImg.flush();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (!f.getName().equals("mobilePath")) {
 				testGenerateSmallImg(f);
 			}
 		}
@@ -643,7 +614,7 @@ public class ImageTools {
 			//fillScaleImg("e:/zigentu.jpg", "e:/zigentu-back.jpg", 500, 500, false);
 			long cur = System.currentTimeMillis();
 			for(int i = 0; i < 10000; i++) {
-				validateImgs("wg(420)hg(420)", new File[]{ new File("e:/a.jpg")});
+				validateImgs("wg(420)hg(420)", new File("e:/a.jpg"));
 			}
 			System.out.println(System.currentTimeMillis() - cur);
 		} catch (Exception e) {

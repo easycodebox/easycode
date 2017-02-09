@@ -1,21 +1,18 @@
 package com.easycodebox.jdbc.support;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Date;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.security.SecurityUtils;
 import com.easycodebox.jdbc.Property;
-import com.easycodebox.jdbc.entity.CreateEntity;
-import com.easycodebox.jdbc.entity.Entity;
-import com.easycodebox.jdbc.entity.ModifyEntity;
+import com.easycodebox.jdbc.entity.*;
 import com.easycodebox.jdbc.grammar.SqlGrammar;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Date;
 
 /**
  * @author WangXiaoJin
@@ -165,10 +162,7 @@ public class DefaultJdbcHandler implements JdbcHandler {
 	
 	private boolean updateSqlHad(SqlGrammar sqlGrammar, String propertyName) {
 		String updSql = sqlGrammar.getUpdateSql().toString();
-		if(updSql.matches("(\\s+|,|\\.)" + propertyName + "(\\s+|,)")) {
-			return true;
-		}
-		return false;
+		return updSql.matches("(\\s+|,|\\.)" + propertyName + "(\\s+|,)");
 	}
 	
 	/**
@@ -176,7 +170,7 @@ public class DefaultJdbcHandler implements JdbcHandler {
 	 * @author WangXiaoJin
 	 *
 	 */
-	public static interface SecurityUser {
+	public interface SecurityUser {
 		
 		/**
 		 * 返回当前操作人id
@@ -191,7 +185,7 @@ public class DefaultJdbcHandler implements JdbcHandler {
 	 * @author WangXiaoJin
 	 *
 	 */
-	public static interface DateFactory {
+	public interface DateFactory {
 		
 		Object instance();
 		

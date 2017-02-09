@@ -79,7 +79,7 @@ public class VerifyCode {
         case TYPE_NUM_ONLY:
             while (i < length) {
                 int t = r.nextInt(10);
-                if (exChars == null || exChars.indexOf(t + "") < 0) {// 排除特殊字符
+                if (exChars == null || !exChars.contains(t + "")) {// 排除特殊字符
                     code.append(t);
                     i++;
                 }
@@ -254,11 +254,8 @@ public class VerifyCode {
      */
     public static BufferedImage generateImageCode(int type, int length, String exChars, int width, int height, int interLine, boolean randomLocation,
             Color backColor, Color foreColor, Color lineColor) {
-
         String textCode = generateTextCode(type, length, exChars);
-        BufferedImage bim = generateImageCode(textCode, width, height, interLine, randomLocation, backColor, foreColor, lineColor);
-
-        return bim;
+        return generateImageCode(textCode, width, height, interLine, randomLocation, backColor, foreColor, lineColor);
     }
 
     /**
@@ -268,8 +265,7 @@ public class VerifyCode {
      */
     private static Color getRandomColor() {
         Random r = new Random();
-        Color c = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
-        return c;
+        return new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
     }
 
     public static void main(String[] args) {

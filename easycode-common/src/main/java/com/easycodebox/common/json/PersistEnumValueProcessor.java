@@ -22,7 +22,7 @@ public class PersistEnumValueProcessor implements JsonValueProcessor {
     }
     
     private Object process(Object value, JsonConfig jsonConfig){
-    	JSONObject jsonObject = null;
+    	JSONObject jsonObject;
         if( value instanceof DetailEnum ){
       	  DetailEnum<?> en = (DetailEnum<?>)value;
            jsonObject = new JSONObject()

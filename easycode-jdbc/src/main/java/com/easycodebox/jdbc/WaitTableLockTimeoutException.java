@@ -8,8 +8,6 @@ import com.easycodebox.common.error.BaseException;
  */
 public class WaitTableLockTimeoutException extends BaseException {
 
-	private static final long serialVersionUID = 8710681426899865033L;
-	
 	public WaitTableLockTimeoutException() {
 		super();
 	}

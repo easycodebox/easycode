@@ -1,19 +1,15 @@
 package com.easycodebox.common.lang;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-
-import org.apache.commons.beanutils.BeanUtils;
-
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.reflect.ClassUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.apache.commons.beanutils.BeanUtils;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.util.*;
 
 /**
  * 数据类型转换工具 <br>
@@ -64,7 +60,7 @@ public class DataConvert {
 	@SuppressWarnings("unchecked")
 	public static <T> T[] convertArray(String[] objs, Class<T[]> clazz) throws BaseException {
 		if(objs == null) return null;
-		if((Object)clazz == (Object)Object[].class)
+		if(clazz == Object[].class)
 			return (T[])objs;
 		T[] copy = (T[]) Array.newInstance(clazz.getComponentType(), objs.length);
         int i = 0;  				
@@ -162,9 +158,9 @@ public class DataConvert {
 				else
 					t = (T)DateUtils.parse(obj); 
 			}else if(Calendar.class.isAssignableFrom(clazz)) {
-				t = (T)DateUtils.parse2Calenar(obj.toString()); 
+				t = (T)DateUtils.parse2Calenar(obj);
 			}else if(Boolean.class.isAssignableFrom(clazz)) {
-				t = (T)new Boolean(obj);
+				t = (T) Boolean.valueOf(obj);
 			}else {
 				t = (T)obj;
 			}

@@ -8,6 +8,6 @@ package com.easycodebox.common.cache;
 @Deprecated
 public enum CacheOperation {
 	
-	NOP, CACHING, FLUSH_CACHE;
+	NOP, CACHING, FLUSH_CACHE
 	
 }

@@ -1,19 +1,15 @@
 package com.easycodebox.common.lang.reflect;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
@@ -55,7 +51,7 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 			return null;
 		}
 		
-		List<Field> r = new ArrayList<Field>();
+		List<Field> r = new ArrayList<>();
 		Class<?> parent = clazz;
 		while(parent != null) {
 			for(Field f : parent.getDeclaredFields()) {
@@ -106,8 +102,8 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 
 	/**
 	 * 通过反射,获得Field泛型参数的实际类型. 如: public Map<String, Buyer> names;
-	 * @param Field field 字段
-	 * @param int index 泛型参数所在索引,从0开始.
+	 * @param field 字段
+	 * @param index 泛型参数所在索引,从0开始.
 	 * @return 泛型参数的实际类型, 如果没有实现ParameterizedType接口，即不支持泛型，所以直接返回<code>Object.class</code>
 	 */
 	@SuppressWarnings("rawtypes")
@@ -139,8 +135,7 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 	}
 	/**
 	 * 通过反射,获得Field泛型参数的实际类型. 如: public Map<String, Buyer> names;
-	 * @param Field field 字段
-	 * @param int index 泛型参数所在索引,从0开始.
+	 * @param field 字段
 	 * @return 泛型参数的实际类型, 如果没有实现ParameterizedType接口，即不支持泛型，所以直接返回<code>Object.class</code>
 	 */
 	@SuppressWarnings("rawtypes")
@@ -158,7 +153,7 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 		Assert.notBlank(name);
 		Method method = null;
         String methodName = "get" + StringUtils.capitalize(name);
-        boolean accessField = false;
+        boolean accessField;
         try {
 			method = clazz.getMethod(methodName);
 		} catch (NoSuchMethodException e) {
@@ -209,7 +204,7 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
         Class<?> clazz = target.getClass();
         Method method = null;
         String methodName = "get" + StringUtils.capitalize(name);
-        boolean accessField = false;
+        boolean accessField;
         try {
 			method = clazz.getMethod(methodName);
 		} catch (NoSuchMethodException e) {

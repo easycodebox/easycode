@@ -1,20 +1,12 @@
 package com.easycodebox.auth.core.service.user;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
-import java.util.List;
-import java.util.Map;
-
 import com.easycodebox.auth.model.entity.user.Permission;
-import com.easycodebox.common.enums.entity.OpenClose;
-import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.common.lang.dto.DataPage;
-
-import freemarker.core.ParseException;
-import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateNotFoundException;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -125,8 +117,7 @@ public interface PermissionService {
 	
 	/**
 	 * 从XML文件导入操作到数据库
-	 * @param xml 
-	 * @param orderNoStart
+	 * @param streams
 	 * @throws Exception
 	 */
 	void importFromXml(InputStream streams) throws Exception;
@@ -138,8 +129,7 @@ public interface PermissionService {
 	 * @param writer
 	 * @return 返回文件名
 	 */
-	void exportToXml(String ftlRes, Integer projectId, Writer writer) throws TemplateException, 
-		TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException;
+	void exportToXml(String ftlRes, Integer projectId, Writer writer) throws TemplateException, IOException;
 	
 	/**
 	 * 列出已开放权限

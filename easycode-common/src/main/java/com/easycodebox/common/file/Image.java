@@ -7,8 +7,6 @@ package com.easycodebox.common.file;
  */
 public class Image extends FileInfo {
 	
-	private static final long serialVersionUID = 1L;
-
 	private Integer height;
 	
 	private Integer width;

@@ -1,14 +1,11 @@
 package com.easycodebox.common.tag;
 
-import java.io.IOException;
+import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.lang.*;
+import com.easycodebox.common.validate.Assert;
 
 import javax.servlet.jsp.JspException;
-
-import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.lang.RegularUtils;
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.validate.Assert;
+import java.io.IOException;
 
 /**
  * @author WangXiaoJin
@@ -16,8 +13,6 @@ import com.easycodebox.common.validate.Assert;
  */
 public class ImgUrl extends AbstractHtmlTag {
 	
-	private static final long serialVersionUID = -1586374485223953984L;
-
 	private String root;
 	private String url;
 	private String mode;

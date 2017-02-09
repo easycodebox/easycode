@@ -1,19 +1,16 @@
 package com.easycodebox.jdbc;
 
-import java.io.Serializable;
-
-import javax.persistence.JoinColumn;
-
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.jdbc.config.Configuration;
+
+import javax.persistence.JoinColumn;
+import java.io.Serializable;
 
 /**
  * @author WangXiaoJin
  *
  */
 public class JoinColumnObj implements Serializable {
-	
-	private static final long serialVersionUID = -7947013768721709621L;
 	
 	private JoinColumnObj() {
 		

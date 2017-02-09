@@ -1,16 +1,14 @@
 package com.easycodebox.jdbc;
 
-import java.io.Serializable;
-
 import com.easycodebox.common.lang.StringUtils;
+
+import java.io.Serializable;
 
 /**
  * @author WangXiaoJin
  *
  */
 public abstract class AssociatedColumn implements Serializable {
-	
-	private static final long serialVersionUID = -5359455662780435244L;
 	
 	/**
 	 * 属性名

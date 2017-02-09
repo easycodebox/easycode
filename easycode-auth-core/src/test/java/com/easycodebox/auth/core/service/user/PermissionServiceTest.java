@@ -1,9 +1,7 @@
 package com.easycodebox.auth.core.service.user;
 
-import org.junit.Test;
-
-import com.easycodebox.auth.core.service.user.PermissionService;
 import com.easycodebox.auth.core.util.test.BaseTest;
+import org.junit.Test;
 
 public class PermissionServiceTest extends BaseTest<PermissionService> {
 

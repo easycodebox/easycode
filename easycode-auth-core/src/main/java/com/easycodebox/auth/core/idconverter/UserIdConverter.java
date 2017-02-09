@@ -1,18 +1,16 @@
 package com.easycodebox.auth.core.idconverter;
 
-import java.lang.reflect.InvocationTargetException;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringUtils;
-
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.tag.IdConverter;
 import com.easycodebox.jdbc.support.JdbcHandler;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
+
+import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * 用户ID转换器
@@ -41,7 +39,7 @@ public class UserIdConverter implements IdConverter {
 		if (id == null)
 			return null;
 		else {
-			User val = null;
+			User val;
 			if (jdbcHandler.getSysUserId().equals(id.toString())) {
 				val = new User();
 				val.setId(id.toString());
@@ -66,7 +64,7 @@ public class UserIdConverter implements IdConverter {
 						}
 						if (newVal != null)
 							break;
-					} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+					} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
 						
 					}
 				}

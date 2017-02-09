@@ -1,29 +1,20 @@
 package com.easycodebox.common.lang;
 
+import com.easycodebox.common.Copyable;
+import com.easycodebox.common.error.BaseException;
+import com.easycodebox.common.lang.reflect.*;
+import com.easycodebox.common.validate.Assert;
+import org.springframework.cglib.beans.BeanCopier;
+
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.springframework.cglib.beans.BeanCopier;
-
-import com.easycodebox.common.Copyable;
-import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.lang.reflect.ClassUtils;
-import com.easycodebox.common.lang.reflect.FieldUtils;
-import com.easycodebox.common.lang.reflect.MethodUtils;
-import com.easycodebox.common.validate.Assert;
 
 /**
  * @author WangXiaoJin
@@ -32,10 +23,10 @@ import com.easycodebox.common.validate.Assert;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	//
-	private static final ConcurrentHashMap<Class<?>, BeanCopier> BEAN_COPIERS = new ConcurrentHashMap<Class<?>, BeanCopier>();
+	private static final ConcurrentHashMap<Class<?>, BeanCopier> BEAN_COPIERS = new ConcurrentHashMap<>();
 	
 	//
-	private static final Set<Class<?>> PRIMITIVES_AND_WRAPPERS = new HashSet<Class<?>>();
+	private static final Set<Class<?>> PRIMITIVES_AND_WRAPPERS = new HashSet<>();
 	static {
 		PRIMITIVES_AND_WRAPPERS.add(boolean.class);
 		PRIMITIVES_AND_WRAPPERS.add(Boolean.class);
@@ -56,7 +47,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	}
 	
 	//
-	private static final Set<Class<?>> IMMUTABLE_CLASSES = new HashSet<Class<?>>();
+	private static final Set<Class<?>> IMMUTABLE_CLASSES = new HashSet<>();
 	static {
 		IMMUTABLE_CLASSES.add(Boolean.class);
 		IMMUTABLE_CLASSES.add(Byte.class);
@@ -77,7 +68,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	/**
 	 * 
 	 */
-	public static final <T> boolean isEquals(T lhs, T rhs) {
+	public static <T> boolean isEquals(T lhs, T rhs) {
 		if(lhs == null && rhs == null) {
 			return true;
 		} else if(lhs == null || rhs == null) {
@@ -157,17 +148,15 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 		if(clazz == null || !clazz.isPrimitive()) {
 			return null;
 		}
-		
-		//
 		if(void.class == clazz) return null;
 		if(boolean.class == clazz) return Boolean.FALSE;
-		if(byte.class == clazz) return Byte.valueOf((byte) 0);
-		if(short.class == clazz) return Short.valueOf((short) 0);
-		if(int.class == clazz) return Integer.valueOf(0);
-		if(long.class == clazz) return Long.valueOf(0);
-		if(char.class == clazz) return Character.valueOf((char) 0);
-		if(double.class == clazz) return Double.valueOf(0);
-		if(float.class == clazz) return Float.valueOf(0);
+		if(byte.class == clazz) return (byte) 0;
+		if(short.class == clazz) return (short) 0;
+		if(int.class == clazz) return 0;
+		if(long.class == clazz) return 0L;
+		if(char.class == clazz) return (char) 0;
+		if(double.class == clazz) return 0d;
+		if(float.class == clazz) return 0f;
 		throw new RuntimeException("assertion failed, should not reach here, clazz: " + clazz);
 	}
 
@@ -301,7 +290,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	public static Object cloneCopy(Object obj) {
 		// Precondition checking
 		if(obj == null) {
-			return obj;
+			return null;
 		}
 		if(!isCloneable(obj)) {
 			throw new IllegalArgumentException("parameter obj: " + obj + " is not cloneable");
@@ -312,7 +301,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 			final Class<?> clazz = obj.getClass();
 			Method method = MethodUtils.findPublicMethod(clazz, "clone", new Class<?>[]{});
 			method.setAccessible(true);
-			return method.invoke(obj, new Object[]{});
+			return method.invoke(obj);
 		} catch (Exception e) {
 			throw new RuntimeException("failed to clone copy", e);
 		}
@@ -377,7 +366,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 			firstKey = m.group(1);
 			arrayIndex = Integer.parseInt(m.group(2));
 		}
-		Object tmp = null;
+		Object tmp;
 		if(data instanceof Map)
 			tmp = ((Map)data).get(firstKey);
 		else
@@ -454,7 +443,6 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	 * 请用其他工具类。如：org.apache.commons.beanutils.PropertyUtils
 	 * @param data	可以是map等
 	 * @param key	可以传name[0].name格式
-	 * @param middleKeyClass	key中间值类型：如：shop.name	==> middleKeyClass.put("shop", Shop.class),指明shop属性类型为Shop.class
 	 * @param value
 	 */
 	@Deprecated
@@ -476,7 +464,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 			String complexKey = arrayIndex > -1 ? firstKey + "[]" : firstKey;
 			assignClass = assignClasses.get(complexKey);
 			if(assignClasses.size() > 0) {
-				Map<String, Class<?>> tmpMap = new HashMap<String, Class<?>>(assignClasses.size());
+				Map<String, Class<?>> tmpMap = new HashMap<>(assignClasses.size());
 				for(String assignKey : assignClasses.keySet()) {
 					if(assignKey.startsWith(complexKey)) {
 						tmpMap.put(assignKey.substring(index + 1), assignClasses.get(assignKey));
@@ -552,7 +540,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 						if(!ClassUtils.isAssignable(value.getClass(), tmp.getClass().getComponentType(), true)) {
 							try {
 								value = DataConvert.convertType(value.toString(), tmp.getClass().getComponentType());
-							} catch (BaseException e) {
+							} catch (BaseException ignored) {
 								
 							}
 						}
@@ -625,7 +613,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 						if(!ClassUtils.isAssignable(value.getClass(), type, true)) {
 							try {
 								value = DataConvert.convertType(value.toString(), type);
-							} catch (BaseException e) {
+							} catch (BaseException ignored) {
 								
 							}
 						}
@@ -634,7 +622,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 						if(!ClassUtils.isAssignable(value.getClass(), tmp.getClass().getComponentType(), true)) {
 							try {
 								value = DataConvert.convertType(value.toString(), tmp.getClass().getComponentType());
-							} catch (BaseException e) {
+							} catch (BaseException ignored) {
 								
 							}
 						}
@@ -649,7 +637,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 					if(!ClassUtils.isAssignable(value.getClass(), type, true)) {
 						try {
 							value = DataConvert.convertType(value.toString(), type);
-						} catch (BaseException e) {
+						} catch (BaseException ignored) {
 							
 						}
 					}

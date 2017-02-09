@@ -1,13 +1,11 @@
 package com.easycodebox.common.file;
 
-import java.io.File;
-
 import com.easycodebox.common.lang.dto.AbstractBo;
+
+import java.io.File;
 
 public class FileInfo extends AbstractBo {
 	
-	private static final long serialVersionUID = -5758401252814280071L;
-
 	private String name;
 	
 	/**

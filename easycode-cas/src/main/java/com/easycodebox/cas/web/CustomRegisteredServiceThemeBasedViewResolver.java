@@ -77,8 +77,8 @@ public class CustomRegisteredServiceThemeBasedViewResolver extends InternalResou
     protected AbstractUrlBasedView buildView(final String viewName) throws Exception {
         final RequestContext requestContext = RequestContextHolder.getRequestContext();
         
-        /**
-         * add by WangXiaoJin
+        /*
+          add by WangXiaoJin
          */
         String themeId = useRequestParam ? requestContext.getRequestParameters().get(themeFrameKey) : null;
         if(StringUtils.isEmpty(themeId)) {

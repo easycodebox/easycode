@@ -1,14 +1,14 @@
 package com.easycodebox.jdbc;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.config.Configuration;
 import com.easycodebox.jdbc.dialect.Dialect;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
@@ -16,12 +16,10 @@ import com.easycodebox.jdbc.dialect.Dialect;
  */
 public class Join implements Serializable {
 
-	private static final long serialVersionUID = -4201707842197198405L;
-	
 	private Class<?> table;
 	private String tableAlias;
 	private JoinType joinType;
-	private List<Property[]> joinColumns = new ArrayList<Property[]>(4);
+	private List<Property[]> joinColumns = new ArrayList<>(4);
 	
 	private Join(Class<?> table, String tableAlias, JoinType joinType) {
 		this.table = table;

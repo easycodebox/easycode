@@ -1,25 +1,17 @@
 package com.easycodebox.cas.web;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jasig.cas.authentication.principal.Service;
-import org.jasig.cas.services.RegisteredService;
-import org.jasig.cas.services.ServicesManager;
+import org.jasig.cas.services.*;
 import org.jasig.cas.web.support.WebUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.theme.AbstractThemeResolver;
-import org.springframework.webflow.execution.RequestContext;
-import org.springframework.webflow.execution.RequestContextHolder;
+import org.springframework.webflow.execution.*;
+
+import javax.servlet.http.*;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 扩展官方ServiceThemeResolver功能，因为官方此类不提供依据http请求来更换主题，只能通过org.springframework.web.servlet.theme.ThemeChangeInterceptor来达到
@@ -98,7 +90,7 @@ public class CustomServiceThemeResolver extends AbstractThemeResolver {
         		}
         	}
         }else {
-        	/*** add by WangXiaoJin ***/
+	        /* add by WangXiaoJin */
         	String theme = resolveThemeName(request.getParameter(themeKey).toLowerCase());
         	final CasThemeResourceBundleMessageSource messageSource = new CasThemeResourceBundleMessageSource();
 			messageSource.setBasename(theme);
@@ -108,7 +100,7 @@ public class CustomServiceThemeResolver extends AbstractThemeResolver {
 			} else {
 				log.warn("Custom theme {} cannot be located. Falling back to default theme...", theme);
 			}
-			/*** ================== ***/
+			/* ================== */
         }
         return resolveThemeName(getDefaultThemeName());
     }

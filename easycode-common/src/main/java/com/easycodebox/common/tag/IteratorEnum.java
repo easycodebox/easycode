@@ -1,10 +1,9 @@
 package com.easycodebox.common.tag;
 
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.jsp.JspException;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.List;
 
 
 /**
@@ -13,8 +12,6 @@ import org.apache.commons.lang.StringUtils;
  */
 public class IteratorEnum extends EnumGroupTag {
 	
-	private static final long serialVersionUID = 3447660627148511161L;
-
     protected Object oldStatus;
     protected IteratorStatus status;
     protected IteratorStatus.StatusState statusState;
@@ -103,10 +100,7 @@ public class IteratorEnum extends EnumGroupTag {
     }
 
     private boolean hasNext(){
-    	if(currentIndex + step <= end)
-    		return true;
-    	else
-    		return false;
+	    return currentIndex + step <= end;
     }
     
     private Object next(){

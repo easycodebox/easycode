@@ -7,8 +7,6 @@ package com.easycodebox.common.zookeeper;
  */
 public class ZkSerializeException extends Exception {
 
-	private static final long serialVersionUID = -3383769643835708013L;
-
 	public ZkSerializeException() {
 		super();
 	}

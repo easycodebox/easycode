@@ -125,15 +125,14 @@ public class RC4Utils {
 			// 两位一组，表示一个字节,把这样表示的16进制字符串，还原成一个进制字节
 			b2[n / 2] = (byte) Integer.parseInt(item, 16);
 		}
-		b = null;
 		return b2;
 	}
 
 
 	public static String byteToString(byte[] bytes) {
 		StringBuilder buf = new StringBuilder();
-		for (int i = 0; i < bytes.length; i++) {
-			int d = bytes[i];
+		for (byte b : bytes) {
+			int d = b;
 			if (d < 0) {
 				d += 256;
 			}

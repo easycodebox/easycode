@@ -1,15 +1,14 @@
 package com.easycodebox.common.web.springmvc;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.net.HttpUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.lang.reflect.ClassUtils;
-import com.easycodebox.common.net.HttpUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 主要为了解决controller方法不返回view时自动生成view。重写此HandlerAdapter的原因是RequestToViewNameTranslator
@@ -44,7 +43,7 @@ public class DefaultRequestMappingHandlerAdapter extends RequestMappingHandlerAd
 		if(view != null && !view.hasView() && autoView) {
 			String pkg = ClassUtils.getLastPkg(handlerMethod.getBeanType());
 			String[] frags = HttpUtils.getParticularPaths(request);
-			String viewName = null;
+			String viewName;
 			if(frags.length == 1) {
 				viewName = pkg + Symbol.SLASH + frags[0];
 			}

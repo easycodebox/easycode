@@ -1,12 +1,11 @@
 package com.easycodebox.common.tag;
 
-import javax.servlet.jsp.JspException;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
 import com.easycodebox.common.enums.EnumClassFactory;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.validate.Assert;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import javax.servlet.jsp.JspException;
 
 /**
  * @author WangXiaoJin
@@ -14,8 +13,6 @@ import com.easycodebox.common.validate.Assert;
  */
 public class IfEnum extends TagExt {
 	
-	private static final long serialVersionUID = 8842670845328539115L;
-
 	public static final String ANSWER = "enum.if.answer";
 	
 	private Object test;

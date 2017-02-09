@@ -1,31 +1,18 @@
 package com.easycodebox.common.file;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Properties;
-
-import javax.management.modelmbean.XMLParseException;
-
-import org.apache.commons.lang.StringUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.StringToken.StringFormatToken;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.xml.XmlDataParser;
+import org.apache.commons.lang.StringUtils;
+import org.dom4j.*;
+import org.dom4j.io.SAXReader;
+
+import javax.management.modelmbean.XMLParseException;
+import java.io.*;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * 
@@ -74,7 +61,7 @@ public class PropertiesUtils {
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public static void loadAbsoluteFile(Properties properties, String absoluteFile) throws FileNotFoundException, IOException {
+	public static void loadAbsoluteFile(Properties properties, String absoluteFile) throws IOException {
 		Assert.notNull(properties, "'properties' can't be null.");
 		log.info("properties load file {0}.", absoluteFile);
 		try (InputStream i = new FileInputStream(absoluteFile)) {
@@ -107,7 +94,7 @@ public class PropertiesUtils {
 	 * @throws XMLParseException 
 	 * @throws DocumentException 
 	 */
-	public static void loadAbsoluteXmlFile(Properties properties, String absoluteFile) throws FileNotFoundException, IOException, DocumentException, XMLParseException {
+	public static void loadAbsoluteXmlFile(Properties properties, String absoluteFile) throws IOException, DocumentException, XMLParseException {
 		Assert.notNull(properties, "'properties' can't be null.");
 		log.info("properties load file {0}.", absoluteFile);
 		try (InputStream i = new FileInputStream(absoluteFile)) {
@@ -121,15 +108,14 @@ public class PropertiesUtils {
 		Document document = reader.read(i);
 		Element root = document.getRootElement();
 		List<Element> subs = root.elements("data");
-		for(int j = 0; j < subs.size(); j++) {
-			Element e = subs.get(j);
+		for (Element e : subs) {
 			String nameVal = e.attributeValue("name");
-			if(StringUtils.isNotBlank(nameVal))
+			if (StringUtils.isNotBlank(nameVal))
 				properties.put(nameVal, XmlDataParser.parseDataElement(e));
 		}
 	}
 	
-	public static void store(Properties properties, String filePath) throws FileNotFoundException, IOException {
+	public static void store(Properties properties, String filePath) throws IOException {
 		Assert.notNull(properties, "properties can not be null.");
 		Assert.notBlank(filePath, "filePath can not be blank.");
 		File file = new File(filePath);
@@ -153,7 +139,7 @@ public class PropertiesUtils {
 		Properties props = updateRaw ? properties : (Properties)properties.clone();
 		for(Entry<Object, Object> entry : props.entrySet()) {
 			if(entry.getValue() instanceof String) {
-				loopPlaceholderVal(props, entry.getKey(), new LinkedList<Object>());
+				loopPlaceholderVal(props, entry.getKey(), new LinkedList<>());
 			}
 		}
 		return props;
@@ -164,7 +150,7 @@ public class PropertiesUtils {
 		Object val = props.get(key);
 		if(val instanceof String) {
 			StringFormatToken token = new StringFormatToken(PLACEHOLDER_OPEN, PLACEHOLDER_CLOSE, (String)val, true);
-			String phkey = null;
+			String phkey;
 			while((phkey = token.nextKey()) != null) {
 				if(visits.contains(phkey)) {
 					throw new BaseException("Infinite loop exception.Cause by properties key '{0}'.", phkey);

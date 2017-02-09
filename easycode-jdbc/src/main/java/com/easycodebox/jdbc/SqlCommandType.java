@@ -10,6 +10,6 @@ public enum SqlCommandType {
 	INSERT,
 	UPDATE,
 	DELETE,
-	SELECT;
+	SELECT
 	
 }

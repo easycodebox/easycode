@@ -1,23 +1,15 @@
 package com.easycodebox.jdbc.util;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.DateUtils;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.jdbc.Column;
-import com.easycodebox.jdbc.PkColumn;
-import com.easycodebox.jdbc.Property;
-import com.easycodebox.jdbc.Table;
+import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.config.Configuration;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -27,7 +19,7 @@ public class SqlUtils {
 	
 	@SuppressWarnings("rawtypes")
 	public static String value2Sql(Object o){
-		String str = null;
+		String str;
 		if(o == null)
 			str = "null";
 		else if(o instanceof String || o instanceof StringBuffer || 
@@ -86,7 +78,6 @@ public class SqlUtils {
 	
 	/**
 	 * 组装sql语句的名字。例："s","shop"  ==> "s.shop"
-	 * @param names
 	 * @return
 	 */
 	public static String joinByDot(Property... properties) {

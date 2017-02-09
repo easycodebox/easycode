@@ -15,7 +15,7 @@ public enum LogLevel implements DetailEnum<Integer> {
 	private final Integer value;
 	private final String desc;
 	
-	private LogLevel(int value, String desc) {
+	LogLevel(int value, String desc) {
 		this.value = value;
 		this.desc = desc;
 	}

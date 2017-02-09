@@ -51,7 +51,7 @@ public enum GeneratorEnum implements DetailEnum<String>, GeneratorType {
 	private volatile AbstractGenerator generator;
    
 	@SuppressWarnings("rawtypes")
-	private GeneratorEnum(String value, String desc, AbstractGenerator rawGenerator) {
+	GeneratorEnum(String value, String desc, AbstractGenerator rawGenerator) {
         this.value = value;
         this.desc = desc;
         this.rawGenerator = rawGenerator;

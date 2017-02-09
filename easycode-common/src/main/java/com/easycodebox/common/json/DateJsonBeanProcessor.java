@@ -1,12 +1,11 @@
 package com.easycodebox.common.json;
 
-import java.util.Date;
-
 import com.easycodebox.common.lang.DateUtils;
-
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsonBeanProcessor;
+
+import java.util.Date;
 
 /**
  * @author WangXiaoJin
@@ -25,7 +24,7 @@ public class DateJsonBeanProcessor  implements JsonBeanProcessor {
     }
     
     public JSONObject processBean( Object bean, JsonConfig jsonConfig ) {
-      JSONObject jsonObject = null;
+      JSONObject jsonObject;
       if( bean instanceof java.sql.Date ){
          bean = new Date( ((java.sql.Date) bean).getTime() );
       }

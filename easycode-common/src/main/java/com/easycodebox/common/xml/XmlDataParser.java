@@ -1,24 +1,15 @@
 package com.easycodebox.common.xml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.management.modelmbean.XMLParseException;
-
-import org.apache.commons.lang.StringUtils;
-import org.dom4j.Attribute;
-import org.dom4j.Element;
-
 import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
+import org.apache.commons.lang.StringUtils;
+import org.dom4j.Attribute;
+import org.dom4j.Element;
+
+import javax.management.modelmbean.XMLParseException;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -65,7 +56,7 @@ public class XmlDataParser {
 
 	public static final String PROP_ELEMENT = "prop";
 	
-	public static final Map<String,Class<?>> classPool = new HashMap<String, Class<?>>();
+	public static final Map<String,Class<?>> classPool = new HashMap<>();
 
 	static {
 		classPool.put("int", Integer.class);
@@ -77,10 +68,9 @@ public class XmlDataParser {
 	public static Object parseDataElement(Element ele) throws XMLParseException{
 		List<Element> el = ele.elements();
 		Element subElement = null;
-		for(int i = 0; i < el.size(); i++) {
-			Element e = el.get(i);
-			if(!COMMENT_ELEMENT.equals(e.getName())) {
-				if(subElement != null)
+		for (Element e : el) {
+			if (!COMMENT_ELEMENT.equals(e.getName())) {
+				if (subElement != null)
 					throw new XMLParseException(ele.getName() + " must not contain more than one sub-element");
 				else
 					subElement = e;
@@ -171,8 +161,7 @@ public class XmlDataParser {
 		String defaultTypeClassName = collectionEle.attributeValue(VALUE_TYPE_ATTRIBUTE);
 		List<Element> el = collectionEle.elements();
 		List values = new ArrayList(el.size());
-		for(int i = 0; i < el.size(); i++) {
-			Element e = el.get(i);
+		for (Element e : el) {
 			if (!COMMENT_ELEMENT.equals(e.getName())) {
 				values.add(parseDataSubElement(e, defaultTypeClassName));
 			}
@@ -184,8 +173,7 @@ public class XmlDataParser {
 		String defaultTypeClassName = collectionEle.attributeValue(VALUE_TYPE_ATTRIBUTE);
 		List<Element> el = collectionEle.elements();
 		Set set = new HashSet(el.size());
-		for (int i = 0; i < el.size(); i++) {
-			Element e = el.get(i);
+		for (Element e : el) {
 			if (!COMMENT_ELEMENT.equals(e.getName())) {
 				set.add(parseDataSubElement(e, defaultTypeClassName));
 			}
@@ -207,28 +195,26 @@ public class XmlDataParser {
 
 			Element keyEle = null;
 			Element valueEle = null;
-			for (int j = 0; j < el.size(); j++) {
-				Element candidateEle = el.get(j);
+			for (Element candidateEle : el) {
 				if (KEY_ELEMENT.equals(candidateEle.getName())) {
 					if (keyEle != null) {
-						throw new XMLParseException(entryEle.attributeValue("name") + 
+						throw new XMLParseException(entryEle.attributeValue("name") +
 								"<entry> element is only allowed to contain one <key> sub-element");
-					}else {
+					} else {
 						keyEle = candidateEle;
 					}
-				}else {
+				} else {
 					if (valueEle != null) {
-						throw new XMLParseException(entryEle.attributeValue("name") + 
+						throw new XMLParseException(entryEle.attributeValue("name") +
 								"<entry> element must not contain more than one value sub-element");
-					}
-					else {
+					} else {
 						valueEle = candidateEle;
 					}
 				}
 			}
 
 			// Extract key from attribute or sub-element.
-			Object key = null;
+			Object key;
 			Attribute keyAttribute = entryEle.attribute(KEY_ATTRIBUTE);
 			if (keyAttribute != null && keyEle != null) {
 				throw new XMLParseException(entryEle + "<entry> element is only allowed to contain either " +
@@ -244,7 +230,7 @@ public class XmlDataParser {
 			}
 
 			// Extract value from attribute or sub-element.
-			Object value = null;
+			Object value;
 			Attribute valueAttribute = entryEle.attribute(VALUE_ATTRIBUTE);
 			if (valueAttribute != null && valueEle != null) {
 				throw new XMLParseException("<entry> element is only allowed to contain either " +
@@ -266,7 +252,7 @@ public class XmlDataParser {
 		return map;
 	}
 
-	protected static final Object buildTypedStringValueForMap(String value, String defaultTypeClassName, Element entryEle) throws XMLParseException{
+	protected static Object buildTypedStringValueForMap(String value, String defaultTypeClassName, Element entryEle) throws XMLParseException{
 		try {
 			return buildTypedStringValue(value, defaultTypeClassName, entryEle);
 		}
@@ -279,13 +265,11 @@ public class XmlDataParser {
 	public static Object parseKeyElement(Element keyEle, String defaultKeyTypeClassName) throws XMLParseException{
 		List<Element> el = keyEle.elements();
 		Element subElement = null;
-		for (int i = 0; i < el.size(); i++) {
-			Element e = el.get(i);
+		for (Element e : el) {
 			if (!COMMENT_ELEMENT.equals(e.getName())) {
 				if (subElement != null) {
 					throw new XMLParseException("<key> element must not contain more than one value sub-element" + keyEle);
-				}
-				else {
+				} else {
 					subElement = e;
 				}
 			}

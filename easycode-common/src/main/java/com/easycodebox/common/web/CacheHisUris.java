@@ -1,18 +1,17 @@
 package com.easycodebox.common.web;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.HttpUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 新版通过浏览器端sessionStorage实现此功能
@@ -32,7 +31,7 @@ public class CacheHisUris {
 	
 	public static final int CACHE_NUM = 10;
 	
-	private static ConcurrentHashMap<String, Boolean> uris = new ConcurrentHashMap<String, Boolean>(); 
+	private static ConcurrentHashMap<String, Boolean> uris = new ConcurrentHashMap<>();
 	
 	/**
 	 * 判断method对应的请求是否能被缓存
@@ -69,7 +68,7 @@ public class CacheHisUris {
 			HttpSession session = request.getSession();
 			List<String> uris = (List<String>)session.getAttribute(CACHE_HIS_URI_KEY);
 			if(uris == null) {
-				uris = new ArrayList<String>(CACHE_NUM);
+				uris = new ArrayList<>(CACHE_NUM);
 				session.setAttribute(CACHE_HIS_URI_KEY, uris);
 			}
 			if(isCacheUri) {

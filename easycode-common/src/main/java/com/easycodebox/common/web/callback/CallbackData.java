@@ -12,8 +12,6 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public class CallbackData extends CodeMsg {
 	
-	private static final long serialVersionUID = -1580285521851719262L;
-
 	private transient final Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
@@ -79,11 +77,8 @@ public class CallbackData extends CodeMsg {
 	 * @return
 	 */
 	public boolean eqcode(String code) {
-		if((code == null && this.getCode() == null)
-				|| (code != null && code.equals(this.getCode())))
-			return true;
-		else
-			return false;
+		return (code == null && this.getCode() == null)
+				|| (code != null && code.equals(this.getCode()));
 	}
 	
 	@Override

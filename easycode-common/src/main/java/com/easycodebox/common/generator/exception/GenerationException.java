@@ -7,12 +7,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  * 
  */
 public class GenerationException extends NestableRuntimeException {
-	//
-	private static final long serialVersionUID = -2035750903553305767L;
-
-	/**
-	 * 
-	 */
+	
 	public GenerationException() {
 	}
 

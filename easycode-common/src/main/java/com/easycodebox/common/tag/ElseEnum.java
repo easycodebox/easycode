@@ -8,8 +8,6 @@ import javax.servlet.jsp.JspException;
  */
 public class ElseEnum extends TagExt {
 	
-	private static final long serialVersionUID = 6717385841773120550L;
-
 	@Override
 	protected void init() {
 		super.init();

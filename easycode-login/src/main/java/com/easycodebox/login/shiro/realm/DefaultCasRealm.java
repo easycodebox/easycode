@@ -1,33 +1,23 @@
 package com.easycodebox.login.shiro.realm;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.Permission;
-import org.apache.shiro.cas.CasAuthenticationException;
-import org.apache.shiro.cas.CasRealm;
-import org.apache.shiro.cas.CasToken;
-import org.apache.shiro.session.Session;
-import org.jasig.cas.client.validation.TicketValidator;
-import org.springframework.beans.factory.annotation.Value;
-
 import com.easycodebox.auth.model.bo.user.UserFullBo;
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.login.shiro.ShiroSecurityInfoHandler;
 import com.easycodebox.login.shiro.permission.GlobalPermission;
 import com.easycodebox.login.ws.UserWsService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.Permission;
+import org.apache.shiro.cas.*;
+import org.apache.shiro.session.Session;
+import org.jasig.cas.client.validation.TicketValidator;
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.annotation.Resource;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * 
@@ -35,8 +25,6 @@ import com.easycodebox.login.ws.UserWsService;
  *
  */
 public class DefaultCasRealm extends CasRealm implements Serializable {
-
-	private static final long serialVersionUID = 2888923134019023168L;
 
 	//private final Logger log = LoggerFactory.getLogger(getClass());
 	
@@ -87,11 +75,8 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
             }
         }
         //如果是系统一次性加载所有权限的模式且系统中不包含此验证permission则返回true，意思就是此permission不受权限管控，直接放行
-        if (globalPermissionMode && !included) {
-			return true;
-		}
-		return false;
-    }
+		return globalPermissionMode && !included;
+	}
 	
 	/**
 	 * 重载createTicketValidator方法是为了可以自定义TicketValidator

@@ -1,14 +1,11 @@
 package com.easycodebox.common.file;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
-
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.validate.Assert;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author WangXiaoJin
@@ -23,7 +20,7 @@ public class PropertiesPool {
 	private static Properties propertyFile = new Properties();
 	
 	private static final ReentrantLock lock = new ReentrantLock();
-	private static Set<String> files = new HashSet<String>();
+	private static Set<String> files = new HashSet<>();
 	
 
 	static {

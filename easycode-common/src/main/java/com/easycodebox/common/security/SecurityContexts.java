@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class SecurityContexts {
 	
-	private static final ThreadLocal<SecurityContext<? extends Serializable>> CONTEXT = new ThreadLocal<SecurityContext<? extends Serializable>>();
+	private static final ThreadLocal<SecurityContext<? extends Serializable>> CONTEXT = new ThreadLocal<>();
 
 	public static SecurityContext<? extends Serializable> getCurSecurityContext() {
 		return CONTEXT.get();

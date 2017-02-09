@@ -9,8 +9,6 @@ import java.util.Date;
  */
 public class NullDate extends Date {
 
-	private static final long serialVersionUID = 7591428774507391599L;
-	
 	public static final NullDate INSTANCE = new NullDate(-1L);
 	
 	private NullDate() {

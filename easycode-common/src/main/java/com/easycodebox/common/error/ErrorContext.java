@@ -10,9 +10,7 @@ import com.easycodebox.common.filter.LogLevelException;
  */
 public class ErrorContext extends LogLevelException {
 	
-	private static final long serialVersionUID = 1053969252838403620L;
-
-	private static final ThreadLocal<ErrorContext> LOCAL = new ThreadLocal<ErrorContext>();
+	private static final ThreadLocal<ErrorContext> LOCAL = new ThreadLocal<>();
 	
 	private CodeMsg error;
 	
@@ -50,7 +48,7 @@ public class ErrorContext extends LogLevelException {
 	public static ErrorContext instance(CodeMsg error, Throwable cause, Object... args) {
 		ErrorContext errorContext = LOCAL.get();
 		if(errorContext == null) {
-			errorContext = new ErrorContext(error == null ? error : error.fillArgs(args), cause);
+			errorContext = new ErrorContext(error == null ? null : error.fillArgs(args), cause);
 			LOCAL.set(errorContext);
 		}
 		return errorContext;

@@ -1,14 +1,11 @@
 package com.easycodebox.auth.core.util;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.easycodebox.auth.core.service.user.PermissionService;
 import com.easycodebox.auth.model.entity.user.Permission;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.spring.BeanFactory;
+
+import java.util.*;
 
 /**
  * @author wangxj
@@ -39,11 +36,11 @@ public class AccessTools {
 		0x1000000000000000L, 0x2000000000000000L, 0x4000000000000000L, 0x8000000000000000L };
 	
 	public static Map<Long, Long> convertPermissionNosToPermissionCode(List<Long> permissionNos) {
-		Map<Long, Long> permissionCode = new HashMap<Long, Long>();
+		Map<Long, Long> permissionCode = new HashMap<>();
 		
-		for(int i = 0; i < permissionNos.size(); i ++) {
-			long m = permissionNos.get(i) / 64;
-			int n = (int)(permissionNos.get(i) % 64);
+		for (Long permissionNo : permissionNos) {
+			long m = permissionNo / 64;
+			int n = (int) (permissionNo % 64);
 			Long val = permissionCode.get(m);
 			permissionCode.put(m, (val == null ? 0 : val) | permissionNoToCode[n]);
 		}
@@ -61,28 +58,23 @@ public class AccessTools {
 	/**
 	 * 判断当前用户能否执行某一操作。
 	 * 注意：如果权限列表里面没有对应的权限则默认通过
-	 * @param permissionId 操作标识
-	 * @param permissionCodes 当前用户的操作码
 	 * @return 可以执行该操作返回true；不能执行该操作返回false。
 	 * @throws Exception
 	 */
 	public static boolean canDo(Integer projectId, String url, Map<Long, Long> permissionCodes) {
-		if(permissionService == null) {
+		if (permissionService == null) {
 			permissionService = BeanFactory.getBean(PermissionService.class);
 		}
 		boolean valid = false;
 		Permission o = null;
 		try {
 			o = permissionService.load(null, projectId, url);
-			if(o != null)
+			if (o != null)
 				valid = true;
 		} catch (Exception e) {
 			log.error("get permission id error.", e);
 		}
-		if(valid)
-			return AccessTools.canDo(o.getId(), permissionCodes);
-		else
-			return true;
+		return !valid || AccessTools.canDo(o.getId(), permissionCodes);
 	}
 	
 }

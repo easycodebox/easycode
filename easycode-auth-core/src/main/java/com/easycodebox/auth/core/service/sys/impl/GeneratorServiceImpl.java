@@ -1,16 +1,5 @@
 package com.easycodebox.auth.core.service.sys.impl;
 
-import java.lang.reflect.Constructor;
-import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.GeneratorService;
 import com.easycodebox.auth.core.util.aop.log.Log;
@@ -20,13 +9,19 @@ import com.easycodebox.auth.model.util.R;
 import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.generator.AbstractGenerator;
-import com.easycodebox.common.generator.GeneratorType;
-import com.easycodebox.jdbc.LockMode;
-import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import com.easycodebox.common.generator.*;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.lang.reflect.FieldUtils;
+import com.easycodebox.jdbc.LockMode;
+import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.*;
+
+import javax.annotation.Resource;
+import java.lang.reflect.Constructor;
+import java.util.List;
+import java.util.concurrent.locks.*;
 
 /**
  * @author WangXiaoJin
@@ -145,13 +140,13 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 			}
 		}
 		AbstractGenerator ag = generatorType.getGenerator();
-		boolean updateDbCurrentVal = ag == null || ag.getGenNum() >= ag.getFetchSize() ? true : false;
+		boolean updateDbCurrentVal = ag == null || ag.getGenNum() >= ag.getFetchSize();
 		if(ag == null) {
 	    	ag = generatorType.getRawGenerator();
 	    	generatorType.setGenerator(ag);
 		}
 		if(updateDbCurrentVal) {
-			Object nextBatchStart = ag.nextStepVal(g.getCurrentVal());
+			Object nextBatchStart = ag.nextStepVal(g != null ? g.getCurrentVal() : null);
 			//nextBatchStart 返回下批数据的起始值。返回null则不更新数据库的CurrentVal，例：生成uuid只依据自己的规则，所以返回null
 			if(nextBatchStart != null) {
 				this.update(sql()

@@ -1,32 +1,18 @@
 package com.easycodebox.common.error;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.apache.commons.lang.ArrayUtils;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.file.PropertiesPool;
-import com.easycodebox.common.jackson.CodeMsgSerializer;
-import com.easycodebox.common.jackson.Jacksons;
+import com.easycodebox.common.jackson.*;
 import com.easycodebox.common.lang.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.apache.commons.lang.ArrayUtils;
+
+import java.io.*;
+import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * 
@@ -37,10 +23,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @JsonSerialize(using = CodeMsgSerializer.class)
 public class CodeMsg implements Serializable {
-	
-	private static final long serialVersionUID = -3878661816244443335L;
-	
-	/*****************  实例    *************************/
 	
 	/**
 	 * 不显示提示信息
@@ -159,8 +141,7 @@ public class CodeMsg implements Serializable {
 	 */
 	public String getMsg() {
 		if(this.msg == null && this.getCode() != null) {
-			String propertyVal = PropertiesPool.getProperty(this.getCode());
-			this.msg = propertyVal;
+			this.msg = PropertiesPool.getProperty(this.getCode());
 		}
 		return this.msg;
 	}
@@ -188,14 +169,10 @@ public class CodeMsg implements Serializable {
 	
 	/**
 	 * code == null || code == SUC_CODE 时被视为成功
-	 * @param error
 	 * @return
 	 */
 	public boolean isSuc() {
-		if(this.getCode() == null || Code.SUC_CODE.equals(this.getCode())) {
-			return true;
-		}
-		return false;
+		return this.getCode() == null || Code.SUC_CODE.equals(this.getCode());
 	}
 	
 	/**
@@ -222,8 +199,7 @@ public class CodeMsg implements Serializable {
 	public static class CodeMsgUtils {
 		
 		@SuppressWarnings("rawtypes")
-		public static CodeMsg json2Bean(String json) 
-				throws JsonProcessingException, IOException {
+		public static CodeMsg json2Bean(String json) throws IOException {
 			Map map = Jacksons.COMMUNICATE.readValue(json, Map.class);
 			String code = (String)map.get("code"),
 					msg = (String)map.get("msg");
@@ -231,20 +207,17 @@ public class CodeMsg implements Serializable {
 			return new CodeMsg(code, msg, data);
 		}
 		
-		public static CodeMsg json2Bean(String json, Class<?> dataValueType) 
-				throws JsonProcessingException, IOException {
+		public static CodeMsg json2Bean(String json, Class<?> dataValueType) throws IOException {
 			return json2Bean(json, dataValueType == null ? null : 
 				Jacksons.COMMUNICATE.getTypeFactory().constructType(dataValueType));
 		}
 		
-		public static CodeMsg json2Bean(String json, TypeReference<?> dataValueTypeRef) 
-				throws JsonProcessingException, IOException {
+		public static CodeMsg json2Bean(String json, TypeReference<?> dataValueTypeRef) throws IOException {
 			return json2Bean(json, dataValueTypeRef == null ? null :
 				Jacksons.COMMUNICATE.getTypeFactory().constructType(dataValueTypeRef));
 		}
 		
-		public static CodeMsg json2Bean(String json, JavaType dataValueType) 
-				throws JsonProcessingException, IOException {
+		public static CodeMsg json2Bean(String json, JavaType dataValueType) throws IOException {
 			
 			if(dataValueType == null) {
 				return json2Bean(json);
@@ -272,7 +245,7 @@ public class CodeMsg implements Serializable {
 		 * @throws FileNotFoundException 
 		 */
 		public static void storePropertiesFile(Class<? extends CodeMsg> clazz, File propertiesFile) 
-				throws IllegalArgumentException, IllegalAccessException, FileNotFoundException, IOException {
+				throws IllegalArgumentException, IllegalAccessException, IOException {
 			
 			//排除的Code
 			String[] excludeCodes = {Code.SUC_CODE, Code.FAIL_CODE, Code.NO_LOGIN_CODE};
@@ -286,14 +259,14 @@ public class CodeMsg implements Serializable {
 				 */
 				@Override
 			    public synchronized Enumeration<Object> keys() {
-					Set<Object> set = new TreeSet<Object>(new Comparator<Object>() {
-
+					Set<Object> set = new TreeSet<>(new Comparator<Object>() {
+						
 						@Override
 						public int compare(Object o1, Object o2) {
 							String str1 = o1.toString(),
 									str2 = o2.toString();
 							int len1 = str1.length(),
-								len2 = str2.length();
+									len2 = str2.length();
 							return len1 == len2 ? str1.compareTo(str2) : len1 - len2;
 						}
 						

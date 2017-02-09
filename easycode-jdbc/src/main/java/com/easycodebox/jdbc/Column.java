@@ -8,8 +8,6 @@ import java.io.Serializable;
  */
 public class Column implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
 	private String name;
 	private String sqlName;
 	private Class<?> type;
@@ -75,9 +73,7 @@ public class Column implements Serializable {
 	}
 
 	public boolean equals(Column column) {
-		if (null == column) return false;
-		if (this == column) return true;
-		return name.equals(column.name);
+		return null != column && (this == column || name.equals(column.name));
 	}
 
 

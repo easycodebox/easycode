@@ -43,8 +43,8 @@ public class DefaultDeserializerFactory extends BeanDeserializerFactory {
 				config, beanDesc);
 		if (deser == null) {
 			
-			/**
-			 * add by WangXiaoJin 处理DetailEnum类型
+			/*
+			  add by WangXiaoJin 处理DetailEnum类型
 			 */
 			if(DetailEnum.class.isAssignableFrom(enumClass)) 
 	        	return new DetailEnumDeserializer((Class<DetailEnum<?>>)enumClass);

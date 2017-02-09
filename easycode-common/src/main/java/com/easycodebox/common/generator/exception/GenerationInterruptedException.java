@@ -5,12 +5,7 @@ package com.easycodebox.common.generator.exception;
  * 
  */
 public class GenerationInterruptedException extends GenerationException {
-	//
-	private static final long serialVersionUID = -9091655781649090109L;
-
-	/**
-	 * 
-	 */
+	
 	public GenerationInterruptedException() {
 	}
 

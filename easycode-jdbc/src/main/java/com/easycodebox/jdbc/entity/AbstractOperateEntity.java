@@ -13,8 +13,6 @@ import java.util.Date;
 @MappedSuperclass
 public abstract class AbstractOperateEntity extends AbstractEntity implements OperateEntity {
 
-	private static final long serialVersionUID = 1850564296369846490L;
-
 	private String creator;
 	
 	@Temporal(TemporalType.TIMESTAMP)

@@ -8,6 +8,4 @@ import com.easycodebox.common.lang.BuilderEntity;
  */
 public abstract class AbstractBo extends BuilderEntity {
 
-	private static final long serialVersionUID = 8076056485936536371L;
-
 }

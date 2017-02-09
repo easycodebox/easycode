@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.RedisOperations;
  */
 public class CustomRedisCache extends RedisCache {
 
-    public CustomRedisCache(String name, byte[] prefix, RedisOperations<? extends Object, ? extends Object> redisOperations, long expiration) {
+    public CustomRedisCache(String name, byte[] prefix, RedisOperations<?, ?> redisOperations, long expiration) {
         super(name, prefix, redisOperations, expiration);
     }
 

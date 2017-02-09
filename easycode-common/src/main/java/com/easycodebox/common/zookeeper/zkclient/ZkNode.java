@@ -56,7 +56,7 @@ public class ZkNode<T> implements InitializingBean {
 	public Object load() throws KeeperException, InterruptedException, ZkDeserializeException {
 		String name = StringUtils.isBlank(nodeName) ? maker.make() : nodeName;
 		if (name == null) return null;
-		byte[] data = null;
+		byte[] data;
 		if (watchObj == null) {
 			data = client.getData(name, watchBool, stat);
 		}else {

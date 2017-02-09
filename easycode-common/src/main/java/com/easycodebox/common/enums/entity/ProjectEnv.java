@@ -12,7 +12,7 @@ public enum ProjectEnv implements DetailEnum<String> {
 	private final String value;
 	private final String desc;
 	
-	private ProjectEnv(String value, String desc) {
+	ProjectEnv(String value, String desc) {
 		this.value = value;
 		this.desc = desc;
 	}

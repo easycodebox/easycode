@@ -1,25 +1,21 @@
 package com.easycodebox.auth.core.util.aop.log;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.core.Ordered;
-
 import com.easycodebox.auth.core.service.sys.LogService;
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.entity.LogLevel;
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.lang.*;
 import com.easycodebox.common.net.HttpUtils;
-import com.easycodebox.common.security.SecurityContexts;
-import com.easycodebox.common.security.SecurityUtils;
+import com.easycodebox.common.security.*;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.Ordered;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author WangXiaoJin
@@ -74,7 +70,7 @@ public final class LogAspect implements Ordered, InitializingBean {
 		logObj.setLogLevel(log.level());
 		logObj.setModuleType(log.moduleType());
 		
-		Object result = null;
+		Object result;
 		try {
 			result = pjp.proceed();
 		} catch (Throwable e) {
@@ -89,7 +85,7 @@ public final class LogAspect implements Ordered, InitializingBean {
 	}
 	
 	private String getMethod(final ProceedingJoinPoint pjp) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(pjp.getTarget().getClass().getName())
         	.append(Symbol.PERIOD)
         	.append(pjp.getSignature().getName())

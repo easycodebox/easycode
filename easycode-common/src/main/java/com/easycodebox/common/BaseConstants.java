@@ -132,8 +132,6 @@ public abstract class BaseConstants {
 	@StaticValue("${mail.from}")
 	public static String mailFrom;
 	
-	/***************************************************************************************************/
-	
 	/**
 	 * 默认图片路径
 	 */

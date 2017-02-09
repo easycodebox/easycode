@@ -1,18 +1,16 @@
 package com.easycodebox.common.tag;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
 import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.lang.StringToken.OgnlToken;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.BodyTagSupport;
+import java.lang.reflect.InvocationTargetException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author WangXiaoJin
@@ -20,8 +18,6 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
  */
 public abstract class TagExt extends BodyTagSupport {
 
-	private static final long serialVersionUID = 3561443758087661847L;
-	
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private final String EXP = "^\\s*%\\s*\\{\\s*([\\w\\.]+)\\s*\\}\\s*$";

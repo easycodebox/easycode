@@ -1,12 +1,8 @@
 package com.easycodebox.common.lang;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
 import org.apache.commons.io.IOUtils;
+
+import java.io.*;
 
 /**
  * @author WangXiaoJin
@@ -20,10 +16,8 @@ public abstract class SerializationUtils {
 	public static Serializable copy(Serializable obj) {
 		// Precondition checking
 		if(obj == null) {
-			return obj;
+			return null;
 		}
-		
-		//
 		return deserialize(serialize(obj));
 	}
 	

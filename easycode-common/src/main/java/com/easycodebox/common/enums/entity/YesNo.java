@@ -10,7 +10,7 @@ public enum YesNo implements DetailEnum<Integer> {
 	private Integer value;
 	private String desc;
    
-    private YesNo(Integer value, String desc) {
+    YesNo(Integer value, String desc) {
 
         this.value = value;
         this.desc = desc;

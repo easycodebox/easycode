@@ -1,11 +1,10 @@
 package com.easycodebox.common.lang;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.easycodebox.common.error.BaseException;
 import org.apache.commons.io.FilenameUtils;
 
-import com.easycodebox.common.error.BaseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author WangXiaoJin
@@ -155,7 +154,7 @@ public class RegularUtils {
 	/**
 	 * 给指定的url添加新规则
 	 * @param imgUrl
-	 * @param rule
+	 * @param rules
 	 * @return
 	 */
 	public static String addImgUrlRule(String imgUrl, String[] rules) {

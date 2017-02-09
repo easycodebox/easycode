@@ -9,8 +9,6 @@ import java.util.List;
  */
 public class DataPage<T> extends AbstractBo {
 
-	private static final long serialVersionUID = -7359451361372585994L;
-
 	private Integer pageNo;
 
 	private Integer pageSize; // 每页的记录数
@@ -36,14 +34,10 @@ public class DataPage<T> extends AbstractBo {
 	}
 
 	/**
-	 * @param pageNo
-	 *            当前页数
-	 * @param totalSize
-	 *            数据库中总记录条数
-	 * @param pageSize
-	 *            本页容量
-	 * @param data
-	 *            本页包含的数据
+	 * @param pageNo 当前页数
+	 * @param pageSize 本页容量
+	 * @param totalCount 数据库中总记录条数
+	 * @param data 本页包含的数据
 	 */
 	public DataPage(Integer pageNo, Integer pageSize, long totalCount, List<T> data) {
 		this(pageNo, pageSize, null, null, totalCount, data);
@@ -116,13 +110,10 @@ public class DataPage<T> extends AbstractBo {
 	/**
 	 * 获取任一页任意分流索引第一条数据在数据集的位置.
 	 * 
-	 * @param pageNo
-	 *            从1开始的页号
-	 * @param pageSize
-	 *            每页记录条数
-	 * @param partIndex索引从1开始
-	 * @param partSize
-	 *            分流一次数据个数
+	 * @param pageNo 从1开始的页号
+	 * @param pageSize 每页记录条数
+	 * @param partIndex 索引从1开始
+	 * @param partSize 分流一次数据个数
 	 * @return 该页第一条数据
 	 */
 	public static int getStartOfPage(int pageNo, int pageSize,
@@ -154,13 +145,10 @@ public class DataPage<T> extends AbstractBo {
 	/**
 	 * 分流分页获取指定分流能获取到的数据个数
 	 * 
-	 * @param pageNo
-	 *            从1开始的页号
-	 * @param pageSize
-	 *            每页记录条数
-	 * @param partIndex索引从1开始
-	 * @param partSize
-	 *            分流一次数据个数
+	 * @param pageNo 从1开始的页号
+	 * @param pageSize 每页记录条数
+	 * @param partIndex 索引从1开始
+	 * @param partSize 分流一次数据个数
 	 * @return 分流分页获取指定分流能获取到的数据个数
 	 */
 	public static int getObtainSize(int pageNo, int pageSize,

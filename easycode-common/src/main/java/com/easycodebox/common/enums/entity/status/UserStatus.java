@@ -11,7 +11,7 @@ public enum UserStatus implements DetailEnum<Integer>{
 	private Integer value;
 	private String desc;
    
-    private UserStatus(Integer value, String desc) {
+    UserStatus(Integer value, String desc) {
         this.value = value;
         this.desc = desc;
     }

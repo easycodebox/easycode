@@ -12,9 +12,6 @@ import com.easycodebox.common.lang.BuilderEntity;
  */
 public abstract class AbstractEntity extends BuilderEntity implements Entity {
 
-	private static final long serialVersionUID = -693263196512271119L;
-	
-	
 	@Override
 	public int hashCode() {
 		Object[] pkVals = Entitys.getPkValues(this);

@@ -1,13 +1,13 @@
 package com.easycodebox.common.validate;
 
-import java.util.Collection;
-import java.util.Map;
-
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.CollectionUtils;
 import com.easycodebox.common.lang.StringUtils;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class Assert {
 
@@ -139,19 +139,19 @@ public class Assert {
 	public static void notContain(String textToSearch, String substring, String message) {
 		notNull(textToSearch);
 		notNull(substring);
-		throwException(textToSearch.indexOf(substring) != -1, message);
+		throwException(textToSearch.contains(substring), message);
 	}
 	
 	public static void notContain(String textToSearch, String substring, String message, Object... args) {
 		notNull(textToSearch);
 		notNull(substring);
-		throwException(textToSearch.indexOf(substring) != -1, message, args);
+		throwException(textToSearch.contains(substring), message, args);
 	}
 	
 	public static void notContain(String textToSearch, String substring, CodeMsg error) {
 		notNull(textToSearch);
 		notNull(substring);
-		throwError(textToSearch.indexOf(substring) != -1, error);
+		throwError(textToSearch.contains(substring), error);
 	}
 	
 	public static void notEmpty(Object[] array) {
@@ -176,8 +176,8 @@ public class Assert {
 	
 	public static void noNullElements(Object[] array, String message) {
 		if (array != null) {
-			for (int i = 0; i < array.length; i++) {
-				if (array[i] == null) {
+			for (Object anArray : array) {
+				if (anArray == null) {
 					throwException(true, message);
 				}
 			}
@@ -186,8 +186,8 @@ public class Assert {
 	
 	public static void noNullElements(Object[] array, String message, Object... args) {
 		if (array != null) {
-			for (int i = 0; i < array.length; i++) {
-				if (array[i] == null) {
+			for (Object anArray : array) {
+				if (anArray == null) {
 					throwException(true, message, args);
 				}
 			}
@@ -196,8 +196,8 @@ public class Assert {
 	
 	public static void noNullElements(Object[] array, CodeMsg error) {
 		if (array != null) {
-			for (int i = 0; i < array.length; i++) {
-				if (array[i] == null) {
+			for (Object anArray : array) {
+				if (anArray == null) {
 					throwError(true, error);
 				}
 			}

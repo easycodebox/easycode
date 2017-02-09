@@ -1,18 +1,12 @@
 package com.easycodebox.common.jackson;
 
-import java.io.IOException;
-
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.DetailEnums;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+
+import java.io.IOException;
 
 /**
  * DetailEnum的String值可以是：
@@ -39,18 +33,17 @@ public class DetailEnumDeserializer extends JsonDeserializer<DetailEnum<?>> impl
 	}
 
 	@Override
-	public DetailEnum<?> deserialize(JsonParser jp, DeserializationContext ctxt)
-			throws IOException, JsonProcessingException {
+	public DetailEnum<?> deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
 		
 		JsonNode node = jp.getCodec().readTree(jp);
-		String value = null;
+		String value;
 		if(node.isObject()) {
 			JsonNode jn = node.get("value");
-			value = jn != null ? jn.asText() : value;
+			value = jn != null ? jn.asText() : null;
 		}else {
 			value = node.asText();
 		}
-		return (DetailEnum<?>)DetailEnums.deserialize(enumClass, value, !ctxt.isEnabled(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS));
+		return DetailEnums.deserialize(enumClass, value, !ctxt.isEnabled(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS));
     }
 
 	/**

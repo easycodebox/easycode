@@ -1,18 +1,16 @@
 package com.easycodebox.common.validate;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.error.CodeMsg.Code;
+import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
+
+import java.io.Serializable;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author WangXiaoJin
@@ -20,8 +18,6 @@ import com.easycodebox.common.lang.Symbol;
  */
 public class Validators implements Serializable {
 	
-	private static final long serialVersionUID = 4413832001725624691L;
-
 	private transient Object data;
 	/**
 	 * 标识 ，用来替换提示信息中的{0}占位符
@@ -96,18 +92,14 @@ public class Validators implements Serializable {
 	 * @return
 	 */
 	private boolean invalid() {
-		if(valid != null && !valid) 
-			return true;
-		return false;
+		return valid != null && !valid;
 	}
 	/**
 	 * 判断是否跳出验证
 	 * @return
 	 */
 	private boolean jumpValidate() {
-		if(invalid() && !verifyEnd) 
-			return true;
-		return false;
+		return invalid() && !verifyEnd;
 	}
 	/**
 	 * 重置错误信息
@@ -129,11 +121,10 @@ public class Validators implements Serializable {
 	 * @return
 	 */
 	private Validators result(boolean valid, String msg) {
-		if(this.valid == null || this.valid == true)
+		if(this.valid == null || this.valid)
 			this.valid = valid;
 		//验证失败时才会设置错误信息
-		if(this.valid != null && !this.valid 
-				&& msg != null && StringUtils.isNotBlank(msg)) {
+		if(!this.valid && msg != null && StringUtils.isNotBlank(msg)) {
 			if(StringUtils.isNotBlank(this.msg))
 				this.msg += msg + Symbol.SPACE;
 			else
@@ -273,7 +264,6 @@ public class Validators implements Serializable {
 	
 	/**
 	 * 判断是否为NULL
-	 * @param obj
 	 * @return
 	 */
 	public Validators nulls(String... msg) {
@@ -285,7 +275,6 @@ public class Validators implements Serializable {
 	
 	/**
 	 * 判断是否不等于NULL
-	 * @param obj
 	 * @return
 	 */
 	public Validators notNull(String... msg) {
@@ -297,7 +286,6 @@ public class Validators implements Serializable {
 	
 	/**
 	 * 判断数组、集合内部不能出现null值
-	 * @param obj
 	 * @return
 	 */
 	public Validators notNullInside(String... msg) {

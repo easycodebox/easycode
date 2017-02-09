@@ -8,8 +8,6 @@ import java.io.InputStream;
  */
 public class UploadFileInfo extends FileInfo {
 	
-	private static final long serialVersionUID = -5758401252814280071L;
-
 	/**
 	 * 上传图片时用到的参数名
 	 */

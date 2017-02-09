@@ -104,7 +104,7 @@ public class MimeTypes {
 	 * 		&lt;version>1.12&lt;/version> <br>
 	 * 	&lt;/dependency>
 	 * </code>
-	 * @param path
+	 * @param file
 	 * @return
 	 * @throws IOException 
 	 */
@@ -122,7 +122,7 @@ public class MimeTypes {
 	 * 		&lt;version>1.12&lt;/version> <br>
 	 * 	&lt;/dependency>
 	 * </code>
-	 * @param path
+	 * @param stream
 	 * @return
 	 * @throws IOException 
 	 */

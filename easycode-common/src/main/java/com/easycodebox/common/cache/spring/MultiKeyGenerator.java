@@ -1,14 +1,13 @@
 package com.easycodebox.common.cache.spring;
 
+import com.easycodebox.common.lang.Symbol;
+import org.apache.commons.lang.math.NumberUtils;
+import org.springframework.cache.interceptor.KeyGenerator;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang.math.NumberUtils;
-import org.springframework.cache.interceptor.KeyGenerator;
-
-import com.easycodebox.common.lang.Symbol;
 
 /**
  * Spring Cache默认使用SimpleKeyGenerator。
@@ -74,9 +73,7 @@ public class MultiKeyGenerator implements KeyGenerator {
 			try {
 				index = lookupMultiIndex(null, target.getClass().getMethod(method.getName(), 
 						method.getParameterTypes()));
-			} catch (NoSuchMethodException e) {
-				
-			} catch (SecurityException e) {
+			} catch (NoSuchMethodException | SecurityException ignored) {
 				
 			}
 		}

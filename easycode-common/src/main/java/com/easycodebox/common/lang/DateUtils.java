@@ -1,16 +1,13 @@
 package com.easycodebox.common.lang;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.apache.commons.lang.StringUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -47,7 +44,7 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 		if(StringUtils.isBlank(formater) || StringUtils.isBlank(date)) {
 			throw new IllegalArgumentException("date or formater is IllegalArgument.");
 		}
-		Date fd = null;
+		Date fd;
 		try {
 			fd = new SimpleDateFormat(formater).parse(date);
 		} catch (ParseException e) {
@@ -221,14 +218,14 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
      * 功能：获取本周的开始时间
      * 示例：2013-05-13 00:00:00
      */   
-    public  static Date getWeekStart() {// 当周开始时间
+    public static Date getWeekStart() {// 当周开始时间
             Calendar currentDate = Calendar.getInstance();
             currentDate.setFirstDayOfWeek(Calendar.MONDAY);
             currentDate.set(Calendar.HOUR_OF_DAY, 0);
             currentDate.set(Calendar.MINUTE, 0);
             currentDate.set(Calendar.SECOND, 0);
             currentDate.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            return (Date) currentDate.getTime();
+            return currentDate.getTime();
     }
     
     /**
@@ -242,7 +239,7 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
             currentDate.set(Calendar.MINUTE, 59);
             currentDate.set(Calendar.SECOND, 59);
             currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-            return (Date) currentDate.getTime();
+            return currentDate.getTime();
     }
     
     /**
@@ -253,14 +250,14 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
     	// 本月的第一天
     	  Calendar calendar  =   new  GregorianCalendar();
     	  calendar.set( Calendar.DATE,  1 );
-    	 return (Date)calendar.getTime();
+    	 return calendar.getTime();
     }
     
     public static Date getMonthEnd(){
     	Calendar calendar  =   new  GregorianCalendar();
     	calendar.set( Calendar.DATE,  1 );
     	calendar.roll(Calendar.DATE,  - 1 );
-    	return (Date)calendar.getTime();
+    	return calendar.getTime();
     }
     
     /***

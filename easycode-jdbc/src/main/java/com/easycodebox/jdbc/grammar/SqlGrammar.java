@@ -1,36 +1,18 @@
 package com.easycodebox.jdbc.grammar;
 
-import static com.easycodebox.common.validate.Assert.isFalse;
-import static com.easycodebox.common.validate.Assert.notBlank;
-import static com.easycodebox.common.validate.Assert.notNull;
-import static com.easycodebox.jdbc.util.SqlUtils.format;
-import static com.easycodebox.jdbc.util.SqlUtils.formatRawVal;
-import static com.easycodebox.jdbc.util.SqlUtils.joinByDot;
-import static com.easycodebox.jdbc.util.SqlUtils.value2Sql;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.dto.DataPage;
-import com.easycodebox.jdbc.AssociatedColumn;
-import com.easycodebox.jdbc.Join;
-import com.easycodebox.jdbc.JoinColumnObj;
-import com.easycodebox.jdbc.JoinType;
-import com.easycodebox.jdbc.LockMode;
-import com.easycodebox.jdbc.ManyToMany;
-import com.easycodebox.jdbc.OneToMany;
-import com.easycodebox.jdbc.Property;
-import com.easycodebox.jdbc.SqlCommandType;
-import com.easycodebox.jdbc.Table;
+import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.config.Configuration;
 import com.easycodebox.jdbc.dialect.Dialect;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.easycodebox.common.validate.Assert.*;
+import static com.easycodebox.jdbc.util.SqlUtils.*;
 
 /**
  * @author WangXiaoJin
@@ -67,8 +49,8 @@ public class SqlGrammar implements Cloneable {
 	/**
 	 * 表的别名
 	 */
-	private Map<Class<?>, String> tableAliases = new HashMap<Class<?>, String>(4);
-	private Map<Class<?>, Table> tables = new HashMap<Class<?>, Table>(4);
+	private Map<Class<?>, String> tableAliases = new HashMap<>(4);
+	private Map<Class<?>, Table> tables = new HashMap<>(4);
 	
 	//like方法时LIKE_L 只有左边加"%",LIKE_R只有右边加,LIKE_A左右都加
 	public static final short LIKE_A = 0;
@@ -799,7 +781,7 @@ public class SqlGrammar implements Cloneable {
 	
 	/**
 	 * update shop set num = #{num} + 1 where id = 5;
-	 * @param property
+	 * @param sql
 	 * @return
 	 */
 	private String convertPropertySql(String sql) {
@@ -832,7 +814,6 @@ public class SqlGrammar implements Cloneable {
 	
 	/**
 	 * 把javaBean属性转换成相对应的表的列名
-	 * @param property
 	 * @return
 	 */
 	protected String convert2SqlName(Class<?> tableClass, String propertyName) {

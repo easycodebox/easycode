@@ -1,9 +1,7 @@
 package com.easycodebox.jdbc.entity;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 
 /**
  * @author WangXiaoJin
@@ -12,8 +10,6 @@ import javax.persistence.Transient;
 @MappedSuperclass
 public abstract class AbstractCreateEntity extends AbstractEntity implements CreateEntity {
 	
-	private static final long serialVersionUID = 1850564296369846490L;
-
 	private String creator;
 	
 	private Date createTime;

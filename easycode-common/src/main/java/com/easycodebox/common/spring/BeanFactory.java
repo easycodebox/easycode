@@ -26,7 +26,7 @@ public class BeanFactory {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T getBean(Class<T> requiredType) throws BeansException {
-		Object bean = null;
+		Object bean;
 		try {
 			bean = getBean(StringUtils.uncapitalize(requiredType.getSimpleName()));
 		} catch (Exception e) {

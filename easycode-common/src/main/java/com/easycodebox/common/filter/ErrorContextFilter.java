@@ -1,36 +1,23 @@
 package com.easycodebox.common.filter;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.LogLevel;
-import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.error.ErrorContext;
-import com.easycodebox.common.error.ExceptionHandler;
+import com.easycodebox.common.error.*;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.reflect.ClassUtils;
-import com.easycodebox.common.log.slf4j.LogLevelConfig;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.net.HttpUtils;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * 注：如果你的应用部署于Nginx后面，请确保Nginx不会拦截对应的status，不然永远只显示Nginx的错误页面。<br>
@@ -238,7 +225,7 @@ public class ErrorContextFilter implements Filter {
 			}
 			
 			ErrorContext ec = spyException(ex, ErrorContext.class);
-			CodeMsg error = null;
+			CodeMsg error;
 			if(ec != null) {
 				error = ec.getError();
 				error = error == null ? CodeMsg.FAIL : error;

@@ -7,8 +7,6 @@ package com.easycodebox.jdbc;
  */
 public class ManyToMany extends AssociatedColumn {
 
-	private static final long serialVersionUID = 6233743566544288945L;
-	
 	private String joinTableName;
 	private String catalog;
 	private String schema;

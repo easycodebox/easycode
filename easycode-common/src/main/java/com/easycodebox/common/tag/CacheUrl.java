@@ -1,20 +1,16 @@
 package com.easycodebox.common.tag;
 
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-
-import org.apache.taglibs.standard.tag.common.core.ParamParent;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.HttpUtils;
 import com.easycodebox.common.validate.Assert;
+import org.apache.taglibs.standard.tag.common.core.ParamParent;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * 缓存当前的URL到sessionStorage
@@ -23,11 +19,9 @@ import com.easycodebox.common.validate.Assert;
  */
 public class CacheUrl extends TagExt implements ParamParent {
 	
-	private static final long serialVersionUID = 1L;
-	
 	private Boolean condition;
 	private String content;
-	private Map<String, String> extraParams = new LinkedHashMap<String, String>(4);
+	private Map<String, String> extraParams = new LinkedHashMap<>(4);
 	private String[] excludeParams;
 	
 	@Override
@@ -65,7 +59,7 @@ public class CacheUrl extends TagExt implements ParamParent {
 		if(condition != null && !condition) {
 			return SKIP_BODY;
 		}
-		extraParams = new LinkedHashMap<String, String>();
+		extraParams = new LinkedHashMap<>();
 		return super.doStartTag();
 	}
 

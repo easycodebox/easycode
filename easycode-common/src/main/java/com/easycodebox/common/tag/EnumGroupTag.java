@@ -1,15 +1,12 @@
 package com.easycodebox.common.tag;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.easycodebox.common.enums.EnumClassFactory;
 import com.easycodebox.common.lang.CollectionUtils;
 import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.validate.Assert;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -17,8 +14,6 @@ import com.easycodebox.common.validate.Assert;
  */
 public abstract class EnumGroupTag extends AbstractHtmlTag {
 
-	private static final long serialVersionUID = -1316915840915764647L;
-	
 	protected static final String DATA_TYPE_NAME = "NAME";
 	protected static final String DATA_TYPE_VALUE = "VALUE";
 	
@@ -59,7 +54,7 @@ public abstract class EnumGroupTag extends AbstractHtmlTag {
 				= (Class<? extends Enum<?>>)EnumClassFactory.newInstance(enumName);
 		List<Enum<?>> enumsList;
 		if(include != null && include.length > 0) {
-			enumsList = new ArrayList<Enum<?>>(6);
+			enumsList = new ArrayList<>(6);
 			for(int i = 0; i < include.length; i++) {
 				enumsList.add(Enum.valueOf((Class)enumClass, include[i]));
 			}

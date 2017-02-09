@@ -1,8 +1,8 @@
 package com.easycodebox.common.zookeeper.curator;
 
-import java.io.IOException;
-import java.io.InputStream;
-
+import com.easycodebox.common.enums.DetailEnum;
+import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Symbol;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.curator.RetryPolicy;
@@ -13,9 +13,8 @@ import org.apache.curator.utils.CloseableUtils;
 import org.apache.curator.utils.ZKPaths;
 import org.apache.zookeeper.data.Stat;
 
-import com.easycodebox.common.enums.DetailEnum;
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 
@@ -69,13 +68,13 @@ public class ZooKeeperTest {
 		}
 	}
 	
-	public static interface IpArrays {
+	public interface IpArrays {
 		
 		String[] getIps();
 		
 	}
 	
-	static enum Envs implements IpArrays, DetailEnum<String> {
+	enum Envs implements IpArrays, DetailEnum<String> {
 		
 		DEV("DEV", "开发环境") {
 			@Override
@@ -117,7 +116,7 @@ public class ZooKeeperTest {
 		private final String value;
 		private final String desc;
 		
-		private Envs(String value, String desc) {
+		Envs(String value, String desc) {
 			this.value = value;
 			this.desc = desc;
 		}

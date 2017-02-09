@@ -1,10 +1,10 @@
 package com.easycodebox.common.generator.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.exception.BoundReachedException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author WangXiaoJin
@@ -19,7 +19,7 @@ public final class AlphaGenerator extends AbstractStringGenerator {
 			'u', 'v', 'w', 'x', 'y', 'z' 
 	};
 	
-	public static Map<Character, Integer> properties = new HashMap<Character, Integer>();
+	public static Map<Character, Integer> properties = new HashMap<>();
 	
 	static {
 		for(int i = 0; i < alphas.length; i++) {
@@ -84,7 +84,7 @@ public final class AlphaGenerator extends AbstractStringGenerator {
 		char[] frags = new char[curVal.length() > 33 ? curVal.length() + 1 : 33 + 1];
 		//当前值
 		char[] curValFrags = curVal.toCharArray();
-		int i = 0;
+		int i;
 		for(i = 1; i <= frags.length; i++) {
 			//当前索引位 需要计算的值
 			Integer calVal = remainVal%carryNum,

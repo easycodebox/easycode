@@ -8,8 +8,6 @@ import com.easycodebox.common.generator.GeneratorType;
  */
 public class PkColumn extends Column {
 
-	private static final long serialVersionUID = 5935229290400313223L;
-	
 	private GeneratorType generatorType;
 	
 	public PkColumn() {

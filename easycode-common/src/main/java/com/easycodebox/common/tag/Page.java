@@ -1,26 +1,20 @@
 package com.easycodebox.common.tag;
 
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-
-import org.apache.taglibs.standard.tag.common.core.ParamParent;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.HttpUtils;
+import org.apache.taglibs.standard.tag.common.core.ParamParent;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
  *
  */
 public class Page extends AbstractHtmlTag implements ParamParent {
-	
-	private static final long serialVersionUID = 5561979760457415443L;
 	
 	private Integer pageNo;
 	private Integer totalPage;
@@ -66,7 +60,7 @@ public class Page extends AbstractHtmlTag implements ParamParent {
 
 	@Override
 	public int doStartTag() throws JspException {
-		params = new LinkedHashMap<String, String>();
+		params = new LinkedHashMap<>();
 		return super.doStartTag();
 	}
 

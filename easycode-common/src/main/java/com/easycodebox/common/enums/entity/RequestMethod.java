@@ -13,7 +13,7 @@ public enum RequestMethod implements DetailEnum<Integer> {
 	private final Integer value;
 	private final String desc;
 	
-	private RequestMethod(int value, String desc) {
+	RequestMethod(int value, String desc) {
 		this.value = value;
 		this.desc = desc;
 	}

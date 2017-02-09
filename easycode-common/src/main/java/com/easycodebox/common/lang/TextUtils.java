@@ -1,13 +1,9 @@
 package com.easycodebox.common.lang;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.apache.commons.lang.StringUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.*;
+import java.util.*;
 
 
 /**
@@ -28,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class TextUtils {
 
-    public final static String htmlEncode(String s) {
+    public static String htmlEncode(String s) {
         return htmlEncode(s, true);
     }
 
@@ -39,7 +35,7 @@ public class TextUtils {
      * @param encodeSpecialChars if true high characters will be encode other wise not.
      * @return the escaped string
      */
-    public final static String htmlEncode(String s, boolean encodeSpecialChars) {
+    public static String htmlEncode(String s, boolean encodeSpecialChars) {
         s = noNull(s);
 
         StringBuilder str = new StringBuilder();
@@ -80,7 +76,7 @@ public class TextUtils {
                 int a = c % 16;
                 int b = (c - a) / 16;
                 String hex = "" + hexChars.charAt(b) + hexChars.charAt(a);
-                str.append("&#x" + hex + ";");
+                str.append("&#x").append(hex).append(";");
             }
             //add other characters back in - to handle charactersets
             //other than ascii
@@ -109,7 +105,7 @@ public class TextUtils {
      * @return String presentation of joined Strings.
      */
     @SuppressWarnings("rawtypes")
-	public final static String join(String glue, Iterator pieces) {
+	public static String join(String glue, Iterator pieces) {
     	StringBuilder s = new StringBuilder();
 
         while (pieces.hasNext()) {
@@ -132,7 +128,7 @@ public class TextUtils {
      *
      * @see #join(String, java.util.Iterator)
      */
-    public final static String join(String glue, String[] pieces) {
+    public static String join(String glue, String[] pieces) {
         return join(glue, Arrays.asList(pieces).iterator());
     }
 
@@ -146,7 +142,7 @@ public class TextUtils {
      * @see #join(String, java.util.Iterator)
      */
     @SuppressWarnings("rawtypes")
-	public final static String join(String glue, Collection pieces) {
+	public static String join(String glue, Collection pieces) {
         return join(glue, pieces.iterator());
     }
 
@@ -175,7 +171,7 @@ public class TextUtils {
      * @return <code>string</code> if <code>string</code> is non-empty, and <code>defaultString</code> otherwise
      * @see #stringSet(java.lang.String)
      */
-    public final static String noNull(String string, String defaultString) {
+    public static String noNull(String string, String defaultString) {
         return (stringSet(string)) ? string : defaultString;
     }
 
@@ -195,7 +191,7 @@ public class TextUtils {
      * @param string the String to check
      * @return a valid (non-null) string reference
      */
-    public final static String noNull(String string) {
+    public static String noNull(String string) {
         return noNull(string, "");
     }
 
@@ -205,7 +201,7 @@ public class TextUtils {
      * @param string the <code>String</code> to check
      * @return a boolean indicating whether the string was non-empty (and non-null)
      */
-    public final static boolean stringSet(String string) {
+    public static boolean stringSet(String string) {
         return (string != null) && !"".equals(string);
     }
 
@@ -214,7 +210,7 @@ public class TextUtils {
      * @param url The url string to verify.
      * @return a boolean indicating whether the URL seems to be incorrect.
      */
-    public final static boolean verifyUrl(String url) {
+    public static boolean verifyUrl(String url) {
         if (url == null) {
             return false;
         }
@@ -258,14 +254,13 @@ public class TextUtils {
 				try {
 					b = Character.toString(c).getBytes("utf-8");
 				} catch (Exception ex) {
-					System.out.println(ex);
 					b = new byte[0];
 				}
 				for (int j = 0; j < b.length; j++) {
 					int k = b[j];
 					if (k < 0)
 						k += 256;
-					sb.append("%" + Integer.toHexString(k).toUpperCase());
+					sb.append("%").append(Integer.toHexString(k).toUpperCase());
 				}
 			}
 		}

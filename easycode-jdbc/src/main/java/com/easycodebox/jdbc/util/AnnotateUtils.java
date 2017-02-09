@@ -1,31 +1,23 @@
 package com.easycodebox.jdbc.util;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.List;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
-
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.GeneratorType;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.reflect.ClassUtils;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.jdbc.AssociatedColumn;
+import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.Column;
-import com.easycodebox.jdbc.JoinColumnObj;
 import com.easycodebox.jdbc.ManyToMany;
 import com.easycodebox.jdbc.ManyToOne;
 import com.easycodebox.jdbc.OneToMany;
 import com.easycodebox.jdbc.OneToOne;
-import com.easycodebox.jdbc.PkColumn;
 import com.easycodebox.jdbc.Table;
+
+import javax.persistence.*;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
@@ -55,7 +47,7 @@ public class AnnotateUtils {
 	 */
 	public static void fitColumn(Table table, Field field) {
 		Column column = null;
-		/******** 获取Id注解   **************/
+		//获取Id注解
 		javax.persistence.Id idAnno = field.getAnnotation(javax.persistence.Id.class);
 		if(idAnno != null) {
 			column = new PkColumn(field.getName());
@@ -69,7 +61,7 @@ public class AnnotateUtils {
 					if (back instanceof GeneratorType) {
 						((PkColumn)column).setGeneratorType((GeneratorType)back);
 					}
-				} catch (Exception e) {
+				} catch (Exception ignored) {
 					
 				}
 			}
@@ -80,7 +72,7 @@ public class AnnotateUtils {
 		}
 		
 		column.setType(field.getType());
-		/******** 获取Column注解   **************/
+		//获取Column注解
 		javax.persistence.Column columnAnno = field.getAnnotation(javax.persistence.Column.class);
 		if(columnAnno == null) {
 			column.setSqlName(field.getName());
@@ -183,7 +175,7 @@ public class AnnotateUtils {
 	 * @return
 	 */
 	public static Class<?> getReferencedClass(Field field) {
-		Class<?> clazz = null;
+		Class<?> clazz;
 		if(field.getType().isArray()) {
 			clazz = field.getType().getComponentType();
 		}else if(Collection.class.isAssignableFrom(field.getType())) {

@@ -1,11 +1,5 @@
 package com.easycodebox.login.shiro;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.common.net.HttpUtils;
@@ -13,6 +7,11 @@ import com.easycodebox.common.security.SecurityContext;
 import com.easycodebox.common.security.SecurityContexts;
 import com.easycodebox.common.security.SecurityUtils.SecurityInfoHandler;
 import com.easycodebox.common.validate.Assert;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -27,7 +26,7 @@ public class ShiroSecurityInfoHandler implements SecurityInfoHandler<Session, Us
 		if (storage == null) {
 			storage = SecurityUtils.getSubject().getSession();
 		}
-		SecurityContext<UserInfo> context = new SecurityContext<UserInfo>();
+		SecurityContext<UserInfo> context = new SecurityContext<>();
 		UserInfo user = getSecurityInfo(storage);
 		context.setSessionId(storage.getId());
 		if(user != null) {
@@ -56,7 +55,7 @@ public class ShiroSecurityInfoHandler implements SecurityInfoHandler<Session, Us
 		storage.setAttribute(BaseConstants.USER_KEY, securityInfo);
 		SecurityContext<UserInfo> sc = (SecurityContext<UserInfo>)SecurityContexts.getCurSecurityContext();
 		if(sc == null) {
-			SecurityContext<UserInfo> tmp = new SecurityContext<UserInfo>();
+			SecurityContext<UserInfo> tmp = new SecurityContext<>();
 			tmp.setSecurity(securityInfo);
 			tmp.setSessionId(storage.getId());
 			SecurityContexts.setCurSecurityContext(tmp);

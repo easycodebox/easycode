@@ -1,21 +1,18 @@
 package com.easycodebox.common.web.springmvc;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
-
 import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.error.ErrorContext;
+import com.easycodebox.common.error.*;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.net.HttpUtils;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
  * @author WangXiaoJin
@@ -30,7 +27,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	public ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, 
 			Object handler, Exception ex) {
 		
-		CodeMsg error = null;
+		CodeMsg error;
 		if(ex instanceof ErrorContext) {
 			error = ((ErrorContext)ex).getError();
 			if(isBlank(error.getCode())) 

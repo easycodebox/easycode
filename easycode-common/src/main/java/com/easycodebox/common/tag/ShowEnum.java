@@ -1,12 +1,11 @@
 package com.easycodebox.common.tag;
 
-import java.io.IOException;
-
-import javax.servlet.jsp.JspException;
-
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.EnumClassFactory;
 import com.easycodebox.common.validate.Assert;
+
+import javax.servlet.jsp.JspException;
+import java.io.IOException;
 
 /**
  * @author WangXiaoJin
@@ -14,8 +13,6 @@ import com.easycodebox.common.validate.Assert;
  */
 public class ShowEnum extends TagExt {
 	
-	private static final long serialVersionUID = -842950877430079946L;
-
 	public static final String TYPE_VAL_TO_DESC = "valToDesc";
 	public static final String TYPE_OBJ_TO_VAL = "objToVal";
 	public static final String TYPE_OBJ_TO_DESC = "objToDesc";

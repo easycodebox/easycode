@@ -252,7 +252,7 @@ public enum Regex {
 	private String regex;
 	private String msg;
    
-    private Regex(String regex, String msg) {
+    Regex(String regex, String msg) {
         this.regex = regex;
         this.msg = msg;
     }
@@ -265,11 +265,6 @@ public enum Regex {
 		return msg;
 	}
 
-	@Override
-	public String toString() {
-		return "{regex : '" + regex + "', msg : " + msg + "}";
-	}
-	
 	public String getClassName() {
 		return this.name();
 	}

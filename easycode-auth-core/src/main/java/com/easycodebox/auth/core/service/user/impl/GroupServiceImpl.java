@@ -1,33 +1,24 @@
 package com.easycodebox.auth.core.service.user.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.easycodebox.auth.core.dao.user.GroupMapper;
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.user.GroupService;
-import com.easycodebox.auth.core.util.CodeMsgExt;
-import com.easycodebox.auth.core.util.Constants;
+import com.easycodebox.auth.core.util.*;
 import com.easycodebox.auth.core.util.aop.log.Log;
-import com.easycodebox.auth.model.entity.user.Group;
-import com.easycodebox.auth.model.entity.user.GroupRole;
-import com.easycodebox.auth.model.entity.user.User;
+import com.easycodebox.auth.model.entity.user.*;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.common.enums.entity.OpenClose;
-import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.cache.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -72,7 +63,7 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	 * @param parentId
 	 */
 	private List<Group> processGroupTree(Integer parentId, List<Group> groups) {
-		List<Group> sub = new ArrayList<Group>();
+		List<Group> sub = new ArrayList<>();
 		for(Group g : groups) {
 			if(parentId == null ? g.getParentId() == null : parentId.equals(g.getParentId())) {
 				g.setChildren(processGroupTree(g.getId(), groups));
@@ -177,7 +168,7 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 		
 		List<Group> data = groupMapper.page(parentName, groupName, status, pageNo, pageSize);
 		long totalCount = groupMapper.pageTotalCount(parentName, groupName, status);
-		return new DataPage<Group>(pageNo, pageSize, totalCount, data);
+		return new DataPage<>(pageNo, pageSize, totalCount, data);
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package com.easycodebox.common.tag;
 
+import javax.servlet.jsp.JspException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -7,16 +8,12 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import javax.servlet.jsp.JspException;
-
 
 /**
  * @author WangXiaoJin
  * 
  */
 public class Number extends TagExt {
-	
-	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * pattern string,currency, integer, number or percent

@@ -1,13 +1,10 @@
 package com.easycodebox.auth.model.bo.user;
 
+import com.easycodebox.auth.model.entity.user.*;
+
 import java.util.List;
 
-import com.easycodebox.auth.model.entity.user.Permission;
-import com.easycodebox.auth.model.entity.user.User;
-
 public class UserFullBo extends User {
-
-	private static final long serialVersionUID = -3600978665605684188L;
 
 	private String roleNames;
 	

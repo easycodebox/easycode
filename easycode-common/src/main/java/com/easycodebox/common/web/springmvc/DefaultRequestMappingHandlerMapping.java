@@ -1,29 +1,21 @@
 package com.easycodebox.common.web.springmvc;
 
+import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.log.slf4j.Logger;
+import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.condition.*;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
-import org.springframework.web.servlet.mvc.condition.HeadersRequestCondition;
-import org.springframework.web.servlet.mvc.condition.ParamsRequestCondition;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
-import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
-import org.springframework.web.servlet.mvc.condition.RequestCondition;
-import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 
 /**
  * 如果你想controller中不配置@RequestMapping注解http请求也能找到对应的方法，请使用此类
@@ -91,7 +83,7 @@ public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMa
 			}
 			
 			Object controller = null;
-			Method method = null;
+			Method method;
 			if(getApplicationContext().containsBean(className)) {
 				try {
 					controller = getApplicationContext().getBean(className);
@@ -140,7 +132,6 @@ public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMa
 	/**
 	 * 当lookupPath找不到对应的HandlerMethod时，存入noHandlerCache对象中
 	 * @param lookupPath
-	 * @param handler
 	 */
 	private boolean addNoHandlerCache(String lookupPath) {
 		boolean suc = noHandlerCache.add(lookupPath);
@@ -171,7 +162,7 @@ public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMa
 				}
 				clazz = clazz.getSuperclass();
 			}
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 			
 		}
 		return method;

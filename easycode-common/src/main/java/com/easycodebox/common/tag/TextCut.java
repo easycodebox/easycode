@@ -1,16 +1,13 @@
 package com.easycodebox.common.tag;
 
+import com.easycodebox.common.lang.*;
+import com.easycodebox.common.validate.Regex;
+
+import javax.servlet.jsp.JspException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.servlet.jsp.JspException;
-
-import com.easycodebox.common.lang.DataConvert;
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.TextUtils;
-import com.easycodebox.common.validate.Regex;
 
 /**
  * 
@@ -19,8 +16,6 @@ import com.easycodebox.common.validate.Regex;
  *
  */
 public class TextCut extends TagExt {
-	
-	private static final long serialVersionUID = 1L;
 	
 	private Object value;
 	private Integer remainNum;
@@ -47,7 +42,7 @@ public class TextCut extends TagExt {
 		if(value == null)
 			return SKIP_BODY;
 		
-		String valStr = null;
+		String valStr;
 		if(value.getClass().isArray()
 				|| value instanceof Collection) {
 			valStr = DataConvert.arrayCollection2Str(value, arraySeparator, null, null, true, key);

@@ -137,7 +137,7 @@ public class StringToken {
 							
 						}
 						
-						dynamicKey = isStrKey ? false : true;
+						dynamicKey = !isStrKey;
 					}
 					break;
 				default:
@@ -363,7 +363,7 @@ public class StringToken {
 	
 	public static void main(String[] args) {
 		StringFormatToken p = new StringFormatToken("{", "}", "a{0-{x{}}b{na}mec", true);
-		String key = null;
+		String key;
 		while((key = p.nextKey()) != null) {
 			System.out.println("key: " + key);
 			if(key.equals("x"))

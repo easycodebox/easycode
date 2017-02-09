@@ -1,20 +1,13 @@
 package com.easycodebox.jdbc.mybatis;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
+import com.easycodebox.common.enums.EnumClassFactory;
+import com.easycodebox.common.lang.StringUtils;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
-import org.apache.ibatis.reflection.wrapper.BeanWrapper;
-import org.apache.ibatis.reflection.wrapper.CollectionWrapper;
-import org.apache.ibatis.reflection.wrapper.MapWrapper;
-import org.apache.ibatis.reflection.wrapper.ObjectWrapper;
-import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
+import org.apache.ibatis.reflection.wrapper.*;
 
-import com.easycodebox.common.enums.EnumClassFactory;
-import com.easycodebox.common.lang.StringUtils;
+import java.util.*;
 
 /**
  * 此类是为了解决MyBatis的XML文件中SQL语句出现枚举值而定义的
@@ -37,7 +30,7 @@ public class DefaultObjectWrapperFactory implements ObjectWrapperFactory {
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ObjectWrapper getWrapperFor(MetaObject metaObject, Object object) {
-		ObjectWrapper wrapper = null;
+		ObjectWrapper wrapper;
 		if (object instanceof ObjectWrapper) {
 			wrapper = (ObjectWrapper) object;
 		} else if (object instanceof Map) {
@@ -105,7 +98,7 @@ public class DefaultObjectWrapperFactory implements ObjectWrapperFactory {
 			if(object instanceof Class && ((Class)object).isEnum()) {
 				try {
 					return Enum.valueOf((Class)object, name);
-				} catch (Exception e) {
+				} catch (Exception ignored) {
 					
 				}
 			}else {
@@ -129,7 +122,7 @@ public class DefaultObjectWrapperFactory implements ObjectWrapperFactory {
 							= (Class<? extends Enum<?>>)EnumClassFactory.newInstance(frags[0]);
 					try {
 						return Enum.valueOf((Class)enumClass, frags[1]);
-					} catch (Exception e) {
+					} catch (Exception ignored) {
 						
 					}
 				}

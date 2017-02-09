@@ -20,8 +20,8 @@ public class UrlPostfix {
 		int index = name.lastIndexOf(Symbol.PERIOD);
 		name = index > -1 ? name.substring(index + 1) : Symbol.EMPTY;
 		name = name.toLowerCase();
-		for(int i = 0; i < actionPostfixes.length; i++) {
-			if(actionPostfixes[i].equals(name)) 
+		for (String actionPostfixe : actionPostfixes) {
+			if (actionPostfixe.equals(name))
 				return true;
 		}
 		return false;

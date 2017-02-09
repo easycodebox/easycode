@@ -15,7 +15,7 @@ public enum ModuleType implements DetailEnum<Integer> {
 	private Integer value;
 	private String desc;
    
-    private ModuleType(Integer value, String desc) {
+    ModuleType(Integer value, String desc) {
 
         this.value = value;
         this.desc = desc;

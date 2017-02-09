@@ -1,33 +1,21 @@
 package com.easycodebox.common.file;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
-
+import com.easycodebox.common.error.*;
+import com.easycodebox.common.file.exception.NonEnlargedException;
+import com.easycodebox.common.lang.*;
+import com.easycodebox.common.log.slf4j.*;
+import com.easycodebox.common.validate.Assert;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.*;
 import org.apache.commons.lang.StringUtils;
 
-import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.file.exception.NonEnlargedException;
-import com.easycodebox.common.lang.DecimalUtils;
-import com.easycodebox.common.lang.RegularUtils;
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.validate.Assert;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.lang.reflect.Constructor;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.regex.*;
 
 /**
  * @author WangXiaoJin
@@ -87,8 +75,7 @@ public class FileUtils {
 			}
 		}
 		File parent = file.getParentFile();
-		if(parent != null && !parent.exists()
-				&& createDir == true) 
+		if(parent != null && !parent.exists() && createDir)
 			parent.mkdirs();
 		file.createNewFile();
 	}
@@ -101,9 +88,8 @@ public class FileUtils {
 	 */
 	public static boolean hasLarger(File[] files, double m) {
 		if(files != null) {
-			for(int i = 0; i < files.length; i++) {
-				File f = files[i];
-				if(byte2m(f.length(), 6) > m)
+			for (File f : files) {
+				if (byte2m(f.length(), 6) > m)
 					return true;
 			}
 		}
@@ -165,7 +151,7 @@ public class FileUtils {
 	 * @param filePath		图片的相对路径	 例：upload/img
 	 * @param returnBigImg  只返回大图信息(生成不生成小图由createSmallImg决定)
 	 * @param enlarge   	是否能够放大图片
-	 * @param createSmallImg是否生成URL规则里面的小图
+	 * @param createSmallImg 是否生成URL规则里面的小图
 	 * @return	
 	 */
 	@SuppressWarnings("unchecked")
@@ -270,9 +256,7 @@ public class FileUtils {
 				Image[] tmp = ImageTools.resizeImage(bufImg, fileName, baseRealPath, scale, enlarge, smallImgs);
 				Image[] retImgs = new Image[tmp.length + 1];
 				retImgs[0] = bigImg;
-				for(int j = 0; j < tmp.length; j++) {
-					retImgs[j+1] = tmp[j];
-				}
+				System.arraycopy(tmp, 0, retImgs, 1, tmp.length);
 				return retImgs;
 			} catch (NonEnlargedException e) {
 				log.error("resizeImage error.", e);
@@ -297,7 +281,7 @@ public class FileUtils {
 		if(!onlyBackUrl && o.length > 1) {
 			//解析缩放图片的大小
 			Pattern p = Pattern.compile("^(\\d+)c(\\d+)$", Pattern.CASE_INSENSITIVE);
-			List<Image> imgs = new ArrayList<Image>(o.length - 1);
+			List<Image> imgs = new ArrayList<>(o.length - 1);
 			for(int i = 1; i < o.length; i++) {
 				Matcher m = p.matcher(o[i]);
 				if(m.matches()) {
@@ -334,7 +318,7 @@ public class FileUtils {
 			String tmpPath,path,returnPath = null;
 			for(int i = 0; i < size; i++) {
 				if(i == 0) 
-					tmpPath = baseRealPath + Symbol.SLASH + (String)urlAndImgs[0];
+					tmpPath = baseRealPath + Symbol.SLASH + urlAndImgs[0];
 				else
 					tmpPath = baseRealPath + Symbol.SLASH + smallImgs.get(i-1).getPath();
 				path = tmpPath.replaceFirst(TMP_PATH + Symbol.SLASH, "");
@@ -379,7 +363,7 @@ public class FileUtils {
 				try {
 					Constructor<T> c = target.getConstructor(String.class);
 					tmp = c.newInstance(m.group(1));
-				} catch (Exception e) {
+				} catch (Exception ignored) {
 					
 				} 
 			}else if(String.class.isAssignableFrom(target)) {
@@ -387,7 +371,7 @@ public class FileUtils {
 			}else {
 				throw new IllegalArgumentException(target + " can not be supported.");
 			}
-			if(tmp == null) 
+			if(tmp == null)
 				continue;
 			else if(result == null) {
 				result = tmp;
@@ -423,7 +407,7 @@ public class FileUtils {
 		}
 		rules = RegularUtils.getQueryString(rules);
 		Double sl = null, sg = null;
-		String type = null, error = null;
+		String type = null, error;
 		if(StringUtils.isNotBlank(rules)) {
 			sl = FileUtils.processRule(rules, "sl", false, Double.class);
 			if (maxSize != null && maxSize > 0 && (sl == null || maxSize < sl)) {
@@ -465,7 +449,7 @@ public class FileUtils {
 				file.setType(fileType);
 				
 				if(sl != null && FileUtils.byte2m(fileSizes[i], 6) > sl) {
-					/************* error **************/
+					/* ------ error ------ */
 		        	error = "文件不能大于" + DecimalUtils.fmt(sl, 2, true) + "M";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -473,10 +457,10 @@ public class FileUtils {
 		        		file.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				} 
 				if(sg != null && FileUtils.byte2m(fileSizes[i], 6) < sg) {
-					/************* error **************/
+					/* ------ error ------ */
 		        	error = "文件不能小于" + DecimalUtils.fmt(sg, 2, true) + "M";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
@@ -484,7 +468,7 @@ public class FileUtils {
 		        		file.setError(error);
 		        		continue;
 		        	}
-		        	/************* error **************/
+		        	/* ------ error ------ */
 				}
 				if(StringUtils.isNotBlank(type)) {
 					boolean auth = false;
@@ -499,30 +483,27 @@ public class FileUtils {
 						}
 					}
 					if(!auth) {
-						/************* error **************/
+						/* ------ error ------ */
 			        	error = "文件格式只能为" + type;
 			        	if (transaction) {
 			        		return CodeMsg.FAIL.msg(error);
 			        	} else {
 			        		file.setError(error);
-			        		continue;
-			        	}
-			        	/************* error **************/
+				        }
+			        	/* ------ error ------ */
 					}
 				}
 			} catch (IOException e) {
 				log.error("解析文件错误", e);
-				/************* error **************/
+				/* ------ error ------ */
 				error = "上传失败";
 	        	if (transaction) {
 	        		return CodeMsg.FAIL.msg(error);
 	        	} else {
 	        		file.setError(error);
-	        		continue;
-	        	}
-	        	/************* error **************/
+		        }
+	        	/* ------ error ------ */
 			}
-			
 		}
 		return CodeMsg.SUC.data(files);
 	}

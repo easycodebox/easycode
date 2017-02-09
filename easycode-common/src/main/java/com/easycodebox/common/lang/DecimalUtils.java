@@ -12,7 +12,7 @@ public class DecimalUtils {
 
 	/**
 	 * 默认小数后面的0不删除
-	 * @param obj 为null返回空字符窜
+	 * @param data 为null返回空字符窜
 	 * @param digit 小数的位数
 	 * @return
 	 */
@@ -21,7 +21,7 @@ public class DecimalUtils {
 	}
 
 	/**
-	 * @param obj 为null返回空字符窜
+	 * @param data 为null返回空字符窜
 	 * @param digit 小数的位数
 	 * @param removeZero 是否删除小数后面的0
 	 * @return
@@ -52,7 +52,7 @@ public class DecimalUtils {
 	/**
 	 * data/divide (Divide)
 	 * 计算两个数据相除，返回小数
-	 * @param mul,data 为null返回空字符窜
+	 * @param data 为null返回空字符窜
 	 * @param digit 小数的位数
 	 * @param removeZero 是否删除小数后面的0
 	 * @return
@@ -67,7 +67,7 @@ public class DecimalUtils {
 	/**
 	 * data+add
 	 * 计算两个数据相加，返回小数
-	 * @param mul,data 为null返回空字符窜
+	 * @param data 为null返回空字符窜
 	 * @param digit 小数的位数
 	 * @param removeZero 是否删除小数后面的0
 	 * @return
@@ -82,7 +82,7 @@ public class DecimalUtils {
 	/**
 	 * data-add (Subtract)
 	 * 计算两个数据相减，返回小数
-	 * @param mul,data 为null返回空字符窜
+	 * @param data 为null返回空字符窜
 	 * @param digit 小数的位数
 	 * @param removeZero 是否删除小数后面的0
 	 * @return
@@ -95,7 +95,7 @@ public class DecimalUtils {
 	}
 	
 	private static DecimalFormat obatainDecimalFormat(int digit, boolean removeZero) {
-		String decimalFmt = "";
+		String decimalFmt;
 		if(removeZero)
 			decimalFmt = org.apache.commons.lang.StringUtils.repeat("#", digit);
 		else

@@ -1,9 +1,8 @@
 package com.easycodebox.common.lang;
 
-import java.io.Serializable;
+import org.apache.commons.lang.builder.*;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import java.io.Serializable;
 
 /**
  * 美化java的实体对象
@@ -11,8 +10,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
  *
  */
 public abstract class BuilderEntity implements Serializable {
-
-	private static final long serialVersionUID = -2057639362380434895L;
 
 	@Override
 	public String toString() {

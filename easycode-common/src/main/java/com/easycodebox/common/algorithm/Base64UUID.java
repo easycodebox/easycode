@@ -1,7 +1,8 @@
 package com.easycodebox.common.algorithm;
 
-import java.util.UUID;
 import org.apache.commons.codec.binary.Base64;
+
+import java.util.UUID;
 
 /**
  * @author WangXiaoJin
@@ -23,8 +24,7 @@ public class Base64UUID {
 		long most = uuid.getMostSignificantBits();
 		long2bytes(most, byUuid, 0);
 		long2bytes(least, byUuid, 8);
-		String compressUUID = Base64.encodeBase64URLSafeString(byUuid);
-		return compressUUID;
+		return Base64.encodeBase64URLSafeString(byUuid);
 	}
 
 	protected static void long2bytes(long value, byte[] bytes, int offset) {

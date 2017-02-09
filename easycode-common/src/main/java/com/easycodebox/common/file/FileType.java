@@ -114,7 +114,7 @@ public enum FileType implements DetailEnum<String> {
 	private String value;
 	private String desc;
    
-    private FileType(String value, String desc) {
+    FileType(String value, String desc) {
         this.value = value;
         this.desc = desc;
     }

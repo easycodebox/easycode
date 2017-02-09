@@ -1,33 +1,20 @@
 package com.easycodebox.jdbc.config;
 
-import static com.easycodebox.jdbc.util.AnnotateUtils.fitAssociatedColumn;
-import static com.easycodebox.jdbc.util.AnnotateUtils.fitColumn;
-import static com.easycodebox.jdbc.util.AnnotateUtils.fitTableAnno;
-import static com.easycodebox.jdbc.util.AnnotateUtils.isTransient;
-
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.jdbc.AssociatedColumn;
-import com.easycodebox.jdbc.JoinColumnObj;
-import com.easycodebox.jdbc.ManyToMany;
-import com.easycodebox.jdbc.ManyToOne;
-import com.easycodebox.jdbc.OneToMany;
-import com.easycodebox.jdbc.OneToOne;
-import com.easycodebox.jdbc.PkColumn;
-import com.easycodebox.jdbc.Table;
+import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.dialect.Dialect;
 import com.easycodebox.jdbc.dialect.MySqlDialect;
 import com.easycodebox.jdbc.rule.DefaultTableRule;
 import com.easycodebox.jdbc.rule.TableRule;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static com.easycodebox.jdbc.util.AnnotateUtils.*;
 
 /**
  * @author WangXiaoJin
@@ -35,15 +22,13 @@ import com.easycodebox.jdbc.rule.TableRule;
  */
 public class Configuration implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	protected static ConcurrentHashMap<String, Table> tables = new ConcurrentHashMap<String, Table>();
-	protected static ConcurrentHashMap<String, Class<?>> tableNames = new ConcurrentHashMap<String, Class<?>>();
+	protected static ConcurrentHashMap<String, Table> tables = new ConcurrentHashMap<>();
+	protected static ConcurrentHashMap<String, Class<?>> tableNames = new ConcurrentHashMap<>();
 
 	public static final Dialect dialect = new MySqlDialect();
 	public static final TableRule tableRule = new DefaultTableRule();
 	
-	private static Set<String> filterFields = new HashSet<String>();
+	private static Set<String> filterFields = new HashSet<>();
 	
 	public static void addAnnotatedClass(Class<?> clazz) {
 		if(tables.containsKey(clazz.getName()))
@@ -64,10 +49,10 @@ public class Configuration implements Serializable {
 						|| Modifier.isStatic(field.getModifiers())) 
 					continue;
 				if(!filterFields.contains(field.getName())) {
-					/******** 获取Transient注解   **************/
+					//获取Transient注解
 					if(isTransient(field))
 						continue;
-					/******** 处理关联关系ManyToOne、OneToOne等   **************/
+					//处理关联关系ManyToOne、OneToOne等
 					if(fitAssociatedColumn(table, field))
 						continue;
 					fitColumn(table, field);

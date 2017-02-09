@@ -1,11 +1,11 @@
 package com.easycodebox.common.web.callback;
 
-import javax.servlet.http.HttpServletResponse;
-
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.HttpUtils;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author WangXiaoJin
@@ -41,7 +41,6 @@ public class Callbacks {
 	
 	/**
 	 * 跳转到指定的url
-	 * @param actionUrl 例子：user/list.html
 	 * @return
 	 */
 	public static CallbackData forward(CallbackData callback) {
@@ -50,7 +49,6 @@ public class Callbacks {
 	
 	/**
 	 * 获取回调对象，跳转到指定的url，且code=suc
-	 * @param actionUrl 例子：user/list.html
 	 * @return
 	 */
 	public static CallbackData forward(String url) {
@@ -60,7 +58,6 @@ public class Callbacks {
 	
 	/**
 	 * 获取回调对象，跳转到指定的url，且code=suc
-	 * @param actionUrl 例子：user/list.html
 	 * @return
 	 */
 	public static CallbackData forward(String url, Object data) {

@@ -18,9 +18,9 @@ public abstract class AbstractStringGenerator extends AbstractGenerator<String> 
 			, String initialVal, String currentVal, 
 			String maxVal, YesNo isCycle) {
 		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
-	};
+	}
 	
-    /**
+	/**
      * 比较两个字符窜 a>b返回正数 a==b返回0 a<b返回负数 
      * @param a
      * @param b

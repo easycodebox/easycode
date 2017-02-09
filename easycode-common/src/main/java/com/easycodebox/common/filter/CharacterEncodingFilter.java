@@ -1,20 +1,13 @@
 package com.easycodebox.common.filter;
 
+import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.net.ParameterRequestWrapper;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.HashMap;
-import java.util.Iterator;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.net.ParameterRequestWrapper;
 
 public class CharacterEncodingFilter implements Filter {
 	
@@ -58,17 +51,14 @@ public class CharacterEncodingFilter implements Filter {
 					}
 					if(decodeGetParams && "GET".equals(req.getMethod()) 
 							&& StringUtils.isNotBlank(req.getQueryString())) {
-						HashMap<String, String[]> params = new HashMap<String, String[]>(request.getParameterMap());
-						Iterator<String> keys = params.keySet().iterator();
-						while(keys.hasNext()) {
-							String key = (String)keys.next();
+						HashMap<String, String[]> params = new HashMap<>(request.getParameterMap());
+						for (String key : params.keySet()) {
 							String[] values = params.get(key);
-							if(values == null) continue;
-							for(int i = 0; i < values.length; i++) 
+							if (values == null) continue;
+							for (int i = 0; i < values.length; i++)
 								values[i] = URLDecoder.decode(values[i], encoding);
 						}
-						ParameterRequestWrapper wrapperRequest = new ParameterRequestWrapper(req, params);
-						request = wrapperRequest;
+						request = new ParameterRequestWrapper(req, params);
 					}
 				}
 				chain.doFilter(request, response);

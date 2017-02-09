@@ -10,8 +10,6 @@ import com.easycodebox.common.log.slf4j.LogLevelConfig;
  */
 public class LogLevelException extends RuntimeException {
 
-	private static final long serialVersionUID = 7284452788656129225L;
-	
 	private LogLevelConfig logLevelConfig = new LogLevelConfig();
 	
 	public LogLevelException() {

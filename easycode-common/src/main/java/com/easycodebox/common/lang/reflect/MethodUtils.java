@@ -1,13 +1,10 @@
 package com.easycodebox.common.lang.reflect;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import org.apache.commons.lang.ArrayUtils;
+
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.ArrayUtils;
 
 /**
  * @author WangXiaoJin
@@ -34,74 +31,25 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
     }
     
 	public static boolean isIsMethod(Method method) {
-		//
-		if(method == null) {
-			return false;
-		}
-		
-		//
-		if(!method.getName().startsWith("is")) {
-			return false;
-		}
-		if (method.getParameterTypes().length != 0) {
-			return false;
-	    }
-	    if (!method.getReturnType().equals(boolean.class)) {
-	    	return false;
-	    }
-	    return true;
+		return method != null && method.getName().startsWith("is")
+				&& method.getParameterTypes().length == 0 && method.getReturnType().equals(boolean.class);
 	}
 	
 	public static boolean isGetterMethod(Method method) {
-		//
-		if(method == null) {
-			return false;
-		}
-		
-		//
-		if(isIsMethod(method)) {
-			return true;
-		}
-		 
-		//
-		if(!method.getName().startsWith("get")) {
-			return false;
-		}
-		if (method.getParameterTypes().length != 0) {
-			return false;
-	    }
-	    if (ClassUtils.isVoid(method.getReturnType())) {
-	    	return false;
-	    }
-	    return true;
+		return method != null && (isIsMethod(method) || method.getName().startsWith("get")
+				&& method.getParameterTypes().length == 0 && !ClassUtils.isVoid(method.getReturnType()));
 	}
 	
 	public static boolean isSetterMethod(Method method) {
-		//
-		if(method == null) {
-			return false;
-		}
-		
-		//
-		if(!method.getName().startsWith("set")) {
-			return false;
-		}
-		if (method.getParameterTypes().length != 1) {
-			return false;
-	    }
-	    if (!ClassUtils.isVoid(method.getReturnType())) {
-	    	return false;
-	    }
-	    return true;
+		return method != null && method.getName().startsWith("set")
+				&& method.getParameterTypes().length == 1 && ClassUtils.isVoid(method.getReturnType());
 	}
 
 	public static Method findGetterMethod(Class<?> clazz, Field field) {
-		//
 		StringBuilder sb = new StringBuilder(field.getName());
 		sb.replace(0, 1, sb.substring(0, 1).toUpperCase());
 		sb.insert(0, "get");
 		
-		//
 		Method r = findPublicMethod(clazz, sb.toString(), new Class<?>[]{});
 		if(r == null) {
 			if(field.getType().equals(boolean.class)) {
@@ -113,12 +61,10 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 	}
 	
 	public static Method findGetterMethod(Class<?> clazz, String fieldName) {
-		//
 		StringBuilder sb = new StringBuilder(fieldName);
 		sb.replace(0, 1, sb.substring(0, 1).toUpperCase());
 		sb.insert(0, "get");
 		
-		//
 		Method r = findPublicMethod(clazz, sb.toString(), new Class<?>[]{});
 		if(r == null) {
 			try {
@@ -127,9 +73,7 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 					sb.replace(0, 3, "is");
 				}
 				r = findPublicMethod(clazz, sb.toString(), new Class<?>[]{});
-			} catch (NoSuchFieldException e) {
-				
-			} catch (SecurityException e) {
+			} catch (NoSuchFieldException | SecurityException ignored) {
 				
 			}
 		}
@@ -167,12 +111,11 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 				return clazz.getMethod(name, signatures);
 			} catch (NoSuchMethodException e) {
 				return null;
-			} catch (SecurityException se) {
+			} catch (SecurityException ignored) {
 			}
 		}
 		
-		//
-		List<Method> methods = new ArrayList<Method>();
+		List<Method> methods = new ArrayList<>();
 		for (Method method : clazz.getMethods()) {
 			if (method.getName().equals(name)) {
 				if (matchArguments(signatures, method.getParameterTypes(), false)) {
@@ -181,11 +124,10 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 			}
 		}
 		
-		//
 		if (methods.size() == 0) {
 			return null;
 		} else if (methods.size() == 1) {
-			return (Method) methods.get(0);
+			return methods.get(0);
 		} else {
 			for(Method method : methods) {
 				if (matchArguments(signatures, method.getParameterTypes(), true)) {
@@ -196,9 +138,6 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 		}
 	}
 	
-	/**
-	 * 
-	 */
 	private static Method getMostSpecificMethod(List<Method> methods, Class<?> signatures[]) {
 		//
 		int maxMatches = 0;
@@ -217,7 +156,6 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 				}
 			}
 			
-			//
 			if (matches == 0 && maxMatches == 0) {
 				if (method == null) {
 					method = m;
@@ -267,8 +205,8 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 	
 	/**
 	 * 通过反射,获得方法返回值泛型参数的实际类型. 如: public Map<String, Buyer> getNames(){}
-	 * @param Method method 方法
-	 * @param int index 泛型参数所在索引,从0开始.
+	 * @param method 方法
+	 * @param index 泛型参数所在索引,从0开始.
 	 * @return 泛型参数的实际类型, 如果没有实现ParameterizedType接口，即不支持泛型，所以直接返回<code>Object.class</code>
 	 */
 	@SuppressWarnings("rawtypes")
@@ -287,7 +225,7 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 
 	/**
 	 * 通过反射,获得方法返回值第一个泛型参数的实际类型. 如: public Map<String, Buyer> getNames(){}
-	 * @param Method method 方法
+	 * @param method 方法
 	 * @return 泛型参数的实际类型, 如果没有实现ParameterizedType接口，即不支持泛型，所以直接返回<code>Object.class</code>
 	 */
 	@SuppressWarnings("rawtypes")
@@ -297,13 +235,13 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 
 	/**
 	 * 通过反射,获得方法输入参数第index个输入参数的所有泛型参数的实际类型. 如: public void add(Map<String, Buyer> maps, List<String> names){}
-	 * @param Method method 方法
-	 * @param int index 第几个输入参数
+	 * @param method 方法
+	 * @param index 第几个输入参数
 	 * @return 输入参数的泛型参数的实际类型集合, 如果没有实现ParameterizedType接口，即不支持泛型，所以直接返回空集合
 	 */
 	@SuppressWarnings("rawtypes")
 	public static List<Class> getMethodGenericParameterTypes(Method method, int index){
-		List<Class> results = new ArrayList<Class>();
+		List<Class> results = new ArrayList<>();
 		Type[] genericParameterTypes = method.getGenericParameterTypes();
 		if (index >= genericParameterTypes.length || index < 0){
 			throw new RuntimeException("你输入的索引" + (index < 0 ? "不能小于0" : "超出了参数的总数"));
@@ -323,7 +261,7 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 
 	/**
 	 * 通过反射,获得方法输入参数第一个输入参数的所有泛型参数的实际类型. 如: public void add(Map<String, Buyer> maps, List<String> names){}
-	 * @param Method method 方法
+	 * @param method 方法
 	 * @return 输入参数的泛型参数的实际类型集合, 如果没有实现ParameterizedType接口，即不支持泛型，所以直接返回空集合
 	 */
 	@SuppressWarnings("rawtypes")

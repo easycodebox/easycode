@@ -52,7 +52,7 @@ public class CuratorNode<T> implements InitializingBean {
 	public Object load() throws Exception {
 		String name = StringUtils.isBlank(nodeName) ? maker.make() : nodeName;
 		if (name == null) return null;
-		byte[] data = null;
+		byte[] data;
 		GetDataBuilder builder = client.getData();
 		if (watchObj != null) {
 			builder.usingWatcher(watchObj);

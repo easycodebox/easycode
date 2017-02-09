@@ -1,13 +1,11 @@
 package com.easycodebox.common.tag;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.jsp.JspException;
-
+import com.easycodebox.common.enums.DetailEnum;
 import org.apache.commons.lang.RandomStringUtils;
 
-import com.easycodebox.common.enums.DetailEnum;
+import javax.servlet.jsp.JspException;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
@@ -15,8 +13,6 @@ import com.easycodebox.common.enums.DetailEnum;
  */
 public class SelectEnum extends EnumGroupTag {
 	
-	private static final long serialVersionUID = 6181195802229352505L;
-
 	private String headerKey;
 	private String headerValue;
 	

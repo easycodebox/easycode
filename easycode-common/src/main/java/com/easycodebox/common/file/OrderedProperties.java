@@ -1,28 +1,7 @@
 package com.easycodebox.common.file;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Serializable;
-import java.io.Writer;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.InvalidPropertiesFormatException;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.Vector;
+import java.io.*;
+import java.util.*;
 
 /**
  * 有序Properties，与java.util.Properties不同，此类是非线程安全。官网地址：https://github.com/etiennestuder/java-ordered-properties
@@ -133,21 +112,21 @@ public final class OrderedProperties implements Serializable {
      * See {@link Properties#propertyNames()}.
      */
     public Enumeration<String> propertyNames() {
-        return new Vector<String>(properties.keySet()).elements();
+        return new Vector<>(properties.keySet()).elements();
     }
 
     /**
      * See {@link Properties#stringPropertyNames()}.
      */
     public Set<String> stringPropertyNames() {
-        return new LinkedHashSet<String>(properties.keySet());
+        return new LinkedHashSet<>(properties.keySet());
     }
 
     /**
      * See {@link Properties#entrySet()}.
      */
     public Set<Map.Entry<String, String>> entrySet() {
-        return new LinkedHashSet<Map.Entry<String, String>>(properties.entrySet());
+        return new LinkedHashSet<>(properties.entrySet());
     }
 
     /**
@@ -169,7 +148,7 @@ public final class OrderedProperties implements Serializable {
     /**
      * See {@link Properties#loadFromXML(InputStream)}.
      */
-    public void loadFromXML(InputStream stream) throws IOException, InvalidPropertiesFormatException {
+    public void loadFromXML(InputStream stream) throws IOException {
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.loadFromXML(stream);
     }
