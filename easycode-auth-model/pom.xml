@@ -17,12 +17,6 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>easycode-jdbc-mybatis</artifactId>
 		</dependency>
-		<!-- 第三方jar包 -->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-       		<artifactId>logback-classic</artifactId>
-		</dependency>
-		
 	</dependencies>
 	
 </project>

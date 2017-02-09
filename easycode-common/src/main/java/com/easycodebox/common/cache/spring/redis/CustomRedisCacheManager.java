@@ -22,7 +22,8 @@ public class CustomRedisCacheManager extends RedisCacheManager {
 
     protected RedisCache createCache(String cacheName) {
         long expiration = computeExpiration(cacheName);
-        return new CustomRedisCache(cacheName, (isUsePrefix() ? getCachePrefix().prefix(cacheName) : null), getRedisOperations(), expiration);
+        return new CustomRedisCache(cacheName, (isUsePrefix() ? getCachePrefix().prefix(cacheName) : null),
+                getRedisOperations(), expiration);
     }
 
 }

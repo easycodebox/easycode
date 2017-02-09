@@ -1,24 +1,22 @@
 package com.easycodebox.jdbc.config;
 
-import java.util.List;
-
-import javax.persistence.Entity;
-
-import org.springframework.beans.factory.InitializingBean;
-
 import com.easycodebox.common.file.Resources;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.Entity;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public class ConfigEntityBean implements InitializingBean {
+public class ConfigEntityBean {
 
 	private Class<?>[] annotatedClasses;
 	private String[] packagesToScan;
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
+	@PostConstruct
+	public void init() throws Exception {
 		if(annotatedClasses != null && annotatedClasses.length > 0) {
 			for(Class<?> clazz : annotatedClasses) 
 				Configuration.addAnnotatedClass(clazz);
