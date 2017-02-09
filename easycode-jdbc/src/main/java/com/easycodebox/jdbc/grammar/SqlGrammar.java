@@ -1,6 +1,6 @@
 package com.easycodebox.jdbc.grammar;
 
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.jdbc.*;
@@ -263,7 +263,7 @@ public class SqlGrammar implements Cloneable {
 	 */
 	public SqlGrammar column(Property property, String alias) {
 		if(property != null)  {
-			if(StringUtils.isNotBlank(alias))
+			if(Strings.isNotBlank(alias))
 				projectionAppend(convert2SqlName(property) + " AS " + dialect.wrapQuote(alias));
 			else
 				projectionAppend(convert2SqlName(property));
@@ -277,7 +277,7 @@ public class SqlGrammar implements Cloneable {
 	
 	public SqlGrammar max(Property property, String alias) {
 		if(property != null)  {
-			if(StringUtils.isNotBlank(alias))
+			if(Strings.isNotBlank(alias))
 				projectionAppend("MAX(" + convert2SqlName(property) + ") AS " + dialect.wrapQuote(alias));
 			else
 				projectionAppend("MAX(" + convert2SqlName(property) + ")");
@@ -291,7 +291,7 @@ public class SqlGrammar implements Cloneable {
 	
 	public SqlGrammar min(Property property, String alias) {
 		if(property != null)  {
-			if(StringUtils.isNotBlank(alias))
+			if(Strings.isNotBlank(alias))
 				projectionAppend("MIN(" + convert2SqlName(property) + ") AS " + dialect.wrapQuote(alias));
 			else
 				projectionAppend("MIN(" + convert2SqlName(property) + ")");
@@ -305,7 +305,7 @@ public class SqlGrammar implements Cloneable {
 	
 	public SqlGrammar distinct(Property property, String alias) {
 		if(property != null)  {
-			if(StringUtils.isNotBlank(alias))
+			if(Strings.isNotBlank(alias))
 				projectionAppend("DISTINCT(" + convert2SqlName(property) + ") AS " + dialect.wrapQuote(alias));
 			else
 				projectionAppend("DISTINCT(" + convert2SqlName(property) + ")");
@@ -319,7 +319,7 @@ public class SqlGrammar implements Cloneable {
 	
 	public SqlGrammar count(Property property, String alias) {
 		if(property != null)  {
-			if(StringUtils.isNotBlank(alias))
+			if(Strings.isNotBlank(alias))
 				projectionAppend("COUNT(" + convert2SqlName(property) + ") AS " + dialect.wrapQuote(alias));
 			else
 				projectionAppend("COUNT(" + convert2SqlName(property) + ")");
@@ -333,7 +333,7 @@ public class SqlGrammar implements Cloneable {
 	
 	public SqlGrammar sum(Property property, String alias) {
 		if(property != null)  {
-			if(StringUtils.isNotBlank(alias))
+			if(Strings.isNotBlank(alias))
 				projectionAppend("SUM(" + convert2SqlName(property) + ") AS " + dialect.wrapQuote(alias));
 			else
 				projectionAppend("SUM(" + convert2SqlName(property) + ")");
@@ -347,7 +347,7 @@ public class SqlGrammar implements Cloneable {
 	
 	public SqlGrammar countDistinct(Property property, String alias) {
 		if(property != null)  {
-			if(StringUtils.isNotBlank(alias))
+			if(Strings.isNotBlank(alias))
 				projectionAppend("COUNT(DISTINCT " + convert2SqlName(property) + ") AS " + dialect.wrapQuote(alias));
 			else
 				projectionAppend("COUNT(DISTINCT " + convert2SqlName(property) + ")");
@@ -361,7 +361,7 @@ public class SqlGrammar implements Cloneable {
 	
 	public SqlGrammar avg(Property property, String alias) {
 		if(property != null)  {
-			if(StringUtils.isNotBlank(alias))
+			if(Strings.isNotBlank(alias))
 				projectionAppend("AVG(" + convert2SqlName(property) + ") AS " + dialect.wrapQuote(alias));
 			else
 				projectionAppend("AVG(" + convert2SqlName(property) + ")");
@@ -374,7 +374,7 @@ public class SqlGrammar implements Cloneable {
 	}
 	
 	public SqlGrammar rowCount(String alias) {
-		if(StringUtils.isNotBlank(alias))
+		if(Strings.isNotBlank(alias))
 			projectionAppend("COUNT(*) AS " + dialect.wrapQuote(alias));
 		else
 			projectionAppend("COUNT(*)");
@@ -554,7 +554,7 @@ public class SqlGrammar implements Cloneable {
 	 * @return
 	 */
 	public SqlGrammar likeTrim(Property property, String value, short type) {
-		value = StringUtils.trimToNull(value);
+		value = Strings.trimToNull(value);
 		return this.like(property, value, type);
 	}
 	
@@ -785,7 +785,7 @@ public class SqlGrammar implements Cloneable {
 	 * @return
 	 */
 	private String convertPropertySql(String sql) {
-		if(StringUtils.isBlank(sql)) return sql;
+		if(Strings.isBlank(sql)) return sql;
 		Pattern p = Pattern.compile("#\\{\\s*([\\w\\.\\_]+)\\s*\\}");
 		Matcher matcher = p.matcher(sql);
 		boolean result = matcher.find();

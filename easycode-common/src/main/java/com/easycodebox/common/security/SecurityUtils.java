@@ -4,7 +4,7 @@ import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import com.easycodebox.common.validate.Assert;
 
 import javax.servlet.http.*;
@@ -39,7 +39,7 @@ public class SecurityUtils {
 				context.setSecurity(user);
 			}
 			if (request != null) {
-				context.setIp(HttpUtils.getIpAddr(request));
+				context.setIp(Https.getIpAddr(request));
 				context.setUserAgent(request.getHeader("User-Agent"));
 				context.setRequest(request);
 			}

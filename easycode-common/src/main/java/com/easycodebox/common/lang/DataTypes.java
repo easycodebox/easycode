@@ -8,7 +8,7 @@ import java.util.Map;
  * @author WangXiaoJin
  * 
  */
-public class DataTypeUtils {
+public class DataTypes {
 	
 	/**
 	 * data==null return true;

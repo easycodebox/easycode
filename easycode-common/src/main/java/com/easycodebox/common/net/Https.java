@@ -39,9 +39,9 @@ import java.util.concurrent.*;
  * @author WangXiaoJin
  * 
  */
-public class HttpUtils {
+public class Https {
 	
-	private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(Https.class);
 	
 	/**
 	 * 获得客户端ip
@@ -86,7 +86,7 @@ public class HttpUtils {
 	
 	public static Map<String, String> convertQueryParams2Map(String query) {
 		Map<String, String> params = new HashMap<>();
-		if(StringUtils.isBlank(query)) return params;
+		if(Strings.isBlank(query)) return params;
 		int index = query.indexOf(Symbol.QUESTION);
 		query = index > -1 ? query.substring(0, index) : query;
 		String[] keyVals = query.split(Symbol.AND_MARK);
@@ -138,12 +138,12 @@ public class HttpUtils {
 	public static String getParticularPath(HttpServletRequest request) {
 		String uri = request.getRequestURI(),
 			contextPath = request.getContextPath();
-		if(StringUtils.isBlank(uri))
-			return StringUtils.EMPTY;
-		if(StringUtils.EMPTY.equals(contextPath)) {
+		if(Strings.isBlank(uri))
+			return Strings.EMPTY;
+		if(Strings.EMPTY.equals(contextPath)) {
 			return uri;
 		}else {
-			return uri.replaceFirst(contextPath, StringUtils.EMPTY);
+			return uri.replaceFirst(contextPath, Strings.EMPTY);
 		}
 	}
 	
@@ -174,7 +174,7 @@ public class HttpUtils {
 			uri = request.getRequestURI(),
 			contextPath = request.getContextPath();
 
-		if(StringUtils.isNotEmpty(uri)) {
+		if(Strings.isNotEmpty(uri)) {
 			int index = url.lastIndexOf(uri);
 			url = url.substring(0, index);
 		}
@@ -323,7 +323,7 @@ public class HttpUtils {
 	 */
 	public static String addParams2Url(String url, String params) {
 		Assert.notBlank(url, "url can not be blank.");
-		if(StringUtils.isBlank(params))
+		if(Strings.isBlank(params))
 			return url;
 		else {
 			int index = url.indexOf(Symbol.QUESTION);
@@ -386,7 +386,7 @@ public class HttpUtils {
 	 */
 	public static void addCookie(String name, String value, Integer maxAge,
 			HttpServletResponse response) {
-		if(!StringUtils.isEmpty(value)){
+		if(!Strings.isEmpty(value)){
 			try {
 				//URLEncoder.encode会把空格换成'+'，所以需要转义下，不然前端JS decodeURIComponent会显示'+'号
 				//或者直接可以使用Spring提供的工具类UriUtils.encode来进行处理，这个工具类不会把空格替换成'+'号
@@ -699,7 +699,7 @@ public class HttpUtils {
 	     */
 	    public static String get(String url, Map<String, ?> params, Collection<Object> jsonKeys, String charset) 
 	    		throws IOException {
-	        if(StringUtils.isBlank(url)) return null;
+	        if(Strings.isBlank(url)) return null;
 	        if(params != null && !params.isEmpty()) {
 	        	String paramStr = assembleParams(params, jsonKeys);
                 url = addParams2Url(url, paramStr);
@@ -800,7 +800,7 @@ public class HttpUtils {
 	     */
 	    public static String post(String url, Map<String, ?> params, Collection<?> jsonKeys, String charset) 
 	    		throws IOException {
-	        if(StringUtils.isBlank(url)) return null;
+	        if(Strings.isBlank(url)) return null;
             List<NameValuePair> pairs = null;
             if(params != null && !params.isEmpty()) {
                 pairs = new ArrayList<>();

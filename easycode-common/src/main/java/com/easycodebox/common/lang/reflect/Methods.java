@@ -10,7 +10,7 @@ import java.util.List;
  * @author WangXiaoJin
  *
  */
-public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
+public class Methods extends org.apache.commons.lang.reflect.MethodUtils {
 
 	/**
      * 判断clazz中是否有指定的方法
@@ -37,12 +37,12 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 	
 	public static boolean isGetterMethod(Method method) {
 		return method != null && (isIsMethod(method) || method.getName().startsWith("get")
-				&& method.getParameterTypes().length == 0 && !ClassUtils.isVoid(method.getReturnType()));
+				&& method.getParameterTypes().length == 0 && !Classes.isVoid(method.getReturnType()));
 	}
 	
 	public static boolean isSetterMethod(Method method) {
 		return method != null && method.getName().startsWith("set")
-				&& method.getParameterTypes().length == 1 && ClassUtils.isVoid(method.getReturnType());
+				&& method.getParameterTypes().length == 1 && Classes.isVoid(method.getReturnType());
 	}
 
 	public static Method findGetterMethod(Class<?> clazz, Field field) {
@@ -89,7 +89,7 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 		//
 		Class<?> type = field.getType();
 		if(type.isPrimitive()) {
-			type = ClassUtils.primitiveToWrapper(type);
+			type = Classes.primitiveToWrapper(type);
 		}
 		return findPublicMethod(clazz, sb.toString(), new Class<?>[]{type});
 	}
@@ -149,7 +149,7 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 			for (int i = 0; i < signatures.length; i++) {
 				Class<?> paramType = paramTypes[i];
 				if (paramType.isPrimitive() && !signatures[i].isPrimitive()) {
-					paramType = ClassUtils.primitiveToWrapper(paramType);
+					paramType = Classes.primitiveToWrapper(paramType);
 				}
 				if (signatures[i] == paramType) {
 					matches++;
@@ -186,7 +186,7 @@ public class MethodUtils extends org.apache.commons.lang.reflect.MethodUtils {
 			//
 			Class<?> paramType = paramTypes[j];
 			if (paramType.isPrimitive() && !signatures[j].isPrimitive()) {
-				paramType = ClassUtils.primitiveToWrapper(paramType);
+				paramType = Classes.primitiveToWrapper(paramType);
 			}
 			
 			//

@@ -2,7 +2,7 @@ package com.easycodebox.jdbc.util;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.lang.DateUtils;
+import com.easycodebox.common.lang.Dates;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.config.Configuration;
@@ -26,9 +26,9 @@ public class SqlUtils {
 				o instanceof StringBuilder) 
 			str = Configuration.dialect.escapeString(o.toString());
 		else if(o instanceof Date)
-			str = "'" + DateUtils.DATE_FMT.format((Date)o) + "'";
+			str = "'" + Dates.DATE_FMT.format((Date)o) + "'";
 		else if(o instanceof Calendar)
-			str = "'" + DateUtils.DATE_FMT.format(((Calendar)o).getTime()) + "'";
+			str = "'" + Dates.DATE_FMT.format(((Calendar)o).getTime()) + "'";
 		else if(o instanceof Object[]) {
 			str = " ( ";
 			Object[] tmp = (Object[])o;

@@ -10,7 +10,7 @@ import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.generator.Generators;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.JoinType;
@@ -60,7 +60,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@Log(title = "添加用户", moduleType = ModuleType.USER)
 	public User add(User user) {
 		
-		if (StringUtils.isNotBlank(user.getNickname()))
+		if (Strings.isNotBlank(user.getNickname()))
 			Assert.isFalse(this.existNickname(user.getNickname(), user.getId()),
 					CodeMsgExt.FAIL.msg("昵称{0}已被占用", user.getNickname()));
 		
@@ -70,19 +70,19 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		if (user.getStatus() == null)
 			user.setStatus(OpenClose.OPEN);
 		user.setLoginFail(0);
-		if (StringUtils.isBlank(user.getRealname()))
+		if (Strings.isBlank(user.getRealname()))
 			user.setRealname(null);
-		if (StringUtils.isBlank(user.getPassword()))
+		if (Strings.isBlank(user.getPassword()))
 			user.setPassword(DigestUtils.md5Hex(Constants.resetPwd));
 		if (user.getSort() == null)
 			user.setSort(0);
-		if (StringUtils.isBlank(user.getMobile()))
+		if (Strings.isBlank(user.getMobile()))
 			user.setMobile(null);
-		if (StringUtils.isBlank(user.getEmail()))
+		if (Strings.isBlank(user.getEmail()))
 			user.setEmail(null);
-		if (StringUtils.isBlank(user.getPic()))
+		if (Strings.isBlank(user.getPic()))
 			user.setPic(null);
-		if (StringUtils.isBlank(user.getNickname())) {
+		if (Strings.isBlank(user.getNickname())) {
 			user.setNickname(generateNickname());
 		}
 		//不能通过外部添加超级管理员
@@ -112,7 +112,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	})
 	public int update(User user) {
 		
-		if (StringUtils.isNotBlank(user.getNickname()))
+		if (Strings.isNotBlank(user.getNickname()))
 			Assert.isFalse(this.existNickname(user.getNickname(), user.getId()),
 					CodeMsgExt.FAIL.msg("昵称{0}已被占用", user.getNickname()));
 		
@@ -123,15 +123,15 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 			log.info("The update method can not update status property.");
 		}
 		
-		if (StringUtils.isBlank(user.getRealname()))
+		if (Strings.isBlank(user.getRealname()))
 			user.setRealname(null);
-		if (StringUtils.isBlank(user.getMobile()))
+		if (Strings.isBlank(user.getMobile()))
 			user.setMobile(null);
-		if (StringUtils.isBlank(user.getEmail()))
+		if (Strings.isBlank(user.getEmail()))
 			user.setEmail(null);
-		if (StringUtils.isBlank(user.getPic()))
+		if (Strings.isBlank(user.getPic()))
 			user.setPic(null);
-		if (StringUtils.isBlank(user.getNickname())) {
+		if (Strings.isBlank(user.getNickname())) {
 			user.setNickname(generateNickname());
 		}
 		

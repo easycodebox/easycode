@@ -9,7 +9,7 @@ import com.easycodebox.auth.model.entity.user.*;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.*;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
@@ -163,8 +163,8 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	public DataPage<Group> page(String parentName, String groupName,
 			OpenClose status, int pageNo, int pageSize) {
 		
-		parentName = StringUtils.trimToNull(parentName);
-		groupName = StringUtils.trimToNull(groupName);
+		parentName = Strings.trimToNull(parentName);
+		groupName = Strings.trimToNull(groupName);
 		
 		List<Group> data = groupMapper.page(parentName, groupName, status, pageNo, pageSize);
 		long totalCount = groupMapper.pageTotalCount(parentName, groupName, status);

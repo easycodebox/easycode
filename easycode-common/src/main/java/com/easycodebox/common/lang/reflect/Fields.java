@@ -1,7 +1,7 @@
 package com.easycodebox.common.lang.reflect;
 
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
@@ -15,9 +15,9 @@ import java.util.List;
  * @author WangXiaoJin
  *
  */
-public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
+public class Fields extends org.apache.commons.lang.reflect.FieldUtils {
 	
-	private static final Logger log = LoggerFactory.getLogger(FieldUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(Fields.class);
 
 	/**
 	 * 获取指定类的所有属性(包含super class的属性)，包括private、protected、public
@@ -76,16 +76,16 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 		if(m == null) {
 			return null;
 		}
-		if(!MethodUtils.isGetterMethod(m) && !MethodUtils.isSetterMethod(m)) {
+		if(!Methods.isGetterMethod(m) && !Methods.isSetterMethod(m)) {
 			return null;
 		}
 		
 		StringBuilder r = new StringBuilder();
-		if(MethodUtils.isIsMethod(m)) {
+		if(Methods.isIsMethod(m)) {
 			r.append(m.getName().substring(2));
-		} else if(MethodUtils.isGetterMethod(m)) {
+		} else if(Methods.isGetterMethod(m)) {
 			r.append(m.getName().substring(3));
-		} else if(MethodUtils.isSetterMethod(m)) {
+		} else if(Methods.isSetterMethod(m)) {
 			r.append(m.getName().substring(3));
 		}
 		r.replace(0, 1, r.substring(0, 1).toLowerCase());
@@ -127,7 +127,7 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 	
 	@SuppressWarnings("rawtypes")
 	public static Class getFieldGenericType(Class clazz, String fieldName, int index) {
-		if(clazz == null && StringUtils.isBlank(fieldName))
+		if(clazz == null && Strings.isBlank(fieldName))
 			return null;
 		Field field = getField(clazz, fieldName, true);
 		if(field == null) return null;
@@ -152,7 +152,7 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 		Assert.notNull(clazz);
 		Assert.notBlank(name);
 		Method method = null;
-        String methodName = "get" + StringUtils.capitalize(name);
+        String methodName = "get" + Strings.capitalize(name);
         boolean accessField;
         try {
 			method = clazz.getMethod(methodName);
@@ -162,7 +162,7 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 			log.debug(" SecurityException.", e);
 		}
         if(method == null) {
-        	methodName = "is" + StringUtils.capitalize(name);
+        	methodName = "is" + Strings.capitalize(name);
         	try {
 				method = clazz.getMethod(methodName);
 			} catch (NoSuchMethodException e) {
@@ -198,12 +198,12 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 	 */
 	@Deprecated
 	public static Object getBeanProperty(Object target, String name) {
-        if (target == null || StringUtils.isBlank(name)) {
+        if (target == null || Strings.isBlank(name)) {
         	throw new BaseException("call getBeanProperty method error. params error.");
         }
         Class<?> clazz = target.getClass();
         Method method = null;
-        String methodName = "get" + StringUtils.capitalize(name);
+        String methodName = "get" + Strings.capitalize(name);
         boolean accessField;
         try {
 			method = clazz.getMethod(methodName);
@@ -213,7 +213,7 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 			log.debug(" SecurityException.", e);
 		}
         if(method == null) {
-        	methodName = "is" + StringUtils.capitalize(name);
+        	methodName = "is" + Strings.capitalize(name);
         	try {
 				method = clazz.getMethod(methodName);
 			} catch (NoSuchMethodException e) {
@@ -269,11 +269,11 @@ public class FieldUtils extends org.apache.commons.lang.reflect.FieldUtils {
 	@Deprecated
 	public static void setBeanProperty(Object target, String name, 
 			Class<?> type, Object value) {
-        if (target == null || StringUtils.isBlank(name)) {
+        if (target == null || Strings.isBlank(name)) {
         	throw new BaseException("call setBeanField method error. params error.");
         }
         Class<?> clazz = target.getClass();
-        String setMethod = "set" + StringUtils.capitalize(name);
+        String setMethod = "set" + Strings.capitalize(name);
         try {
             Method method = clazz.getMethod(setMethod, type);
             method.invoke(target, value);

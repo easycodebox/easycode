@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.easycodebox.common.lang.Strings;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,6 @@ import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
-import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.log.slf4j.Logger;
@@ -133,7 +133,7 @@ public class UserWsServiceImpl implements UserWsService {
 	public String add(User user, String roleName) throws ErrorContext {
 		user = userService.add(user);
 		
-		if(StringUtils.isNotBlank(roleName)) {
+		if(Strings.isNotBlank(roleName)) {
 			List<Role> role = roleService.list(OpenClose.OPEN, roleName);
 			if(role.size() > 0) {
 				if(role.size() > 1) {
@@ -206,9 +206,9 @@ public class UserWsServiceImpl implements UserWsService {
 			bo.setGroupName(groupName);
 		}
 		
-		bo.setRoleIds(StringUtils.join(roleIds, Symbol.COMMA));
-		bo.setRoleNames(StringUtils.join(roleNames, Symbol.COMMA));
-		bo.setPermissions(StringUtils.join(strOps, Symbol.COMMA));
+		bo.setRoleIds(Strings.join(roleIds, Symbol.COMMA));
+		bo.setRoleNames(Strings.join(roleNames, Symbol.COMMA));
+		bo.setPermissions(Strings.join(strOps, Symbol.COMMA));
 		bo.setMenus(menus);
 		return bo;
 	}

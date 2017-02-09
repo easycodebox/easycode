@@ -1,6 +1,6 @@
 package com.easycodebox.jdbc;
 
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 
 import java.io.Serializable;
 
@@ -72,6 +72,6 @@ public abstract class AssociatedColumn implements Serializable {
 	}
 
 	public void setMappedBy(String mappedBy) {
-		this.mappedBy = StringUtils.stripToNull(mappedBy);
+		this.mappedBy = Strings.stripToNull(mappedBy);
 	}
 }

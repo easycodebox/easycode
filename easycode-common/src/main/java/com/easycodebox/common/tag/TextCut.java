@@ -62,7 +62,7 @@ public class TextCut extends TagExt {
 				valStr = stringbuffer.toString();
 			}
 			
-			String remainValue = valStr = StringUtils.trim(valStr);
+			String remainValue = valStr = Strings.trim(valStr);
 			
 			if(remainValue.length() > remainNum*2)
 				remainValue = remainValue.substring(0, remainNum*2-1);
@@ -88,7 +88,7 @@ public class TextCut extends TagExt {
 	
 	private String prepare(String value) {
         if (escape) {
-            return TextUtils.htmlEncode(value);
+            return Texts.htmlEncode(value);
         } else {
             return value;
         }

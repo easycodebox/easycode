@@ -5,11 +5,11 @@ import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.*;
 import com.easycodebox.common.jackson.Jacksons;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.log.slf4j.*;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
 
@@ -92,21 +92,21 @@ public class ErrorContextFilter implements Filter {
 				logLevel = filterConfig.getInitParameter("logLevel"),
 				store = filterConfig.getInitParameter("storeException");
 		
-		if (StringUtils.isNotBlank(defaultPage)) {
+		if (Strings.isNotBlank(defaultPage)) {
 			this.defaultPage = defaultPage.trim();
 		}
-		if (StringUtils.isNotBlank(defaultStatus)) {
+		if (Strings.isNotBlank(defaultStatus)) {
 			this.defaultStatus = Integer.parseInt(defaultStatus.trim());
 		}
-		if (StringUtils.isNotBlank(exceptionMappings)) {
+		if (Strings.isNotBlank(exceptionMappings)) {
 			this.exceptionMappings = new HashMap<>(4);
 			String[] frags = exceptionMappings.split(SEPARATOR_PATTERN);
 			for (String frag : frags) {
-				if (StringUtils.isNotBlank(frag)) {
+				if (Strings.isNotBlank(frag)) {
 					String[] vals = frag.trim().split(Symbol.EQ);
 					if (vals.length == 2) {
 						try {
-							this.exceptionMappings.put(ClassUtils.getClass(vals[0].trim()), vals[1].trim());
+							this.exceptionMappings.put(Classes.getClass(vals[0].trim()), vals[1].trim());
 						} catch (ClassNotFoundException e) {
 							log.error("Class not find.", e);
 						}
@@ -114,11 +114,11 @@ public class ErrorContextFilter implements Filter {
 				}
 			}
 		}
-		if (StringUtils.isNotBlank(statusMappings)) {
+		if (Strings.isNotBlank(statusMappings)) {
 			this.statusMappings = new HashMap<>(4);
 			String[] frags = statusMappings.split(SEPARATOR_PATTERN);
 			for (String frag : frags) {
-				if (StringUtils.isNotBlank(frag)) {
+				if (Strings.isNotBlank(frag)) {
 					String[] vals = frag.trim().split(Symbol.EQ);
 					if (vals.length == 2) {
 						this.statusMappings.put(vals[0].trim(), Integer.parseInt(vals[1].trim()));
@@ -126,15 +126,15 @@ public class ErrorContextFilter implements Filter {
 				}
 			}
 		}
-		if (StringUtils.isNotBlank(logMappings)) {
+		if (Strings.isNotBlank(logMappings)) {
 			this.logMappings = new HashMap<>(4);
 			String[] frags = logMappings.split(SEPARATOR_PATTERN);
 			for (String frag : frags) {
-				if (StringUtils.isNotBlank(frag)) {
+				if (Strings.isNotBlank(frag)) {
 					String[] vals = frag.trim().split(Symbol.EQ);
 					if (vals.length == 2) {
 						try {
-							this.logMappings.put(ClassUtils.getClass(vals[0].trim()), Boolean.parseBoolean(vals[1].trim()));
+							this.logMappings.put(Classes.getClass(vals[0].trim()), Boolean.parseBoolean(vals[1].trim()));
 						} catch (ClassNotFoundException e) {
 							log.error("Class not find.", e);
 						}
@@ -142,16 +142,16 @@ public class ErrorContextFilter implements Filter {
 				}
 			}
 		}
-		if (StringUtils.isNotBlank(isLog)) {
+		if (Strings.isNotBlank(isLog)) {
 			this.isLog = Boolean.parseBoolean(isLog.trim());
 		}
-		if (StringUtils.isNotBlank(logLevel)) {
+		if (Strings.isNotBlank(logLevel)) {
 			LogLevel logLevelEnum = DetailEnums.deserialize(LogLevel.class, logLevel, false);
 			if (logLevelEnum != null) {
 				logLevelConfig.setLogLevel(logLevelEnum);
 			}
 		}
-		if (StringUtils.isNotBlank(store)) {
+		if (Strings.isNotBlank(store)) {
 			this.storeException = Boolean.parseBoolean(store.trim());
 		}
 		
@@ -229,7 +229,7 @@ public class ErrorContextFilter implements Filter {
 			if(ec != null) {
 				error = ec.getError();
 				error = error == null ? CodeMsg.FAIL : error;
-				if(StringUtils.isBlank(error.getCode())) 
+				if(Strings.isBlank(error.getCode()))
 					error.code(CodeMsg.Code.FAIL_CODE);
 				//因为前段JS需要首要显示服务器端返回的错误信息，如果此处设值，则错误信息始终显示Error.FAIL_MSG_INFO， 而不会显示JS定义的信息
 				/*if(isBlank(error.getMsg()))
@@ -250,7 +250,7 @@ public class ErrorContextFilter implements Filter {
 			}
 			
 			//判断请求是否为AJAX请求
-			if(HttpUtils.isAjaxRequest(request)) {
+			if(Https.isAjaxRequest(request)) {
 				response.setContentType("application/json;charset=UTF-8");
 				try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 						.createGenerator(response.getWriter())) {
@@ -266,7 +266,7 @@ public class ErrorContextFilter implements Filter {
 				} else {
 					//检索出异常页面
 					String errorPage = obtainErrorPage(ex);
-					if (StringUtils.isNotBlank(errorPage)) {
+					if (Strings.isNotBlank(errorPage)) {
 						if (errorPage.startsWith(REDIRECT_FLAG)) {
 							//执行页面跳转
 							response.sendRedirect(errorPage.replace(REDIRECT_FLAG, Symbol.EMPTY));
@@ -274,7 +274,7 @@ public class ErrorContextFilter implements Filter {
 							//相应错误页面
 							response.setContentType("text/html;charset=UTF-8");
 							String codeMsgStr = Jacksons.NON_NULL.toJson(error);
-							HttpUtils.addCookie(errorKey, codeMsgStr, response);
+							Https.addCookie(errorKey, codeMsgStr, response);
 							//设置status code
 							Integer status = statusMappings.get(errorPage) == null ? defaultStatus : statusMappings.get(errorPage);
 							response.setStatus(status);

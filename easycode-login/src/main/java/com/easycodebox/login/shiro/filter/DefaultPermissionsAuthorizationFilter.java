@@ -7,15 +7,15 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.easycodebox.common.lang.Strings;
 import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
 
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.jackson.Jacksons;
-import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
 
@@ -31,7 +31,7 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
 		if (mappedValue == null) {
-			String path = HttpUtils.getShortPath((HttpServletRequest)request);
+			String path = Https.getShortPath((HttpServletRequest)request);
 			if (path.startsWith(Symbol.SLASH)) {
 				path = path.substring(1);
 			}
@@ -39,7 +39,7 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 				path = path.replace(Symbol.SLASH, pathDivider);
 			}
 			//如果path等于空字符窜，则意味着此请求访问项目的根目录；这里我们排除掉这种情况，因为访问项目的根目录的权限由DefaultCasRealm中控制
-			if (StringUtils.isNotBlank(path)) {
+			if (Strings.isNotBlank(path)) {
 				mappedValue = new String[]{path};
 			}
 		}
@@ -50,7 +50,7 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
 		HttpServletResponse res = (HttpServletResponse)response;
 		
-		if(HttpUtils.isAjaxRequest((HttpServletRequest)request)) {
+		if(Https.isAjaxRequest((HttpServletRequest)request)) {
 			response.setContentType("application/json;charset=UTF-8");
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 					.createGenerator(response.getWriter())) {

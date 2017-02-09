@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author WangXiaoJin
  * 有关正则表达式的功能
  */
-public class RegularUtils {
+public class Regulars {
 
 	
 	/**
@@ -21,7 +21,7 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static String addFileInLastURI(String originalUri, String fileName) {
-		if(StringUtils.isBlank(originalUri) || StringUtils.isBlank(fileName)) {
+		if(Strings.isBlank(originalUri) || Strings.isBlank(fileName)) {
 			return originalUri;
 		}
 		return originalUri.replaceFirst("^((https?://)?(/|\\\\)?([^/\\\\]+(/|\\\\))*?)([^/\\\\]+(/|\\\\)?)$", "$1" + fileName + "/$6");
@@ -35,7 +35,7 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static String removeFileInURI(String originalUri, String fileName) {
-		if(StringUtils.isBlank(originalUri) || StringUtils.isBlank(fileName)) {
+		if(Strings.isBlank(originalUri) || Strings.isBlank(fileName)) {
 			return originalUri;
 		}
 		return originalUri.replaceAll("(/|\\\\)" + fileName + "([/\\\\]|$)", "" + "$2");
@@ -57,7 +57,7 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static String modifyFileName(String fileName, String prefix, String postfix) {
-		if(StringUtils.isBlank(fileName))
+		if(Strings.isBlank(fileName))
 			throw new BaseException("FileName is blank, can't modifyFileName.");
 		prefix = prefix == null ? "" : prefix;
 		postfix = postfix == null ? "" : postfix;
@@ -69,9 +69,9 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static String modifyFileName(String path, String newFileName) {
-		if(StringUtils.isBlank(path))
+		if(Strings.isBlank(path))
 			throw new BaseException("path is blank, can't modifyFileName.");
-		if(StringUtils.isBlank(newFileName))
+		if(Strings.isBlank(newFileName))
 			return path;
 		return path.replaceAll("^((https?://)?(/|\\\\)?([^/\\\\]+(/|\\\\))*)[^/\\\\\\.]+(\\.[^/\\\\\\.]+)?$", "$1" + newFileName);
 	}
@@ -83,8 +83,8 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static String modifyFileType(String path, String fileType) {
-		if(StringUtils.isBlank(path)
-				|| StringUtils.isBlank(fileType))
+		if(Strings.isBlank(path)
+				|| Strings.isBlank(fileType))
 			return path;
 		path = FilenameUtils.normalize(path, true);
 		int dotIndex = path.lastIndexOf(Symbol.PERIOD),
@@ -104,7 +104,7 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static boolean isParamUrl(String url) {
-		if(StringUtils.isNotBlank(url)) {
+		if(Strings.isNotBlank(url)) {
 			int lastIndex = url.lastIndexOf(Symbol.QUESTION);
 			if(lastIndex != -1) {
 				url = url.substring(lastIndex + 1);
@@ -158,10 +158,10 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static String addImgUrlRule(String imgUrl, String[] rules) {
-		if(StringUtils.isBlank(imgUrl)
+		if(Strings.isBlank(imgUrl)
 				|| rules.length == 0) 
 			return imgUrl;
-		String tmp = StringUtils.join(rules, "_");
+		String tmp = Strings.join(rules, "_");
 		return imgUrl.replaceFirst("^(.+?)(\\.[a-z]+)$", "$1_" + tmp + "$2");
 	}
 	
@@ -172,8 +172,8 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static String addImgUrlRule(String imgUrl, String rule) {
-		if(StringUtils.isBlank(imgUrl)
-				|| StringUtils.isBlank(rule)) 
+		if(Strings.isBlank(imgUrl)
+				|| Strings.isBlank(rule))
 			return imgUrl;
 		return imgUrl.replaceFirst("^(.+?)(\\.[a-z]+)$", "$1_" + rule + "$2");
 	}
@@ -185,10 +185,10 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static String removeImgUrlRule(String imgUrl, String... rules) {
-		if(StringUtils.isBlank(imgUrl)
+		if(Strings.isBlank(imgUrl)
 				|| rules.length == 0) 
 			return imgUrl;
-		String regUrl = "((_" + StringUtils.join(rules, ")|(_") + "))";
+		String regUrl = "((_" + Strings.join(rules, ")|(_") + "))";
 		return imgUrl.replaceAll(regUrl, "");
 	}
 	
@@ -198,7 +198,7 @@ public class RegularUtils {
 	 * @return
 	 */
 	public static String getImgUrlOriginal(String imgUrl) {
-		if(StringUtils.isBlank(imgUrl)) return imgUrl;
+		if(Strings.isBlank(imgUrl)) return imgUrl;
 		return imgUrl.replaceAll("_[0-9a-z]+", "");
 	}
 	
@@ -218,7 +218,7 @@ public class RegularUtils {
 	public static void main(String[] args) {
 		/*System.out.println("gift/mcq_d1357c814a3257a899.jpg".replaceFirst("(.+?)(\\.[a-z]+)$", "$1_" + "r50c50" + "$2"));
 		String[] rules = new String[]{"r100c100"};
-		System.out.println("((_" + StringUtils.join(rules, ")|(_") + "))");
+		System.out.println("((_" + Strings.join(rules, ")|(_") + "))");
 		System.out.println(getImgUrlOriginal("http://test/gift/aaa_r100c100_r100c50_r100c100.jpg"));*/
 		/*Pattern p = Pattern.compile("^((/|\\\\)?([^/\\\\]+(/|\\\\))*)[^/\\\\\\.]+(\\.[^/\\\\\\.]+)?$");
 		p.matcher("c:/test/aa/");

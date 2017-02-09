@@ -6,7 +6,7 @@ import java.util.*;
  * @author WangXiaoJin
  * 
  */
-public abstract class CollectionUtils extends org.apache.commons.collections.CollectionUtils {
+public abstract class Collections extends org.apache.commons.collections.CollectionUtils {
 
 	@SafeVarargs
 	public static <T> Set<T> toSet(T... values) {
@@ -16,7 +16,7 @@ public abstract class CollectionUtils extends org.apache.commons.collections.Col
 		}
 		
 		Set<T> r = new HashSet<>(values.length);
-		Collections.addAll(r, values);
+		java.util.Collections.addAll(r, values);
 		return r;
 	}
 	
@@ -29,7 +29,7 @@ public abstract class CollectionUtils extends org.apache.commons.collections.Col
 		
 		//
 		List<T> r = new ArrayList<>(values.length);
-		Collections.addAll(r, values);
+		java.util.Collections.addAll(r, values);
 		return r;
 	}
 }

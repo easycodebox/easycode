@@ -1,9 +1,9 @@
 package com.easycodebox.jdbc.res;
 
 import com.easycodebox.common.freemarker.ConfigurationFactory;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
@@ -102,7 +102,7 @@ public class GenerateBeanRes {
 				outPutFile.getParentFile().mkdirs();
 			}
 			//设置R文件的package name
-			if (StringUtils.isBlank(packageName)) {
+			if (Strings.isBlank(packageName)) {
 				//如果packageName参数为空则自动计算出R文件的packageName
 				String basePathOfOutput = new File(Symbol.EMPTY).getCanonicalPath();
 				packageName = outPutFile.getCanonicalPath().replaceFirst("\\Q" + basePathOfOutput + File.separator + "\\E", Symbol.EMPTY);
@@ -142,7 +142,7 @@ public class GenerateBeanRes {
 					BeanData data = new BeanData();
 					ClassReader cr = new ClassReader(r.getInputStream());
 					String className = cr.getClassName();
-					Class<?> clazz = ClassUtils.getClass(className
+					Class<?> clazz = Classes.getClass(className
 							.replace(Symbol.SLASH, Symbol.PERIOD));
 					if (clazz.isAnnotation() || clazz.isAnonymousClass() || clazz.isArray() || clazz.isEnum()) {
 						continue;
@@ -154,7 +154,7 @@ public class GenerateBeanRes {
 					List<String> properties = new ArrayList<>();
 					data.setClazz(clazz.getName() + ".class");
 					data.setClassName(clazz.getSimpleName());
-					if(ClassUtils.isAssignable(clazz, Entity.class))
+					if(Classes.isAssignable(clazz, Entity.class))
 						data.setEntity(true);
 					else
 						data.setEntity(false);

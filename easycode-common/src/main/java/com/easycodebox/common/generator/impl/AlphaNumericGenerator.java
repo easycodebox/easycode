@@ -2,7 +2,7 @@ package com.easycodebox.common.generator.impl;
 
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.exception.BoundReachedException;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 
 /**
  * @author WangXiaoJin
@@ -87,10 +87,10 @@ public final class AlphaNumericGenerator extends AbstractStringGenerator {
 				break;
 			}
 		}
-		String newVal = StringUtils.join(fragVals, "");
+		String newVal = Strings.join(fragVals, "");
 		int zeroNum = initialVal.length() - newVal.length();
 		if(zeroNum > 0)
-			newVal = StringUtils.repeat("0", zeroNum) + newVal;
+			newVal = Strings.repeat("0", zeroNum) + newVal;
 		return newVal;
 	}
 	

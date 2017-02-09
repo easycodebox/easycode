@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.easycodebox.common.lang.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,6 @@ import com.easycodebox.auth.model.entity.sys.Log;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.LogLevel;
-import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
 
@@ -53,7 +53,7 @@ public class LogServiceImpl extends AbstractServiceImpl<Log> implements LogServi
 	@Override
 	@Transactional
 	public Log add(Log log) {
-		if(StringUtils.isBlank(log.getTitle()))
+		if(Strings.isBlank(log.getTitle()))
 			log.setTitle(null);
 		super.save(log);
 		return log;

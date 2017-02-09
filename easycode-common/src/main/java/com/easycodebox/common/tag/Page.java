@@ -2,7 +2,7 @@ package com.easycodebox.common.tag;
 
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import org.apache.taglibs.standard.tag.common.core.ParamParent;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +79,7 @@ public class Page extends AbstractHtmlTag implements ParamParent {
 			//自动添加上次请求的参数
 			if(antoAddParam) {
 				HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-				String ps = HttpUtils.getRequestParams(request, 2, BaseConstants.httpParamTradition, "pageNo");
+				String ps = Https.getRequestParams(request, 2, BaseConstants.httpParamTradition, "pageNo");
 				if(ps.length() > 0)
 					paramStr.append(paramStr.length() > 0 ? Symbol.AND_MARK : Symbol.EMPTY).append(ps);
 			}

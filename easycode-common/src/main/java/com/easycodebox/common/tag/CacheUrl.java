@@ -1,9 +1,9 @@
 package com.easycodebox.common.tag;
 
 import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import com.easycodebox.common.validate.Assert;
 import org.apache.taglibs.standard.tag.common.core.ParamParent;
 
@@ -78,8 +78,8 @@ public class CacheUrl extends TagExt implements ParamParent {
 		try {
 			//添加当前请求的参数
 			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-			String url = HttpUtils.getFullRequestUrl(request, 2, BaseConstants.httpParamTradition, excludeParams);
-			url = HttpUtils.addParams2Url(url, params.toString());
+			String url = Https.getFullRequestUrl(request, 2, BaseConstants.httpParamTradition, excludeParams);
+			url = Https.addParams2Url(url, params.toString());
 			pageContext.getOut().append(String.format(content, url));
 		} catch (IOException e) {
 			log.error("TextCut Tag processing error.", e);
@@ -112,7 +112,7 @@ public class CacheUrl extends TagExt implements ParamParent {
 	}
 
 	public void setExcludeParams(String params) {
-		if(StringUtils.isNotBlank(params)) {
+		if(Strings.isNotBlank(params)) {
 			this.excludeParams = params.trim().split("\\s*" + Symbol.COMMA + "\\s*");
 		}
 	}

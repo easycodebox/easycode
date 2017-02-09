@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.file.Resources;
 import com.easycodebox.common.lang.DataConvert;
-import com.easycodebox.common.lang.reflect.ClassUtils;
-import com.easycodebox.common.lang.reflect.FieldUtils;
+import com.easycodebox.common.lang.reflect.Classes;
+import com.easycodebox.common.lang.reflect.Fields;
 import com.easycodebox.common.validate.Assert;
 
 /**
@@ -43,7 +43,7 @@ public class StaticValueProcessor implements Processor {
 			}
 			if(classes != null) {
 				for(String clazz : classes) {
-					processStaticValue(ClassUtils.getClass(clazz));
+					processStaticValue(Classes.getClass(clazz));
 				}
 			}
 		} catch (Exception e) {
@@ -68,7 +68,7 @@ public class StaticValueProcessor implements Processor {
 						String key = m.group(1),
 							val = properties.getProperty(key);
 						if(val != null) {
-							FieldUtils.writeStaticField(field, 
+							Fields.writeStaticField(field,
 									DataConvert.convertType(val, field.getType()));
 						}else {
 							Object originalVal = field.get(null);

@@ -1,11 +1,13 @@
 package com.easycodebox.common.lang;
 
-import com.easycodebox.common.enums.*;
+import com.easycodebox.common.enums.DetailEnum;
+import com.easycodebox.common.enums.EnumClassFactory;
 import com.easycodebox.common.enums.entity.DataType;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.StringToken.StringFormatToken;
-import com.easycodebox.common.lang.reflect.*;
+import com.easycodebox.common.lang.reflect.Classes;
+import com.easycodebox.common.lang.reflect.Fields;
 import com.easycodebox.common.validate.Regex;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -15,15 +17,16 @@ import org.apache.commons.lang.ArrayUtils;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public class StringUtils extends org.apache.commons.lang.StringUtils {
+public class Strings extends org.apache.commons.lang.StringUtils {
 	
-	//private static final Logger log = LoggerFactory.getLogger(StringUtils.class);
+	//private static final Logger log = LoggerFactory.getLogger(Strings.class);
 	
 	public static String string2unicode(String str) {
 		if(str == null) return null;
@@ -307,7 +310,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 	@Deprecated
 	private static Object getMappingValue(Object data, String key, String enumClassName, 
 			Map<String, List<Map<String, Object>>> enums) {
-		Object val = ObjectUtils.getMappingValue(data, key);
+		Object val = Objects.getMappingValue(data, key);
 		if(enumClassName != null && val != null) {
 			//转换枚举值
 			if(enums == null || !enums.containsKey(enumClassName))
@@ -443,7 +446,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 	public static <T> T formatExp2Object(String fmtStr, String dataStr, Class<T> dataClass, 
 			Map<String, Class<?>> assignClasses, String keyPrefix, Map<String, List<Map<String, Object>>> enums) throws IOException {
 		Map originalData = Jacksons.NON_NULL.toBean(dataStr, Map.class);
-		T data = ClassUtils.newInstance(dataClass);
+		T data = Classes.newInstance(dataClass);
 		if(isBlank(fmtStr) || isBlank(dataStr))
 			return data;
 		
@@ -467,7 +470,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 					wrapper = matcher.group(10);
 				}
 				
-				Object proVal = ObjectUtils.getMappingValue(originalData, unquote(key));
+				Object proVal = Objects.getMappingValue(originalData, unquote(key));
 				
 				if(wrapper.contains(ENUM_VALUE)) {
 					String[] frags = wrapper.split(ENUM_VALUE);
@@ -505,16 +508,16 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 					}
 					String newKey = keyPrefix.length() > 0 ? keyPrefix + "." + wrapper : wrapper;
 					Class proClazz = assignClasses == null ? null : assignClasses.get(newKey + "[]");
-					proClazz = proClazz == null ? FieldUtils.getFieldGenericType(data.getClass(), wrapper) : proClazz;
+					proClazz = proClazz == null ? Fields.getFieldGenericType(data.getClass(), wrapper) : proClazz;
 					for(int i = 0; i < listVal.size(); i++) {
 						Object val = listVal.get(i);
 						if(val == null) continue;
 						Object subData = formatExp2Object(array, Jacksons.NON_NULL.toJson(val), 
 								proClazz == null ? val.getClass() : proClazz, assignClasses, wrapper, enums);
-						ObjectUtils.setMappingValue(data, wrapper + "[" + i + "]", subData, assignClasses);
+						Objects.setMappingValue(data, wrapper + "[" + i + "]", subData, assignClasses);
 					}
 				}else {
-					ObjectUtils.setMappingValue(data, wrapper, proVal, assignClasses);
+					Objects.setMappingValue(data, wrapper, proVal, assignClasses);
 				}
 				result = matcher.find();
 			} while(result);

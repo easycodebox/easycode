@@ -1,7 +1,7 @@
 package com.easycodebox.common.tag;
 
 import com.easycodebox.common.jackson.Jacksons;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 
 import java.util.Map;
@@ -88,7 +88,7 @@ public abstract class AbstractHtmlTag extends TagExt {
 		appendIfNotNull(sb, "onmouseup", onmouseup);
 		appendIfNotNull(sb, "onselect", onselect);
 		if(tagAttrMap == null) {
-			if(StringUtils.isNotBlank(tagAttr))
+			if(Strings.isNotBlank(tagAttr))
 				sb.append(tagAttr).append(Symbol.SPACE);
 		}else if(tagAttrMap.containsKey(ALL_KEY)) {
 			sb.append(tagAttrMap.get(ALL_KEY)).append(Symbol.SPACE);

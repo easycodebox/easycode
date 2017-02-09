@@ -2,7 +2,7 @@ package com.easycodebox.common.lang;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import org.apache.commons.beanutils.BeanUtils;
@@ -32,8 +32,8 @@ public class DataConvert {
 	 * @return
 	 */
 	public static <T> T[] convertArray(String obj, Class<T[]> clazz, String separator) throws BaseException {
-		if(StringUtils.isBlank(obj)) throw new BaseException("obj is null.");
-		if(StringUtils.isBlank(separator))
+		if(Strings.isBlank(obj)) throw new BaseException("obj is null.");
+		if(Strings.isBlank(separator))
 			separator = DataConvert.separator;
 		String[] s = obj.replaceAll("[\\[\\]]", "").split(separator);
 		return convertArray(s, clazz);
@@ -60,7 +60,7 @@ public class DataConvert {
 	@SuppressWarnings("unchecked")
 	public static <T> T[] convertArray(String[] objs, Class<T[]> clazz) throws BaseException {
 		if(objs == null) return null;
-		if(clazz == Object[].class)
+		if((Object)clazz == (Object)Object[].class)
 			return (T[])objs;
 		T[] copy = (T[]) Array.newInstance(clazz.getComponentType(), objs.length);
         int i = 0;  				
@@ -98,7 +98,7 @@ public class DataConvert {
 		obj = obj.trim().replaceAll("^['\"]*([^'\"]*)['\"]*$", "$1");
 		T t = null;
 		if(clazz.isArray()) {
-			if(StringUtils.isBlank(separator))
+			if(Strings.isBlank(separator))
 				separator = DataConvert.separator;
 			String[] os = obj.replaceAll("[\\[\\]]", "").split(separator);
 			t = (T)Array.newInstance(clazz.getComponentType(), os.length);
@@ -106,7 +106,7 @@ public class DataConvert {
 			for(String temp : os) 
 				Array.set(t, i++, convertType(temp, clazz.getComponentType()));
 		}else{
-			clazz = ClassUtils.primitiveToWrapper(clazz);
+			clazz = Classes.primitiveToWrapper(clazz);
 			if(Number.class.isAssignableFrom(clazz)) {
 				try {
 					Constructor<T> c = clazz.getConstructor(String.class);
@@ -151,14 +151,14 @@ public class DataConvert {
 					}
 				}
 			}else if(Date.class.isAssignableFrom(clazz)) {
-				if(StringUtils.isBlank(obj))
+				if(Strings.isBlank(obj))
 					t = null;
-				else if(StringUtils.isNumeric(obj))
+				else if(Strings.isNumeric(obj))
 					t = (T)new Date(Long.parseLong(obj));
 				else
-					t = (T)DateUtils.parse(obj); 
+					t = (T) Dates.parse(obj);
 			}else if(Calendar.class.isAssignableFrom(clazz)) {
-				t = (T)DateUtils.parse2Calenar(obj);
+				t = (T) Dates.parse2Calenar(obj);
 			}else if(Boolean.class.isAssignableFrom(clazz)) {
 				t = (T) Boolean.valueOf(obj);
 			}else {
@@ -263,7 +263,7 @@ public class DataConvert {
 			throw new IllegalArgumentException("data 参数不能为集合");
 		StringBuilder sb = new StringBuilder();
 		if(forceOneVal) {
-			if(!DataTypeUtils.isBasicType(data)
+			if(!DataTypes.isBasicType(data)
 					&& props != null
 					&& props.length > 0
 					&& props[0] != null) {
@@ -275,7 +275,7 @@ public class DataConvert {
 			}else
 				sb.append(data.toString());
 		}else {
-			if(DataTypeUtils.isBasicType(data)) {
+			if(DataTypes.isBasicType(data)) {
 				sb.append(data.toString());
 			}else {
 				sb.append(Symbol.L_BRACE);

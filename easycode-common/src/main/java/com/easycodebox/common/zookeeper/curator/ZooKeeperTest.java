@@ -1,7 +1,7 @@
 package com.easycodebox.common.zookeeper.curator;
 
 import com.easycodebox.common.enums.DetailEnum;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -41,7 +41,7 @@ public class ZooKeeperTest {
 			for (Enum<T> envTmp : envs) {
 				String node = ZKPaths.makePath(prefixNodeName, envTmp.name());
 				Stat stat = client.checkExists().forPath(node);
-				byte[] data = StringUtils.join(((IpArrays)envTmp).getIps(), Symbol.COMMA).getBytes();
+				byte[] data = Strings.join(((IpArrays)envTmp).getIps(), Symbol.COMMA).getBytes();
 				if (stat == null) {
 					client.create().forPath(node, data);
 				} else {

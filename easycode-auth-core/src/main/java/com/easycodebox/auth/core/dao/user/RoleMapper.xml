@@ -16,7 +16,7 @@
 		SELECT r.id, r.name, r.sort, r.status <include refid="openedByUserId"/>
 	</select>
 	
-	<select id="listOpenedRoleIdsByUserId">
+	<select id="listOpenedRoleIdsByUserId" resultType="int">
 		SELECT r.id <include refid="openedByUserId"/>
 	</select>
 	

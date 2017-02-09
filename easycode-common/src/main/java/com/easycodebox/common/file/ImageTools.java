@@ -84,34 +84,34 @@ public class ImageTools {
 	 */
 	public static CodeMsg validateImgs(String rules, ImageInputStream[] imgs, long[] fileSizes, Integer maxSize, boolean transaction) {
 		Assert.notEmpty(imgs);
-		if(StringUtils.isBlank(rules)) {
+		if(Strings.isBlank(rules)) {
 			return CodeMsg.FAIL.msg("图片规则不能为空");
 		}
-		rules = RegularUtils.getQueryString(rules);
+		rules = Regulars.getQueryString(rules);
 		Double wl = null, wg = null, hl = null, hg = null, re = null, 
 				rl = null, rg = null, sl = null, sg = null;
 		String type = null, error;
-		if(StringUtils.isNotBlank(rules)) {
-			wl = FileUtils.processRule(rules, "wl", false, Double.class);
-			wg = FileUtils.processRule(rules, "wg", true, Double.class);
-			hl = FileUtils.processRule(rules, "hl", false, Double.class);
-			hg = FileUtils.processRule(rules, "hg", true, Double.class);
-			re = FileUtils.processRule(rules, "re", false, Double.class);
-			rl = FileUtils.processRule(rules, "rl", false, Double.class);
-			rg = FileUtils.processRule(rules, "rg", true, Double.class);
-			sl = FileUtils.processRule(rules, "sl", false, Double.class);
+		if(Strings.isNotBlank(rules)) {
+			wl = Files.processRule(rules, "wl", false, Double.class);
+			wg = Files.processRule(rules, "wg", true, Double.class);
+			hl = Files.processRule(rules, "hl", false, Double.class);
+			hg = Files.processRule(rules, "hg", true, Double.class);
+			re = Files.processRule(rules, "re", false, Double.class);
+			rl = Files.processRule(rules, "rl", false, Double.class);
+			rg = Files.processRule(rules, "rg", true, Double.class);
+			sl = Files.processRule(rules, "sl", false, Double.class);
 			if (maxSize != null && maxSize > 0 && (sl == null || maxSize < sl)) {
 				sl = maxSize.doubleValue();
 			}
-			sg = FileUtils.processRule(rules, "sg", true, Double.class);
-			type = FileUtils.processRule(rules, "type", true, String.class);
+			sg = Files.processRule(rules, "sg", true, Double.class);
+			type = Files.processRule(rules, "type", true, String.class);
 		}
 		
 		Image[] newImgs = new Image[imgs.length];
 		for(int i = 0; i < imgs.length; i++) {
 			ImageReader reader = null;
 			Image im = new Image();
-			im.setSize(FileUtils.byte2m(fileSizes[i], 2));
+			im.setSize(Files.byte2m(fileSizes[i], 2));
 			newImgs[i] = im;
 			try {
 				
@@ -149,7 +149,7 @@ public class ImageTools {
 				BigDecimal ratio = new BigDecimal(1.0*w/h).setScale(2, BigDecimal.ROUND_HALF_UP);
 				if(wl != null && w > wl) {
 					/* ------ error ------ */
-					error = "图片宽度不能大于" + DecimalUtils.fmt(wl, 2, true) + "像素";
+					error = "图片宽度不能大于" + Decimals.fmt(wl, 2, true) + "像素";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {
@@ -160,7 +160,7 @@ public class ImageTools {
 				}
 				if(wg != null && w < wg) {
 					/* ------ error ------ */
-					error = "图片宽度不能小于" + DecimalUtils.fmt(wg, 2, true) + "像素";
+					error = "图片宽度不能小于" + Decimals.fmt(wg, 2, true) + "像素";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {
@@ -171,7 +171,7 @@ public class ImageTools {
 				}
 				if(hl != null && h > hl) {
 					/* ------ error ------ */
-					error = "图片高度不能大于" + DecimalUtils.fmt(hl, 2, true) + "像素";
+					error = "图片高度不能大于" + Decimals.fmt(hl, 2, true) + "像素";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {
@@ -182,7 +182,7 @@ public class ImageTools {
 				} 
 				if(hg != null && h < hg) {
 					/* ------ error ------ */
-					error = "图片高度不能小于" + DecimalUtils.fmt(hg, 2, true) + "像素";
+					error = "图片高度不能小于" + Decimals.fmt(hg, 2, true) + "像素";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {
@@ -198,7 +198,7 @@ public class ImageTools {
 					if(ratio.compareTo(reDec.subtract(new BigDecimal("0.1"))) < 0
 							|| ratio.compareTo(reDec.add(new BigDecimal("0.1"))) > 0) {
 						/* ------ error ------ */
-						error = "请确定图片的宽高比例是" + DecimalUtils.fmt(reDec, 2, true);
+						error = "请确定图片的宽高比例是" + Decimals.fmt(reDec, 2, true);
 			        	if (transaction) {
 			        		return CodeMsg.FAIL.msg(error);
 			        	} else {
@@ -210,7 +210,7 @@ public class ImageTools {
 				} 
 				if(rl != null && ratio.doubleValue() > rl) {
 					/* ------ error ------ */
-					error = "图片的宽高比例不能大于" + DecimalUtils.fmt(rl, 2, true);
+					error = "图片的宽高比例不能大于" + Decimals.fmt(rl, 2, true);
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {
@@ -221,7 +221,7 @@ public class ImageTools {
 				} 
 				if(rg != null && ratio.doubleValue() < rg) {
 					/* ------ error ------ */
-					error = "图片的宽高比例不能小于" + DecimalUtils.fmt(rg, 2, true);
+					error = "图片的宽高比例不能小于" + Decimals.fmt(rg, 2, true);
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {
@@ -230,9 +230,9 @@ public class ImageTools {
 		        	}
 		        	/* ------ error ------ */
 				}
-				if(sl != null && FileUtils.byte2m(fileSizes[i], 6) > sl) {
+				if(sl != null && Files.byte2m(fileSizes[i], 6) > sl) {
 					/* ------ error ------ */
-					error = "图片不能大于" + DecimalUtils.fmt(sl, 2, true) + "M";
+					error = "图片不能大于" + Decimals.fmt(sl, 2, true) + "M";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {
@@ -241,9 +241,9 @@ public class ImageTools {
 		        	}
 		        	/* ------ error ------ */
 				} 
-				if(sg != null && FileUtils.byte2m(fileSizes[i], 6) < sg) {
+				if(sg != null && Files.byte2m(fileSizes[i], 6) < sg) {
 					/* ------ error ------ */
-					error = "图片不能小于" + DecimalUtils.fmt(sg, 2, true) + "M";
+					error = "图片不能小于" + Decimals.fmt(sg, 2, true) + "M";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {
@@ -252,7 +252,7 @@ public class ImageTools {
 		        	}
 		        	/* ------ error ------ */
 				}
-				if(StringUtils.isNotBlank(type)) {
+				if(Strings.isNotBlank(type)) {
 					boolean auth = false;
 					String[] allowTypes = type.split(Symbol.COMMA);
 					for(String t : allowTypes) {
@@ -304,8 +304,8 @@ public class ImageTools {
 	 */
 	public static boolean fillScaleImg(String srcImg, String descImg
 			, int width, int height, boolean enlarge) {
-		if(StringUtils.isBlank(srcImg) 
-        		||  StringUtils.isBlank(descImg)) {   
+		if(Strings.isBlank(srcImg)
+        		||  Strings.isBlank(descImg)) {
 			log.warn("img is balnk in the method resizeImage of ImageTools.Class .");
             return false;
 		}
@@ -411,7 +411,7 @@ public class ImageTools {
 		bufferImage = ImageIO.read(fileImage);
 		image.setHeight(bufferImage.getHeight());
 		image.setWidth(bufferImage.getWidth());
-		image.setSize(FileUtils.byte2m(fileImage.length(), 2));
+		image.setSize(Files.byte2m(fileImage.length(), 2));
 		return image;
 	}
 
@@ -469,7 +469,7 @@ public class ImageTools {
 		for(int i = 0; i < resizeImg.size(); i++) {
 			Image t = resizeImg.get(i);
 			//如果Image没有初始化imgName则用该函数的imgName参数
-			if(StringUtils.isBlank(t.getName()))
+			if(Strings.isBlank(t.getName()))
 				t.setName(imgName);
 			Integer width = t.getWidth(),
 					height = t.getHeight();
@@ -534,7 +534,7 @@ public class ImageTools {
 	@Deprecated
 	public static String cutImageComplex(String imgPath, String baseRealPath, 
 			String filePath, int x, int y, int width, int height) throws Exception {
-		Object[] urlAndImgs = FileUtils.analyzeUploadImgUrl(filePath, false, false);
+		Object[] urlAndImgs = Files.analyzeUploadImgUrl(filePath, false, false);
 		List<Image> smallImgs = urlAndImgs[1] == null ? null : (List<Image>)urlAndImgs[1];
 		File tmp = new File(baseRealPath + Symbol.SLASH + imgPath);
 		String imgName = FilenameUtils.getName(imgPath);
@@ -543,7 +543,7 @@ public class ImageTools {
 		if (!bigImg.getParentFile().exists())
 			bigImg.getParentFile().mkdirs();
 		tmp.renameTo(bigImg);
-		//org.apache.commons.io.FileUtils.copyFile(tmp, bigImg);
+		//org.apache.commons.io.Files.copyFile(tmp, bigImg);
 		if(smallImgs == null || smallImgs.size() == 0)
 			return urlAndImgs[0] + Symbol.SLASH + imgName;
 		

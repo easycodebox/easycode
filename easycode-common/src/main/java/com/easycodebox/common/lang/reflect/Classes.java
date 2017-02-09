@@ -1,6 +1,6 @@
 package com.easycodebox.common.lang.reflect;
 
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
@@ -12,9 +12,9 @@ import java.util.*;
  * @author WangXiaoJin
  *
  */
-public class ClassUtils extends org.apache.commons.lang.ClassUtils {
+public class Classes extends org.apache.commons.lang.ClassUtils {
 	
-	private static final Logger log = LoggerFactory.getLogger(ClassUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(Classes.class);
 	
     public static List<Class<?>> getAllTypes(Class<?> clazz) {
         //
@@ -43,7 +43,7 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils {
 		}
 		if (cl == null) {
 			// No thread context class loader -> use class loader of this class.
-			cl = ClassUtils.class.getClassLoader();
+			cl = Classes.class.getClassLoader();
 			if (cl == null) {
 				// getClassLoader() returning null indicates the bootstrap ClassLoader
 				try {
@@ -227,7 +227,7 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils {
 	 * @return
 	 */
 	public static String getLastPkg(String pkg) {
-		if(StringUtils.isBlank(pkg)) return null;
+		if(Strings.isBlank(pkg)) return null;
 		int index = pkg.lastIndexOf(".");
 		return pkg.substring(index + 1);
 	}

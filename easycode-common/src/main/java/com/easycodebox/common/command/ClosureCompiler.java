@@ -21,7 +21,7 @@ public class ClosureCompiler {
 		}
 		sb.append(" --js_output_file ").append(c.outPath);
 		try {
-			RuntimeUtils.exec(sb.toString());
+			Runtimes.exec(sb.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -2,8 +2,8 @@ package com.easycodebox.jdbc.util;
 
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.GeneratorType;
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.lang.Strings;
+import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.Column;
@@ -97,9 +97,9 @@ public class AnnotateUtils {
 			= field.getAnnotation(javax.persistence.OneToOne.class);
 		if(oneToOneAnno != null) {
 			associated = new OneToOne();
-			if(!ClassUtils.isVoid(oneToOneAnno.targetEntity()))
+			if(!Classes.isVoid(oneToOneAnno.targetEntity()))
 				associated.setAssociatedClass(oneToOneAnno.targetEntity());
-			if(StringUtils.isNotBlank(oneToOneAnno.mappedBy()))
+			if(Strings.isNotBlank(oneToOneAnno.mappedBy()))
 				((OneToOne)associated).setMappedBy(oneToOneAnno.mappedBy());
 		}
 		if(associated == null) {
@@ -107,7 +107,7 @@ public class AnnotateUtils {
 				= field.getAnnotation(javax.persistence.ManyToOne.class);
 			if(manyToOneAnno != null) {
 				associated = new ManyToOne();
-				if(!ClassUtils.isVoid(manyToOneAnno.targetEntity()))
+				if(!Classes.isVoid(manyToOneAnno.targetEntity()))
 					associated.setAssociatedClass(manyToOneAnno.targetEntity());
 			}
 		}
@@ -116,9 +116,9 @@ public class AnnotateUtils {
 				= field.getAnnotation(javax.persistence.OneToMany.class);
 			if(oneToManyAnno != null) {
 				associated = new OneToMany();
-				if(!ClassUtils.isVoid(oneToManyAnno.targetEntity()))
+				if(!Classes.isVoid(oneToManyAnno.targetEntity()))
 					associated.setAssociatedClass(oneToManyAnno.targetEntity());
-				if(StringUtils.isNotBlank(oneToManyAnno.mappedBy()))
+				if(Strings.isNotBlank(oneToManyAnno.mappedBy()))
 					((OneToMany)associated).setMappedBy(oneToManyAnno.mappedBy());
 			}
 		}
@@ -127,9 +127,9 @@ public class AnnotateUtils {
 				= field.getAnnotation(javax.persistence.ManyToMany.class);
 			if(manyToManyAnno != null) {
 				associated = new ManyToMany();
-				if(!ClassUtils.isVoid(manyToManyAnno.targetEntity()))
+				if(!Classes.isVoid(manyToManyAnno.targetEntity()))
 					associated.setAssociatedClass(manyToManyAnno.targetEntity());
-				if(StringUtils.isNotBlank(manyToManyAnno.mappedBy()))
+				if(Strings.isNotBlank(manyToManyAnno.mappedBy()))
 					((ManyToMany)associated).setMappedBy(manyToManyAnno.mappedBy());
 			}
 		}

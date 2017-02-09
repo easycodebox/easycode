@@ -3,9 +3,9 @@ package com.easycodebox.jdbc.support;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.Generators;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
-import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.jdbc.*;
@@ -38,7 +38,7 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 	
 	@SuppressWarnings("unchecked")
 	public AbstractSqlExecutor() {
-		entityClass = ClassUtils.getSuperClassGenricType(getClass());
+		entityClass = Classes.getSuperClassGenricType(getClass());
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 	 * @return
 	 */
 	protected <K extends Entity> SqlGrammar sql(Class<K> entityClass, String alias) {
-		return StringUtils.isBlank(alias) ? jdbcProcessor.instanceSqlGrammar(entityClass)
+		return Strings.isBlank(alias) ? jdbcProcessor.instanceSqlGrammar(entityClass)
 				: jdbcProcessor.instanceSqlGrammar(entityClass, alias);
 	}
 	

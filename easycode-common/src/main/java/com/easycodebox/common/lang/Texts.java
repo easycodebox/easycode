@@ -22,7 +22,7 @@ import java.util.*;
  *
  * @version $Revision: 147 $
  */
-public class TextUtils {
+public class Texts {
 
     public static String htmlEncode(String s) {
         return htmlEncode(s, true);
@@ -96,7 +96,7 @@ public class TextUtils {
      * <pre>
      *   // get Iterator of Strings ("abc","def","123");
      *   Iterator i = getIterator();
-     *   out.print( TextUtils.join(", ",i) );
+     *   out.print( Texts.join(", ",i) );
      *   // prints: "abc, def, 123"
      * </pre>
      *
@@ -155,15 +155,15 @@ public class TextUtils {
      * <pre>
      * // prints "hello"
      * String s=null;
-     * System.out.println(TextUtils.noNull(s,"hello");
+     * System.out.println(Texts.noNull(s,"hello");
      *
      * // prints "hello"
      * s="";
-     * System.out.println(TextUtils.noNull(s,"hello");
+     * System.out.println(Texts.noNull(s,"hello");
      *
      * // prints "world"
      * s="world";
-     * System.out.println(TextUtils.noNull(s, "hello");
+     * System.out.println(Texts.noNull(s, "hello");
      * </pre>
      *
      * @param string the String to check.
@@ -182,11 +182,11 @@ public class TextUtils {
      * <pre>
      * // prints 0
      * String s=null;
-     * System.out.println(TextUtils.noNull(s).length());
+     * System.out.println(Texts.noNull(s).length());
      *
      * // prints 1
      * s="a";
-     * System.out.println(TextUtils.noNull(s).length());
+     * System.out.println(Texts.noNull(s).length());
      * </pre>
      * @param string the String to check
      * @return a valid (non-null) string reference

@@ -1,6 +1,6 @@
 package com.easycodebox.jdbc;
 
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.jdbc.config.Configuration;
 import com.easycodebox.jdbc.dialect.Dialect;
@@ -96,13 +96,13 @@ public class Property implements Serializable {
 	public String toProjectionSql(Table table) {
 		Dialect dialect = Configuration.dialect;
 		StringBuilder sql = new StringBuilder();
-		if(StringUtils.isNotBlank(tableAlias))
+		if(Strings.isNotBlank(tableAlias))
 			sql.append(dialect.wrapQuote(tableAlias)).append(Symbol.PERIOD);
-		if(StringUtils.isNotBlank(propertyName))
+		if(Strings.isNotBlank(propertyName))
 			sql.append( dialect.wrapQuote( table.getColumn(propertyName).getSqlName() ) );
 		else
 			return Symbol.EMPTY;
-		if(StringUtils.isNotBlank(alias))
+		if(Strings.isNotBlank(alias))
 			sql.append(" AS ").append(dialect.wrapQuote(alias));
 		return sql.toString();
 	}
@@ -114,9 +114,9 @@ public class Property implements Serializable {
 	public String toConditionSql(Table table) {
 		Dialect dialect = Configuration.dialect;
 		StringBuilder sql = new StringBuilder();
-		if(StringUtils.isNotBlank(tableAlias))
+		if(Strings.isNotBlank(tableAlias))
 			sql.append(dialect.wrapQuote(tableAlias)).append(Symbol.PERIOD);
-		if(StringUtils.isNotBlank(propertyName))
+		if(Strings.isNotBlank(propertyName))
 			sql.append( dialect.wrapQuote( table.getColumn(propertyName).getSqlName() ) );
 		else
 			return Symbol.EMPTY;

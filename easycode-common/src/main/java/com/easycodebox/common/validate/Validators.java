@@ -4,7 +4,7 @@ import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.CodeMsg.Code;
 import com.easycodebox.common.error.ErrorContext;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 
 import java.io.Serializable;
@@ -124,8 +124,8 @@ public class Validators implements Serializable {
 		if(this.valid == null || this.valid)
 			this.valid = valid;
 		//验证失败时才会设置错误信息
-		if(!this.valid && msg != null && StringUtils.isNotBlank(msg)) {
-			if(StringUtils.isNotBlank(this.msg))
+		if(!this.valid && msg != null && Strings.isNotBlank(msg)) {
+			if(Strings.isNotBlank(this.msg))
 				this.msg += msg + Symbol.SPACE;
 			else
 				this.msg = msg + Symbol.SPACE;
@@ -334,7 +334,7 @@ public class Validators implements Serializable {
 	 */
 	public Validators empty(String... msg) {
 		if(!jumpValidate()) {
-			result(data == null || StringUtils.isBlank(data.toString()), 
+			result(data == null || Strings.isBlank(data.toString()),
 					resetMsg("{0}只能为空", msg));
 		}
 		return this;
@@ -346,7 +346,7 @@ public class Validators implements Serializable {
 	 */
 	public Validators notEmpty(String... msg) {
 		if(!jumpValidate()) {
-			result(data != null && StringUtils.isNotBlank(data.toString()), 
+			result(data != null && Strings.isNotBlank(data.toString()),
 					resetMsg("{0}不能为空", msg));
 		}
 		return this;
@@ -359,13 +359,13 @@ public class Validators implements Serializable {
 	public Validators notEmptyInside(String... msg) {
 		if(!jumpValidate()) {
 			boolean va = true;
-			if(data == null || StringUtils.isBlank(data.toString())) {
+			if(data == null || Strings.isBlank(data.toString())) {
 				va = false;
 			}else {
 				if(data.getClass().isArray()) {
 					Object[] tmp = (Object[])data;
 					for(Object o : tmp) {
-						if(o == null || StringUtils.isBlank(o.toString())) {
+						if(o == null || Strings.isBlank(o.toString())) {
 							va = false;
 							break;
 						}
@@ -375,7 +375,7 @@ public class Validators implements Serializable {
 					Iterator<?> ite = tmp.iterator();
 					while (ite.hasNext()) {
 						Object o = ite.next();
-						if(o == null || StringUtils.isBlank(o.toString())) {
+						if(o == null || Strings.isBlank(o.toString())) {
 							va = false;
 							break;
 						}
@@ -386,7 +386,7 @@ public class Validators implements Serializable {
 					Iterator<?> ite = vals.iterator();
 					while (ite.hasNext()) {
 						Object o = ite.next();
-						if(o == null || StringUtils.isBlank(o.toString())) {
+						if(o == null || Strings.isBlank(o.toString())) {
 							va = false;
 							break;
 						}
@@ -689,7 +689,7 @@ public class Validators implements Serializable {
 	 * @return
 	 */
 	public String getMsg() {
-		return StringUtils.format(msg, identify);
+		return Strings.format(msg, identify);
 	}
 	
 	public CodeMsg getError() {

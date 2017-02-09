@@ -13,7 +13,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.sitemesh.config.ConfigurableSiteMeshFilter;
 
 import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 
 /**
@@ -48,23 +48,23 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 				decoratedKey = filterConfig.getInitParameter("decoratedKey"),
 				noDecVals = filterConfig.getInitParameter("noDecVals");
 		
-		if (StringUtils.isNotBlank(pjax)) {
+		if (Strings.isNotBlank(pjax)) {
 			this.pjax = Boolean.parseBoolean(pjax.trim());
 		} else {
 			this.pjax = true;
 		}
 		
-		if (StringUtils.isNotBlank(pjaxKey)) {
+		if (Strings.isNotBlank(pjaxKey)) {
 			this.pjaxKey = pjaxKey.trim();
 		} else {
 			this.pjaxKey = BaseConstants.pjaxKey;
 		}
 		
-		if (StringUtils.isNotBlank(decoratedKey)) {
+		if (Strings.isNotBlank(decoratedKey)) {
 			this.decoratedKey = decoratedKey.trim();
 		}
 		
-		if (StringUtils.isNotBlank(noDecVals)) {
+		if (Strings.isNotBlank(noDecVals)) {
 			this.noDecVals = noDecVals.trim().split(Symbol.COMMA);
 		} else {
 			this.noDecVals = new String[]{ "false", "0" };

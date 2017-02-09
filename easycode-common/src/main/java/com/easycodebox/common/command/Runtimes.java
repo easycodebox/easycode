@@ -9,9 +9,9 @@ import java.io.*;
  * @author WangXiaoJin
  * 
  */
-public abstract class RuntimeUtils {
+public abstract class Runtimes {
     // 
-	private static final Logger log = LoggerFactory.getLogger(RuntimeUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(Runtimes.class);
 	
     /**
      * 
@@ -143,7 +143,7 @@ public abstract class RuntimeUtils {
 
 			};
 
-			System.out.println(RuntimeUtils.exec("java -version", out, err));
+			System.out.println(Runtimes.exec("java -version", out, err));
         }catch(Exception e) {
             e.printStackTrace();
         }

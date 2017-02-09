@@ -37,13 +37,13 @@ public class ImgUrl extends AbstractHtmlTag {
 		
 		Assert.notBlank(rule, "rule can't not be null.");
 		
-		url = StringUtils.isBlank(url) ? BaseConstants.Imgs.defaultImg : url;
+		url = Strings.isBlank(url) ? BaseConstants.Imgs.defaultImg : url;
 		StringBuilder sb = new StringBuilder(root)
 			.append(Symbol.SLASH);
 		if(mode.equalsIgnoreCase("ADD"))
-			sb.append(RegularUtils.addImgUrlRule(url, rule.split(Symbol.COMMA)));
+			sb.append(Regulars.addImgUrlRule(url, rule.split(Symbol.COMMA)));
 		else if(mode.equalsIgnoreCase("REMOVE"))
-			sb.append(RegularUtils.removeImgUrlRule(url, rule.split(Symbol.COMMA)));
+			sb.append(Regulars.removeImgUrlRule(url, rule.split(Symbol.COMMA)));
 		try {
 			pageContext.getOut().append(processContent(sb.toString()));
 		} catch (IOException e) {

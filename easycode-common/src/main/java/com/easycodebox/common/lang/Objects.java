@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * 
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
-public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
+public abstract class Objects extends org.apache.commons.lang.ObjectUtils {
 	//
 	private static final ConcurrentHashMap<Class<?>, BeanCopier> BEAN_COPIERS = new ConcurrentHashMap<>();
 	
@@ -104,7 +104,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 		}
 		
 		//
-		Method method = MethodUtils.findPublicMethod(clazz, "clone", new Class<?>[]{});
+		Method method = Methods.findPublicMethod(clazz, "clone", new Class<?>[]{});
 		return method != null;
 	}
 	
@@ -200,7 +200,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 			return cloneCopy(obj);
 		}
 		if(Serializable.class.isAssignableFrom(clazz)) {
-			return SerializationUtils.copy((Serializable)obj);
+			return Serializations.copy((Serializable)obj);
 		}
 
 		//
@@ -299,7 +299,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 		//
 		try {
 			final Class<?> clazz = obj.getClass();
-			Method method = MethodUtils.findPublicMethod(clazz, "clone", new Class<?>[]{});
+			Method method = Methods.findPublicMethod(clazz, "clone", new Class<?>[]{});
 			method.setAccessible(true);
 			return method.invoke(obj);
 		} catch (Exception e) {
@@ -355,7 +355,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	 */
 	@Deprecated
 	public static Object getMappingValue(Object data, String key) {
-		if(data == null || StringUtils.isBlank(key))
+		if(data == null || Strings.isBlank(key))
 			return null;
 		int index = key.indexOf(Symbol.PERIOD),
 			arrayIndex = -1;
@@ -370,7 +370,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 		if(data instanceof Map)
 			tmp = ((Map)data).get(firstKey);
 		else
-			tmp = FieldUtils.getBeanProperty(data, firstKey);
+			tmp = Fields.getBeanProperty(data, firstKey);
 		if(tmp != null && arrayIndex > -1) {
 			if(tmp instanceof List) {
 				List tmpList = ((List) tmp);
@@ -412,10 +412,10 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 				firstKey = m.group(1);
 				arrayIndex = Integer.parseInt(m.group(2));
 			}
-			Class<?> valType = FieldUtils.getBeanPropertyType(clazz, firstKey);
+			Class<?> valType = Fields.getBeanPropertyType(clazz, firstKey);
 			if(arrayIndex > -1) {
 				if(List.class.isAssignableFrom(valType)) {
-					valType = FieldUtils.getFieldGenericType(clazz, firstKey);
+					valType = Fields.getFieldGenericType(clazz, firstKey);
 				}else if(valType.isArray()) {
 					valType = valType.getComponentType();
 				}else 
@@ -488,7 +488,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 						Object obj = tmpList.get(arrayIndex);
 						if(obj == null) {
 							if(assignClass != null) {
-								obj = ClassUtils.newInstance(assignClass);
+								obj = Classes.newInstance(assignClass);
 							}else {
 								obj = new HashMap();
 							}
@@ -502,10 +502,10 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 						Object obj = Array.get(tmp, arrayIndex);
 						if(obj == null) {
 							if(assignClass != null) {
-								obj = ClassUtils.newInstance(assignClass);
+								obj = Classes.newInstance(assignClass);
 							}else {
 								Class type = tmp.getClass().getComponentType();
-								obj = type == null ? new HashMap() : ClassUtils.newInstance(type);
+								obj = type == null ? new HashMap() : Classes.newInstance(type);
 							}
 							Array.set(tmp, arrayIndex, obj);
 						}
@@ -515,7 +515,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 				}else {
 					if(tmp == null) {
 						if(assignClass != null) {
-							tmp = ClassUtils.newInstance(assignClass);
+							tmp = Classes.newInstance(assignClass);
 						}else {
 							tmp = new HashMap();
 						}
@@ -537,7 +537,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 						if(arrayIndex > ((Object[])tmp).length) {
 							tmp = Arrays.copyOf((Object[])tmp, arrayIndex);
 						}
-						if(!ClassUtils.isAssignable(value.getClass(), tmp.getClass().getComponentType(), true)) {
+						if(!Classes.isAssignable(value.getClass(), tmp.getClass().getComponentType(), true)) {
 							try {
 								value = DataConvert.convertType(value.toString(), tmp.getClass().getComponentType());
 							} catch (BaseException ignored) {
@@ -551,17 +551,17 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 					map.put(firstKey, value);
 			}
 		}else {
-			Object tmp = FieldUtils.getBeanProperty(data, firstKey);
+			Object tmp = Fields.getBeanProperty(data, firstKey);
 			if(index > -1) {
 				if(tmp == null) {
 					if(assignClass != null && arrayIndex == -1) {
-						tmp = ClassUtils.newInstance(assignClass);
+						tmp = Classes.newInstance(assignClass);
 					}else {
-						Class type = FieldUtils.getBeanPropertyType(data.getClass(), firstKey);
-						tmp = ClassUtils.newInstance(type);
+						Class type = Fields.getBeanPropertyType(data.getClass(), firstKey);
+						tmp = Classes.newInstance(type);
 					}
 					Assert.notNull(tmp, "Class {0} can not instance", tmp.getClass());
-					FieldUtils.setBeanProperty(data, firstKey, tmp);
+					Fields.setBeanProperty(data, firstKey, tmp);
 				}
 				if(arrayIndex > -1) {
 					if(tmp instanceof List) {
@@ -569,10 +569,10 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 						Object obj = tmpList.get(arrayIndex);
 						if(obj == null) {
 							if(assignClass != null) {
-								obj = ClassUtils.newInstance(assignClass);
+								obj = Classes.newInstance(assignClass);
 							}else {
-								Class type = FieldUtils.getFieldGenericType(data.getClass(), firstKey);
-								obj = type == null ? new HashMap() : ClassUtils.newInstance(type);
+								Class type = Fields.getFieldGenericType(data.getClass(), firstKey);
+								obj = type == null ? new HashMap() : Classes.newInstance(type);
 							}
 							tmpList.add(arrayIndex, obj);
 						}
@@ -584,10 +584,10 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 						Object obj = Array.get(tmp, arrayIndex);
 						if(obj == null) {
 							if(assignClass != null) {
-								obj = ClassUtils.newInstance(assignClass);
+								obj = Classes.newInstance(assignClass);
 							}else {
 								Class type = tmp.getClass().getComponentType();
-								obj = type == null ? new HashMap() : ClassUtils.newInstance(type);
+								obj = type == null ? new HashMap() : Classes.newInstance(type);
 							}
 							Array.set(tmp, arrayIndex, obj);
 						}
@@ -601,16 +601,16 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 				if(value == null) return;
 				if(arrayIndex > -1) {
 					if(tmp == null) {
-						Class type = FieldUtils.getBeanPropertyType(data.getClass(), firstKey);
+						Class type = Fields.getBeanPropertyType(data.getClass(), firstKey);
 						if(type == Object.class)
 							type = List.class;
-						tmp = ClassUtils.newInstance(type);
+						tmp = Classes.newInstance(type);
 						Assert.notNull(tmp, "Class {0} can not instance", tmp.getClass());
-						FieldUtils.setBeanProperty(data, firstKey, tmp);
+						Fields.setBeanProperty(data, firstKey, tmp);
 					}
 					if(tmp instanceof List) {
-						Class type = FieldUtils.getFieldGenericType(data.getClass(), firstKey);
-						if(!ClassUtils.isAssignable(value.getClass(), type, true)) {
+						Class type = Fields.getFieldGenericType(data.getClass(), firstKey);
+						if(!Classes.isAssignable(value.getClass(), type, true)) {
 							try {
 								value = DataConvert.convertType(value.toString(), type);
 							} catch (BaseException ignored) {
@@ -619,7 +619,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 						}
 						((List) tmp).add(arrayIndex, value);
 					}else if(tmp.getClass().isArray()) {
-						if(!ClassUtils.isAssignable(value.getClass(), tmp.getClass().getComponentType(), true)) {
+						if(!Classes.isAssignable(value.getClass(), tmp.getClass().getComponentType(), true)) {
 							try {
 								value = DataConvert.convertType(value.toString(), tmp.getClass().getComponentType());
 							} catch (BaseException ignored) {
@@ -633,15 +633,15 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 					}else 
 						throw new BaseException("class {0} is not array or list.", tmp.getClass());
 				}else {
-					Class type = tmp == null ? FieldUtils.getBeanPropertyType(data.getClass(), firstKey) : tmp.getClass();
-					if(!ClassUtils.isAssignable(value.getClass(), type, true)) {
+					Class type = tmp == null ? Fields.getBeanPropertyType(data.getClass(), firstKey) : tmp.getClass();
+					if(!Classes.isAssignable(value.getClass(), type, true)) {
 						try {
 							value = DataConvert.convertType(value.toString(), type);
 						} catch (BaseException ignored) {
 							
 						}
 					}
-					FieldUtils.setBeanProperty(data, firstKey, value);
+					Fields.setBeanProperty(data, firstKey, value);
 				}
 			}
 		}

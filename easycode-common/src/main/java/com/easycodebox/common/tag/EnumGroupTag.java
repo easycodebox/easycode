@@ -1,7 +1,7 @@
 package com.easycodebox.common.tag;
 
 import com.easycodebox.common.enums.EnumClassFactory;
-import com.easycodebox.common.lang.CollectionUtils;
+import com.easycodebox.common.lang.Collections;
 import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.validate.Assert;
 import org.apache.commons.lang.StringUtils;
@@ -60,7 +60,7 @@ public abstract class EnumGroupTag extends AbstractHtmlTag {
 			}
 		}else {
 			Enum<?>[] enums = enumClass.getEnumConstants();
-			enumsList = CollectionUtils.toList(enums);
+			enumsList = Collections.toList(enums);
 		}
 		//排除enums需要排除的值
 		if(exclude != null && exclude.length > 0) {

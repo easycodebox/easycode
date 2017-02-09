@@ -28,8 +28,8 @@ public class TestClass {
 		String jsonString = Jacksons.COMMUNICATE.writeValueAsString(CodeMsg.NONE.codeMsg("11", (String)null).data(list));
 		System.out.println(jsonString);
 		
-		System.out.println(CodeMsgUtils.json2Bean(jsonString, new TypeReference<List<UserInfo>>() {}));
-		System.out.println(CodeMsgUtils.json2Bean(jsonString, new TypeReference<List<UserInfo>>() {}).getData().getClass());
+		System.out.println(CodeMsgs.json2Bean(jsonString, new TypeReference<List<UserInfo>>() {}));
+		System.out.println(CodeMsgs.json2Bean(jsonString, new TypeReference<List<UserInfo>>() {}).getData().getClass());
 		
 		JsonNode jsonNode = Jacksons.COMMUNICATE.readTree(jsonString);
 		String code = jsonNode.get("code").asText();

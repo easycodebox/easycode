@@ -3,7 +3,7 @@ package com.easycodebox.jdbc.mybatis;
 import org.apache.ibatis.mapping.MappedStatement;
 
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.lang.reflect.FieldUtils;
+import com.easycodebox.common.lang.reflect.Fields;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 
@@ -60,7 +60,7 @@ public class DefaultConfiguration extends
 	public void addMappedStatement(MappedStatement ms) {
 		if(delegateSqlSource) {
 			try {
-				FieldUtils.writeField(ms, "sqlSource", new DelegateSqlSource(ms.getSqlSource()), true);
+				Fields.writeField(ms, "sqlSource", new DelegateSqlSource(ms.getSqlSource()), true);
 			} catch (Exception e) {
 				log.error("set field value error.", e);
 			}

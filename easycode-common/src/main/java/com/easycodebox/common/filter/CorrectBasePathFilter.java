@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 
 /**
  * 把http://www.xx.com  转成 http://www.xx.com/
@@ -37,7 +37,7 @@ public class CorrectBasePathFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest)request;
 		if(req.getRequestURI().equals(req.getContextPath())) {
 			
-			((HttpServletResponse)response).sendRedirect(HttpUtils.getBasePath(req) + Symbol.SLASH);
+			((HttpServletResponse)response).sendRedirect(Https.getBasePath(req) + Symbol.SLASH);
 		}else
 			chain.doFilter(request, response);
 

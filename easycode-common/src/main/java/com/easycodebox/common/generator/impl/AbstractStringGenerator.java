@@ -2,7 +2,7 @@ package com.easycodebox.common.generator.impl;
 
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.AbstractGenerator;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 
 /**
  * @author WangXiaoJin
@@ -51,7 +51,7 @@ public abstract class AbstractStringGenerator extends AbstractGenerator<String> 
      * @return
      */
     public String filterZero(String val) {
-    	if(StringUtils.isNotBlank(val)) 
+    	if(Strings.isNotBlank(val))
     		return val.replaceFirst("^0+", "");
     	else
     		return val;

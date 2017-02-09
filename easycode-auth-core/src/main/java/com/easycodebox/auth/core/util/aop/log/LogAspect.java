@@ -5,7 +5,7 @@ import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.lang.*;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import com.easycodebox.common.security.*;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -62,11 +62,11 @@ public final class LogAspect implements Ordered, InitializingBean {
 				&& SecurityContexts.getCurSecurityContext().getRequest() != null) {
 			HttpServletRequest request = SecurityContexts.getCurSecurityContext().getRequest();
 			logObj.setUrl(request.getRequestURL().toString());
-			logObj.setParams(StringUtils.substring(HttpUtils.getRequestParams(request, 0, BaseConstants.httpParamTradition), 0, 2048));
+			logObj.setParams(Strings.substring(Https.getRequestParams(request, 0, BaseConstants.httpParamTradition), 0, 2048));
 			logObj.setClientIp(SecurityUtils.getIp());
 		}
 		logObj.setTitle(log.title());
-		logObj.setMethod(StringUtils.substring(getMethod(pjp), 0, 1024));
+		logObj.setMethod(Strings.substring(getMethod(pjp), 0, 1024));
 		logObj.setLogLevel(log.level());
 		logObj.setModuleType(log.moduleType());
 		
@@ -74,12 +74,12 @@ public final class LogAspect implements Ordered, InitializingBean {
 		try {
 			result = pjp.proceed();
 		} catch (Throwable e) {
-			logObj.setErrorMsg(StringUtils.substring(ExceptionUtils.getStackTrace(e), 0, 2048));
+			logObj.setErrorMsg(Strings.substring(ExceptionUtils.getStackTrace(e), 0, 2048));
 			logObj.setLogLevel(LogLevel.ERROR);
 			logService.add(logObj);
 			throw e;
 		}
-		logObj.setResult(result == null ? null : StringUtils.substring(result.toString(), 0, 2048));
+		logObj.setResult(result == null ? null : Strings.substring(result.toString(), 0, 2048));
 		logService.add(logObj);
 		return result;
 	}

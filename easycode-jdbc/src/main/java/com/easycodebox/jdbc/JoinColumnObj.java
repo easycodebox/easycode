@@ -1,6 +1,6 @@
 package com.easycodebox.jdbc;
 
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.jdbc.config.Configuration;
 
 import javax.persistence.JoinColumn;
@@ -17,13 +17,13 @@ public class JoinColumnObj implements Serializable {
 	}
 	
 	private JoinColumnObj(JoinColumn joinColumn) {
-		this.name = StringUtils.stripToNull(joinColumn.name());
-		this.referencedColumnName = StringUtils.stripToNull(joinColumn.referencedColumnName());
+		this.name = Strings.stripToNull(joinColumn.name());
+		this.referencedColumnName = Strings.stripToNull(joinColumn.referencedColumnName());
 		this.unique = joinColumn.unique();
 		this.nullable = joinColumn.nullable();
 		this.insertable = joinColumn.insertable();
 		this.updatable = joinColumn.updatable();
-		this.table = StringUtils.stripToNull(joinColumn.table());
+		this.table = Strings.stripToNull(joinColumn.table());
 	}
 	
 	public static JoinColumnObj instance() {
@@ -125,7 +125,7 @@ public class JoinColumnObj implements Serializable {
 	}
 
 	public Class<?> getEntity() {
-		if(entity == null && StringUtils.isNotBlank(table)) {
+		if(entity == null && Strings.isNotBlank(table)) {
 			return entity = Configuration.getEntityByTableName(table);
 		}
 		return entity;

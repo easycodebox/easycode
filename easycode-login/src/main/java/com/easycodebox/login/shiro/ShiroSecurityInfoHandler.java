@@ -2,7 +2,7 @@ package com.easycodebox.login.shiro;
 
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.dto.UserInfo;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import com.easycodebox.common.security.SecurityContext;
 import com.easycodebox.common.security.SecurityContexts;
 import com.easycodebox.common.security.SecurityUtils.SecurityInfoHandler;
@@ -33,7 +33,7 @@ public class ShiroSecurityInfoHandler implements SecurityInfoHandler<Session, Us
 			context.setSecurity(user);
 		}
 		if (request != null) {
-			context.setIp(HttpUtils.getIpAddr(request));
+			context.setIp(Https.getIpAddr(request));
 			context.setUserAgent(request.getHeader("User-Agent"));
 			context.setRequest(request);
 		}

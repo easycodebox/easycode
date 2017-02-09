@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.upload.util.CodeMsgExt;
 import com.easycodebox.upload.util.FileType;
@@ -46,7 +46,7 @@ public class DeleteServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		String flag = StringUtils.leftPad(String.valueOf(new Random().nextInt(10000)), 4, '0');
+		String flag = Strings.leftPad(String.valueOf(new Random().nextInt(10000)), 4, '0');
 		//用来删除文件的参数
 		String[] files = req.getParameterValues(FILES_KEY);
 		String fileType = req.getParameter(FILE_TYPE_KEY);
@@ -54,7 +54,7 @@ public class DeleteServlet extends BaseServlet {
 		
 		CodeMsg error = null;
 		
-		if(StringUtils.isBlank(fileType)) {
+		if(Strings.isBlank(fileType)) {
 			//默认是图片类型
 			type = FileType.PIC_TYPE;
 		}else {
@@ -73,10 +73,10 @@ public class DeleteServlet extends BaseServlet {
 		}else {
 			List<String> list = new ArrayList<String>();
 			for(String file : files) {
-				if(StringUtils.isNotBlank(file)) {
+				if(Strings.isNotBlank(file)) {
 					String[] inners = file.split(Symbol.COMMA);
 					for(String inner : inners) {
-						if(StringUtils.isNotBlank(inner)) {
+						if(Strings.isNotBlank(inner)) {
 							list.add(inner.trim());
 						}
 					}

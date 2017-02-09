@@ -16,7 +16,7 @@ public class Native2ascii {
 		String in = basePath + inFile;
 		String out = basePath + outFile;
 		try {
-			RuntimeUtils.exec("native2ascii -encoding UTF-8 " + in + " " + out);
+			Runtimes.exec("native2ascii -encoding UTF-8 " + in + " " + out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 import org.springframework.jdbc.support.JdbcUtils;
 
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -116,7 +116,7 @@ public class TestCitySql {
 			ResultSet rs = statement.executeQuery();
 			while(rs.next()) {
 				int id = rs.getInt("id");
-            	String info = HttpUtils.Request.get(url + id).replace("callback(", "");
+            	String info = Https.Request.get(url + id).replace("callback(", "");
             	info = info.substring(0, info.length()-2);
             	JSONObject jo = JSONObject.fromObject(info);
             	System.out.println(jo);

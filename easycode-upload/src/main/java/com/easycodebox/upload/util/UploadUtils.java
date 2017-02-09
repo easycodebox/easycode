@@ -1,5 +1,16 @@
 package com.easycodebox.upload.util;
 
+import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.common.file.*;
+import com.easycodebox.common.generator.impl.AlphaNumericGenerator;
+import com.easycodebox.common.lang.Strings;
+import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.log.slf4j.Logger;
+import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -7,21 +18,6 @@ import java.util.Properties;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-
-import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.file.FileInfo;
-import com.easycodebox.common.file.Image;
-import com.easycodebox.common.file.PropertiesPool;
-import com.easycodebox.common.file.PropertiesUtils;
-import com.easycodebox.common.generator.impl.AlphaNumericGenerator;
-import com.easycodebox.common.lang.StringUtils;
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 
 /**
  * @author WangXiaoJin
@@ -105,9 +101,7 @@ public class UploadUtils {
 	
 	/**
 	 * 适合上传图片分离的逻辑
-	 * @param root 	上传文件的根目录
 	 * @param path
-	 * @param imgs
 	 * @param imgNames   期望使用的图片名字，若果为null， 则使用默认规则生成图片名
 	 * @return
 	 * @throws Exception 
@@ -126,7 +120,7 @@ public class UploadUtils {
 			String tmpPath = fileType.getRoot();
 			File fragPath = null;
 			for(String frag : frags) {
-				if(StringUtils.isBlank(frag))
+				if(Strings.isBlank(frag))
 					continue;
 				fragPath = new File(tmpPath +=  Symbol.SLASH + frag);
 				fragPath.setWritable(true, false);
@@ -151,14 +145,14 @@ public class UploadUtils {
 				imgsInfo[i].setName(imgName);
 			} catch (Exception e) {
 				log.warn("生成文件失败！", e);
-				/************* error **************/
+				/* ------ error ------ */
 	        	if (transaction) {
 	        		throw e;
 	        	} else {
 	        		imgsInfo[i].setError(error);
 	        		continue;
 	        	}
-	        	/************* error **************/
+	        	/* ------ error ------ */
 			}
 		}
 		return imgsInfo;
@@ -188,7 +182,7 @@ public class UploadUtils {
 			String tmpPath = fileType.getRoot();
 			File fragPath = null;
 			for(String frag : frags) {
-				if(StringUtils.isBlank(frag))
+				if(Strings.isBlank(frag))
 					continue;
 				fragPath = new File(tmpPath +=  Symbol.SLASH + frag);
 				fragPath.setWritable(true, false);
@@ -213,14 +207,14 @@ public class UploadUtils {
 				fileInfos[i].setName(filename);
 			} catch (Exception e) {
 				log.warn("生成文件失败！", e);
-				/************* error **************/
+				/* ------ error ------ */
 	        	if (transaction) {
 	        		throw e;
 	        	} else {
 	        		fileInfos[i].setError(error);
 	        		continue;
 	        	}
-	        	/************* error **************/
+	        	/* ------ error ------ */
 			}
 			
 		}

@@ -11,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.easycodebox.common.file.*;
+import com.easycodebox.common.lang.Strings;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -20,11 +22,7 @@ import org.apache.tika.io.IOUtils;
 
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.file.FileInfo;
-import com.easycodebox.common.file.FileUtils;
-import com.easycodebox.common.file.Image;
-import com.easycodebox.common.file.ImageTools;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.file.Files;
 import com.easycodebox.upload.util.CodeMsgExt;
 import com.easycodebox.upload.util.Constants;
 import com.easycodebox.upload.util.FileType;
@@ -47,7 +45,7 @@ public class UploadServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		String flag = StringUtils.leftPad(String.valueOf(new Random().nextInt(10000)), 4, '0');
+		String flag = Strings.leftPad(String.valueOf(new Random().nextInt(10000)), 4, '0');
 		//文件类型
 		FileType type = null;
 		//指定文件类型路径
@@ -77,17 +75,17 @@ public class UploadServlet extends BaseServlet {
 				while (items.hasNext()) {
 					DiskFileItem item = items.next();
 					if(item.isFormField()) {
-						String fieldName = StringUtils.trim(item.getFieldName());
+						String fieldName = Strings.trim(item.getFieldName());
 						if(Constants.responseUrlKey.equalsIgnoreCase(fieldName)) {
 							//responseUrl 为跨域上传图片的解决方案
 							responseUrl = item.getString();
 						} else if(Constants.TRANSACTION_KEY.equalsIgnoreCase(fieldName)) {
 							transaction = Boolean.parseBoolean(item.getString());
-						} else if(type == null && StringUtils.isNotBlank(fieldName)) {
+						} else if(type == null && Strings.isNotBlank(fieldName)) {
 							type = DetailEnums.parse(FileType.class, fieldName);
 							if(type != null) {
 								filePathKey = item.getString();
-								if(StringUtils.isNotBlank(filePathKey)) {
+								if(Strings.isNotBlank(filePathKey)) {
 									filePath = type.getUploadPath(filePathKey);
 								}
 							}
@@ -99,7 +97,7 @@ public class UploadServlet extends BaseServlet {
 				
 				if(type != null) {
 					
-					if(StringUtils.isBlank(filePath)) {
+					if(Strings.isBlank(filePath)) {
 						error = CodeMsgExt.NO_PATH.fillArgs(filePathKey);
 						log.warn("flag={0} : {1}", flag, error.getMsg());
 						this.outData(error, responseUrl, resp);
@@ -141,7 +139,7 @@ public class UploadServlet extends BaseServlet {
 							DiskFileItem item = itemList.get(i);
 							filenames[i] = FilenameUtils.getName(item.getName());
 						}
-						error = FileUtils.validate(filePath, streams, filenames, lengths, Constants.MAX_UPLOAD_FILE, transaction);
+						error = Files.validate(filePath, streams, filenames, lengths, Constants.MAX_UPLOAD_FILE, transaction);
 						if(!error.isSuc()) {
 							log.warn("flag={0} : {1}", flag, error.getMsg());
 							this.outData(error, responseUrl, resp);

@@ -3,8 +3,8 @@ package com.easycodebox.common.validate;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
-import com.easycodebox.common.lang.CollectionUtils;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Collections;
+import com.easycodebox.common.lang.Strings;
 
 import java.util.Collection;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class Assert {
 	 * @param exp
 	 */
 	public static void throwException(boolean exp, String message, Object... args) {
-		if(exp) throw new IllegalArgumentException(StringUtils.format(message, args));
+		if(exp) throw new IllegalArgumentException(Strings.format(message, args));
 	}
 	
 	/**
@@ -104,15 +104,15 @@ public class Assert {
 	}
 	
 	public static void isBlank(String text, String message) {
-		throwException(!StringUtils.isBlank(text), message);
+		throwException(!Strings.isBlank(text), message);
 	}
 	
 	public static void isBlank(String text, String message, Object... args) {
-		throwException(!StringUtils.isBlank(text), message, args);
+		throwException(!Strings.isBlank(text), message, args);
 	}
 	
 	public static void isBlank(String text, CodeMsg error) {
-		throwError(!StringUtils.isBlank(text), error);
+		throwError(!Strings.isBlank(text), error);
 	}
 	
 	public static void notBlank(String text) {
@@ -120,15 +120,15 @@ public class Assert {
 	}
 	
 	public static void notBlank(String text, String message) {
-		throwException(StringUtils.isBlank(text), message);
+		throwException(Strings.isBlank(text), message);
 	}
 	
 	public static void notBlank(String text, String message, Object... args) {
-		throwException(StringUtils.isBlank(text), message, args);
+		throwException(Strings.isBlank(text), message, args);
 	}
 	
 	public static void notBlank(String text, CodeMsg error) {
-		throwError(StringUtils.isBlank(text), error);
+		throwError(Strings.isBlank(text), error);
 	}
 	
 	public static void notContain(String textToSearch, String substring) {
@@ -243,15 +243,15 @@ public class Assert {
 	}
 	
 	public static void notEmpty(Collection<?> collection, String message) {
-		throwException(CollectionUtils.isEmpty(collection), message);
+		throwException(Collections.isEmpty(collection), message);
 	}
 	
 	public static void notEmpty(Collection<?> collection, String message, Object... args) {
-		throwException(CollectionUtils.isEmpty(collection), message, args);
+		throwException(Collections.isEmpty(collection), message, args);
 	}
 	
 	public static void notEmpty(Collection<?> collection, CodeMsg error) {
-		throwError(CollectionUtils.isEmpty(collection), error);
+		throwError(Collections.isEmpty(collection), error);
 	}
 	
 	public static void notEmpty(Map<?, ?> map) {

@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.AbstractGenerator;
 import com.easycodebox.common.generator.exception.BoundReachedException;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 
 /**
  * @author WangXiaoJin
@@ -32,7 +32,7 @@ public final class IntegerGenerator extends AbstractGenerator<Integer> {
 				String maxVal, YesNo isCycle) {
 		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
 		this.initialVal = Integer.parseInt(initialVal);
-		this.maxVal = StringUtils.isBlank(maxVal) ? 
+		this.maxVal = Strings.isBlank(maxVal) ?
 				Integer.MAX_VALUE : Integer.parseInt(maxVal);
 		this.curVal = new AtomicInteger(Integer.parseInt(currentVal));
 	}

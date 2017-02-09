@@ -3,10 +3,10 @@ package com.easycodebox.common.log.logback;
 import java.io.FileNotFoundException;
 import java.net.URL;
 
+import com.easycodebox.common.lang.Strings;
 import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.util.ResourceUtils;
 
-import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public abstract class LocateLogger {
 	 * @throws JoranException
 	 */
 	protected void locate(String logbackUrl) throws FileNotFoundException, JoranException {
-		if(StringUtils.isBlank(logbackUrl)) return;
+		if(Strings.isBlank(logbackUrl)) return;
 		logbackUrl = (logbackUrl = logbackUrl.trim()).startsWith(CLASS_PREFIX) 
 				? logbackUrl : CLASS_PREFIX + logbackUrl;
 		URL url = ResourceUtils.getURL(logbackUrl);

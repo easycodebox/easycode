@@ -3,7 +3,7 @@ package com.easycodebox.common.tag;
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.ProjectEnv;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 
 import javax.servlet.jsp.JspException;
@@ -79,11 +79,11 @@ public class ScriptTag extends AbstractHtmlTag {
 				String tag = sb.toString();
 				String[] srcFrags = src.split(Pattern.quote(boundary));
 				if(srcFrags.length == 1) {
-					write.append(StringUtils.format(tag, src));
+					write.append(Strings.format(tag, src));
 				}else {
 					String[] files = srcFrags[1].split(Pattern.quote(separator));
 					for(int i = 0; i < files.length; i++) {
-						write.append(StringUtils.format(tag, srcFrags[0] + files[i]));
+						write.append(Strings.format(tag, srcFrags[0] + files[i]));
 						if(i < files.length - 1)
 							write.append("</script>");
 					}
@@ -137,13 +137,13 @@ public class ScriptTag extends AbstractHtmlTag {
 	}
 
 	public void setEnv(String env) {
-		if (StringUtils.isNotBlank(env)) {
+		if (Strings.isNotBlank(env)) {
 			this.env = DetailEnums.deserialize(ProjectEnv.class, env, false);
 		}
 	}
 
 	public void setMin(String min) {
-		if (StringUtils.isNotBlank(min)) {
+		if (Strings.isNotBlank(min)) {
 			this.min = Boolean.parseBoolean(min);
 		}
 	}

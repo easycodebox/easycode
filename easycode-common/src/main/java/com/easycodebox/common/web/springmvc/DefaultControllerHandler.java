@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 
 /**
  * @author WangXiaoJin
@@ -18,7 +18,7 @@ public class DefaultControllerHandler implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String[] paths = HttpUtils.getParticularPaths(request);
+		String[] paths = Https.getParticularPaths(request);
 		String view = Symbol.EMPTY;
 		if(paths.length == 0)
 			view = Symbol.SLASH;

@@ -8,7 +8,7 @@ import java.io.*;
  * @author WangXiaoJin
  * 
  */
-public abstract class SerializationUtils {
+public abstract class Serializations {
 	
 	/**
 	 * 

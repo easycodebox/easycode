@@ -1,8 +1,7 @@
 package com.easycodebox.common.log.slf4j;
 
+import com.easycodebox.common.lang.Strings;
 import org.slf4j.Marker;
-
-import com.easycodebox.common.lang.StringUtils;
 
 /**
  * @author WangXiaoJin
@@ -40,7 +39,7 @@ public final class Logger {
 	 */
 	public void trace(Object msg, Object... args) {
 		if(isTraceEnabled())
-			logger.trace(StringUtils.format(str(msg), args));
+			logger.trace(Strings.format(str(msg), args));
 	}
 	
 	public void trace(Object msg, Throwable t) {
@@ -55,7 +54,7 @@ public final class Logger {
 	 */
 	public void trace(Object msg, Throwable t, Object... args) {
 		if(isTraceEnabled())
-			logger.trace(StringUtils.format(str(msg), args), t);
+			logger.trace(Strings.format(str(msg), args), t);
 	}
 
 	public boolean isTraceEnabled(Marker marker) {
@@ -74,7 +73,7 @@ public final class Logger {
 	 */
 	public void trace(Marker marker, Object msg, Object... args) {
 		if(isTraceEnabled(marker))
-			logger.trace(marker, StringUtils.format(str(msg), args));
+			logger.trace(marker, Strings.format(str(msg), args));
 	}
 
 	public void trace(Marker marker, Object msg, Throwable t) {
@@ -89,7 +88,7 @@ public final class Logger {
 	 */
 	public void trace(Marker marker, Object msg, Throwable t, Object... args) {
 		if(isTraceEnabled(marker))
-			logger.trace(marker, StringUtils.format(str(msg), args), t);
+			logger.trace(marker, Strings.format(str(msg), args), t);
 	}
 
 	public boolean isDebugEnabled() {
@@ -108,7 +107,7 @@ public final class Logger {
 	 */
 	public void debug(Object msg, Object... args) {
 		if(isDebugEnabled())
-			logger.debug(StringUtils.format(str(msg), args));
+			logger.debug(Strings.format(str(msg), args));
 	}
 	
 	public void debug(Object msg, Throwable t) {
@@ -123,7 +122,7 @@ public final class Logger {
 	 */
 	public void debug(Object msg, Throwable t, Object... args) {
 		if(isDebugEnabled())
-			logger.debug(StringUtils.format(str(msg), args), t);
+			logger.debug(Strings.format(str(msg), args), t);
 	}
 	
 	public boolean isDebugEnabled(Marker marker) {
@@ -142,7 +141,7 @@ public final class Logger {
 	 */
 	public void debug(Marker marker, Object msg, Object... args) {
 		if(isDebugEnabled(marker))
-			logger.debug(marker, StringUtils.format(str(msg), args));
+			logger.debug(marker, Strings.format(str(msg), args));
 	}
 
 	public void debug(Marker marker, Object msg, Throwable t) {
@@ -157,7 +156,7 @@ public final class Logger {
 	 */
 	public void debug(Marker marker, Object msg, Throwable t, Object... args) {
 		if(isDebugEnabled(marker))
-			logger.debug(marker, StringUtils.format(str(msg), args), t);
+			logger.debug(marker, Strings.format(str(msg), args), t);
 	}
 	
 	public boolean isInfoEnabled() {
@@ -175,7 +174,7 @@ public final class Logger {
 	 */
 	public void info(Object msg, Object... args) {
 		if(isInfoEnabled())
-			logger.info(StringUtils.format(str(msg), args));
+			logger.info(Strings.format(str(msg), args));
 	}
 	
 	public void info(Object msg, Throwable t) {
@@ -189,7 +188,7 @@ public final class Logger {
 	 */
 	public void info(Object msg, Throwable t, Object... args) {
 		if(isInfoEnabled())
-			logger.info(StringUtils.format(str(msg), args), t);
+			logger.info(Strings.format(str(msg), args), t);
 	}
 	
 	public boolean isInfoEnabled(Marker marker) {
@@ -207,7 +206,7 @@ public final class Logger {
 	 */
 	public void info(Marker marker, Object msg, Object... args) {
 		if(isInfoEnabled(marker))
-			logger.info(marker, StringUtils.format(str(msg), args));
+			logger.info(marker, Strings.format(str(msg), args));
 	}
 
 	public void info(Marker marker, Object msg, Throwable t) {
@@ -221,7 +220,7 @@ public final class Logger {
 	 */
 	public void info(Marker marker, Object msg, Throwable t, Object... args) {
 		if(isInfoEnabled(marker))
-			logger.info(marker, StringUtils.format(str(msg), args), t);
+			logger.info(marker, Strings.format(str(msg), args), t);
 	}
 	
 	public boolean isWarnEnabled() {
@@ -239,7 +238,7 @@ public final class Logger {
 	 */
 	public void warn(Object msg, Object... args) {
 		if(isWarnEnabled())
-			logger.warn(StringUtils.format(str(msg), args));
+			logger.warn(Strings.format(str(msg), args));
 	}
 	
 	public void warn(Object msg, Throwable t) {
@@ -253,7 +252,7 @@ public final class Logger {
 	 */
 	public void warn(Object msg, Throwable t, Object... args) {
 		if(isWarnEnabled())
-			logger.warn(StringUtils.format(str(msg), args), t);
+			logger.warn(Strings.format(str(msg), args), t);
 	}
 	
 	public boolean isWarnEnabled(Marker marker) {
@@ -271,7 +270,7 @@ public final class Logger {
 	 */
 	public void warn(Marker marker, Object msg, Object... args) {
 		if(isWarnEnabled(marker))
-			logger.warn(marker, StringUtils.format(str(msg), args));
+			logger.warn(marker, Strings.format(str(msg), args));
 	}
 
 	public void warn(Marker marker, Object msg, Throwable t) {
@@ -285,7 +284,7 @@ public final class Logger {
 	 */
 	public void warn(Marker marker, Object msg, Throwable t, Object... args) {
 		if(isWarnEnabled(marker))
-			logger.warn(marker, StringUtils.format(str(msg), args), t);
+			logger.warn(marker, Strings.format(str(msg), args), t);
 	}
 	
 	public boolean isErrorEnabled() {
@@ -303,7 +302,7 @@ public final class Logger {
 	 */
 	public void error(Object msg, Object... args) {
 		if(isErrorEnabled())
-			logger.error(StringUtils.format(str(msg), args));
+			logger.error(Strings.format(str(msg), args));
 	}
 	
 	public void error(Object msg, Throwable t) {
@@ -317,7 +316,7 @@ public final class Logger {
 	 */
 	public void error(Object msg, Throwable t, Object... args) {
 		if(isErrorEnabled())
-			logger.error(StringUtils.format(str(msg), args), t);
+			logger.error(Strings.format(str(msg), args), t);
 	}
 	
 	public boolean isErrorEnabled(Marker marker) {
@@ -335,7 +334,7 @@ public final class Logger {
 	 */
 	public void error(Marker marker, Object msg, Object... args) {
 		if(isErrorEnabled(marker))
-			logger.error(marker, StringUtils.format(str(msg), args));
+			logger.error(marker, Strings.format(str(msg), args));
 	}
 
 	public void error(Marker marker, Object msg, Throwable t) {
@@ -349,7 +348,7 @@ public final class Logger {
 	 */
 	public void error(Marker marker, Object msg, Throwable t, Object... args) {
 		if(isErrorEnabled(marker))
-			logger.error(marker, StringUtils.format(str(msg), args), t);
+			logger.error(marker, Strings.format(str(msg), args), t);
 	}
 	
 }

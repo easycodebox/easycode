@@ -1,6 +1,6 @@
 package com.easycodebox.common.json;
 
-import com.easycodebox.common.lang.DateUtils;
+import com.easycodebox.common.lang.Dates;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsonBeanProcessor;
@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class DateJsonBeanProcessor  implements JsonBeanProcessor {
 
-	private String dateFormat = DateUtils.DATETIME_FMT_STR;
+	private String dateFormat = Dates.DATETIME_FMT_STR;
 	
 	public DateJsonBeanProcessor() {
 		
@@ -31,7 +31,7 @@ public class DateJsonBeanProcessor  implements JsonBeanProcessor {
       if( bean instanceof Date ){
          jsonObject = new JSONObject()
      					.element("date", 
- 							DateUtils.format((Date)bean, dateFormat));
+ 							Dates.format((Date)bean, dateFormat));
       }else{
          jsonObject = new JSONObject( true );
       }

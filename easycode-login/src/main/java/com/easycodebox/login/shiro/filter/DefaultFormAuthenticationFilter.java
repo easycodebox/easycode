@@ -11,7 +11,7 @@ import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
 
 /**
@@ -43,9 +43,9 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
         	HttpServletRequest req = (HttpServletRequest)request;
         	HttpServletResponse resp = (HttpServletResponse)response;
         	
-        	if(HttpUtils.isAjaxRequest(req) && 
+        	if(Https.isAjaxRequest(req) &&
         			req.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
-    			HttpUtils.outJson(CodeMsg.NO_LOGIN, resp);
+    			Https.outJson(CodeMsg.NO_LOGIN, resp);
         	}
         	else if(req.getParameter(BaseConstants.DIALOG_REQ) != null) {
 				Callbacks.callback(Callbacks.closeDialog((String)null), null, resp);

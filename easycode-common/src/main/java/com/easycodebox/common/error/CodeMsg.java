@@ -3,7 +3,7 @@ package com.easycodebox.common.error;
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.file.PropertiesPool;
 import com.easycodebox.common.jackson.*;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
@@ -86,7 +86,7 @@ public class CodeMsg implements Serializable {
 	 */
 	public CodeMsg msg(String msg, Object... args) {
 		CodeMsg codeMsg = this.copy();
-		codeMsg.msg = StringUtils.format(msg, args);
+		codeMsg.msg = Strings.format(msg, args);
 		return codeMsg;
 	}
 	
@@ -100,7 +100,7 @@ public class CodeMsg implements Serializable {
 	public CodeMsg codeMsg(String code, String msg, Object... args) {
     	CodeMsg codeMsg = this.copy();
 		codeMsg.code = code;
-		codeMsg.msg = StringUtils.format(msg, args);
+		codeMsg.msg = Strings.format(msg, args);
 		return codeMsg;
 	}
 	
@@ -196,7 +196,7 @@ public class CodeMsg implements Serializable {
 		
 	}
 	
-	public static class CodeMsgUtils {
+	public static class CodeMsgs {
 		
 		@SuppressWarnings("rawtypes")
 		public static CodeMsg json2Bean(String json) throws IOException {

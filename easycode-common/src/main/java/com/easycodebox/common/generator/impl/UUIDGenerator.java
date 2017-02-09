@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.AbstractGenerator;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 
 /**
  * @author WangXiaoJin
@@ -31,7 +31,7 @@ public final class UUIDGenerator extends AbstractGenerator<String> {
 				String maxVal, YesNo isCycle) {
 		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
 		this.initialVal = initialVal;
-		this.maxVal = StringUtils.isBlank(maxVal) ? maxVal : null;
+		this.maxVal = Strings.isBlank(maxVal) ? maxVal : null;
 	}
 	
 	@Override

@@ -9,13 +9,13 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.easycodebox.common.lang.Strings;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.cas.CasFilter;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 
 import com.easycodebox.common.error.ErrorContext;
-import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 
@@ -67,7 +67,7 @@ public class DefaultCasFilter extends CasFilter {
         	ErrorContext error = exception instanceof ErrorContext 
         			? (ErrorContext)exception : (ErrorContext)exception.getCause();
         	try {
-				queryParams.put("service", StringUtils.format(reloginUrl, 
+				queryParams.put("service", Strings.format(reloginUrl,
 						URLEncoder.encode(URLEncoder.encode(error.getMessage(), "UTF-8"), "UTF-8")));
 			} catch (UnsupportedEncodingException e) {
 				log.error("URLEncoder params error : {0}", error.getMessage(), e);

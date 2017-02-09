@@ -2,7 +2,7 @@ package com.easycodebox.common.json;
 
 import java.util.Date;
 
-import com.easycodebox.common.lang.DateUtils;
+import com.easycodebox.common.lang.Dates;
 
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsonValueProcessor;
@@ -13,7 +13,7 @@ import net.sf.json.processors.JsonValueProcessor;
  */
 public class DateJsonValueProcessor implements JsonValueProcessor {
 	
-	private String dateFormat = DateUtils.DATETIME_FMT_STR;
+	private String dateFormat = Dates.DATETIME_FMT_STR;
 	
 	public DateJsonValueProcessor() {
 		
@@ -36,7 +36,7 @@ public class DateJsonValueProcessor implements JsonValueProcessor {
     		value = new Date( ((java.sql.Date) value).getTime() );
          }
          if( value instanceof Date )
-			return DateUtils.format((Date)value, dateFormat);
+			return Dates.format((Date)value, dateFormat);
          else
             return null;
     }

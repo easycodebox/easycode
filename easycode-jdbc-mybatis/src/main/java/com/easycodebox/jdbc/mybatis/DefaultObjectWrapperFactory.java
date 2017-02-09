@@ -1,7 +1,7 @@
 package com.easycodebox.jdbc.mybatis;
 
 import com.easycodebox.common.enums.EnumClassFactory;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
@@ -115,7 +115,7 @@ public class DefaultObjectWrapperFactory implements ObjectWrapperFactory {
 		 */
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		private Enum getEnumVal(String name) {
-			if(StringUtils.isNotBlank(name)) {
+			if(Strings.isNotBlank(name)) {
 				String[] frags = name.split("\\.");
 				if(frags.length == 2) {
 					Class<? extends Enum<?>> enumClass 

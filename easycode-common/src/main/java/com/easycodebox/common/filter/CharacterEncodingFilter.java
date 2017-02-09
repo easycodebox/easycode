@@ -1,6 +1,6 @@
 package com.easycodebox.common.filter;
 
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.net.ParameterRequestWrapper;
 
 import javax.servlet.*;
@@ -24,12 +24,12 @@ public class CharacterEncodingFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
 		this.encoding = filterConfig.getInitParameter("encoding");
 		String feStr = filterConfig.getInitParameter("forceEncoding");
-		if(StringUtils.isNotBlank(feStr))
+		if(Strings.isNotBlank(feStr))
 			this.forceEncoding = Boolean.parseBoolean(feStr);
-		this.attributeKey = StringUtils.isBlank(filterConfig.getFilterName()) ?
+		this.attributeKey = Strings.isBlank(filterConfig.getFilterName()) ?
 				CharacterEncodingFilter.class.getName() + ".filter" : filterConfig.getFilterName();
 		String dgp = filterConfig.getInitParameter("decodeGetParams");
-		if(StringUtils.isNotBlank(dgp))
+		if(Strings.isNotBlank(dgp))
 			this.decodeGetParams = Boolean.parseBoolean(dgp);
 	}
 
@@ -50,7 +50,7 @@ public class CharacterEncodingFilter implements Filter {
 						response.setCharacterEncoding(this.encoding);
 					}
 					if(decodeGetParams && "GET".equals(req.getMethod()) 
-							&& StringUtils.isNotBlank(req.getQueryString())) {
+							&& Strings.isNotBlank(req.getQueryString())) {
 						HashMap<String, String[]> params = new HashMap<>(request.getParameterMap());
 						for (String key : params.keySet()) {
 							String[] values = params.get(key);

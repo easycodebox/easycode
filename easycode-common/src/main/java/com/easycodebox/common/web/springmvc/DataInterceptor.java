@@ -1,10 +1,10 @@
 package com.easycodebox.common.web.springmvc;
 
 import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.CacheHisUris;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,11 +41,11 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 
 			if (basePath) {
 				modelAndView.addObject(BASE_PATH_KEY, BaseConstants.basePath == null ? 
-						BaseConstants.basePath = HttpUtils.getBasePath(request) : BaseConstants.basePath);
+						BaseConstants.basePath = Https.getBasePath(request) : BaseConstants.basePath);
 			}
 
 			if (imgUrl) {
-				if (StringUtils.isBlank(BaseConstants.imgUrl)) {
+				if (Strings.isBlank(BaseConstants.imgUrl)) {
 					log.warn("Has no config IMG_URL constant.");
 				} else
 					modelAndView.addObject(IMG_URL_KEY, BaseConstants.imgUrl);

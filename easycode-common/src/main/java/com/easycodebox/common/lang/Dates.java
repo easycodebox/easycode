@@ -13,9 +13,9 @@ import java.util.*;
  * @author WangXiaoJin
  * 
  */
-public class DateUtils extends org.apache.commons.lang.time.DateUtils {
+public class Dates extends org.apache.commons.lang.time.DateUtils {
 	
-	private static final Logger log = LoggerFactory.getLogger(DateUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(Dates.class);
 	
 	public static final String DATETIME_FMT_STR = "yyyy-MM-dd HH:mm:ss";
 	public static final String DATE_FMT_STR = "yyyy-MM-dd";
@@ -81,8 +81,8 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 		Calendar c2 = Calendar.getInstance();
 		c2.add(Calendar.MONTH, 1);
 		c2.set(Calendar.DATE, 0);
-		Date beginDate = DateUtils.format2Date(c1.getTime(),DateUtils.DATE_FMT_STR);
-		Date endDate = DateUtils.format2Date(c2.getTime(),DateUtils.DATE_FMT_STR);
+		Date beginDate = Dates.format2Date(c1.getTime(), Dates.DATE_FMT_STR);
+		Date endDate = Dates.format2Date(c2.getTime(), Dates.DATE_FMT_STR);
 		return new Date[]{beginDate, endDate};
 	}
 	
@@ -265,8 +265,8 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
      * 示例：2013-09-23 00:00:00
      */
     public static Date getDayStart(Date d) {
-		String str = DateUtils.format(d, "yyyy-MM-dd ") + "00:00:00";
-		return DateUtils.parse(str, "yyyy-MM-dd HH:mm:ss");
+		String str = Dates.format(d, "yyyy-MM-dd ") + "00:00:00";
+		return Dates.parse(str, "yyyy-MM-dd HH:mm:ss");
 	}
     
     /***
@@ -274,8 +274,8 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
      * 示例：2013-09-23 23:59:59
      */
     public static Date getDayEnd(Date d) {
-    	String str = DateUtils.format(d, "yyyy-MM-dd ") + "23:59:59";
-    	return DateUtils.parse(str, "yyyy-MM-dd HH:mm:ss");
+    	String str = Dates.format(d, "yyyy-MM-dd ") + "23:59:59";
+    	return Dates.parse(str, "yyyy-MM-dd HH:mm:ss");
     }
     
     public static Date addDate(Date date, int field, int amount) {

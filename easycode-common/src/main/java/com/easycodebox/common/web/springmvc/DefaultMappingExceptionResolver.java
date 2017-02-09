@@ -3,7 +3,7 @@ package com.easycodebox.common.web.springmvc;
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.error.*;
 import com.easycodebox.common.jackson.Jacksons;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,7 +39,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 			error = CodeMsg.FAIL;
 		}
 		
-		if(HttpUtils.isAjaxRequest(request)) {
+		if(Https.isAjaxRequest(request)) {
 			response.setContentType("application/json;charset=UTF-8");
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 					.createGenerator(response.getWriter())) {

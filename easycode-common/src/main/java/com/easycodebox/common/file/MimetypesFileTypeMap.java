@@ -1,7 +1,7 @@
 package com.easycodebox.common.file;
 
 import com.easycodebox.common.lang.*;
-import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.log.slf4j.*;
 
 import javax.activation.FileTypeMap;
@@ -163,7 +163,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 	 */
 	private void loadAllResources(List<MimeTypeFile> v, String name) {
 		boolean anyLoaded = false;
-		URL[] urls = getResources(ClassUtils.getClassLoader(), name);
+		URL[] urls = getResources(Classes.getClassLoader(), name);
 		if (urls != null) {
 			log.info("MimetypesFileTypeMap: getResources");
 			for (URL url : urls) {
@@ -282,7 +282,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 	 * 通过文件扩展名获取ContentType
 	 */
 	public synchronized String getContentTypeByExt(String extension) {
-		if(StringUtils.isBlank(extension))
+		if(Strings.isBlank(extension))
 			return DEFAUL_TTYPE;
 
 		for (MimeTypeFile mt : DB) {

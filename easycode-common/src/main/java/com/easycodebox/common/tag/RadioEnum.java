@@ -1,7 +1,7 @@
 package com.easycodebox.common.tag;
 
 import com.easycodebox.common.enums.DetailEnum;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 
 import javax.servlet.jsp.JspException;
@@ -38,9 +38,9 @@ public class RadioEnum extends EnumGroupTag {
 				labelAttr = Symbol.EMPTY;
 		StringBuilder all = new StringBuilder();
 		//组装labelAttr
-		if(StringUtils.isNotBlank(labelClass))
+		if(Strings.isNotBlank(labelClass))
 			labelAttr += " class='" + labelClass + "' ";
-		if(StringUtils.isNotBlank(labelStyle))
+		if(Strings.isNotBlank(labelStyle))
 			labelAttr += " style='" + labelStyle + "' ";
 		
 		for(; begin <= end; begin++) {
@@ -48,13 +48,13 @@ public class RadioEnum extends EnumGroupTag {
 			DetailEnum<?> cur = (DetailEnum<?>)enumsList.get(begin);
 			String enumName = ((Enum<?>)cur).name();		//枚举实体的名字
 			String radioValue = dataType.equals(DATA_TYPE_VALUE) ? cur.getValue().toString() : enumName;
-			if (StringUtils.isNotBlank(id)) {
-				inputAttr += StringUtils.format(" id = '{0}_{1}' ", id, begin);
+			if (Strings.isNotBlank(id)) {
+				inputAttr += Strings.format(" id = '{0}_{1}' ", id, begin);
 			}
 			inputAttr += html + checkoutTagAttr(begin, end + 1);
 			if(selectedValue != null && (enumName.equals(selectedValue) || cur.getValue().toString().equals(selectedValue)))
 				inputAttr += " checked='checked' ";
-			all.append(StringUtils.format(pattern, labelAttr, radioValue, inputAttr, cur.getDesc()));
+			all.append(Strings.format(pattern, labelAttr, radioValue, inputAttr, cur.getDesc()));
 		}
 		try {
 			pageContext.getOut().append(all);

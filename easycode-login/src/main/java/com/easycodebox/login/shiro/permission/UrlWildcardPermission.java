@@ -1,12 +1,12 @@
 package com.easycodebox.login.shiro.permission;
 
+import com.easycodebox.common.lang.Strings;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.util.AntPathMatcher;
 import org.apache.shiro.util.PatternMatcher;
 
-import com.easycodebox.common.lang.StringUtils;
 import com.easycodebox.common.lang.Symbol;
 
 /**
@@ -48,7 +48,7 @@ public class UrlWildcardPermission implements GlobalPermission {
     }
     
     protected void setParts(String wildcardString) {
-        wildcardString = StringUtils.trimToNull(wildcardString);
+        wildcardString = Strings.trimToNull(wildcardString);
 
         if (wildcardString == null) {
             throw new IllegalArgumentException("Wildcard string cannot be null or empty. Make sure permission strings are properly formatted.");
@@ -98,7 +98,7 @@ public class UrlWildcardPermission implements GlobalPermission {
     }
 
     public String toString() {
-        return StringUtils.join(parts, dividerToken) + (isPermitted() ? Symbol.EMPTY : noPermittedFlag);
+        return Strings.join(parts, dividerToken) + (isPermitted() ? Symbol.EMPTY : noPermittedFlag);
     }
 
     public boolean equals(Object o) {

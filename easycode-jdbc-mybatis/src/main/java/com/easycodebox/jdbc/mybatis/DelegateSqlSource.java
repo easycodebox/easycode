@@ -5,9 +5,9 @@ import org.apache.ibatis.mapping.SqlSource;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.EnumClassFactory;
-import com.easycodebox.common.lang.ObjectUtils;
+import com.easycodebox.common.lang.Objects;
 import com.easycodebox.common.lang.StringToken.StringFormatToken;
-import com.easycodebox.common.lang.reflect.FieldUtils;
+import com.easycodebox.common.lang.reflect.Fields;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 
@@ -41,7 +41,7 @@ public class DelegateSqlSource implements SqlSource {
 				try {
 					Enum e = Enum.valueOf((Class)enumClass, frags[1]);
 					if(e instanceof DetailEnum)
-						token.insertBack(ObjectUtils.toString(((DetailEnum)e).getValue(), "null"));
+						token.insertBack(Objects.toString(((DetailEnum)e).getValue(), "null"));
 					else
 						token.insertBack(Integer.toString(e.ordinal()));
 				} catch (Exception e) {
@@ -54,7 +54,7 @@ public class DelegateSqlSource implements SqlSource {
 			}
 		}
 		try {
-			FieldUtils.writeField(boundSql, "sql", token.getAssemble(), true);
+			Fields.writeField(boundSql, "sql", token.getAssemble(), true);
 		} catch (Exception e) {
 			log.error("set field value error.", e);
 		}

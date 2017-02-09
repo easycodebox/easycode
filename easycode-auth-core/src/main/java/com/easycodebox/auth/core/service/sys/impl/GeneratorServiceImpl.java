@@ -10,9 +10,9 @@ import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.*;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
-import com.easycodebox.common.lang.reflect.FieldUtils;
+import com.easycodebox.common.lang.reflect.Fields;
 import com.easycodebox.jdbc.LockMode;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
 import org.springframework.stereotype.Service;
@@ -55,7 +55,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	@Transactional
 	@Log(title = "修改生成策略", moduleType = ModuleType.SYS)
 	public int update(Generator generator) {
-		if(StringUtils.isBlank(generator.getMaxVal()))
+		if(Strings.isBlank(generator.getMaxVal()))
 			generator.setMaxVal(null);
 		super.get(sql()
 				.eqAst(R.Generator.generatorType, generator.getGeneratorType())
@@ -98,7 +98,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 		
 		if(generatorType.getGenerator() != null) {
 			try {
-				FieldUtils.writeField(generatorType.getGenerator(), "isCycle", isCycle, true);
+				Fields.writeField(generatorType.getGenerator(), "isCycle", isCycle, true);
 			} catch (Exception e) {
 				throw new BaseException("Write isCycle field error.", e);
 			}

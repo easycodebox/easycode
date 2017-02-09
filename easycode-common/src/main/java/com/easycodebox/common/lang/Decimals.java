@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
  * @author WangXiaoJin
  * 
  */
-public class DecimalUtils {
+public class Decimals {
 
 	/**
 	 * 默认小数后面的0不删除

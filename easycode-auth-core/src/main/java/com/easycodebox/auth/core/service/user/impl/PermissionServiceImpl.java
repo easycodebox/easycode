@@ -21,7 +21,7 @@ import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.freemarker.ConfigurationFactory;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.xml.XmlDataParser;
@@ -81,7 +81,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 
 	@Override
 	public Permission load(Long id, Integer projectId, String url) {
-		if(id == null && (projectId == null || StringUtils.isBlank(url)))
+		if(id == null && (projectId == null || Strings.isBlank(url)))
 			throw new BaseException("param id or projectId or url is null.");
 		
 		Permission data = permissionMapper.load(id, projectId, url);
@@ -102,7 +102,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 		/*Assert.isFalse(this.existName(permission.getProjectId(), permission.getName(), permission.getId()),
 				ErrorCode.FAIL.msg("权限名{0}已被占用", permission.getName()));*/
 		
-		if(StringUtils.isNotBlank(permission.getUrl()))
+		if(Strings.isNotBlank(permission.getUrl()))
 			Assert.isFalse(this.existUrl(permission.getProjectId(), permission.getUrl(), permission.getId()),
 					CodeMsgExt.FAIL.msg("url{0}已被占用", permission.getUrl()));
 		
@@ -122,7 +122,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 		/*Assert.isFalse(this.existName(permission.getProjectId(), permission.getName(), permission.getId()),
 				ErrorCode.FAIL.msg("权限名{0}已被占用", permission.getName()));*/
 		
-		if(StringUtils.isNotBlank(permission.getUrl()))
+		if(Strings.isNotBlank(permission.getUrl()))
 			Assert.isFalse(this.existUrl(permission.getProjectId(), permission.getUrl(), permission.getId()),
 					CodeMsgExt.FAIL.msg("url{0}已被占用", permission.getUrl()));
 		
@@ -174,10 +174,10 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 			String permissionName, YesNo isMenu, OpenClose status, 
 			String url, int pageNo, int pageSize) {
 		
-		parentName = StringUtils.trimToNull(parentName);
-		projectName = StringUtils.trimToNull(projectName);
-		permissionName = StringUtils.trimToNull(permissionName);
-		url = StringUtils.trimToNull(url);
+		parentName = Strings.trimToNull(parentName);
+		projectName = Strings.trimToNull(projectName);
+		permissionName = Strings.trimToNull(permissionName);
+		url = Strings.trimToNull(url);
 		
 		List<Permission> os = permissionMapper.page(parentName, projectName, 
 				permissionName, isMenu, status, url, pageNo, pageSize);
@@ -256,13 +256,13 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 					menu1Status = XmlDataParser.getXmlAttributeVal(menu1, "status"),
 					menu1Sort = XmlDataParser.getXmlAttributeVal(menu1, "sort"),
 					menu1Description = XmlDataParser.getXmlAttributeVal(menu1, "description", menu1Name);
-			Permission o1 = new Permission(StringUtils.isNotBlank(menu1Id) ? Long.parseLong(menu1Id) : cal1 , 
+			Permission o1 = new Permission(Strings.isNotBlank(menu1Id) ? Long.parseLong(menu1Id) : cal1 ,
 					null, menu1Name, pro.getId(), YesNo.YES, menu1Url, menu1Description, menu1Icon);
-			if(StringUtils.isNotBlank(menu1Status)) {
+			if(Strings.isNotBlank(menu1Status)) {
 				OpenClose st = Enum.valueOf(OpenClose.class, menu1Status);
 				o1.setStatus(st);
 			}
-			if(StringUtils.isNotBlank(menu1Sort)) {
+			if(Strings.isNotBlank(menu1Sort)) {
 				o1.setSort(Integer.parseInt(menu1Sort));
 			}
 			this.add(o1);
@@ -278,14 +278,14 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 						menu2Status = XmlDataParser.getXmlAttributeVal(menu2, "status"),
 						menu2Sort = XmlDataParser.getXmlAttributeVal(menu2, "sort"),
 						menu2Description = XmlDataParser.getXmlAttributeVal(menu2, "description", menu2Name);
-				Permission o2 = new Permission(StringUtils.isNotBlank(menu2Id) ? Long.parseLong(menu2Id) : cal2 , 
+				Permission o2 = new Permission(Strings.isNotBlank(menu2Id) ? Long.parseLong(menu2Id) : cal2 ,
 						o1.getId(), menu2Name,
 						pro.getId(), YesNo.YES, menu2Url, menu2Description, menu2Icon);
-				if(StringUtils.isNotBlank(menu2Status)) {
+				if(Strings.isNotBlank(menu2Status)) {
 					OpenClose st = Enum.valueOf(OpenClose.class, menu2Status);
 					o2.setStatus(st);
 				}
-				if(StringUtils.isNotBlank(menu2Sort)) {
+				if(Strings.isNotBlank(menu2Sort)) {
 					o2.setSort(Integer.parseInt(menu2Sort));
 				}
 				this.add(o2);
@@ -301,14 +301,14 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 							menu3Status = XmlDataParser.getXmlAttributeVal(menu3, "status"),
 							menu3Sort = XmlDataParser.getXmlAttributeVal(menu3, "sort"),
 							menu3Description = XmlDataParser.getXmlAttributeVal(menu3, "description", menu3Name);
-					Permission o3 = new Permission(StringUtils.isNotBlank(menu3Id) ? Long.parseLong(menu3Id) : cal3 , 
+					Permission o3 = new Permission(Strings.isNotBlank(menu3Id) ? Long.parseLong(menu3Id) : cal3 ,
 							o2.getId(), menu3Name, 
 							pro.getId(), YesNo.YES, menu3Url, menu3Description, menu3Icon);
-					if(StringUtils.isNotBlank(menu3Status)) {
+					if(Strings.isNotBlank(menu3Status)) {
 						OpenClose st = Enum.valueOf(OpenClose.class, menu3Status);
 						o3.setStatus(st);
 					}
-					if(StringUtils.isNotBlank(menu3Sort)) {
+					if(Strings.isNotBlank(menu3Sort)) {
 						o3.setSort(Integer.parseInt(menu3Sort));
 					}
 					this.add(o3);
@@ -336,13 +336,13 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 					status = XmlDataParser.getXmlAttributeVal(permission, "status"),
 					sort = XmlDataParser.getXmlAttributeVal(permission, "sort"),
 					description = XmlDataParser.getXmlAttributeVal(permission, "description", name);
-			Permission o = new Permission(StringUtils.isNotBlank(id) ? Long.parseLong(id) : begin + x*multiple , 
+			Permission o = new Permission(Strings.isNotBlank(id) ? Long.parseLong(id) : begin + x*multiple ,
 					menuId, name, projectId, YesNo.NO, url, description, null);
-			if(StringUtils.isNotBlank(status)) {
+			if(Strings.isNotBlank(status)) {
 				OpenClose st = Enum.valueOf(OpenClose.class, status);
 				o.setStatus(st);
 			}
-			if(StringUtils.isNotBlank(sort)) {
+			if(Strings.isNotBlank(sort)) {
 				o.setSort(Integer.parseInt(sort));
 			}
 			this.add(o);

@@ -21,7 +21,7 @@ import java.util.regex.*;
  * @author WangXiaoJin
  * 
  */
-public class FileUtils {
+public class Files {
 	
 	private static final Logger log = LoggerFactory.getLogger(ImageTools.class);
 	
@@ -405,22 +405,22 @@ public class FileUtils {
 		if(StringUtils.isBlank(rules)) {
 			return CodeMsg.FAIL.msg("规则不能为空");
 		}
-		rules = RegularUtils.getQueryString(rules);
+		rules = Regulars.getQueryString(rules);
 		Double sl = null, sg = null;
 		String type = null, error;
 		if(StringUtils.isNotBlank(rules)) {
-			sl = FileUtils.processRule(rules, "sl", false, Double.class);
+			sl = Files.processRule(rules, "sl", false, Double.class);
 			if (maxSize != null && maxSize > 0 && (sl == null || maxSize < sl)) {
 				sl = maxSize.doubleValue();
 			}
-			sg = FileUtils.processRule(rules, "sg", true, Double.class);
-			type = FileUtils.processRule(rules, "type", true, String.class);
+			sg = Files.processRule(rules, "sg", true, Double.class);
+			type = Files.processRule(rules, "type", true, String.class);
 		}
 		
 		FileInfo[] files = new FileInfo[iss.length];
 		for(int i = 0; i < iss.length; i++) {
 			FileInfo file = new FileInfo();
-			file.setSize(FileUtils.byte2m(fileSizes[i], 2));
+			file.setSize(Files.byte2m(fileSizes[i], 2));
 			files[i] = file;
 			
 	        try {
@@ -448,9 +448,9 @@ public class FileUtils {
 				}
 				file.setType(fileType);
 				
-				if(sl != null && FileUtils.byte2m(fileSizes[i], 6) > sl) {
+				if(sl != null && Files.byte2m(fileSizes[i], 6) > sl) {
 					/* ------ error ------ */
-		        	error = "文件不能大于" + DecimalUtils.fmt(sl, 2, true) + "M";
+		        	error = "文件不能大于" + Decimals.fmt(sl, 2, true) + "M";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {
@@ -459,9 +459,9 @@ public class FileUtils {
 		        	}
 		        	/* ------ error ------ */
 				} 
-				if(sg != null && FileUtils.byte2m(fileSizes[i], 6) < sg) {
+				if(sg != null && Files.byte2m(fileSizes[i], 6) < sg) {
 					/* ------ error ------ */
-		        	error = "文件不能小于" + DecimalUtils.fmt(sg, 2, true) + "M";
+		        	error = "文件不能小于" + Decimals.fmt(sg, 2, true) + "M";
 		        	if (transaction) {
 		        		return CodeMsg.FAIL.msg(error);
 		        	} else {

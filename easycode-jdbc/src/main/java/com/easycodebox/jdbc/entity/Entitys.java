@@ -1,7 +1,7 @@
 package com.easycodebox.jdbc.entity;
 
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.lang.reflect.FieldUtils;
+import com.easycodebox.common.lang.reflect.Fields;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.config.Configuration;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -109,7 +109,7 @@ public final class Entitys {
 			if(columnFields == null) {
 				//
 				columnFields = new ArrayList<>();
-				List<Field> fields = FieldUtils.getAllFields(clazz, true);
+				List<Field> fields = Fields.getAllFields(clazz, true);
 				for(Field field : fields) {
 					columnFields.addAll(getColumnFields(field));
 				}

@@ -3,7 +3,7 @@ package com.easycodebox.common.spring;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.validate.Assert;
 
 /**
@@ -28,7 +28,7 @@ public class BeanFactory {
 	public static <T> T getBean(Class<T> requiredType) throws BeansException {
 		Object bean;
 		try {
-			bean = getBean(StringUtils.uncapitalize(requiredType.getSimpleName()));
+			bean = getBean(Strings.uncapitalize(requiredType.getSimpleName()));
 		} catch (Exception e) {
 			ApplicationContext context = ApplicationContextFactory.newInstance();
 			Assert.notNull(context);

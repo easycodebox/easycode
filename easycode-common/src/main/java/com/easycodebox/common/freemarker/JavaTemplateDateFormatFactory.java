@@ -184,7 +184,7 @@ public class JavaTemplateDateFormatFactory extends TemplateDateFormatFactory {
         @Override
         public Date parse(String s, final int dateType) throws UnparsableValueException {
             try {
-                return StringUtils.isEmpty(s) ? NullDate.INSTANCE : javaDateFormat.parse(s);
+                return Strings.isEmpty(s) ? NullDate.INSTANCE : javaDateFormat.parse(s);
             } catch (ParseException e) {
                 throw new UnparsableValueException(e.getMessage(), e);
             }

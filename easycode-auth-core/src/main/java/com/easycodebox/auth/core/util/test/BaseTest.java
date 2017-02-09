@@ -1,6 +1,6 @@
 package com.easycodebox.auth.core.util.test;
 
-import com.easycodebox.common.lang.reflect.ClassUtils;
+import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.log.logback.LocateLogger;
 import com.easycodebox.common.spring.*;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -43,7 +43,7 @@ public class BaseTest<T> extends LocateLogger {
 	@SuppressWarnings("unchecked")
 	public void initBean() {
 		try {
-			bean = (T)BeanFactory.getBean(ClassUtils.getSuperClassGenricType(getClass()));
+			bean = (T)BeanFactory.getBean(Classes.getSuperClassGenricType(getClass()));
 		} catch (Exception e) {
 			if(e.getClass() != NoSuchBeanDefinitionException.class)
 				log.error("run error!!!", e);

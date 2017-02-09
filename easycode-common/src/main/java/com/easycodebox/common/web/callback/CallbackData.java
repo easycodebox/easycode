@@ -2,7 +2,7 @@ package com.easycodebox.common.web.callback;
 
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.jackson.Jacksons;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 
@@ -84,13 +84,13 @@ public class CallbackData extends CodeMsg {
 	@Override
 	public String toString() {
 		String msg = getMsg();
-		msg = StringUtils.isBlank(msg) ? null : StringUtils.string2unicode(msg);
+		msg = Strings.isBlank(msg) ? null : Strings.string2unicode(msg);
 		StringBuilder sb = new StringBuilder()
 			.append("{")
-			.append("\"action\"").append(":").append(StringUtils.valueToString(getAction())).append(",")
-			.append("\"code\"").append(":").append(StringUtils.valueToString(getCode())).append(",")
-			.append("\"msg\"").append(":").append(StringUtils.valueToString(msg)).append(",")
-			.append("\"url\"").append(":").append(StringUtils.valueToString(getUrl()));
+			.append("\"action\"").append(":").append(Strings.valueToString(getAction())).append(",")
+			.append("\"code\"").append(":").append(Strings.valueToString(getCode())).append(",")
+			.append("\"msg\"").append(":").append(Strings.valueToString(msg)).append(",")
+			.append("\"url\"").append(":").append(Strings.valueToString(getUrl()));
 		try {
 			sb.append(",").append("\"data\"").append(":")
 			.append(Jacksons.COMMUNICATE.toJson(getData()));

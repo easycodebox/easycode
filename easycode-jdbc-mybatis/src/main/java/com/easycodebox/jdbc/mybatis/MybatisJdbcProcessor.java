@@ -1,7 +1,7 @@
 package com.easycodebox.jdbc.mybatis;
 
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
@@ -111,10 +111,10 @@ public class MybatisJdbcProcessor implements JdbcProcessor {
 	private boolean initMappedStatement(SqlGrammar sqlGrammar, String sql, Class<?> parameterType, 
 			Class<?> resultType, SqlCommandType sqlCommandType) {
 		Assert.notNull(sqlGrammar);
-		if(StringUtils.isBlank(sql))
+		if(Strings.isBlank(sql))
 			sql = sqlGrammar.buildSql(sqlCommandType);
 		log.debug("SqlGrammar : {}", sql);
-		if(StringUtils.isBlank(sql))
+		if(Strings.isBlank(sql))
 			return false;
 		Configuration configuration = sqlSessionTemplate.getConfiguration();
 		SqlSource sqlSource = new StaticSqlSource(configuration, sql);

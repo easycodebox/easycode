@@ -1,9 +1,9 @@
 package com.easycodebox.common.web.callback;
 
 import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.net.Https;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -293,10 +293,10 @@ public class Callbacks {
 			.append(Symbol.L_PARENTHESIS)
 			.append("window.name, ")
 			.append(obj)
-			.append(StringUtils.isNotBlank(callbackFun) ? ",'" + callbackFun + "'" : "")
+			.append(Strings.isNotBlank(callbackFun) ? ",'" + callbackFun + "'" : "")
 			.append(Symbol.R_PARENTHESIS)
 			.append(";</script>");
-		HttpUtils.outHtml(sb.toString(), response);
+		Https.outHtml(sb.toString(), response);
 	}
 
 }

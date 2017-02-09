@@ -1,6 +1,6 @@
 package com.easycodebox.common.error;
 
-import com.easycodebox.common.lang.StringUtils;
+import com.easycodebox.common.lang.Strings;
 
 /**
  * @author WangXiaoJin
@@ -20,7 +20,7 @@ public class BaseException extends RuntimeException {
 	 * @param args
 	 */
 	public BaseException(String msg, Object... args) {
-		super(StringUtils.format(msg, args));
+		super(Strings.format(msg, args));
 	}
 	
 	/**
@@ -30,7 +30,7 @@ public class BaseException extends RuntimeException {
 	 * @param args
 	 */
 	public BaseException(String msg, Throwable cause, Object... args) {
-        super(StringUtils.format(msg, args), cause);
+        super(Strings.format(msg, args), cause);
     }
 	
 	public BaseException(Throwable cause) {

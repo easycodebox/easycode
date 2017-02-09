@@ -35,7 +35,7 @@ public class CodeMsgExt extends CodeMsg {
 		
 		/* ------------ 生成properties文件 BEGIN -------------- */
 		File file = new File("src/main/resources" + (FILE_PATH.startsWith(Symbol.SLASH) ? "" : Symbol.SLASH) + FILE_PATH);
-		CodeMsgUtils.storePropertiesFile(CodeMsgExt.class, file);
+		CodeMsgs.storePropertiesFile(CodeMsgExt.class, file);
 		/* ------------ 生成properties文件 END ---------------- */
 		
 		CodeMsg code = CodeMsgExt.NONE;

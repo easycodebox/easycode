@@ -1,8 +1,8 @@
 package com.easycodebox.common.web.springmvc;
 
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.lang.reflect.ClassUtils;
-import com.easycodebox.common.net.HttpUtils;
+import com.easycodebox.common.lang.reflect.Classes;
+import com.easycodebox.common.net.Https;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -41,8 +41,8 @@ public class DefaultRequestMappingHandlerAdapter extends RequestMappingHandlerAd
 
 		ModelAndView view = super.invokeHandlerMethod(request, response, handlerMethod);
 		if(view != null && !view.hasView() && autoView) {
-			String pkg = ClassUtils.getLastPkg(handlerMethod.getBeanType());
-			String[] frags = HttpUtils.getParticularPaths(request);
+			String pkg = Classes.getLastPkg(handlerMethod.getBeanType());
+			String[] frags = Https.getParticularPaths(request);
 			String viewName;
 			if(frags.length == 1) {
 				viewName = pkg + Symbol.SLASH + frags[0];
@@ -51,7 +51,7 @@ public class DefaultRequestMappingHandlerAdapter extends RequestMappingHandlerAd
 				viewName = pkg + Symbol.SLASH + frags[0] + Symbol.BOTTOM_LINE + frags[1];
 			}
 			else
-				viewName = HttpUtils.getShortPath(request);
+				viewName = Https.getShortPath(request);
 			view.setViewName(viewName);
 		}
 		return view;
