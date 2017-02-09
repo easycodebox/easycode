@@ -1,31 +1,21 @@
 package com.easycodebox.common.lang;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.ArrayUtils;
-
-import com.easycodebox.common.enums.DetailEnum;
-import com.easycodebox.common.enums.EnumClassFactory;
+import com.easycodebox.common.enums.*;
 import com.easycodebox.common.enums.entity.DataType;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.StringToken.StringFormatToken;
-import com.easycodebox.common.lang.reflect.ClassUtils;
-import com.easycodebox.common.lang.reflect.FieldUtils;
+import com.easycodebox.common.lang.reflect.*;
 import com.easycodebox.common.validate.Regex;
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.ArrayUtils;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.regex.*;
 
 /**
  * @author WangXiaoJin
@@ -41,13 +31,13 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 		for(int i = 0; i < str.length(); i++) {
 			char ch = str.charAt(i);
 			if (ch < 0x10) {
-				sb.append("\\u000" + Integer.toHexString(ch));
+				sb.append("\\u000").append(Integer.toHexString(ch));
 	        } else if (ch < 0x100) {
-	        	sb.append("\\u00" + Integer.toHexString(ch));
+	        	sb.append("\\u00").append(Integer.toHexString(ch));
 	        } else if (ch < 0x1000) {
-	        	sb.append("\\u0" + Integer.toHexString(ch));
+	        	sb.append("\\u0").append(Integer.toHexString(ch));
 	        }else
-	        	sb.append("\\u" + Integer.toHexString(ch));
+	        	sb.append("\\u").append(Integer.toHexString(ch));
 		}
         return sb.toString();
     }
@@ -57,9 +47,9 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 		if(str == null) return null;
 		String[] strs = str.toLowerCase().split("\\\\u");
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < strs.length; i++) {
-			if(strs[i].trim().equals("")) continue;
-			char ch = (char)Integer.parseInt(strs[i].trim(),16);
+		for (String tmp : strs) {
+			if (isBlank(tmp)) continue;
+			char ch = (char) Integer.parseInt(tmp.trim(), 16);
 			sb.append(ch);
 		}
         return sb.toString();
@@ -103,7 +93,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 		if (args == null) args = ArrayUtils.EMPTY_OBJECT_ARRAY;
 		
 		StringFormatToken token = new StringFormatToken(str, true);
-		String key = null;
+		String key;
 		List<Object> maps = null;
 		int index = -1;
 		
@@ -148,7 +138,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 							if (val != null) {
 								break;
 							}
-						} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+						} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
 							
 						}
 					}
@@ -182,7 +172,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 	 * @throws JsonGenerationException 
 	 */
 	public static String formatExp2String(String paramsStr, Object data, DataType dataType, Map<String, List<Map<String, Object>>> enums) 
-			throws JsonGenerationException, JsonMappingException, IOException {
+			throws IOException {
 		if(isBlank(paramsStr) || data == null) return paramsStr;
 		Pattern p = Pattern.compile("([\\w\\.\"-]+)(\\s*[=:]\\s*)((\\[\\s*([\\w\\.-]+)\\s*/\\s*\\])|(\\[\\s*([\\w\\.-]+)\\s*\\]([\\s\\S]*?)\\[\\s*/\\s*\\7\\s*\\])|(\\$\\{\\s*([\\w\\.-]+)\\s*\\}))");
 		Matcher matcher = p.matcher(paramsStr);
@@ -194,7 +184,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 						symbol = matcher.group(2),
 						//枚举常量值
 						enumClassName = null;
-				boolean isJson = dataType == DataType.JSON ? true : false;
+				boolean isJson = dataType == DataType.JSON;
 				if(isNotBlank(matcher.group(4))) {
 					String key = matcher.group(5);
 					if(dataType == DataType.MIX) {
@@ -202,7 +192,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 						key = jsonIndex > -1 ? key.substring(0, jsonIndex) : key;
 						isJson = true;
 					}
-					if(key.indexOf(ENUM_VALUE) > -1) {
+					if(key.contains(ENUM_VALUE)) {
 						String[] frags = key.split(ENUM_VALUE);
 						key = frags[0];
 						enumClassName = frags[1];
@@ -225,7 +215,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 						key = jsonIndex > -1 ? key.substring(0, jsonIndex) : key;
 						isJson = true;
 					}
-					if(key.indexOf(ENUM_VALUE) > -1) {
+					if(key.contains(ENUM_VALUE)) {
 						String[] frags = key.split(ENUM_VALUE);
 						key = frags[0];
 						enumClassName = frags[1];
@@ -248,7 +238,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 						key = jsonIndex > -1 ? key.substring(0, jsonIndex) : key;
 						isJson = true;
 					}
-					if(key.indexOf(ENUM_VALUE) > -1) {
+					if(key.contains(ENUM_VALUE)) {
 						String[] frags = key.split(ENUM_VALUE);
 						key = frags[0];
 						enumClassName = frags[1];
@@ -256,7 +246,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 					Object val = getMappingValue(data, key, enumClassName, enums);
 					
 					if(val == null ) {
-						val = convertParam(keyName, symbol, val, isJson);
+						val = convertParam(keyName, symbol, null, isJson);
 					}else {
 						if(val instanceof Collection<?>)
 							val = ((Collection<?>)val).toArray();
@@ -296,7 +286,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 						key = jsonIndex > -1 ? key.substring(0, jsonIndex) : key;
 						isJson = true;
 					}
-					if(key.indexOf(ENUM_VALUE) > -1) {
+					if(key.contains(ENUM_VALUE)) {
 						String[] frags = key.split(ENUM_VALUE);
 						key = frags[0];
 						enumClassName = frags[1];
@@ -322,7 +312,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 			//转换枚举值
 			if(enums == null || !enums.containsKey(enumClassName))
 				throw new BaseException("has no enum named {0} in enums", enumClassName);
-			String enumName = null;
+			String enumName;
 			if(val instanceof Enum<?>) {
 				enumName = ((Enum<?>)val).name();
 			}else
@@ -352,8 +342,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 	 * @throws JsonMappingException 
 	 * @throws JsonGenerationException 
 	 */
-	private static String convertParam(String keyName, String symbol, Object data, boolean isJson)
-			throws JsonGenerationException, JsonMappingException, IOException {
+	private static String convertParam(String keyName, String symbol, Object data, boolean isJson) throws IOException {
 		String val = keyName + symbol;
 		if(isJson) {
 			val += Jacksons.COMMUNICATE.toJson(data);
@@ -439,22 +428,20 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 	
 	@Deprecated
 	public static <T> T formatExp2Object(String fmtStr, String dataStr, Class<T> dataClass, 
-			Map<String, List<Map<String, Object>>> enums) throws JsonParseException, JsonMappingException, IOException {
+			Map<String, List<Map<String, Object>>> enums) throws IOException {
 		return formatExp2Object(fmtStr, dataStr, dataClass, null, enums);
 	}
 	
 	@Deprecated
 	public static <T> T formatExp2Object(String fmtStr, String dataStr, Class<T> dataClass, 
-			Map<String, Class<?>> assignClasses, Map<String, List<Map<String, Object>>> enums) 
-					throws JsonParseException, JsonMappingException, IOException {
+			Map<String, Class<?>> assignClasses, Map<String, List<Map<String, Object>>> enums) throws IOException {
 		return formatExp2Object(fmtStr, dataStr, dataClass, assignClasses, Symbol.EMPTY, enums);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Deprecated
 	public static <T> T formatExp2Object(String fmtStr, String dataStr, Class<T> dataClass, 
-			Map<String, Class<?>> assignClasses, String keyPrefix, Map<String, List<Map<String, Object>>> enums) 
-					throws JsonParseException, JsonMappingException, IOException {
+			Map<String, Class<?>> assignClasses, String keyPrefix, Map<String, List<Map<String, Object>>> enums) throws IOException {
 		Map originalData = Jacksons.NON_NULL.toBean(dataStr, Map.class);
 		T data = ClassUtils.newInstance(dataClass);
 		if(isBlank(fmtStr) || isBlank(dataStr))
@@ -466,7 +453,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 		if (result) {
 			do {
 				String key = matcher.group(1),
-						wrapper = null,
+						wrapper,
 						array = null,
 						enumClassName = null;
 				if(isNotBlank(matcher.group(4))) {
@@ -482,7 +469,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 				
 				Object proVal = ObjectUtils.getMappingValue(originalData, unquote(key));
 				
-				if(wrapper.indexOf(ENUM_VALUE) > -1) {
+				if(wrapper.contains(ENUM_VALUE)) {
 					String[] frags = wrapper.split(ENUM_VALUE);
 					wrapper = frags[0];
 					enumClassName = frags[1];
@@ -509,7 +496,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 				}
 				
 				if(array != null) {
-					List listVal = null;
+					List listVal;
 					if(proVal instanceof List) {
 						listVal = (List)proVal;
 					}else {
@@ -635,8 +622,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 	public static String filterHtml(String str) {
 		if(isBlank(str)) 
 			return str;
-		Pattern p = null;
-		Matcher m = null;
+		Pattern p;
+		Matcher m;
 		p = Pattern.compile(Regex.SCRIPT,Pattern.CASE_INSENSITIVE);
 		m = p.matcher(str);
 		str = m.replaceAll(Symbol.EMPTY);
@@ -657,8 +644,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 	public static String filterUnsafeHtml(String str) {
 		if(isBlank(str)) 
 			return str;
-		Pattern p = null;
-		Matcher m = null;
+		Pattern p;
+		Matcher m;
 		p = Pattern.compile(Regex.SCRIPT,Pattern.CASE_INSENSITIVE);
 		m = p.matcher(str);
 		str = m.replaceAll(Symbol.EMPTY);
@@ -681,7 +668,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 	
 	public static List<String> split2List(String str, String separator, boolean trim) {
 		StringTokenizer strTokens = new StringTokenizer(str, separator);
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		while (strTokens.hasMoreTokens()) {
 			list.add(trim ? strTokens.nextToken().trim() : strTokens.nextToken());
 		}
