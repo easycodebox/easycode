@@ -14,6 +14,7 @@ import com.easycodebox.jdbc.grammar.SqlGrammar;
 import com.easycodebox.jdbc.util.AnnotateUtils;
 import com.easycodebox.jdbc.util.SqlUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
@@ -138,13 +139,7 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
 				.upd(Property.instance(jdbcHandler.getDeletedPropName(), entityClass, false), deletedVal);
-		if (idVal.getClass().isArray()) {
-			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
-		}else if(idVal instanceof Collection<?>) {
-			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Collection<?>)idVal);
-		}else {
-			sqlGrammar.eq(Property.instance(pks.get(0).getName(), entityClass, false), idVal);
-		}
+		addIdCondition(sqlGrammar, pks.get(0).getName(), idVal, entityClass);
 		return update(sqlGrammar);
 	}
 	
@@ -177,13 +172,7 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 			else
 				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status[0]);
 		}
-		if (idVal.getClass().isArray()) {
-			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
-		}else if(idVal instanceof Collection<?>) {
-			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Collection<?>)idVal);
-		}else {
-			sqlGrammar.eq(Property.instance(pks.get(0).getName(), entityClass, false), idVal);
-		}
+		addIdCondition(sqlGrammar, pks.get(0).getName(), idVal, entityClass);
 		return deletePhy(sqlGrammar);
 	}
 	
@@ -223,22 +212,15 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 	public final <K extends Entity, V extends DetailEnum<?>> boolean exist(Serializable idVal, Class<K> entityClass, V... status) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass);
-		int valCount = 1;
+		int valCount = idVal.getClass().isArray() ? ((Object[])idVal).length : idVal instanceof Collection<?>
+				? ((Collection<?>)idVal).size() : NumberUtils.INTEGER_ONE;
 		if(status != null && status.length > 0) {
 			if(status.length > 1)
 				sqlGrammar.in(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status);
 			else
 				sqlGrammar.eq(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status[0]);
 		}
-		if (idVal.getClass().isArray()) {
-			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
-			valCount = ((Object[])idVal).length;
-		}else if(idVal instanceof Collection<?>) {
-			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Collection<?>)idVal);
-			valCount = ((Collection<?>)idVal).size();
-		}else {
-			sqlGrammar.eq(Property.instance(pks.get(0).getName(), entityClass, false), idVal);
-		}
+		addIdCondition(sqlGrammar, pks.get(0).getName(), idVal, entityClass);
 		return count(sqlGrammar) >= valCount;
 	}
 	
@@ -302,8 +284,8 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 		//Assert.notNull(sqlGrammar.getPageSize(), "PageSize cant not be null.");
 		List<K> data = list(sg, resultClass);
 		long count = sg.getPageNo() != null && sg.getPageSize() != null ? count(sg) : data.size();
-		return new DataPage<K>(sg.getPageNo(), sg.getPageSize(), 
-				sg.getPartIndex(), sg.getPartSize(), 
+		return new DataPage<>(sg.getPageNo(), sg.getPageSize(),
+				sg.getPartIndex(), sg.getPartSize(),
 				count, data);
 	}
 	
@@ -345,14 +327,22 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
 				.upd(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status);
-		if (idVal.getClass().isArray()) {
-			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
-		}else if(idVal instanceof Collection<?>) {
-			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Collection<?>)idVal);
-		}else {
-			sqlGrammar.eq(Property.instance(pks.get(0).getName(), entityClass, false), idVal);
-		}
+		addIdCondition(sqlGrammar, pks.get(0).getName(), idVal, entityClass);
 		return update(sqlGrammar);
+	}
+	
+	/**
+	 * 组装ID条件
+	 */
+	private <K extends Entity> void addIdCondition(SqlGrammar sqlGrammar, String idPropName,
+	                                               Serializable idVal, Class<K> entityClass) {
+		if (idVal.getClass().isArray()) {
+			sqlGrammar.in(Property.instance(idPropName, entityClass, false), (Object[])idVal);
+		}else if(idVal instanceof Collection<?>) {
+			sqlGrammar.in(Property.instance(idPropName, entityClass, false), (Collection<?>)idVal);
+		}else {
+			sqlGrammar.eq(Property.instance(idPropName, entityClass, false), idVal);
+		}
 	}
 
 	public JdbcHandler getJdbcHandler() {
