@@ -2,26 +2,27 @@ package com.easycodebox.auth.core.service.sys.impl;
 
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.GeneratorService;
-import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.sys.Generator;
-import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.generator.*;
+import com.easycodebox.common.generator.AbstractGenerator;
+import com.easycodebox.common.generator.GeneratorType;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.lang.reflect.Fields;
 import com.easycodebox.jdbc.LockMode;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.*;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Constructor;
 import java.util.List;
-import java.util.concurrent.locks.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author WangXiaoJin
@@ -53,7 +54,6 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	
 	@Override
 	@Transactional
-	@Log(title = "修改生成策略", moduleType = ModuleType.SYS)
 	public int update(Generator generator) {
 		if(Strings.isBlank(generator.getMaxVal()))
 			generator.setMaxVal(null);
@@ -89,7 +89,6 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	
 	@Override
 	@Transactional
-	@Log(title = "修改生成策略是否循环", moduleType = ModuleType.SYS)
 	public int updateIsCycle(GeneratorEnum generatorType, YesNo isCycle) {
 		super.get(sql()
 				.eqAst(R.Generator.generatorType, generatorType)
