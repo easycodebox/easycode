@@ -1,10 +1,10 @@
 package com.easycodebox.common.generator.impl;
 
-import java.util.UUID;
-
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.AbstractGenerator;
 import com.easycodebox.common.lang.Strings;
+
+import java.util.UUID;
 
 /**
  * @author WangXiaoJin
@@ -26,10 +26,9 @@ public final class UUIDGenerator extends AbstractGenerator<String> {
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public UUIDGenerator(int increment, int fetchSize
-				, String initialVal, String currentVal, 
+	public UUIDGenerator(int increment, int fetchSize, String initialVal, String currentVal,
 				String maxVal, YesNo isCycle) {
-		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
+		super(increment, fetchSize, isCycle);
 		this.initialVal = initialVal;
 		this.maxVal = Strings.isBlank(maxVal) ? maxVal : null;
 	}

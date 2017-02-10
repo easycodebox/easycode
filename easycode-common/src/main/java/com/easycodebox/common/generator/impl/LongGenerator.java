@@ -1,11 +1,10 @@
 package com.easycodebox.common.generator.impl;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.AbstractGenerator;
 import com.easycodebox.common.generator.exception.BoundReachedException;
-import com.easycodebox.common.lang.Strings;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author WangXiaoJin
@@ -16,7 +15,7 @@ public final class LongGenerator extends AbstractGenerator<Long> {
 	private final AtomicLong curVal;
 	
 	public LongGenerator() {
-		this(1, 500, "10059", "10059", null, YesNo.NO);
+		this(1, 500, 10059L, 10059L, null, YesNo.NO);
 	}
 	
 	/**
@@ -26,14 +25,12 @@ public final class LongGenerator extends AbstractGenerator<Long> {
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public LongGenerator(int increment, int fetchSize
-				, String initialVal, String currentVal, 
-				String maxVal, YesNo isCycle) {
-		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
-		this.initialVal = Long.parseLong(initialVal);
-		this.maxVal = Strings.isBlank(maxVal) ?
-				Long.MAX_VALUE : Long.parseLong(maxVal);
-		this.curVal = new AtomicLong(Long.parseLong(currentVal));
+	public LongGenerator(int increment, int fetchSize, Long initialVal, Long currentVal,
+				         Long maxVal, YesNo isCycle) {
+		super(increment, fetchSize, isCycle);
+		this.initialVal = initialVal;
+		this.maxVal = maxVal == null ? Long.MAX_VALUE : maxVal;
+		this.curVal = new AtomicLong(currentVal);
 	}
 
 	@Override

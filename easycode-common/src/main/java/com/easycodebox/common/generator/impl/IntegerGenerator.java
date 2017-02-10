@@ -1,11 +1,10 @@
 package com.easycodebox.common.generator.impl;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.AbstractGenerator;
 import com.easycodebox.common.generator.exception.BoundReachedException;
-import com.easycodebox.common.lang.Strings;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author WangXiaoJin
@@ -16,7 +15,7 @@ public final class IntegerGenerator extends AbstractGenerator<Integer> {
 	private final AtomicInteger curVal;
 	
 	public IntegerGenerator() {
-		this(1, 500, "359", "359", null, YesNo.NO);
+		this(1, 500, 359, 359, null, YesNo.NO);
 	}
 	
 	/**
@@ -27,14 +26,12 @@ public final class IntegerGenerator extends AbstractGenerator<Integer> {
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public IntegerGenerator(int increment, int fetchSize
-				, String initialVal, String currentVal, 
-				String maxVal, YesNo isCycle) {
-		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
-		this.initialVal = Integer.parseInt(initialVal);
-		this.maxVal = Strings.isBlank(maxVal) ?
-				Integer.MAX_VALUE : Integer.parseInt(maxVal);
-		this.curVal = new AtomicInteger(Integer.parseInt(currentVal));
+	public IntegerGenerator(int increment, int fetchSize, Integer initialVal, Integer currentVal,
+	                        Integer maxVal, YesNo isCycle) {
+		super(increment, fetchSize, isCycle);
+		this.initialVal = initialVal;
+		this.maxVal = maxVal == null ? Integer.MAX_VALUE : maxVal;
+		this.curVal = new AtomicInteger(currentVal);
 	}
 
 	@Override

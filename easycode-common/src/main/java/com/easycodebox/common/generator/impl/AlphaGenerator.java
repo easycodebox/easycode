@@ -39,10 +39,9 @@ public final class AlphaGenerator extends AbstractStringGenerator {
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public AlphaGenerator(int increment, int fetchSize
-				, String initialVal, String currentVal, 
+	public AlphaGenerator(int increment, int fetchSize, String initialVal, String currentVal,
 				String maxVal, YesNo isCycle) {
-		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
+		super(increment, fetchSize, isCycle);
 		this.initialVal = initialVal.toLowerCase();
 		this.maxVal = maxVal == null ? null : maxVal.toLowerCase();
 		this.curVal = currentVal.toLowerCase();

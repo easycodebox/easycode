@@ -14,10 +14,8 @@ public abstract class AbstractStringGenerator extends AbstractGenerator<String> 
 	
     protected Integer size;
     
-    protected AbstractStringGenerator(int increment, int fetchSize
-			, String initialVal, String currentVal, 
-			String maxVal, YesNo isCycle) {
-		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
+    protected AbstractStringGenerator(int increment, int fetchSize, YesNo isCycle) {
+		super(increment, fetchSize, isCycle);
 	}
 	
 	/**

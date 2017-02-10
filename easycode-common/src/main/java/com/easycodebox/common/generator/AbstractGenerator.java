@@ -42,13 +42,11 @@ public abstract class AbstractGenerator<T> {
 	 */
 	protected YesNo isCycle;
 	
-	protected AbstractGenerator(int increment, int fetchSize
-			, String initialVal, String currentVal, 
-			String maxVal, YesNo isCycle) {
+	protected AbstractGenerator(int increment, int fetchSize, YesNo isCycle) {
 		this.increment = increment;
 		this.fetchSize = fetchSize;
 		this.isCycle = isCycle;
-	};
+	}
 	
 	/**
 	 * 获取生成器的下一个值

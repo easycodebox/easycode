@@ -23,10 +23,9 @@ public final class NumericStringGenerator extends AbstractStringGenerator {
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public NumericStringGenerator(int increment, int fetchSize
-				, String initialVal, String currentVal, 
+	public NumericStringGenerator(int increment, int fetchSize, String initialVal, String currentVal,
 				String maxVal, YesNo isCycle) {
-		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
+		super(increment, fetchSize, isCycle);
 		this.initialVal = initialVal;
 		this.maxVal = maxVal;
 		this.curVal = currentVal;

@@ -9,6 +9,7 @@ import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.AbstractGenerator;
 import com.easycodebox.common.generator.GeneratorType;
+import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.lang.reflect.Fields;
@@ -63,14 +64,23 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 				);
 		
 		if(generator.getGeneratorType().getGenerator() != null) {
-			Class<?> type = generator.getGeneratorType().getRawGenerator().getClass();
+			Class<? extends AbstractGenerator> type = generator.getGeneratorType().getRawGenerator().getClass();
 			try {
-				Constructor<?> cs = type.getConstructor(int.class, int.class, String.class, String.class, String.class, YesNo.class);
-				AbstractGenerator<?> ge = (AbstractGenerator<?>)cs.newInstance(
-						generator.getIncrement(), generator.getFetchSize(),
-						generator.getInitialVal(), generator.getCurrentVal(),
-						generator.getMaxVal(), generator.getIsCycle());
-				generator.getGeneratorType().setGenerator(ge);
+				for (Constructor<?> constructor : type.getConstructors()) {
+					Class<?>[] parameterTypes = constructor.getParameterTypes();
+					if (parameterTypes.length == 6) {
+						AbstractGenerator<?> ge = (AbstractGenerator<?>)constructor.newInstance(
+								generator.getIncrement(),
+								generator.getFetchSize(),
+								DataConvert.convertType(generator.getInitialVal(), parameterTypes[2]),
+								DataConvert.convertType(generator.getCurrentVal(), parameterTypes[3]),
+								DataConvert.convertType(generator.getMaxVal(), parameterTypes[4]),
+								generator.getIsCycle()
+						);
+						generator.getGeneratorType().setGenerator(ge);
+						break;
+					}
+				}
 			} catch (Exception e) {
 				throw new BaseException("Instance AbstractGenerator error.", e);
 			}

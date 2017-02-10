@@ -24,10 +24,9 @@ public final class Base64UUIDGenerator extends AbstractGenerator<String> {
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public Base64UUIDGenerator(int increment, int fetchSize
-				, String initialVal, String currentVal, 
+	public Base64UUIDGenerator(int increment, int fetchSize, String initialVal, String currentVal,
 				String maxVal, YesNo isCycle) {
-		super(increment, fetchSize, initialVal, currentVal, maxVal, isCycle);
+		super(increment, fetchSize, isCycle);
 		this.initialVal = initialVal;
 		this.maxVal = maxVal;
 		this.curVal = currentVal;
