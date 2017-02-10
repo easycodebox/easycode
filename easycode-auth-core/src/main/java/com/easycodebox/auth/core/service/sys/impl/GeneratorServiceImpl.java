@@ -77,12 +77,12 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 		}
 		
 		return super.update(sql()
-				.updateAst(R.Generator.initialVal, generator.getInitialVal())
-				.updateAst(R.Generator.currentVal, generator.getCurrentVal())
-				.updateAst(R.Generator.fetchSize, generator.getFetchSize())
-				.updateAst(R.Generator.increment, generator.getIncrement())
-				.updateAst(R.Generator.isCycle, generator.getIsCycle())
-				.updateNeed(R.Generator.maxVal, generator.getMaxVal())
+				.updAst(R.Generator.initialVal, generator.getInitialVal())
+				.updAst(R.Generator.currentVal, generator.getCurrentVal())
+				.updAst(R.Generator.fetchSize, generator.getFetchSize())
+				.updAst(R.Generator.increment, generator.getIncrement())
+				.updAst(R.Generator.isCycle, generator.getIsCycle())
+				.upd(R.Generator.maxVal, generator.getMaxVal())
 				.eqAst(R.Generator.generatorType, generator.getGeneratorType())
 				);
 	}
@@ -105,7 +105,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 		}
 		
 		return super.update(sql()
-				.updateAst(R.Generator.isCycle, isCycle)
+				.updAst(R.Generator.isCycle, isCycle)
 				.eqAst(R.Generator.generatorType, generatorType)
 				);
 	}
@@ -150,7 +150,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 			//nextBatchStart 返回下批数据的起始值。返回null则不更新数据库的CurrentVal，例：生成uuid只依据自己的规则，所以返回null
 			if(nextBatchStart != null) {
 				this.update(sql()
-						.update(R.Generator.currentVal, nextBatchStart.toString())
+						.upd(R.Generator.currentVal, nextBatchStart.toString())
 						.eq(R.Generator.generatorType, generatorType));
 			}
 		}

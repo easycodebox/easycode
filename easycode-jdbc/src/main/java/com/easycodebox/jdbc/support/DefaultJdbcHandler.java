@@ -94,21 +94,21 @@ public class DefaultJdbcHandler implements JdbcHandler {
 		if (isModifyEntity 
 				&& !DEFAULT_MODIFIER_PROPNAME.equals(modifierPropName)
 				&& !updateSqlHad(sqlGrammar, DEFAULT_MODIFIER_PROPNAME)) {
-			sqlGrammar.update(Property.instance(DEFAULT_MODIFIER_PROPNAME, sqlGrammar.getEntity(), false), userId);
+			sqlGrammar.upd(Property.instance(DEFAULT_MODIFIER_PROPNAME, sqlGrammar.getEntity(), false), userId);
 		}
 		if (isModifyEntity 
 				&& !DEFAULT_MODIFIER_TIME_PROPNAME.equals(modifyTimePropName)
 				&& !updateSqlHad(sqlGrammar, DEFAULT_MODIFIER_TIME_PROPNAME)) {
-			sqlGrammar.update(Property.instance(DEFAULT_MODIFIER_TIME_PROPNAME, sqlGrammar.getEntity(), false), dateFactory.instance());
+			sqlGrammar.upd(Property.instance(DEFAULT_MODIFIER_TIME_PROPNAME, sqlGrammar.getEntity(), false), dateFactory.instance());
 		}
 		
 		if(!updateSqlHad(sqlGrammar, modifierPropName)
 				&& existProperty(sqlGrammar.getEntity(), modifierPropName)) {
-			sqlGrammar.update(Property.instance(modifierPropName, sqlGrammar.getEntity(), false), userId);
+			sqlGrammar.upd(Property.instance(modifierPropName, sqlGrammar.getEntity(), false), userId);
 		}
 		if(!updateSqlHad(sqlGrammar, modifyTimePropName)
 				&& existProperty(sqlGrammar.getEntity(), modifyTimePropName)) {
-			sqlGrammar.update(Property.instance(modifyTimePropName, sqlGrammar.getEntity(), false), dateFactory.instance());
+			sqlGrammar.upd(Property.instance(modifyTimePropName, sqlGrammar.getEntity(), false), dateFactory.instance());
 		}
 	}
 	

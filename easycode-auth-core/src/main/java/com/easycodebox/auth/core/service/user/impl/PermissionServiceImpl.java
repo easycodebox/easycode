@@ -131,16 +131,15 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 		}
 		
 		return super.update(sql()
-				.updateNeed(R.Permission.projectId, permission.getProjectId())
-				.updateNeed(R.Permission.parentId, permission.getParentId())
-				.updateNeed(R.Permission.name, permission.getName())
-				//.update(R.Permission.status, permission.getStatus())
-				.updateNeed(R.Permission.isMenu, permission.getIsMenu())
-				.updateNeed(R.Permission.url, permission.getUrl())
-				.updateNeed(R.Permission.sort, permission.getSort())
-				.updateNeed(R.Permission.icon, permission.getIcon())
-				.updateNeed(R.Permission.description, permission.getDescription())
-				.updateNeed(R.Permission.remark, permission.getRemark())
+				.upd(R.Permission.projectId, permission.getProjectId())
+				.upd(R.Permission.parentId, permission.getParentId())
+				.upd(R.Permission.name, permission.getName())
+				.upd(R.Permission.isMenu, permission.getIsMenu())
+				.upd(R.Permission.url, permission.getUrl())
+				.upd(R.Permission.sort, permission.getSort())
+				.upd(R.Permission.icon, permission.getIcon())
+				.upd(R.Permission.description, permission.getDescription())
+				.upd(R.Permission.remark, permission.getRemark())
 				.eqAst(R.Permission.id, permission.getId())
 				);
 	}
@@ -543,7 +542,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 	@CacheEvict(cacheNames=Constants.CN.PERMISSION, allEntries=true)
 	public int changeIsMenu(Long id, YesNo isMenu) {
 		return super.update(sql()
-				.updateAst(R.Permission.isMenu, isMenu)
+				.updAst(R.Permission.isMenu, isMenu)
 				.eqAst(R.Permission.id, id)
 				);
 	}

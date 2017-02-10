@@ -136,16 +136,15 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		}
 		
 		return super.update(sql()
-				.updateNeed(R.User.groupId, user.getGroupId())
-				.updateNeed(R.User.userNo, user.getUserNo())
-				.update(R.User.username, user.getUsername())
-				.updateNeed(R.User.nickname, user.getNickname())
-				.updateNeed(R.User.realname, user.getRealname())
-				//.update(R.User.status, user.getStatus())
-				.update(R.User.sort, user.getSort())
-				.updateNeed(R.User.gender, user.getGender())
-				.updateNeed(R.User.email, user.getEmail())
-				.updateNeed(R.User.mobile, user.getMobile())
+				.upd(R.User.groupId, user.getGroupId())
+				.upd(R.User.userNo, user.getUserNo())
+				.updNonNull(R.User.username, user.getUsername())
+				.upd(R.User.nickname, user.getNickname())
+				.upd(R.User.realname, user.getRealname())
+				.updNonNull(R.User.sort, user.getSort())
+				.upd(R.User.gender, user.getGender())
+				.upd(R.User.email, user.getEmail())
+				.upd(R.User.mobile, user.getMobile())
 				.eqAst(R.User.id, user.getId())
 		);
 	}
@@ -263,7 +262,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		Assert.isFalse(this.existNickname(nickname, id),
 				CodeMsgExt.FAIL.msg("昵称{0}已被占用", nickname));
 		return super.update(sql()
-				.update(R.User.nickname, nickname)
+				.upd(R.User.nickname, nickname)
 				.eq(R.User.id, id)
 		);
 	}
@@ -283,7 +282,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@CacheEvict(cacheNames = Constants.CN.USER, key = "#id")
 	public int updatePwd(String newPwd, String id) {
 		return super.update(sql()
-				.updateAst(R.User.password, newPwd)
+				.updAst(R.User.password, newPwd)
 				.eq(R.User.deleted, YesNo.NO)
 				.eqAst(R.User.id, id)
 		);
@@ -295,7 +294,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@CacheEvict(cacheNames = Constants.CN.USER, key = "#id")
 	public int updatePortrait(String id, String portrait) {
 		return super.update(sql()
-				.updateNeed(R.User.pic, portrait)
+				.upd(R.User.pic, portrait)
 				.eqAst(R.User.id, id)
 		);
 	}
@@ -307,10 +306,10 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	public int updateBaseInfo(String id, String nickname, String realname,
 	                          String email, String mobile) {
 		return super.update(sql()
-				.updateAst(R.User.nickname, nickname)
-				.updateNeed(R.User.realname, realname)
-				.updateNeed(R.User.email, email)
-				.updateNeed(R.User.mobile, mobile)
+				.updAst(R.User.nickname, nickname)
+				.upd(R.User.realname, realname)
+				.upd(R.User.email, email)
+				.upd(R.User.mobile, mobile)
 				.eqAst(R.User.id, id)
 		);
 	}

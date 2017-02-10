@@ -137,7 +137,7 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 	public <K extends Entity> int delete(Serializable idVal, Object deletedVal, Class<K> entityClass) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
-				.update(Property.instance(jdbcHandler.getDeletedPropName(), entityClass, false), deletedVal);
+				.upd(Property.instance(jdbcHandler.getDeletedPropName(), entityClass, false), deletedVal);
 		if (idVal.getClass().isArray()) {
 			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
 		}else if(idVal instanceof Collection<?>) {
@@ -344,7 +344,7 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 			V status, Class<K> entityClass) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
-				.update(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status);
+				.upd(Property.instance(jdbcHandler.getStatusPropName(), entityClass, false), status);
 		if (idVal.getClass().isArray()) {
 			sqlGrammar.in(Property.instance(pks.get(0).getName(), entityClass, false), (Object[])idVal);
 		}else if(idVal instanceof Collection<?>) {

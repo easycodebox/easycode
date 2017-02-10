@@ -1,25 +1,12 @@
 package com.easycodebox.auth.core.service.user.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.easycodebox.auth.core.dao.user.RoleMapper;
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.user.RoleService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.aop.log.Log;
-import com.easycodebox.auth.model.entity.user.GroupRole;
-import com.easycodebox.auth.model.entity.user.Role;
-import com.easycodebox.auth.model.entity.user.RolePermission;
-import com.easycodebox.auth.model.entity.user.UserRole;
+import com.easycodebox.auth.model.entity.user.*;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.OpenClose;
@@ -27,6 +14,12 @@ import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.cache.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
@@ -94,11 +87,10 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 		}
 		
 		return super.update(sql()
-				.updateNeed(R.Role.name, role.getName())
-				.updateNeed(R.Role.sort, role.getSort())
-				//.update(R.Role.status, role.getStatus())
-				.updateNeed(R.Role.description, role.getDescription())
-				.updateNeed(R.Role.remark, role.getRemark())
+				.upd(R.Role.name, role.getName())
+				.upd(R.Role.sort, role.getSort())
+				.upd(R.Role.description, role.getDescription())
+				.upd(R.Role.remark, role.getRemark())
 				.eqAst(R.Role.id, role.getId())
 				);
 	}

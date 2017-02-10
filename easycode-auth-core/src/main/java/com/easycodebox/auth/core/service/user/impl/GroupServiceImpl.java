@@ -113,10 +113,9 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 		}
 		
 		return super.update(sql()
-				.updateNeed(R.Group.parentId, group.getParentId())
-				.updateNeed(R.Group.name, group.getName())
-				.updateNeed(R.Group.sort, group.getSort())
-				//.update(R.Group.status, group.getStatus())
+				.upd(R.Group.parentId, group.getParentId())
+				.upd(R.Group.name, group.getName())
+				.upd(R.Group.sort, group.getSort())
 				.eqAst(R.Group.id, group.getId())
 				);
 	}
@@ -133,7 +132,7 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 		int count = super.delete(ids);
 		super.deletePhy(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
 		super.update(sql(User.class)
-				.updateNeed(R.User.groupId, null)
+				.upd(R.User.groupId, null)
 				.eq(R.User.deleted, YesNo.NO)
 				.in(R.User.groupId, ids)
 				);
@@ -152,7 +151,7 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 		int count = super.deletePhy(ids);
 		super.deletePhy(sql(GroupRole.class).in(R.GroupRole.roleId, ids));
 		super.update(sql(User.class)
-				.updateNeed(R.User.groupId, null)
+				.upd(R.User.groupId, null)
 				.eq(R.User.deleted, YesNo.NO)
 				.in(R.User.groupId, ids)
 				);

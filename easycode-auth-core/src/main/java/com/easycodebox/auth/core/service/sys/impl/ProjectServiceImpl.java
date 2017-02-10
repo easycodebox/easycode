@@ -113,11 +113,11 @@ public class ProjectServiceImpl extends AbstractServiceImpl<Project> implements 
 				CodeMsgExt.FAIL.msg("项目编号{0}已被占用", project.getProjectNo()));
 		
 		return super.update(sql()
-				.updateNeed(R.Project.name, project.getName())
-				.updateNeed(R.Project.projectNo, project.getProjectNo())
-				.updateNeed(R.Project.status, project.getStatus())
-				.updateNeed(R.Project.sort, project.getSort())
-				.updateNeed(R.Project.remark, project.getRemark())
+				.upd(R.Project.name, project.getName())
+				.upd(R.Project.projectNo, project.getProjectNo())
+				.upd(R.Project.status, project.getStatus())
+				.upd(R.Project.sort, project.getSort())
+				.upd(R.Project.remark, project.getRemark())
 				.eqAst(R.Project.id, project.getId())
 				);
 	}

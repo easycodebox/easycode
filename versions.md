@@ -36,4 +36,5 @@
 
 1. 集成Reidis
 2. 类名后缀为Utils的修改成s后缀（StringUtils修改成Strings）
+3. SqlGrammar updateNeed/update/updateAst 方法名对应修改成 upd/updNonNull/updAst
 

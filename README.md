@@ -46,7 +46,7 @@
 	
 	//等价于：  UPDATE user SET realname = '张三' WHERE id = '1'
 	super.update(sql()
-		.update(R.User.realname, "张三")
+		.upd(R.User.realname, "张三")
 		.eq(R.User.id, "1")
 	);
 	

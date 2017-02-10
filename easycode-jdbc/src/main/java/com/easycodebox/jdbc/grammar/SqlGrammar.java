@@ -173,9 +173,9 @@ public class SqlGrammar implements Cloneable {
 	 * @param value    为null时则不添加该sql语句
 	 * @return
 	 */
-	public SqlGrammar update(Property property, Object value){
+	public SqlGrammar updNonNull(Property property, Object value){
 		if(property != null && value != null) 
-			updateNeed(property, value);
+			upd(property, value);
 		return this;
 	}
 	
@@ -185,17 +185,18 @@ public class SqlGrammar implements Cloneable {
 	 * @param value    当value == null 抛异常
 	 * @return
 	 */
-	public SqlGrammar updateAst(Property property, Object value){
+	public SqlGrammar updAst(Property property, Object value){
 		notNull(value, "value can not be null.");
-		return updateNeed(property, value);
+		return upd(property, value);
 	}
 	
 	/**
+	 * update column，value参数可以传null值
 	 * @param property
-	 * @param value		可以为null,为null时set property=null
+	 * @param value     可以为null,为null时set property=null
 	 * @return
 	 */
-	public SqlGrammar updateNeed(Property property, Object value){
+	public SqlGrammar upd(Property property, Object value){
 		if(property != null) 
 			updateSqlAppend(format(convert2SqlName(property), value, Symbol.EQ));
 		return this;
@@ -203,13 +204,13 @@ public class SqlGrammar implements Cloneable {
 	
 	/**
 	 * value不经过任何处理直接传给生气了语句
-	 * 用来设置null值，updateByRawVal("curDlvAddr", "null")
-	 * updateByRawVal(R.Shop.orderNum, "#{orderNum} + 1")
+	 * 用来设置null值，updRawVal("curDlvAddr", "null")
+	 * updRawVal(R.Shop.orderNum, "#{orderNum} + 1")
 	 * @param property
 	 * @param value
 	 * @return
 	 */
-	public SqlGrammar updateByRawVal(Property property, Object value){
+	public SqlGrammar updRawVal(Property property, Object value){
 		if(property != null && value != null) {
 			if(value instanceof String) {
 				value = convertPropertySql(value.toString());
