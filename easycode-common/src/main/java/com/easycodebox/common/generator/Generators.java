@@ -4,7 +4,6 @@ import com.easycodebox.common.spring.BeanFactory;
 
 /**
  * @author WangXiaoJin
- * 
  */
 public class Generators {
 	
@@ -19,14 +18,14 @@ public class Generators {
 	@SuppressWarnings("rawtypes")
 	public static Object getGeneratorNextVal(GeneratorType generatorType) {
 		AbstractGenerator g = generatorType.getGenerator();
-		if(g == null) {
+		if (g == null) {
 			initAndIncrementGenerator(generatorType);
 			g = generatorType.getGenerator();
 			return g.nextVal();
-		}else {
+		} else {
 			Object nextVal = g.nextVal();
 			//nextVal == null 本批次数据已经用完，需要加载下批数据
-			while(nextVal == null) {
+			while (nextVal == null) {
 				initAndIncrementGenerator(generatorType);
 				nextVal = g.nextVal();
 			}
@@ -35,7 +34,7 @@ public class Generators {
 	}
 	
 	private static void initAndIncrementGenerator(GeneratorType generatorType) {
-		generateProcess = generateProcess == null ? 
+		generateProcess = generateProcess == null ?
 				BeanFactory.getBean(GenerateProcess.class) : generateProcess;
 		generateProcess.incrementGenerator(generatorType);
 	}

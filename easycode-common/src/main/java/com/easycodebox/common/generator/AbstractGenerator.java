@@ -1,8 +1,8 @@
 package com.easycodebox.common.generator;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.easycodebox.common.enums.entity.YesNo;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author WangXiaoJin
