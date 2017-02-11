@@ -38,7 +38,7 @@ public class ProjectController extends BaseController {
 		DataPage<Project> data = projectService.page(project.getName(), project.getProjectNo(), 
 				project.getStatus(), dataPage.getPageNo(), dataPage.getPageSize());
 		for (Project item : data.getData()) {
-			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+			item.setCreatorName(userIdConverter.idToRealOrNickname(item.getCreator()));
 		}
 		return none(data);
 	}

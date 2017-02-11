@@ -1,13 +1,12 @@
 package com.easycodebox.common.tag;
 
+import com.easycodebox.common.idconverter.IdConverter;
+import com.easycodebox.common.idconverter.IdConverterRegistry;
 import com.easycodebox.common.spring.BeanFactory;
 import com.easycodebox.common.validate.Assert;
 
 import javax.servlet.jsp.JspException;
 import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author WangXiaoJin
@@ -16,9 +15,9 @@ import java.util.concurrent.ConcurrentMap;
 public class ConvertIdTag extends TagExt {
 	
 	/**
-	 * ID转换器
+	 * IdConverter注册器
 	 */
-	private static IdConverterMap converterMap;
+	private static IdConverterRegistry idConverterRegistry;
 	
 	private String module;
 	/**
@@ -32,91 +31,25 @@ public class ConvertIdTag extends TagExt {
 		super.init();
 		module = prop = null;
 		cid = null;
-		if (converterMap == null) {
-			converterMap = BeanFactory.getBean(IdConverterMap.class);
+		if (idConverterRegistry == null) {
+			idConverterRegistry = BeanFactory.getBean(IdConverterRegistry.class);
 		}
 	}
 	
 	@Override
 	public int doStartTag() throws JspException {
 		try {
-			String data = converterMap.convert(module, cid, prop);
+			IdConverter idConverter = idConverterRegistry.getIdConverter(module, true);
+			Assert.notNull(idConverter, "Can't find corresponding IdConverter : {0}.", module);
+			Object data = idConverter.convert(cid, prop);
 			if(data != null)
-				pageContext.getOut().append(data);
+				pageContext.getOut().append(data.toString());
 		} catch (IOException e) {
 			log.error("IOException.", e);
 		}
 		return super.doStartTag();
 	}
 
-	/**
-	 * ID转换成value的转换器Map
-	 * @author WangXiaoJin
-	 *
-	 */
-	public interface IdConverterMap {
-		
-		/**
-		 * 
-		 * @param module （可选） ID所属的模块，null表明用默认模块，实现类需要考虑此情况
-		 * @param id 
-		 * @param prop （可选） 某些情况下需要提供对象的属性名，特别是提供不同的属性名显示不同值的场景
-		 * @return
-		 */
-		String convert(String module, Object id, String prop);
-		
-	}
-	
-	/**
-	 * ID转换器Map默认实现
-	 * @author WangXiaoJin
-	 *
-	 */
-	public static class DefaultIdConverterMap implements IdConverterMap {
-
-		private String defaultModule;
-
-		private ConcurrentMap<String, IdConverter> maps = new ConcurrentHashMap<>(4);
-		
-		@Override
-		public String convert(String module, Object id, String prop) {
-			if (module == null)
-				module = defaultModule;
-			IdConverter converter = maps.get(module);
-			Assert.notNull(converter, "Can't find corresponding module : {0}.", module);
-			Object val = converter.convert(id, prop);
-			return val == null ? null : val.toString();
-		}
-		
-		/**
-		 * 设置转换器Map
-		 * @param map
-		 */
-		public void setConverterMap(Map<String, IdConverter> map) {
-			if (map != null) {
-				maps.putAll(map);
-			}
-		}
-		
-		/**
-		 * 添加转换器
-		 * @param key
-		 * @param converter
-		 */
-		public IdConverter addIdConverter(String key, IdConverter converter) {
-			return maps.put(key, converter);
-		}
-
-		public String getDefaultModule() {
-			return defaultModule;
-		}
-
-		public void setDefaultModule(String defaultModule) {
-			this.defaultModule = defaultModule;
-		}
-		
-	}
-	
 	public String getModule() {
 		return module;
 	}

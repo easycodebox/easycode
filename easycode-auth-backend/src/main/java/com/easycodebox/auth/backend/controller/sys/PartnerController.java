@@ -37,7 +37,7 @@ public class PartnerController extends BaseController {
 				partner.getWebsite(), partner.getStatus(), 
 				dataPage.getPageNo(), dataPage.getPageSize());
 		for (Partner item : data.getData()) {
-			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+			item.setCreatorName(userIdConverter.idToRealOrNickname(item.getCreator()));
 		}
 		return none(data);
 	}

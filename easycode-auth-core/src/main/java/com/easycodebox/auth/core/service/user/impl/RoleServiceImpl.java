@@ -53,8 +53,8 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 				.eq(R.Role.deleted, YesNo.NO)
 				);
 		if (data != null) {
-			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
-			data.setModifierName(userIdConverter.id2RealOrNickname(data.getModifier()));
+			data.setCreatorName(userIdConverter.idToRealOrNickname(data.getCreator()));
+			data.setModifierName(userIdConverter.idToRealOrNickname(data.getModifier()));
 		}
 		return data;
 	}

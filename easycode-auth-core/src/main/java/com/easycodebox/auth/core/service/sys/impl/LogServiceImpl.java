@@ -45,7 +45,7 @@ public class LogServiceImpl extends AbstractServiceImpl<Log> implements LogServi
 	public Log load(Long id) {
 		Log data = super.get(id);
 		if (data != null) {
-			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
+			data.setCreatorName(userIdConverter.idToRealOrNickname(data.getCreator()));
 		}
 		return data;
 	}

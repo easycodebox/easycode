@@ -48,7 +48,7 @@ public class UserController extends BaseController {
 				user.getStatus(), user.getEmail(),
 				user.getMobile(), dataPage.getPageNo(), dataPage.getPageSize());
 		for (User item : data.getData()) {
-			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+			item.setCreatorName(userIdConverter.idToRealOrNickname(item.getCreator()));
 		}
 		return none(data);
 	}
@@ -61,8 +61,8 @@ public class UserController extends BaseController {
 		Assert.notBlank(id, CodeMsg.FAIL.msg("主键参数不能为空"));
 		User user = userService.load(id);
 		if (user != null) {
-			user.setCreatorName(userIdConverter.id2RealOrNickname(user.getCreator()));
-			user.setModifierName(userIdConverter.id2RealOrNickname(user.getModifier()));
+			user.setCreatorName(userIdConverter.idToRealOrNickname(user.getCreator()));
+			user.setModifierName(userIdConverter.idToRealOrNickname(user.getModifier()));
 		}
 		if(user != null && user.getGroupId() != null) {
 			Group group = groupService.load(user.getGroupId());

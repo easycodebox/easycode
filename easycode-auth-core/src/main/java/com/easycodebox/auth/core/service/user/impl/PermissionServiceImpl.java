@@ -86,8 +86,8 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 		
 		Permission data = permissionMapper.load(id, projectId, url);
 		if (data != null) {
-			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
-			data.setModifierName(userIdConverter.id2RealOrNickname(data.getModifier()));
+			data.setCreatorName(userIdConverter.idToRealOrNickname(data.getCreator()));
+			data.setModifierName(userIdConverter.idToRealOrNickname(data.getModifier()));
 		}
 		return data;
 	}

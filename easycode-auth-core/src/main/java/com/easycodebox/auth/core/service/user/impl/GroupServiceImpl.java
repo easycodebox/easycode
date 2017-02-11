@@ -78,8 +78,8 @@ public class GroupServiceImpl extends AbstractServiceImpl<Group> implements Grou
 	public Group load(Integer id) {
 		Group data = groupMapper.load(id);
 		if (data != null) {
-			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
-			data.setModifierName(userIdConverter.id2RealOrNickname(data.getModifier()));
+			data.setCreatorName(userIdConverter.idToRealOrNickname(data.getCreator()));
+			data.setModifierName(userIdConverter.idToRealOrNickname(data.getModifier()));
 		}
 		return data;
 	}

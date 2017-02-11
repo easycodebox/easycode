@@ -50,8 +50,8 @@ public class PartnerServiceImpl extends AbstractServiceImpl<Partner> implements 
 				.eq(R.Partner.deleted, YesNo.NO)
 				);
 		if (data != null) {
-			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
-			data.setModifierName(userIdConverter.id2RealOrNickname(data.getModifier()));
+			data.setCreatorName(userIdConverter.idToRealOrNickname(data.getCreator()));
+			data.setModifierName(userIdConverter.idToRealOrNickname(data.getModifier()));
 		}
 		return data;
 	}

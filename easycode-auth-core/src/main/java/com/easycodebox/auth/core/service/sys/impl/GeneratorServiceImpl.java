@@ -47,8 +47,8 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	public Generator load(GeneratorEnum generatorType) {
 		Generator data = super.get(generatorType);
 		if (data != null) {
-			data.setCreatorName(userIdConverter.id2RealOrNickname(data.getCreator()));
-			data.setModifierName(userIdConverter.id2RealOrNickname(data.getModifier()));
+			data.setCreatorName(userIdConverter.idToRealOrNickname(data.getCreator()));
+			data.setModifierName(userIdConverter.idToRealOrNickname(data.getModifier()));
 		}
 		return data;
 	}

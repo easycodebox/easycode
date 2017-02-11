@@ -35,7 +35,7 @@ public class LogController extends BaseController {
 				log.getModuleType(), log.getLogLevel(), log.getResult(), 
 				log.getClientIp(), dataPage.getPageNo(), dataPage.getPageSize());
 		for (Log item : data.getData()) {
-			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+			item.setCreatorName(userIdConverter.idToRealOrNickname(item.getCreator()));
 		}
 		return none(data);
 	}

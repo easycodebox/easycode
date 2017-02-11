@@ -39,7 +39,7 @@ public class GroupController extends BaseController {
 		DataPage<Group> data = groupService.page(group.getParentName(), group.getName(), 
 				group.getStatus(), dataPage.getPageNo(), dataPage.getPageSize());
 		for (Group item : data.getData()) {
-			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+			item.setCreatorName(userIdConverter.idToRealOrNickname(item.getCreator()));
 		}
 		return none(data);
 	}

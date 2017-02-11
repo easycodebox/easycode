@@ -49,7 +49,7 @@ public class PermissionController extends BaseController {
 				permission.getIsMenu(), permission.getStatus(), permission.getUrl(), 
 				dataPage.getPageNo(), dataPage.getPageSize()); 
 		for (Permission item : data.getData()) {
-			item.setCreatorName(userIdConverter.id2RealOrNickname(item.getCreator()));
+			item.setCreatorName(userIdConverter.idToRealOrNickname(item.getCreator()));
 		}
 		return none(data);
 	}
