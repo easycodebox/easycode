@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" 
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
-	default-lazy-init="true">
-
+       default-lazy-init="true">
+	
 	<!-- 组件扫描 -->
 	<context:component-scan base-package="com.easycodebox">
 		<context:exclude-filter type="annotation"
-			expression="org.springframework.stereotype.Controller" />
+		                        expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	<!-- 启用AOP，建议不用加proxy-target-class="true" -->
-	<aop:aspectj-autoproxy />
+	<aop:aspectj-autoproxy/>
 	<!-- 使用注解事务管理 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<!-- 导入cache配置 -->
-	<import resource="core-cache.xml" />
+	<import resource="core-cache.xml"/>
 	
 	<!-- =================================== 【配置文件 - START】  ============================================== -->
 	<!-- ++++++++++++ 配置信息保存ZooKeeper中 ++++++++++++
@@ -43,11 +43,11 @@
 		获取节点数据
 		<bean id="cfgProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
 			p:targetObject-ref="cfgNode" p:targetMethod="load" />
-	++++++++++++ -->    	
+	++++++++++++ -->
 	
 	<!-- 配置常量 -->
 	<bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean"
-		p:ignoreResourceNotFound="true">
+	      p:ignoreResourceNotFound="true">
 		<property name="locations">
 			<list>
 				<value>classpath:core.properties</value>
@@ -62,9 +62,9 @@
 	<!-- ===================================== 【配置文件 - END】  ================================================== -->
 	<!-- 计算属性值中的值引用。例：cas.login=${cas.url}/login -->
 	<bean id="exePropertyPlaceholder" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
-		depends-on="properties" lazy-init="false"
-		p:targetClass="com.easycodebox.common.file.PropertiesUtils"
-		p:targetMethod="processPlaceholder">
+	      depends-on="properties" lazy-init="false"
+	      p:targetClass="com.easycodebox.common.file.PropertiesUtils"
+	      p:targetMethod="processPlaceholder">
 		<property name="arguments">
 			<array>
 				<ref bean="properties"/>
@@ -73,9 +73,9 @@
 		</property>
 	</bean>
 	<!-- 处理类的静态变量 ，当properties文件中没有配置值且Class类中已初始化，则值会反刷进properties中 -->
-	<bean id="staticValueProcessor" class="com.easycodebox.common.processor.StaticValueProcessor" 
-		init-method="process" lazy-init="false" depends-on="exePropertyPlaceholder">
-		<property name="properties" ref="properties" />
+	<bean id="staticValueProcessor" class="com.easycodebox.common.processor.StaticValueProcessor"
+	      init-method="process" lazy-init="false" depends-on="exePropertyPlaceholder">
+		<property name="properties" ref="properties"/>
 		<property name="packagesToScan">
 			<list>
 				<value>com.easycodebox.auth.model.bo</value>
@@ -89,23 +89,23 @@
 		</property>
 	</bean>
 	<bean id="placeholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-		depends-on="staticValueProcessor"
-		p:properties-ref="properties">
-		<property name="ignoreResourceNotFound" value="true" />
+	      depends-on="staticValueProcessor"
+	      p:properties-ref="properties">
+		<property name="ignoreResourceNotFound" value="true"/>
 	</bean>
 	<!-- 属性刷到PropertiesPool中 -->
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
-		depends-on="staticValueProcessor"
-		p:targetClass="com.easycodebox.common.file.PropertiesPool"
-		p:targetMethod="addProperties"
-		p:arguments-ref="properties" />
+	      depends-on="staticValueProcessor"
+	      p:targetClass="com.easycodebox.common.file.PropertiesPool"
+	      p:targetMethod="addProperties"
+	      p:arguments-ref="properties"/>
 	
 	<!-- 配置日志 -->
-	<bean id="logAspect" class="com.easycodebox.auth.core.util.aop.log.LogAspect" />
-
+	<bean id="logAspect" class="com.easycodebox.auth.core.util.aop.log.LogAspect"/>
+	
 	<!-- 配置枚举类型工厂 -->
 	<bean id="enumClassFactory" class="com.easycodebox.common.enums.EnumClassFactory"
-		lazy-init="false">
+	      lazy-init="false">
 		<property name="packagesToScan">
 			<list>
 				<value>com.easycodebox.auth.model.enums</value>
@@ -114,10 +114,10 @@
 			</list>
 		</property>
 	</bean>
-
+	
 	<bean id="annotatedConfig" class="com.easycodebox.jdbc.config.ConfigEntityBean"
-		lazy-init="false" p:packagesToScan="com.easycodebox.auth.model.entity" />
-
+	      lazy-init="false" p:packagesToScan="com.easycodebox.auth.model.entity"/>
+	
 	<!-- 数据源配置 -->
 	<!--
 		initialSize/minIdle/maxActive ==> 配置初始化大小、最小、最大
@@ -129,60 +129,71 @@
 		connectionProperties ==> config.decrypt用于解密数据库密码
 	 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
-		init-method="init" destroy-method="close"
-		p:url="${jdbc.url}"
-		p:username="${jdbc.username}"
-		p:password="${jdbc.password}"
-		p:initialSize="${jdbc.pool.initialSize}"
-		p:minIdle="${jdbc.pool.minIdle}"
-		p:maxActive="${jdbc.pool.maxActive}"
-		p:maxWait="${jdbc.pool.maxWait}"
-		p:timeBetweenEvictionRunsMillis="${jdbc.pool.timeBetweenEvictionRunsMillis}"
-		p:minEvictableIdleTimeMillis="${jdbc.pool.minEvictableIdleTimeMillis}"
-		
-		p:validationQuery="${jdbc.pool.validationQuery}"
-		p:testWhileIdle="${jdbc.pool.testWhileIdle}"
-		p:testOnBorrow="${jdbc.pool.testOnBorrow}"
-		p:testOnReturn="${jdbc.pool.testOnReturn}"
-		
-		p:poolPreparedStatements="${jdbc.pool.poolPreparedStatements}"
-		p:maxPoolPreparedStatementPerConnectionSize="${jdbc.pool.maxPoolPreparedStatementPerConnectionSize}"
-		
-		p:filters="${jdbc.pool.filters}"
-		p:connectionProperties="config.decrypt=true" />
-
+	      init-method="init" destroy-method="close"
+	      p:url="${jdbc.url}"
+	      p:username="${jdbc.username}"
+	      p:password="${jdbc.password}"
+	      p:initialSize="${jdbc.pool.initialSize}"
+	      p:minIdle="${jdbc.pool.minIdle}"
+	      p:maxActive="${jdbc.pool.maxActive}"
+	      p:maxWait="${jdbc.pool.maxWait}"
+	      p:timeBetweenEvictionRunsMillis="${jdbc.pool.timeBetweenEvictionRunsMillis}"
+	      p:minEvictableIdleTimeMillis="${jdbc.pool.minEvictableIdleTimeMillis}"
+	
+	      p:validationQuery="${jdbc.pool.validationQuery}"
+	      p:testWhileIdle="${jdbc.pool.testWhileIdle}"
+	      p:testOnBorrow="${jdbc.pool.testOnBorrow}"
+	      p:testOnReturn="${jdbc.pool.testOnReturn}"
+	
+	      p:poolPreparedStatements="${jdbc.pool.poolPreparedStatements}"
+	      p:maxPoolPreparedStatementPerConnectionSize="${jdbc.pool.maxPoolPreparedStatementPerConnectionSize}"
+	
+	      p:filters="${jdbc.pool.filters}"
+	      p:connectionProperties="config.decrypt=true"/>
+	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-		p:dataSource-ref="dataSource" />
-
-	<bean id="sqlSessionFactory" class="com.easycodebox.jdbc.mybatis.spring.MyBatisSqlSessionFactoryBean"
-		p:dataSource-ref="dataSource"
-		p:configLocation="classpath:mybatis-config.xml" />
-
+	      p:dataSource-ref="dataSource"/>
+	
+	<!-- 配置MyBatis -->
+	<!--
+		autoMappingBehavior=FULL : 查询结果支持嵌套属性赋值,默认不支持（PARTIAL）
+	-->
+	<bean id="ibatisConfiguration" class="com.easycodebox.jdbc.mybatis.DefaultConfiguration"
+	      p:lazyLoadingEnabled="false"
+	      p:cacheEnabled="false"
+	      p:autoMappingBehavior="FULL"/>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+	      p:dataSource-ref="dataSource"
+	      p:configuration-ref="ibatisConfiguration"
+	      p:typeAliasesPackage="com.easycodebox.auth.model.entity"
+	      p:typeHandlersPackage="com.easycodebox.auth.model.util.mybatis"
+	      p:mapperLocations="classpath:CommonMapper.xml"/>
+	
 	<bean id="sqlSessionTemplate" class="com.easycodebox.jdbc.mybatis.spring.DefaultSqlSessionTemplate">
-		<constructor-arg ref="sqlSessionFactory" />
+		<constructor-arg ref="sqlSessionFactory"/>
 	</bean>
-
+	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
-		p:basePackage="com.easycodebox.auth.core.dao" />
+	      p:basePackage="com.easycodebox.auth.core.dao"/>
 	<!-- 在insert、update时修改自动设置操作人、操作时间 -->
-	<bean id="jdbcHandler" class="com.easycodebox.jdbc.support.DefaultJdbcHandler" />
+	<bean id="jdbcHandler" class="com.easycodebox.jdbc.support.DefaultJdbcHandler"/>
 	<!-- jdbc处理器，实际处理sql的类 -->
 	<bean id="jdbcProcessor" class="com.easycodebox.jdbc.mybatis.MybatisJdbcProcessor"
-		p:sqlSessionTemplate-ref="sqlSessionTemplate" />
-
+	      p:sqlSessionTemplate-ref="sqlSessionTemplate"/>
+	
 	<!-- 持有spring上下文的bean -->
 	<bean class="com.easycodebox.common.spring.ApplicationContextFactory"
-		lazy-init="false" />
-
+	      lazy-init="false"/>
+	
 	<!-- =================================== 【ID转换器 - START】  ============================================== -->
 	<bean id="userIdConverter" class="com.easycodebox.auth.core.idconverter.UserIdConverter"
-		c:userService-ref="userService"
-		p:jdbcHandler-ref="jdbcHandler"/>
+	      c:userService-ref="userService"
+	      p:jdbcHandler-ref="jdbcHandler"/>
 	<bean id="idConverterRegistry" class="com.easycodebox.common.idconverter.IdConverterRegistry"
-		p:defaultModule="user">
+	      p:defaultModule="user">
 		<property name="converterMap">
 			<map>
-				<entry key="user" value-ref="userIdConverter" />
+				<entry key="user" value-ref="userIdConverter"/>
 			</map>
 		</property>
 	</bean>
@@ -190,7 +201,7 @@
 	
 	<!-- =================================== 【security info拦截器 - START】  ============================================== -->
 	<bean id="securityFilter" class="com.easycodebox.common.filter.SecurityContextFilter"
-		p:securityInfoHandler-ref="securityInfoHandler" />
+	      p:securityInfoHandler-ref="securityInfoHandler"/>
 	<!-- =================================== 【security info拦截器 - END】  ============================================== -->
-	
+
 </beans>
