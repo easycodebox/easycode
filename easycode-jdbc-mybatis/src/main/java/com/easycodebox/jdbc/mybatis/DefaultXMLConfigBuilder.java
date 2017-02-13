@@ -31,43 +31,42 @@ import org.apache.ibatis.type.JdbcType;
 
 /**
  * @author WangXiaoJin
- * 
  */
 public class DefaultXMLConfigBuilder extends BaseBuilder {
 	private boolean parsed;
 	private XPathParser parser;
 	private String environment;
-
+	
 	public DefaultXMLConfigBuilder(Reader reader) {
 		this(reader, null, null);
 	}
-
+	
 	public DefaultXMLConfigBuilder(Reader reader, String environment) {
 		this(reader, environment, null);
 	}
-
+	
 	public DefaultXMLConfigBuilder(Reader reader, String environment, Properties props) {
 		this(
 				new XPathParser(reader, true, props,
 						new XMLMapperEntityResolver()), environment, props);
 	}
-
+	
 	public DefaultXMLConfigBuilder(InputStream inputStream) {
 		this(inputStream, null, null);
 	}
-
+	
 	public DefaultXMLConfigBuilder(InputStream inputStream, String environment) {
 		this(inputStream, environment, null);
 	}
-
+	
 	public DefaultXMLConfigBuilder(InputStream inputStream, String environment,
-			Properties props) {
+	                               Properties props) {
 		this(new XPathParser(inputStream, true, props,
 				new XMLMapperEntityResolver()), environment, props);
 	}
-
+	
 	private DefaultXMLConfigBuilder(XPathParser parser, String environment,
-			Properties props) {
+	                                Properties props) {
 		super(new DefaultConfiguration());
 		ErrorContext.instance().resource("SQL Mapper Configuration");
 		this.configuration.setVariables(props);
@@ -75,7 +74,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 		this.environment = environment;
 		this.parser = parser;
 	}
-
+	
 	public Configuration parse() {
 		if (parsed) {
 			throw new BuilderException(
@@ -85,21 +84,21 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 		parseConfiguration(parser.evalNode("/configuration"));
 		return configuration;
 	}
-
+	
 	private void parseConfiguration(XNode root) {
 		try {
 			propertiesElement(root.evalNode("properties")); // issue #117 read
-															// properties first
+			// properties first
 			typeAliasesElement(root.evalNode("typeAliases"));
 			pluginElement(root.evalNode("plugins"));
 			objectFactoryElement(root.evalNode("objectFactory"));
 			objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
 			settingsElement(root.evalNode("settings"));
 			environmentsElement(root.evalNode("environments")); // read it after
-																// objectFactory
-																// and
-																// objectWrapperFactory
-																// issue #631
+			// objectFactory
+			// and
+			// objectWrapperFactory
+			// issue #631
 			databaseIdProviderElement(root.evalNode("databaseIdProvider"));
 			typeHandlerElement(root.evalNode("typeHandlers"));
 			mapperElement(root.evalNode("mappers"));
@@ -108,7 +107,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 					"Error parsing SQL Mapper Configuration. Cause: " + e, e);
 		}
 	}
-
+	
 	private void typeAliasesElement(XNode parent) {
 		if (parent != null) {
 			for (XNode child : parent.getChildren()) {
@@ -135,7 +134,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 			}
 		}
 	}
-
+	
 	private void pluginElement(XNode parent) throws Exception {
 		if (parent != null) {
 			for (XNode child : parent.getChildren()) {
@@ -148,7 +147,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 			}
 		}
 	}
-
+	
 	private void objectFactoryElement(XNode context) throws Exception {
 		if (context != null) {
 			String type = context.getStringAttribute("type");
@@ -159,7 +158,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 			configuration.setObjectFactory(factory);
 		}
 	}
-
+	
 	private void objectWrapperFactoryElement(XNode context) throws Exception {
 		if (context != null) {
 			String type = context.getStringAttribute("type");
@@ -168,7 +167,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 			configuration.setObjectWrapperFactory(factory);
 		}
 	}
-
+	
 	private void propertiesElement(XNode context) throws Exception {
 		if (context != null) {
 			Properties defaults = context.getChildrenAsProperties();
@@ -191,7 +190,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 			configuration.setVariables(defaults);
 		}
 	}
-
+	
 	private void settingsElement(XNode context) throws Exception {
 		if (context != null) {
 			Properties props = context.getChildrenAsProperties();
@@ -250,7 +249,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 					.getProperty("configurationFactory")));
 		}
 	}
-
+	
 	private void environmentsElement(XNode context) throws Exception {
 		if (context != null) {
 			if (environment == null) {
@@ -272,14 +271,14 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 			}
 		}
 	}
-
+	
 	private void databaseIdProviderElement(XNode context) throws Exception {
 		DatabaseIdProvider databaseIdProvider = null;
 		if (context != null) {
 			String type = context.getStringAttribute("type");
 			if ("VENDOR".equals(type))
 				type = "DB_VENDOR"; // awful patch to keep backward
-									// compatibility
+			// compatibility
 			Properties properties = context.getChildrenAsProperties();
 			databaseIdProvider = (DatabaseIdProvider) resolveClass(type)
 					.newInstance();
@@ -292,7 +291,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 			configuration.setDatabaseId(databaseId);
 		}
 	}
-
+	
 	private TransactionFactory transactionManagerElement(XNode context)
 			throws Exception {
 		if (context != null) {
@@ -306,7 +305,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 		throw new BuilderException(
 				"Environment declaration requires a TransactionFactory.");
 	}
-
+	
 	private DataSourceFactory dataSourceElement(XNode context) throws Exception {
 		if (context != null) {
 			String type = context.getStringAttribute("type");
@@ -319,7 +318,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 		throw new BuilderException(
 				"Environment declaration requires a DataSourceFactory.");
 	}
-
+	
 	private void typeHandlerElement(XNode parent) throws Exception {
 		if (parent != null) {
 			for (XNode child : parent.getChildren()) {
@@ -350,7 +349,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 			}
 		}
 	}
-
+	
 	private void mapperElement(XNode parent) throws Exception {
 		if (parent != null) {
 			for (XNode child : parent.getChildren()) {
@@ -390,7 +389,7 @@ public class DefaultXMLConfigBuilder extends BaseBuilder {
 			}
 		}
 	}
-
+	
 	private boolean isSpecifiedEnvironment(String id) {
 		if (environment == null) {
 			throw new BuilderException("No environment specified.");
