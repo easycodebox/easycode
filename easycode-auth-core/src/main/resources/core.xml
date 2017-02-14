@@ -162,12 +162,22 @@
 	      p:lazyLoadingEnabled="false"
 	      p:cacheEnabled="false"
 	      p:autoMappingBehavior="FULL"/>
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+	<bean id="detailEnumRegister" class="com.easycodebox.jdbc.mybatis.DynamicTypeHandlerRegister"
+	      c:filterClass="com.easycodebox.common.enums.DetailEnum"
+	      c:typeHandlerClass="com.easycodebox.jdbc.mybatis.type.DetailEnumTypeHandler">
+		<property name="packages">
+			<array>
+				<value>com.easycodebox.auth.model.enums</value>
+				<value>com.easycodebox.common.enums.entity</value>
+			</array>
+		</property>
+	</bean>
+	<bean id="sqlSessionFactory" class="com.easycodebox.jdbc.mybatis.spring.DefaultSqlSessionFactoryBean"
 	      p:dataSource-ref="dataSource"
 	      p:configuration-ref="ibatisConfiguration"
 	      p:typeAliasesPackage="com.easycodebox.auth.model.entity"
-	      p:typeHandlersPackage="com.easycodebox.auth.model.util.mybatis"
-	      p:mapperLocations="classpath:CommonMapper.xml"/>
+	      p:mapperLocations="classpath:CommonMapper.xml"
+	      p:dynamicTypeHandlerRegister-ref="detailEnumRegister"/>
 	
 	<bean id="sqlSessionTemplate" class="com.easycodebox.jdbc.mybatis.spring.DefaultSqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory"/>

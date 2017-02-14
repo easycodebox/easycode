@@ -37,4 +37,7 @@
 1. 集成Reidis
 2. 类名后缀为Utils的修改成s后缀（StringUtils修改成Strings）
 3. SqlGrammar updateNeed/update/updateAst 方法名对应修改成 upd/updNonNull/updAst
+4. 优化IdConverter功能代码
+5. 优化jdbc-mybatis相关配置类
+6. MyBatis增加动态注册TypeHandler功能
 
