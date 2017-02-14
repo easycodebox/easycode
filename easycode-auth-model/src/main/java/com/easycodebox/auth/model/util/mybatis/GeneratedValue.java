@@ -1,5 +1,7 @@
 package com.easycodebox.auth.model.util.mybatis;
 
+import com.easycodebox.auth.model.enums.GeneratorEnum;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

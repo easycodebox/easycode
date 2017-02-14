@@ -1,6 +1,6 @@
 package com.easycodebox.auth.model.entity.sys;
 
-import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.enums.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 

@@ -6,7 +6,7 @@ import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.enums.GeneratorEnum;
 import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.generator.Generators;

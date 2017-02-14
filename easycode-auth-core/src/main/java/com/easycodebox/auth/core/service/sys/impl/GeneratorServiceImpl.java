@@ -4,7 +4,7 @@ import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.GeneratorService;
 import com.easycodebox.auth.model.entity.sys.Generator;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.enums.GeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.generator.AbstractGenerator;

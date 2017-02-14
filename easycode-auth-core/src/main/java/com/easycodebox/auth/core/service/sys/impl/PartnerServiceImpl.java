@@ -8,7 +8,7 @@ import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.sys.Partner;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.auth.model.util.mybatis.GeneratorEnum;
+import com.easycodebox.auth.model.enums.GeneratorEnum;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.generator.Generators;
