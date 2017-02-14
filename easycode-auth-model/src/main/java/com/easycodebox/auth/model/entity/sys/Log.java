@@ -2,7 +2,7 @@ package com.easycodebox.auth.model.entity.sys;
 
 import com.easycodebox.auth.model.enums.GeneratorEnum;
 import com.easycodebox.auth.model.enums.ModuleType;
-import com.easycodebox.auth.model.util.mybatis.GeneratedValue;
+import com.easycodebox.auth.model.util.GeneratedValue;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.jdbc.entity.AbstractCreateEntity;
 
