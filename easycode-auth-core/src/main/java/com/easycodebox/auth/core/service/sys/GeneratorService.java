@@ -1,9 +1,9 @@
 package com.easycodebox.auth.core.service.sys;
 
 import com.easycodebox.auth.model.entity.sys.Generator;
-import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.idgenerator.IdGenerateProcess;
+import com.easycodebox.common.idgenerator.IdGeneratorType;
 import com.easycodebox.common.lang.dto.DataPage;
 
 import java.util.List;
@@ -22,10 +22,10 @@ public interface GeneratorService extends IdGenerateProcess {
 	
 	/**
 	 * 生成策略详情
-	 * @param generatorType
+	 * @param id
 	 * @return
 	 */
-	Generator load(IdGeneratorEnum generatorType);
+	Generator load(String id);
 	
 	/**
 	 * 修改生成策略
@@ -36,11 +36,11 @@ public interface GeneratorService extends IdGenerateProcess {
 	
 	/**
 	 * 更新是否循环
-	 * @param generatorType
+	 * @param id
 	 * @param isCycle
 	 * @return
 	 */
-	int updateIsCycle(IdGeneratorEnum generatorType, YesNo isCycle);
+	int updateIsCycle(String id, YesNo isCycle);
 	
 	/**
 	 * 生成策略分页
@@ -48,8 +48,7 @@ public interface GeneratorService extends IdGenerateProcess {
 	 * @param pageSize
 	 * @return
 	 */
-	DataPage<Generator> page(IdGeneratorEnum generatorType,
-			YesNo isCycle, int pageNo, int pageSize);
+	DataPage<Generator> page(String id, YesNo isCycle, int pageNo, int pageSize);
 	
 	/**
 	 * 如果指定GeneratorType没有初始化Generator则初始化
@@ -57,13 +56,6 @@ public interface GeneratorService extends IdGenerateProcess {
 	 * @return
 	 * @throws Exception
 	 */
-	Generator incrementAndGet(IdGeneratorEnum generatorType);
+	Generator incrementAndGet(IdGeneratorType idGeneratorType);
 	
-	/**
-	 * 批量添加GeneratorType
-	 * 注：可不执行此方法，因为Generator会自行判断，如果数据库里没值则自行导入数据
-	 * @return
-	 */
-	int batchAdd() throws Exception;
-
 }

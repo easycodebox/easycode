@@ -4,10 +4,7 @@ import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.idgenerator.AbstractIdGenerator;
 import com.easycodebox.common.idgenerator.IdGeneratorType;
-import com.easycodebox.common.idgenerator.impl.AlphaNumericIdGenerator;
-import com.easycodebox.common.idgenerator.impl.IntegerIdGenerator;
-import com.easycodebox.common.idgenerator.impl.LongIdGenerator;
-import com.easycodebox.common.idgenerator.impl.UuidGenerator;
+import com.easycodebox.common.idgenerator.impl.*;
 
 /**
  * @author WangXiaoJin
@@ -66,7 +63,12 @@ public enum IdGeneratorEnum implements DetailEnum<String>, IdGeneratorType {
 	public String getValue() {
 		return value;
 	}
-
+	
+	@Override
+	public String getPersistentKey() {
+		return getValue();
+	}
+	
 	@Override
 	@SuppressWarnings("rawtypes")
 	public AbstractIdGenerator getRawIdGenerator() {

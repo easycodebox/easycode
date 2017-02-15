@@ -1,6 +1,5 @@
 package com.easycodebox.auth.model.entity.sys;
 
-import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
@@ -15,7 +14,7 @@ import javax.persistence.*;
 public class Generator extends AbstractOperateEntity {
 
 	@Id
-	private IdGeneratorEnum generatorType;
+	private String id;
 	
 	private String initialVal;
 	
@@ -34,18 +33,18 @@ public class Generator extends AbstractOperateEntity {
 	
 	}
 
-	public Generator(IdGeneratorEnum generatorType){
-		this.generatorType = generatorType;
+	public Generator(String id){
+		this.id = id;
 	}
-
-	public IdGeneratorEnum getGeneratorType() {
-		return generatorType;
+	
+	public String getId() {
+		return id;
 	}
-
-	public void setGeneratorType(IdGeneratorEnum generatorType) {
-		this.generatorType = generatorType;
+	
+	public void setId(String id) {
+		this.id = id;
 	}
-
+	
 	public String getInitialVal() {
 		return initialVal;
 	}

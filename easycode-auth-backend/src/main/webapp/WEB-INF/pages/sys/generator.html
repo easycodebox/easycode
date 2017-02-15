@@ -24,8 +24,7 @@
 					<form id="query-form" class="form-inline search words5">
 						<div class="form-group">
 							<label>生成策略：</label>
-							[@e.selectEnum cssClass="form-control" name="generatorType" enumName="GeneratorEnum" 
-									headerKey="" headerValue="--请选择--" /]
+							<input type="text" class="form-control" name="id" />
 						</div>
 						
 						<div class="form-group">
@@ -53,15 +52,15 @@
 							data-toolbar="#toolbar"
 							data-query-form="query-form"
 							data-query-params="gb.table.params"
-							data-id-field="generatorType.className"
-							data-unique-id="generatorType.className"
-							data-select-item-name="generatorTypes"
+							data-id-field="id"
+							data-unique-id="id"
+							data-select-item-name="ids"
 							data-url="/generator/list.json">
 						<thead hidden>
 							<tr>
 								<th data-checkbox="true" data-click-to-select="true"></th>
 								<th data-formatter="gb.table.fmtOrder" data-click-to-select="true">序号</th>
-								<th data-field="generatorType" data-formatter="gb.table.fmtEnum">生成策略</th>
+								<th data-field="id">生成策略</th>
 								<th data-field="initialVal">初始值</th>
 								<th data-field="currentVal">当前值</th>
 								<th data-field="maxVal">最大值</th>
@@ -76,12 +75,12 @@
 					</table>
 					<div id="table-ops" class="hidden">
 						[@shiro.hasPermission name="generator/load"]
-							<a class="btn btn-xs btn-default loadBtn" data-generator-type="{generatorType.className}" title="详情" href="#" role="button">
+							<a class="btn btn-xs btn-default loadBtn" data-id="{id}" title="详情" href="#" role="button">
 								<i class="fa fa-reorder"></i>
 							</a>
 						[/@shiro.hasPermission]
 						[@shiro.hasPermission name="generator/update"]
-							<a class="btn btn-xs btn-default updBtn" data-generator-type="{generatorType.className}" title="修改" href="#" role="button">
+							<a class="btn btn-xs btn-default updBtn" data-id="{id}" title="修改" href="#" role="button">
 								<i class="fa fa-edit"></i>
 							</a>
 						[/@shiro.hasPermission]
@@ -101,7 +100,7 @@
 	<!-- 修改 -->
 	<form id="updDialog" class="form-validate none" action="/generator/update.json" data-suc="更新主键生成器成功" data-fail="更新主键生成器失败">
 	
-		<input type="hidden" name="generatorType" v-model="generator.generatorType.className" />
+		<input type="hidden" name="id" v-model="generator.id" />
 		
 		<table class="table-edit">
 			<tr>

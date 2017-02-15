@@ -11,7 +11,7 @@ public class R {
 	
 		private static final Class<? extends Entity> entity = com.easycodebox.core.pojo.sys.Generator.class;
 		public static final Property 
-			generatorType = instance("generatorType", entity),
+			id = instance("id", entity),
 			initialVal = instance("initialVal", entity),
 			currentVal = instance("currentVal", entity),
 			maxVal = instance("maxVal", entity),

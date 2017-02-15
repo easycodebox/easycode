@@ -4,11 +4,9 @@ import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.GeneratorService;
 import com.easycodebox.auth.model.entity.sys.Generator;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.idgenerator.AbstractIdGenerator;
-import com.easycodebox.common.idgenerator.IdGeneratorType;
+import com.easycodebox.common.idgenerator.*;
 import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
@@ -38,14 +36,17 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	@Resource
 	private UserIdConverter userIdConverter;
 	
+	@Resource
+	private AbstractIdGenTypeParser idGenTypeParser;
+	
 	@Override
 	public List<Generator> list() {
 		return super.list(sql().desc(R.Generator.createTime));
 	}
 
 	@Override
-	public Generator load(IdGeneratorEnum generatorType) {
-		Generator data = super.get(generatorType);
+	public Generator load(String id) {
+		Generator data = super.get(id);
 		if (data != null) {
 			data.setCreatorName(userIdConverter.idToRealOrNickname(data.getCreator()));
 			data.setModifierName(userIdConverter.idToRealOrNickname(data.getModifier()));
@@ -59,12 +60,13 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 		if(Strings.isBlank(generator.getMaxVal()))
 			generator.setMaxVal(null);
 		super.get(sql()
-				.eqAst(R.Generator.generatorType, generator.getGeneratorType())
+				.eqAst(R.Generator.id, generator.getId())
 				.lockMode(LockMode.UPGRADE)
 				);
 		
-		if(generator.getGeneratorType().getIdGenerator() != null) {
-			Class<? extends AbstractIdGenerator> type = generator.getGeneratorType().getRawIdGenerator().getClass();
+		IdGeneratorType idGeneratorType = idGenTypeParser.parsePersistentKey(generator.getId());
+		if(idGeneratorType.getIdGenerator() != null) {
+			Class<? extends AbstractIdGenerator> type = idGeneratorType.getRawIdGenerator().getClass();
 			try {
 				for (Constructor<?> constructor : type.getConstructors()) {
 					Class<?>[] parameterTypes = constructor.getParameterTypes();
@@ -77,7 +79,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 								DataConvert.convertType(generator.getMaxVal(), parameterTypes[4]),
 								generator.getIsCycle()
 						);
-						generator.getGeneratorType().setIdGenerator(ge);
+						idGeneratorType.setIdGenerator(ge);
 						break;
 					}
 				}
@@ -93,25 +95,26 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 				.updAst(R.Generator.increment, generator.getIncrement())
 				.updAst(R.Generator.isCycle, generator.getIsCycle())
 				.upd(R.Generator.maxVal, generator.getMaxVal())
-				.eqAst(R.Generator.generatorType, generator.getGeneratorType())
+				.eqAst(R.Generator.id, generator.getId())
 				);
 	}
 	
 	@Override
 	@Transactional
-	public int updateIsCycle(IdGeneratorEnum generatorType, YesNo isCycle) {
+	public int updateIsCycle(String id, YesNo isCycle) {
 		super.get(sql()
-				.eqAst(R.Generator.generatorType, generatorType)
+				.eqAst(R.Generator.id, id)
 				.lockMode(LockMode.UPGRADE)
 				);
 		
 		int count = super.update(sql()
 				.updAst(R.Generator.isCycle, isCycle)
-				.eqAst(R.Generator.generatorType, generatorType)
+				.eqAst(R.Generator.id, id)
 		);
-		if(generatorType.getIdGenerator() != null) {
+		IdGeneratorType idGeneratorType = idGenTypeParser.parsePersistentKey(id);
+		if(idGeneratorType.getIdGenerator() != null) {
 			try {
-				Fields.writeField(generatorType.getIdGenerator(), "isCycle", isCycle, true);
+				Fields.writeField(idGeneratorType.getIdGenerator(), "isCycle", isCycle, true);
 			} catch (Exception e) {
 				throw new BaseException("Write isCycle field error.", e);
 			}
@@ -120,10 +123,9 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	}
 
 	@Override
-	public DataPage<Generator> page(IdGeneratorEnum generatorType,
-			YesNo isCycle, int pageNo, int pageSize) {
+	public DataPage<Generator> page(String id, YesNo isCycle, int pageNo, int pageSize) {
 		return super.page(sql()
-				.eq(R.Generator.generatorType, generatorType)
+				.likeTrim(R.Generator.id, id)
 				.eq(R.Generator.isCycle, isCycle)
 				.desc(R.Generator.createTime)
 				.limit(pageNo, pageSize)
@@ -133,26 +135,26 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	@Override
 	@SuppressWarnings("rawtypes")
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public Generator incrementAndGet(IdGeneratorEnum generatorType) {
+	public Generator incrementAndGet(IdGeneratorType idGeneratorType) {
 		Generator g = super.get(sql()
-						.eq(R.Generator.generatorType, generatorType)
+						.eq(R.Generator.id, idGeneratorType.getPersistentKey())
 						.lockMode(LockMode.UPGRADE));
 		if(g == null) {
 			lock.lock();
 			try {
 				g = super.get(sql()
-						.eq(R.Generator.generatorType, generatorType)
+						.eq(R.Generator.id, idGeneratorType.getPersistentKey())
 						.lockMode(LockMode.UPGRADE));
-				g = g == null ? this.add(generatorType) : g;
+				g = g == null ? this.add(idGeneratorType) : g;
 			}finally {
 				lock.unlock();
 			}
 		}
-		AbstractIdGenerator ag = generatorType.getIdGenerator();
+		AbstractIdGenerator ag = idGeneratorType.getIdGenerator();
 		boolean updateDbCurrentVal = ag == null || ag.getGenNum() >= ag.getFetchSize();
 		if(ag == null) {
-	    	ag = generatorType.getRawIdGenerator();
-	    	generatorType.setIdGenerator(ag);
+	    	ag = idGeneratorType.getRawIdGenerator();
+			idGeneratorType.setIdGenerator(ag);
 		}
 		if(updateDbCurrentVal) {
 			Object nextBatchStart = ag.nextStepVal(g != null ? g.getCurrentVal() : null);
@@ -160,7 +162,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 			if(nextBatchStart != null) {
 				this.update(sql()
 						.upd(R.Generator.currentVal, nextBatchStart.toString())
-						.eq(R.Generator.generatorType, generatorType));
+						.eq(R.Generator.id, idGeneratorType.getPersistentKey()));
 			}
 		}
 		return g;
@@ -169,31 +171,20 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void incrementGenerator(IdGeneratorType idGeneratorType) {
-		incrementAndGet((IdGeneratorEnum) idGeneratorType);
+		incrementAndGet(idGeneratorType);
 	}
 
-	@Override
-	@Transactional
-	public int batchAdd() throws Exception {
-		IdGeneratorEnum[] types = IdGeneratorEnum.values();
-		int num = 0;
-		for(IdGeneratorEnum type : types) {
-			if(this.add(type) != null) num++;
-		}
-		return num;
-	}
-	
 	@Transactional
 	@SuppressWarnings("rawtypes")
-	private Generator add(IdGeneratorEnum type) {
+	private Generator add(IdGeneratorType type) {
 		if(type.getIdGenerator() == null) {
 			//没有Generator的type才需要出入数据库
-			Generator temp = super.get(type);
+			Generator temp = super.get(type.getPersistentKey());
 			if(temp == null) {
 				AbstractIdGenerator ag = type.getRawIdGenerator();
 				//数据库中不存在才插入数据库
 				Generator g = new Generator();
-				g.setGeneratorType(type);
+				g.setId(type.getPersistentKey());
 		    	g.setInitialVal(ag.getInitialVal().toString());
 		    	g.setCurrentVal(ag.getInitialVal().toString());
 		    	g.setMaxVal(ag.getMaxVal() == null ? null : ag.getMaxVal().toString());

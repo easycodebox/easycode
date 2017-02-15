@@ -1,9 +1,9 @@
 package com.easycodebox.auth.model.util;
 
-import static com.easycodebox.jdbc.Property.instance;
-
 import com.easycodebox.jdbc.Property;
 import com.easycodebox.jdbc.entity.Entity;
+
+import static com.easycodebox.jdbc.Property.instance;
 
 /**
  * <b>直接运行{@link com.easycodebox.jdbc.res.GenerateBeanRes}类会自动生成R文件的。</b>
@@ -19,7 +19,7 @@ public class R {
 	
 		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.sys.Generator.class;
 		public static final Property 
-			generatorType = instance("generatorType", entity),
+			id = instance("id", entity),
 			initialVal = instance("initialVal", entity),
 			currentVal = instance("currentVal", entity),
 			maxVal = instance("maxVal", entity),

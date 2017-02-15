@@ -81,8 +81,7 @@ $(function(){
 		srcSelector: ".handler",//触发事件的对象
 		scopeSelector: "#data-table",//操作的dom范围
 		targetClass: "isCycle",	//操作成功后修改的目标对象
-		idsKey: "generatorTypes",
-		ajaxKey: "generatorType",
+		ajaxKey: "id",
 		url: "/generator/updateIsCycle.json",
 		change: {
 			"switch-open": {
@@ -100,13 +99,13 @@ $(function(){
 	
 	$("#data-table").on("click", ".loadBtn", function() {
 		var $btn = $(this);
-		$.post("/generator/load.json",{generatorType: $btn.data("generatorType")}, function(data) {
+		$.post("/generator/load.json",{id: $btn.data("id")}, function(data) {
 			gb.vm.generator = data.data;
 			layer.page1(gb.title($btn), $('#loadDialogGenerator'));
 		});
 	}).on("click", ".updBtn", function() {
 		var $btn = $(this);
-		$.post("/generator/load.json",{generatorType: $btn.data("generatorType")}, function(data) {
+		$.post("/generator/load.json",{id: $btn.data("id")}, function(data) {
 			gb.vm.generator = data.data;
 			
 			gb.show(gb.title($btn), $('#updDialog'));

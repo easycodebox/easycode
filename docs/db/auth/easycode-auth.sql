@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_generator`;
 CREATE TABLE `sys_generator` (
-  `generatorType` varchar(32) NOT NULL COMMENT '类型 - 主键生成器类型',
+  `id` varchar(32) NOT NULL COMMENT '类型 - 主键生成器类型',
   `initialVal` varchar(32) NOT NULL COMMENT '初始值',
   `currentVal` varchar(32) NOT NULL COMMENT '当前值',
   `maxVal` varchar(32) DEFAULT NULL COMMENT '最大值',
@@ -31,7 +31,7 @@ CREATE TABLE `sys_generator` (
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `modifier` varchar(32) NOT NULL COMMENT '修改人',
   `modifyTime` datetime NOT NULL COMMENT '修改时间',
-  PRIMARY KEY (`generatorType`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主键生成器 - 主键生成器';
 
 -- ----------------------------

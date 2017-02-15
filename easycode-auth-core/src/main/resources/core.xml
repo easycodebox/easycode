@@ -98,6 +98,9 @@
 	<!-- 配置日志 -->
 	<bean id="logAspect" class="com.easycodebox.auth.core.util.aop.log.LogAspect"/>
 	
+	<bean id="idGenTypeParser" class="com.easycodebox.common.idgenerator.DetailEnumIdGenTypeParser"
+	      c:detailEnumClass="com.easycodebox.auth.model.enums.IdGeneratorEnum"/>
+	
 	<!-- 配置枚举类型工厂 -->
 	<bean id="enumClassFactory" class="com.easycodebox.common.enums.EnumClassFactory"
 	      lazy-init="false">

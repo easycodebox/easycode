@@ -1,12 +1,10 @@
 package com.easycodebox.jdbc.util;
 
 import com.easycodebox.common.error.BaseException;
+import com.easycodebox.common.idgenerator.AbstractIdGenTypeParser;
 import com.easycodebox.common.idgenerator.IdGeneratedValue;
-import com.easycodebox.common.idgenerator.IdGeneratedValue.Strategy;
-import com.easycodebox.common.idgenerator.IdGeneratorType;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.reflect.Classes;
-import com.easycodebox.common.lang.reflect.Methods;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.Column;
@@ -15,7 +13,6 @@ import com.easycodebox.jdbc.ManyToOne;
 import com.easycodebox.jdbc.OneToMany;
 import com.easycodebox.jdbc.OneToOne;
 import com.easycodebox.jdbc.Table;
-import com.easycodebox.jdbc.exception.ParseGeneratedValueException;
 
 import javax.persistence.*;
 import java.lang.reflect.*;
@@ -49,7 +46,7 @@ public class AnnotateUtils {
 	 * @return
 	 */
 	public static void fitColumn(Table table, Field field) {
-		Column column = null;
+		Column column;
 		//获取Id注解
 		javax.persistence.Id idAnno = field.getAnnotation(javax.persistence.Id.class);
 		if(idAnno != null) {
@@ -59,17 +56,7 @@ public class AnnotateUtils {
 			//只要value的值实现了GeneratorType就可以
 			IdGeneratedValue idGeneratedValue = field.getAnnotation(IdGeneratedValue.class);
 			if (idGeneratedValue != null) {
-				IdGeneratorType idGeneratorType = null;
-				if (idGeneratedValue.strategy() == Strategy.ENUM) {
-					idGeneratorType = (IdGeneratorType)Enum.valueOf((Class<? extends Enum>) idGeneratedValue.type(), idGeneratedValue.key());
-				} else if (idGeneratedValue.strategy() == Strategy.STATIC_METHOD) {
-					try {
-						idGeneratorType = (IdGeneratorType) Methods.invokeStaticMethod(idGeneratedValue.type(), idGeneratedValue.key(), null);
-					} catch (Exception e) {
-						throw new ParseGeneratedValueException("Parse IdGeneratedValue Annotation error.", e);
-					}
-				}
-				((PkColumn)column).setIdGeneratorType(idGeneratorType);
+				((PkColumn)column).setIdGeneratorType(AbstractIdGenTypeParser.parseIdGeneratedValue(idGeneratedValue));
 			}
 		}else {
 			column = new Column(field.getName());
