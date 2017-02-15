@@ -1,4 +1,4 @@
-package com.easycodebox.common.generator;
+package com.easycodebox.common.idgenerator;
 
 import com.easycodebox.common.enums.entity.YesNo;
 
@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author WangXiaoJin
  * 
  */
-public abstract class AbstractGenerator<T> {
+public abstract class AbstractIdGenerator<T> {
 	
 	protected AtomicBoolean hadUsedBeginVal = new AtomicBoolean(false);
 	
@@ -42,7 +42,7 @@ public abstract class AbstractGenerator<T> {
 	 */
 	protected YesNo isCycle;
 	
-	protected AbstractGenerator(int increment, int fetchSize, YesNo isCycle) {
+	protected AbstractIdGenerator(int increment, int fetchSize, YesNo isCycle) {
 		this.increment = increment;
 		this.fetchSize = fetchSize;
 		this.isCycle = isCycle;

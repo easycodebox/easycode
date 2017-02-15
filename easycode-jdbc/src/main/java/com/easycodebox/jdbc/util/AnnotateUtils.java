@@ -1,9 +1,9 @@
 package com.easycodebox.jdbc.util;
 
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.generator.GeneratedValue;
-import com.easycodebox.common.generator.GeneratedValue.Strategy;
-import com.easycodebox.common.generator.GeneratorType;
+import com.easycodebox.common.idgenerator.IdGeneratedValue;
+import com.easycodebox.common.idgenerator.IdGeneratedValue.Strategy;
+import com.easycodebox.common.idgenerator.IdGeneratorType;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.lang.reflect.Methods;
@@ -57,19 +57,19 @@ public class AnnotateUtils {
 			column.setPrimaryKey(true);
 			table.addPrimaryKey((PkColumn)column);
 			//只要value的值实现了GeneratorType就可以
-			GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
-			if (generatedValue != null) {
-				GeneratorType generatorType = null;
-				if (generatedValue.strategy() == Strategy.ENUM) {
-					generatorType = (GeneratorType)Enum.valueOf((Class<? extends Enum>) generatedValue.type(), generatedValue.key());
-				} else if (generatedValue.strategy() == Strategy.STATIC_METHOD) {
+			IdGeneratedValue idGeneratedValue = field.getAnnotation(IdGeneratedValue.class);
+			if (idGeneratedValue != null) {
+				IdGeneratorType idGeneratorType = null;
+				if (idGeneratedValue.strategy() == Strategy.ENUM) {
+					idGeneratorType = (IdGeneratorType)Enum.valueOf((Class<? extends Enum>) idGeneratedValue.type(), idGeneratedValue.key());
+				} else if (idGeneratedValue.strategy() == Strategy.STATIC_METHOD) {
 					try {
-						generatorType = (GeneratorType) Methods.invokeStaticMethod(generatedValue.type(), generatedValue.key(), null);
+						idGeneratorType = (IdGeneratorType) Methods.invokeStaticMethod(idGeneratedValue.type(), idGeneratedValue.key(), null);
 					} catch (Exception e) {
-						throw new ParseGeneratedValueException("Parse GeneratedValue Annotation error.", e);
+						throw new ParseGeneratedValueException("Parse IdGeneratedValue Annotation error.", e);
 					}
 				}
-				((PkColumn)column).setGeneratorType(generatorType);
+				((PkColumn)column).setIdGeneratorType(idGeneratorType);
 			}
 		}else {
 			column = new Column(field.getName());

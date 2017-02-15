@@ -1,10 +1,10 @@
-package com.easycodebox.common.generator.exception;
+package com.easycodebox.common.idgenerator.exception;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public class BoundReachedException extends GenerationException {
+public class BoundReachedException extends IdGenerationException {
 
 	public BoundReachedException() {
 	}

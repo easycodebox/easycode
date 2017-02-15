@@ -1,9 +1,9 @@
 package com.easycodebox.auth.core.service.sys;
 
 import com.easycodebox.auth.model.entity.sys.Generator;
-import com.easycodebox.auth.model.enums.GeneratorEnum;
+import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.generator.GenerateProcess;
+import com.easycodebox.common.idgenerator.IdGenerateProcess;
 import com.easycodebox.common.lang.dto.DataPage;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author WangXiaoJin
  *
  */
-public interface GeneratorService extends GenerateProcess {
+public interface GeneratorService extends IdGenerateProcess {
 	
 	/**
 	 * 生成策略列表
@@ -25,7 +25,7 @@ public interface GeneratorService extends GenerateProcess {
 	 * @param generatorType
 	 * @return
 	 */
-	Generator load(GeneratorEnum generatorType);
+	Generator load(IdGeneratorEnum generatorType);
 	
 	/**
 	 * 修改生成策略
@@ -40,7 +40,7 @@ public interface GeneratorService extends GenerateProcess {
 	 * @param isCycle
 	 * @return
 	 */
-	int updateIsCycle(GeneratorEnum generatorType, YesNo isCycle);
+	int updateIsCycle(IdGeneratorEnum generatorType, YesNo isCycle);
 	
 	/**
 	 * 生成策略分页
@@ -48,7 +48,7 @@ public interface GeneratorService extends GenerateProcess {
 	 * @param pageSize
 	 * @return
 	 */
-	DataPage<Generator> page(GeneratorEnum generatorType, 
+	DataPage<Generator> page(IdGeneratorEnum generatorType,
 			YesNo isCycle, int pageNo, int pageSize);
 	
 	/**
@@ -57,7 +57,7 @@ public interface GeneratorService extends GenerateProcess {
 	 * @return
 	 * @throws Exception
 	 */
-	Generator incrementAndGet(GeneratorEnum generatorType);
+	Generator incrementAndGet(IdGeneratorEnum generatorType);
 	
 	/**
 	 * 批量添加GeneratorType

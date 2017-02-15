@@ -2,7 +2,7 @@ package com.easycodebox.jdbc.support;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.generator.Generators;
+import com.easycodebox.common.idgenerator.IdGenerators;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.lang.reflect.Classes;
@@ -86,8 +86,8 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 			for(PkColumn c : pks) {
 				Object data = PropertyUtils.getSimpleProperty(entity, c.getName());
 				if(data == null) {
-					if(c.getGeneratorType() != null) {
-						Object pkVal = Generators.getGeneratorNextVal(c.getGeneratorType());
+					if(c.getIdGeneratorType() != null) {
+						Object pkVal = IdGenerators.nextVal(c.getIdGeneratorType());
 						PropertyUtils.setSimpleProperty(entity, c.getName(), pkVal);
 					}else {
 						sqlIncludePk = false;

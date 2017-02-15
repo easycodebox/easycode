@@ -3,7 +3,7 @@ package com.easycodebox.auth.backend.controller.sys;
 import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.GeneratorService;
 import com.easycodebox.auth.model.entity.sys.Generator;
-import com.easycodebox.auth.model.enums.GeneratorEnum;
+import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.lang.dto.DataPage;
@@ -44,7 +44,7 @@ public class GeneratorController extends BaseController {
 	 * 详情
 	 */
 	@ResponseBody
-	public CodeMsg load(GeneratorEnum generatorType) throws Exception {
+	public CodeMsg load(IdGeneratorEnum generatorType) throws Exception {
 		Assert.notNull(generatorType, CodeMsg.FAIL.msg("主键参数不能为空"));
 		Generator data = generatorService.load(generatorType);
 		return isTrueNone(data != null, "没有对应的生成策略").data(data);
@@ -60,7 +60,7 @@ public class GeneratorController extends BaseController {
 	}
 	
 	@ResponseBody
-	public CodeMsg updateIsCycle(GeneratorEnum generatorType, YesNo isCycle) throws Exception {
+	public CodeMsg updateIsCycle(IdGeneratorEnum generatorType, YesNo isCycle) throws Exception {
 		Validators.instance(generatorType)
 			.notNull("主键参数不能传空值");
 		int count = generatorService.updateIsCycle(generatorType, isCycle);

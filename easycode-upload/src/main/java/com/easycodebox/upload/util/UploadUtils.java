@@ -2,7 +2,7 @@ package com.easycodebox.upload.util;
 
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.file.*;
-import com.easycodebox.common.generator.impl.AlphaNumericGenerator;
+import com.easycodebox.common.idgenerator.impl.AlphaNumericIdGenerator;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
@@ -27,7 +27,7 @@ public class UploadUtils {
 	
 	private static final Logger log = LoggerFactory.getLogger(UploadUtils.class);
 	
-	private static AlphaNumericGenerator generator = null;
+	private static AlphaNumericIdGenerator generator = null;
 	private static final int INCREMENT = 1, 
 							FETCHSIZE = 500; 
 						
@@ -47,7 +47,7 @@ public class UploadUtils {
 		FILENAME_CUR_VAL = PropertiesPool.getProperty("filename_cur_val");
 		FILENAME_MAX_VAL = PropertiesPool.getProperty("filename_max_val");
 		
-		generator = new AlphaNumericGenerator(
+		generator = new AlphaNumericIdGenerator(
 				INCREMENT, FETCHSIZE, FILENAME_INIT_VAL, FILENAME_CUR_VAL, 
 				FILENAME_MAX_VAL, YesNo.YES);
 		

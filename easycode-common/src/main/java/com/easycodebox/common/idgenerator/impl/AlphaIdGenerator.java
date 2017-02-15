@@ -1,7 +1,7 @@
-package com.easycodebox.common.generator.impl;
+package com.easycodebox.common.idgenerator.impl;
 
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.generator.exception.BoundReachedException;
+import com.easycodebox.common.idgenerator.exception.BoundReachedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  * @author WangXiaoJin
  * 
  */
-public final class AlphaGenerator extends AbstractStringGenerator {
+public final class AlphaIdGenerator extends AbstractStringIdGenerator {
 	
 	public static char[] alphas = {
 			'a', 'b', 'c', 'd', 'e', 'f', 'g', 
@@ -27,7 +27,7 @@ public final class AlphaGenerator extends AbstractStringGenerator {
 		}
 	}
     
-	public AlphaGenerator() {
+	public AlphaIdGenerator() {
 		this(1, 500, "0", "0", null, YesNo.NO);
 	}
 	
@@ -39,8 +39,8 @@ public final class AlphaGenerator extends AbstractStringGenerator {
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public AlphaGenerator(int increment, int fetchSize, String initialVal, String currentVal,
-				String maxVal, YesNo isCycle) {
+	public AlphaIdGenerator(int increment, int fetchSize, String initialVal, String currentVal,
+	                        String maxVal, YesNo isCycle) {
 		super(increment, fetchSize, isCycle);
 		this.initialVal = initialVal.toLowerCase();
 		this.maxVal = maxVal == null ? null : maxVal.toLowerCase();
@@ -64,7 +64,7 @@ public final class AlphaGenerator extends AbstractStringGenerator {
 		    	if(isCycle == YesNo.YES)
 		    		next = initialVal;
 		    	else
-		    		throw new BoundReachedException("IntegerGenerator had reached max value.");
+		    		throw new BoundReachedException("AlphaIdGenerator had reached max value.");
 		    } 
 		}
 		genNum++;
@@ -130,7 +130,7 @@ public final class AlphaGenerator extends AbstractStringGenerator {
 	}
 
     public static void main(String args[]) {
-    	AlphaGenerator g = new AlphaGenerator(3, 100
+    	AlphaIdGenerator g = new AlphaIdGenerator(3, 100
 				, "ab", "a", 
 				"azz", YesNo.NO);
     	for(int i = 0; i < 100; i++) {

@@ -1,10 +1,10 @@
-package com.easycodebox.common.generator;
+package com.easycodebox.common.idgenerator;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public interface GenerateProcess {
+public interface IdGenerateProcess {
 	
 	/**
 	 * 如果指定GeneratorType没有初始化Generator则初始化
@@ -12,6 +12,6 @@ public interface GenerateProcess {
 	 * @return
 	 * @throws Exception
 	 */
-	void incrementGenerator(GeneratorType generatorType);
+	void incrementGenerator(IdGeneratorType idGeneratorType);
 
 }

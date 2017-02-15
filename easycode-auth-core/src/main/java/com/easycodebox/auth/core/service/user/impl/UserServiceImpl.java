@@ -6,10 +6,10 @@ import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.auth.model.enums.GeneratorEnum;
+import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.common.error.ErrorContext;
-import com.easycodebox.common.generator.Generators;
+import com.easycodebox.common.idgenerator.IdGenerators;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
@@ -95,7 +95,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	private String generateNickname() {
 		String nickname;
 		do {
-			nickname = (String) Generators.getGeneratorNextVal(GeneratorEnum.NICKNAME);
+			nickname = (String) IdGenerators.nextVal(IdGeneratorEnum.NICKNAME);
 		} while (this.existNickname(nickname, null));
 		return nickname;
 	}

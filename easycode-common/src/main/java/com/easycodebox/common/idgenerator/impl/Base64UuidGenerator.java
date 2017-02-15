@@ -1,18 +1,18 @@
-package com.easycodebox.common.generator.impl;
+package com.easycodebox.common.idgenerator.impl;
 
 import com.easycodebox.common.algorithm.Base64UUID;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.generator.AbstractGenerator;
+import com.easycodebox.common.idgenerator.AbstractIdGenerator;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public final class Base64UUIDGenerator extends AbstractGenerator<String> {
+public final class Base64UuidGenerator extends AbstractIdGenerator<String> {
 	
 	private String curVal;
 
-	public Base64UUIDGenerator() {
+	public Base64UuidGenerator() {
 		this(1, 500, "0", "0", null, YesNo.NO);
 	}
 	
@@ -24,8 +24,8 @@ public final class Base64UUIDGenerator extends AbstractGenerator<String> {
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public Base64UUIDGenerator(int increment, int fetchSize, String initialVal, String currentVal,
-				String maxVal, YesNo isCycle) {
+	public Base64UuidGenerator(int increment, int fetchSize, String initialVal, String currentVal,
+	                           String maxVal, YesNo isCycle) {
 		super(increment, fetchSize, isCycle);
 		this.initialVal = initialVal;
 		this.maxVal = maxVal;
@@ -48,7 +48,7 @@ public final class Base64UUIDGenerator extends AbstractGenerator<String> {
 	}
     
     public static void main(String args[]) {
-    	Base64UUIDGenerator g = new Base64UUIDGenerator();
+    	Base64UuidGenerator g = new Base64UuidGenerator();
     	for(int i = 0; i < 100; i++) {
     		System.out.println(g.nextVal());
     	}

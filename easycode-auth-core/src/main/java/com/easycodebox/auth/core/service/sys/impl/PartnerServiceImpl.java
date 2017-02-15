@@ -8,10 +8,10 @@ import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.sys.Partner;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.auth.model.enums.GeneratorEnum;
+import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.generator.Generators;
+import com.easycodebox.common.idgenerator.IdGenerators;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
@@ -64,7 +64,7 @@ public class PartnerServiceImpl extends AbstractServiceImpl<Partner> implements 
 		Assert.isFalse(this.existName(partner.getName(), partner.getId()),
 				CodeMsgExt.FAIL.msg("合作商名{0}已被占用", partner.getName()));
 		
-		partner.setPartnerKey((String)Generators.getGeneratorNextVal(GeneratorEnum.KEY));
+		partner.setPartnerKey((String) IdGenerators.nextVal(IdGeneratorEnum.KEY));
 		if(partner.getStatus() == null)
 			partner.setStatus(OpenClose.OPEN);
 		if(partner.getSort() == null)

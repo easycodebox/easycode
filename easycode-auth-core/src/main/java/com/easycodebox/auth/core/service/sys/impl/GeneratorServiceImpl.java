@@ -4,11 +4,11 @@ import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.GeneratorService;
 import com.easycodebox.auth.model.entity.sys.Generator;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.auth.model.enums.GeneratorEnum;
+import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.generator.AbstractGenerator;
-import com.easycodebox.common.generator.GeneratorType;
+import com.easycodebox.common.idgenerator.AbstractIdGenerator;
+import com.easycodebox.common.idgenerator.IdGeneratorType;
 import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
@@ -44,7 +44,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	}
 
 	@Override
-	public Generator load(GeneratorEnum generatorType) {
+	public Generator load(IdGeneratorEnum generatorType) {
 		Generator data = super.get(generatorType);
 		if (data != null) {
 			data.setCreatorName(userIdConverter.idToRealOrNickname(data.getCreator()));
@@ -63,13 +63,13 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 				.lockMode(LockMode.UPGRADE)
 				);
 		
-		if(generator.getGeneratorType().getGenerator() != null) {
-			Class<? extends AbstractGenerator> type = generator.getGeneratorType().getRawGenerator().getClass();
+		if(generator.getGeneratorType().getIdGenerator() != null) {
+			Class<? extends AbstractIdGenerator> type = generator.getGeneratorType().getRawIdGenerator().getClass();
 			try {
 				for (Constructor<?> constructor : type.getConstructors()) {
 					Class<?>[] parameterTypes = constructor.getParameterTypes();
 					if (parameterTypes.length == 6) {
-						AbstractGenerator<?> ge = (AbstractGenerator<?>)constructor.newInstance(
+						AbstractIdGenerator<?> ge = (AbstractIdGenerator<?>)constructor.newInstance(
 								generator.getIncrement(),
 								generator.getFetchSize(),
 								DataConvert.convertType(generator.getInitialVal(), parameterTypes[2]),
@@ -77,12 +77,12 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 								DataConvert.convertType(generator.getMaxVal(), parameterTypes[4]),
 								generator.getIsCycle()
 						);
-						generator.getGeneratorType().setGenerator(ge);
+						generator.getGeneratorType().setIdGenerator(ge);
 						break;
 					}
 				}
 			} catch (Exception e) {
-				throw new BaseException("Instance AbstractGenerator error.", e);
+				throw new BaseException("Instance AbstractIdGenerator error.", e);
 			}
 		}
 		
@@ -99,15 +99,15 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	
 	@Override
 	@Transactional
-	public int updateIsCycle(GeneratorEnum generatorType, YesNo isCycle) {
+	public int updateIsCycle(IdGeneratorEnum generatorType, YesNo isCycle) {
 		super.get(sql()
 				.eqAst(R.Generator.generatorType, generatorType)
 				.lockMode(LockMode.UPGRADE)
 				);
 		
-		if(generatorType.getGenerator() != null) {
+		if(generatorType.getIdGenerator() != null) {
 			try {
-				Fields.writeField(generatorType.getGenerator(), "isCycle", isCycle, true);
+				Fields.writeField(generatorType.getIdGenerator(), "isCycle", isCycle, true);
 			} catch (Exception e) {
 				throw new BaseException("Write isCycle field error.", e);
 			}
@@ -120,7 +120,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	}
 
 	@Override
-	public DataPage<Generator> page(GeneratorEnum generatorType, 
+	public DataPage<Generator> page(IdGeneratorEnum generatorType,
 			YesNo isCycle, int pageNo, int pageSize) {
 		return super.page(sql()
 				.eq(R.Generator.generatorType, generatorType)
@@ -133,7 +133,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	@Override
 	@SuppressWarnings("rawtypes")
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public Generator incrementAndGet(GeneratorEnum generatorType) {
+	public Generator incrementAndGet(IdGeneratorEnum generatorType) {
 		Generator g = super.get(sql()
 						.eq(R.Generator.generatorType, generatorType)
 						.lockMode(LockMode.UPGRADE));
@@ -148,11 +148,11 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 				lock.unlock();
 			}
 		}
-		AbstractGenerator ag = generatorType.getGenerator();
+		AbstractIdGenerator ag = generatorType.getIdGenerator();
 		boolean updateDbCurrentVal = ag == null || ag.getGenNum() >= ag.getFetchSize();
 		if(ag == null) {
-	    	ag = generatorType.getRawGenerator();
-	    	generatorType.setGenerator(ag);
+	    	ag = generatorType.getRawIdGenerator();
+	    	generatorType.setIdGenerator(ag);
 		}
 		if(updateDbCurrentVal) {
 			Object nextBatchStart = ag.nextStepVal(g != null ? g.getCurrentVal() : null);
@@ -168,16 +168,16 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void incrementGenerator(GeneratorType generatorType) {
-		incrementAndGet((GeneratorEnum)generatorType);
+	public void incrementGenerator(IdGeneratorType idGeneratorType) {
+		incrementAndGet((IdGeneratorEnum) idGeneratorType);
 	}
 
 	@Override
 	@Transactional
 	public int batchAdd() throws Exception {
-		GeneratorEnum[] types = GeneratorEnum.values();
+		IdGeneratorEnum[] types = IdGeneratorEnum.values();
 		int num = 0;
-		for(GeneratorEnum type : types) {
+		for(IdGeneratorEnum type : types) {
 			if(this.add(type) != null) num++;
 		}
 		return num;
@@ -185,12 +185,12 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 	
 	@Transactional
 	@SuppressWarnings("rawtypes")
-	private Generator add(GeneratorEnum type) {
-		if(type.getGenerator() == null) {
+	private Generator add(IdGeneratorEnum type) {
+		if(type.getIdGenerator() == null) {
 			//没有Generator的type才需要出入数据库
 			Generator temp = super.get(type);
 			if(temp == null) {
-				AbstractGenerator ag = type.getRawGenerator();
+				AbstractIdGenerator ag = type.getRawIdGenerator();
 				//数据库中不存在才插入数据库
 				Generator g = new Generator();
 				g.setGeneratorType(type);

@@ -1,7 +1,7 @@
 package com.easycodebox.auth.model.entity.sys;
 
-import com.easycodebox.auth.model.enums.GeneratorEnum;
-import com.easycodebox.common.generator.GeneratedValue;
+import com.easycodebox.auth.model.enums.IdGeneratorEnum;
+import com.easycodebox.common.idgenerator.IdGeneratedValue;
 import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
@@ -20,7 +20,7 @@ public class Project extends AbstractOperateEntity {
 	 * 主键
 	 */
 	@Id
-	@GeneratedValue(type = GeneratorEnum.class, key = "PROJECT_ID")
+	@IdGeneratedValue(type = IdGeneratorEnum.class, key = "PROJECT_ID")
 	private Integer id;
 	
 	/**

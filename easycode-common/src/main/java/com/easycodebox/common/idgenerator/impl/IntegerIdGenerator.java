@@ -1,40 +1,41 @@
-package com.easycodebox.common.generator.impl;
+package com.easycodebox.common.idgenerator.impl;
 
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.generator.AbstractGenerator;
-import com.easycodebox.common.generator.exception.BoundReachedException;
+import com.easycodebox.common.idgenerator.AbstractIdGenerator;
+import com.easycodebox.common.idgenerator.exception.BoundReachedException;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public final class LongGenerator extends AbstractGenerator<Long> {
-	//
-	private final AtomicLong curVal;
+public final class IntegerIdGenerator extends AbstractIdGenerator<Integer> {
 	
-	public LongGenerator() {
-		this(1, 500, 10059L, 10059L, null, YesNo.NO);
+	private final AtomicInteger curVal;
+	
+	public IntegerIdGenerator() {
+		this(1, 500, 359, 359, null, YesNo.NO);
 	}
 	
 	/**
+	 * 
 	 * @param increment
 	 * @param fetchSize
 	 * @param initialVal
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public LongGenerator(int increment, int fetchSize, Long initialVal, Long currentVal,
-				         Long maxVal, YesNo isCycle) {
+	public IntegerIdGenerator(int increment, int fetchSize, Integer initialVal, Integer currentVal,
+	                          Integer maxVal, YesNo isCycle) {
 		super(increment, fetchSize, isCycle);
 		this.initialVal = initialVal;
-		this.maxVal = maxVal == null ? Long.MAX_VALUE : maxVal;
-		this.curVal = new AtomicLong(currentVal);
+		this.maxVal = maxVal == null ? Integer.MAX_VALUE : maxVal;
+		this.curVal = new AtomicInteger(currentVal);
 	}
 
 	@Override
-	public Long nextVal() {
+	public Integer nextVal() {
 		//如果起始值没有使用过则返回起始值
 		if(hadUsedBeginVal.compareAndSet(false, true)) {
 			genNum++;
@@ -42,7 +43,7 @@ public final class LongGenerator extends AbstractGenerator<Long> {
 		}
 		if(genNum >= fetchSize) return null;
 		for (;;) {
-            long current = curVal.get(),
+            int current = curVal.get(),
             	next = current + increment;
             if(!((current < next && next <= maxVal)
             		|| (current > next && next >= maxVal))) {
@@ -50,7 +51,7 @@ public final class LongGenerator extends AbstractGenerator<Long> {
             	if(isCycle == YesNo.YES)
             		next = initialVal;
             	else
-            		throw new BoundReachedException("IntegerGenerator had reached max value.");
+            		throw new BoundReachedException("IntegerIdGenerator had reached max value.");
             } 
         	if(curVal.compareAndSet(current, next)){
         		genNum++;
@@ -60,22 +61,22 @@ public final class LongGenerator extends AbstractGenerator<Long> {
 	}
 	
 	@Override
-	public Long currentVal() {
-		return curVal.longValue();
+	public Integer currentVal() {
+		return curVal.intValue();
 	}
 	
     @Override
-	public Long nextStepVal(String curVal) {
-    	Long curInt = Long.parseLong(curVal);
+	public Integer nextStepVal(String curVal) {
+    	Integer curInt = Integer.parseInt(curVal);
     	//设置当前值段为 新传入的curVal~ 新nextStepVal
     	this.curVal.set(curInt);
     	this.genNum = 0;
     	this.hadUsedBeginVal.set(false);
 		return curInt + fetchSize*increment;
 	}
-    
-    public static void main(String args[]) {
-    	LongGenerator g = new LongGenerator();
+
+	public static void main(String args[]) {
+    	IntegerIdGenerator g = new IntegerIdGenerator();
     	for(int i = 0; i < 100; i++) {
     		System.out.println(g.nextVal());
     	}

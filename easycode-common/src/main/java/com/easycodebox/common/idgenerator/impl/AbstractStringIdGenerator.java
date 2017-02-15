@@ -1,20 +1,20 @@
-package com.easycodebox.common.generator.impl;
+package com.easycodebox.common.idgenerator.impl;
 
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.generator.AbstractGenerator;
+import com.easycodebox.common.idgenerator.AbstractIdGenerator;
 import com.easycodebox.common.lang.Strings;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public abstract class AbstractStringGenerator extends AbstractGenerator<String> {
+public abstract class AbstractStringIdGenerator extends AbstractIdGenerator<String> {
 	
 	protected String curVal;
 	
     protected Integer size;
     
-    protected AbstractStringGenerator(int increment, int fetchSize, YesNo isCycle) {
+    protected AbstractStringIdGenerator(int increment, int fetchSize, YesNo isCycle) {
 		super(increment, fetchSize, isCycle);
 	}
 	

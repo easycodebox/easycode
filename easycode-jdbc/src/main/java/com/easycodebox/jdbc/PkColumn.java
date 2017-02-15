@@ -1,6 +1,6 @@
 package com.easycodebox.jdbc;
 
-import com.easycodebox.common.generator.GeneratorType;
+import com.easycodebox.common.idgenerator.IdGeneratorType;
 
 /**
  * @author WangXiaoJin
@@ -8,7 +8,7 @@ import com.easycodebox.common.generator.GeneratorType;
  */
 public class PkColumn extends Column {
 
-	private GeneratorType generatorType;
+	private IdGeneratorType idGeneratorType;
 	
 	public PkColumn() {
 		
@@ -18,12 +18,12 @@ public class PkColumn extends Column {
 		super(columnName);
 	}
 
-	public GeneratorType getGeneratorType() {
-		return generatorType;
+	public IdGeneratorType getIdGeneratorType() {
+		return idGeneratorType;
 	}
 
-	public void setGeneratorType(GeneratorType generatorType) {
-		this.generatorType = generatorType;
+	public void setIdGeneratorType(IdGeneratorType idGeneratorType) {
+		this.idGeneratorType = idGeneratorType;
 	}
 
 }
