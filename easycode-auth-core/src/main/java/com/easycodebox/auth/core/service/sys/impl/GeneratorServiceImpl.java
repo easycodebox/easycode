@@ -105,6 +105,10 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 				.lockMode(LockMode.UPGRADE)
 				);
 		
+		int count = super.update(sql()
+				.updAst(R.Generator.isCycle, isCycle)
+				.eqAst(R.Generator.generatorType, generatorType)
+		);
 		if(generatorType.getIdGenerator() != null) {
 			try {
 				Fields.writeField(generatorType.getIdGenerator(), "isCycle", isCycle, true);
@@ -112,11 +116,7 @@ public class GeneratorServiceImpl extends AbstractServiceImpl<Generator> impleme
 				throw new BaseException("Write isCycle field error.", e);
 			}
 		}
-		
-		return super.update(sql()
-				.updAst(R.Generator.isCycle, isCycle)
-				.eqAst(R.Generator.generatorType, generatorType)
-				);
+		return count;
 	}
 
 	@Override

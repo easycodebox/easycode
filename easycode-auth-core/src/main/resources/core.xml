@@ -76,11 +76,6 @@
 	<bean id="staticValueProcessor" class="com.easycodebox.common.processor.StaticValueProcessor"
 	      init-method="process" lazy-init="false" depends-on="exePropertyPlaceholder">
 		<property name="properties" ref="properties"/>
-		<property name="packagesToScan">
-			<list>
-				<value>com.easycodebox.auth.model.bo</value>
-			</list>
-		</property>
 		<property name="classes">
 			<list>
 				<value>com.easycodebox.auth.core.util.Constants</value>
@@ -109,7 +104,6 @@
 		<property name="packagesToScan">
 			<list>
 				<value>com.easycodebox.auth.model.enums</value>
-				<value>com.easycodebox.auth.model.util.mybatis</value>
 				<value>com.easycodebox.common.enums.entity</value>
 			</list>
 		</property>
