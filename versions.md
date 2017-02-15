@@ -40,4 +40,5 @@
 4. 优化IdConverter功能代码
 5. 优化jdbc-mybatis相关配置类
 6. MyBatis增加动态注册TypeHandler功能
+7. 优化主键生成策略相关功能
 

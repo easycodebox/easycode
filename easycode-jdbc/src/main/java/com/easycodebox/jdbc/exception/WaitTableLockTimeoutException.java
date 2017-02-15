@@ -1,4 +1,4 @@
-package com.easycodebox.jdbc;
+package com.easycodebox.jdbc.exception;
 
 import com.easycodebox.common.error.BaseException;
 

@@ -2,7 +2,7 @@ package com.easycodebox.auth.model.entity.sys;
 
 import com.easycodebox.auth.model.enums.GeneratorEnum;
 import com.easycodebox.auth.model.enums.ModuleType;
-import com.easycodebox.auth.model.util.GeneratedValue;
+import com.easycodebox.common.generator.GeneratedValue;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.jdbc.entity.AbstractCreateEntity;
 
@@ -21,7 +21,7 @@ public class Log extends AbstractCreateEntity {
 	 * 主键
 	 */
 	@Id
-	@GeneratedValue(GeneratorEnum.LOG_ID)
+	@GeneratedValue(type = GeneratorEnum.class, key = "LOG_ID")
 	private Long id;
 	
 	/**

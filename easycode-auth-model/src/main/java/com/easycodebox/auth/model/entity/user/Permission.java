@@ -2,7 +2,7 @@ package com.easycodebox.auth.model.entity.user;
 
 import com.easycodebox.auth.model.entity.sys.Project;
 import com.easycodebox.auth.model.enums.GeneratorEnum;
-import com.easycodebox.auth.model.util.GeneratedValue;
+import com.easycodebox.common.generator.GeneratedValue;
 import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
@@ -22,7 +22,7 @@ public class Permission extends AbstractOperateEntity {
 	 * 主键
 	 */
 	@Id
-	@GeneratedValue(GeneratorEnum.PERMISSION_ID)
+	@GeneratedValue(type = GeneratorEnum.class, key = "PERMISSION_ID")
 	private Long id;
 	
 	/**

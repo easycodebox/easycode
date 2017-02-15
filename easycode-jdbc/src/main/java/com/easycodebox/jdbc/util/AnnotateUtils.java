@@ -1,9 +1,12 @@
 package com.easycodebox.jdbc.util;
 
 import com.easycodebox.common.error.BaseException;
+import com.easycodebox.common.generator.GeneratedValue;
+import com.easycodebox.common.generator.GeneratedValue.Strategy;
 import com.easycodebox.common.generator.GeneratorType;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.reflect.Classes;
+import com.easycodebox.common.lang.reflect.Methods;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.Column;
@@ -12,9 +15,9 @@ import com.easycodebox.jdbc.ManyToOne;
 import com.easycodebox.jdbc.OneToMany;
 import com.easycodebox.jdbc.OneToOne;
 import com.easycodebox.jdbc.Table;
+import com.easycodebox.jdbc.exception.ParseGeneratedValueException;
 
 import javax.persistence.*;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.Collection;
 import java.util.List;
@@ -54,18 +57,20 @@ public class AnnotateUtils {
 			column.setPrimaryKey(true);
 			table.addPrimaryKey((PkColumn)column);
 			//只要value的值实现了GeneratorType就可以
-			for(Annotation ann : field.getAnnotations()) {
-				try {
-					Method m = ann.annotationType().getMethod("value");
-					Object back = m.invoke(ann);
-					if (back instanceof GeneratorType) {
-						((PkColumn)column).setGeneratorType((GeneratorType)back);
+			GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
+			if (generatedValue != null) {
+				GeneratorType generatorType = null;
+				if (generatedValue.strategy() == Strategy.ENUM) {
+					generatorType = (GeneratorType)Enum.valueOf((Class<? extends Enum>) generatedValue.type(), generatedValue.key());
+				} else if (generatedValue.strategy() == Strategy.STATIC_METHOD) {
+					try {
+						generatorType = (GeneratorType) Methods.invokeStaticMethod(generatedValue.type(), generatedValue.key(), null);
+					} catch (Exception e) {
+						throw new ParseGeneratedValueException("Parse GeneratedValue Annotation error.", e);
 					}
-				} catch (Exception ignored) {
-					
 				}
+				((PkColumn)column).setGeneratorType(generatorType);
 			}
-			
 		}else {
 			column = new Column(field.getName());
 			column.setPrimaryKey(false);
