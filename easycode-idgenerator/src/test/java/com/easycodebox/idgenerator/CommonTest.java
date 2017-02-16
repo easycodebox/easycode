@@ -3,16 +3,14 @@ package com.easycodebox.idgenerator;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.easycodebox.common.log.logback.LocateLogger;
-
-public class CommonTest extends LocateLogger {
+public class CommonTest {
 	
 	@Before
 	public void beforeTest() {
 		try{
 			
 		}catch (Exception e) {
-			log.error("run error!!!", e);
+			//log.error("run error!!!", e);
 		}
 	}
 
