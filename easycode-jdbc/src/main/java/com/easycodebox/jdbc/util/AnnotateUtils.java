@@ -1,11 +1,11 @@
 package com.easycodebox.jdbc.util;
 
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.idgenerator.AbstractIdGenTypeParser;
-import com.easycodebox.common.idgenerator.IdGeneratedValue;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.validate.Assert;
+import com.easycodebox.common.idgenerator.AbstractIdGenTypeParser;
+import com.easycodebox.common.idgenerator.IdGeneratedValue;
 import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.Column;
 import com.easycodebox.jdbc.ManyToMany;

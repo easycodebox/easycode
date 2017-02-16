@@ -1,18 +1,17 @@
 package com.easycodebox.login.shiro.filter;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 此类替代了shiro的authc的拦截器
@@ -23,6 +22,9 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
 	
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
+	/**
+	 * 标记此请求为pjax的请求参数值
+	 */
 	private String pjaxKey;
 
 	@Override

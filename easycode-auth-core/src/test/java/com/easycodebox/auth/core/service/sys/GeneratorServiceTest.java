@@ -1,5 +1,6 @@
 package com.easycodebox.auth.core.service.sys;
 
+import com.easycodebox.idgenerator.service.GeneratorService;
 import org.junit.Test;
 
 import com.easycodebox.auth.core.util.test.BaseTest;

@@ -17,6 +17,10 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>easycode-login</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>easycode-idgenerator</artifactId>
+		</dependency>
 		<!-- 第三方jar包 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

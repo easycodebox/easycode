@@ -1,10 +1,10 @@
-package com.easycodebox.auth.core.service.sys;
+package com.easycodebox.idgenerator.service;
 
-import com.easycodebox.auth.model.entity.sys.Generator;
 import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.idgenerator.IdGenerateProcess;
 import com.easycodebox.common.idgenerator.IdGeneratorType;
-import com.easycodebox.common.lang.dto.DataPage;
+import com.easycodebox.idgenerator.entity.Generator;
 
 import java.util.List;
 

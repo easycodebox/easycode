@@ -2,12 +2,12 @@ package com.easycodebox.jdbc.support;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.idgenerator.IdGenerators;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.lang.reflect.Classes;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
+import com.easycodebox.common.idgenerator.IdGenerators;
 import com.easycodebox.jdbc.*;
 import com.easycodebox.jdbc.entity.Entity;
 import com.easycodebox.jdbc.grammar.SqlGrammar;

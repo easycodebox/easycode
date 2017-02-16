@@ -1,23 +1,21 @@
 package com.easycodebox.login.shiro.filter;
 
-import java.io.IOException;
+import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.error.BaseException;
+import com.easycodebox.common.error.CodeMsg;
+import com.easycodebox.common.jackson.Jacksons;
+import com.easycodebox.common.lang.Strings;
+import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.net.Https;
+import com.easycodebox.common.web.callback.Callbacks;
+import com.fasterxml.jackson.core.JsonGenerator;
+import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.easycodebox.common.lang.Strings;
-import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
-
-import com.easycodebox.common.BaseConstants;
-import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.jackson.Jacksons;
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.net.Https;
-import com.easycodebox.common.web.callback.Callbacks;
-import com.fasterxml.jackson.core.JsonGenerator;
+import java.io.IOException;
 
 /**
  * 如果perms没有参数则等效于perms["user/load"]，其中的"user/load"为请求uri
@@ -27,6 +25,11 @@ import com.fasterxml.jackson.core.JsonGenerator;
 public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizationFilter {
 
 	private String pathDivider = Symbol.SLASH;
+	
+	/**
+	 * 标记此请求为pjax的请求参数值
+	 */
+	private String pjaxKey;
 	
 	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
@@ -48,9 +51,11 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 	
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
+		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse res = (HttpServletResponse)response;
 		
-		if(Https.isAjaxRequest((HttpServletRequest)request)) {
+		if(Https.isAjaxRequest((HttpServletRequest)request) &&
+				req.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
 			response.setContentType("application/json;charset=UTF-8");
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 					.createGenerator(response.getWriter())) {
@@ -75,4 +80,11 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 		this.pathDivider = pathDivider;
 	}
 	
+	public String getPjaxKey() {
+		return pjaxKey;
+	}
+	
+	public void setPjaxKey(String pjaxKey) {
+		this.pjaxKey = pjaxKey;
+	}
 }

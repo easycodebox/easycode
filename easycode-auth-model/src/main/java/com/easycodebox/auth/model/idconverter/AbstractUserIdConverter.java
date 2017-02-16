@@ -3,7 +3,7 @@ package com.easycodebox.auth.model.idconverter;
 import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.idconverter.IdConverter;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.jdbc.support.JdbcHandler;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author WangXiaoJin
  */
-public abstract class AbstractUserIdConverter implements IdConverter {
+public abstract class AbstractUserIdConverter implements UserIdConverter {
 	
 	public static final String NICKNAME = R.User.nickname.getPropertyName();
 	
@@ -74,6 +74,7 @@ public abstract class AbstractUserIdConverter implements IdConverter {
 	 * @param id
 	 * @return 返回realname
 	 */
+	@Override
 	public String idToRealname(Object id) {
 		return (String) this.convert(id, REALNAME);
 	}
@@ -82,6 +83,7 @@ public abstract class AbstractUserIdConverter implements IdConverter {
 	 * @param id
 	 * @return 返回nickname
 	 */
+	@Override
 	public String idToNickname(Object id) {
 		return (String) this.convert(id, NICKNAME);
 	}
@@ -90,6 +92,7 @@ public abstract class AbstractUserIdConverter implements IdConverter {
 	 * @param id
 	 * @return 优先返回realname，realname为null则返回nickname
 	 */
+	@Override
 	public String idToRealOrNickname(Object id) {
 		String realname = idToRealname(id);
 		return realname == null ? idToNickname(id) : realname;

@@ -1,18 +1,17 @@
-package com.easycodebox.common.idgenerator.impl;
+package com.easycodebox.common.idgenerator.support;
 
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.idgenerator.exception.BoundReachedException;
 import com.easycodebox.common.lang.Strings;
+import com.easycodebox.common.idgenerator.exception.BoundReachedException;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public final class NumericStringIdGenerator extends AbstractStringIdGenerator {
+public final class AlphaNumericIdGenerator extends AbstractStringIdGenerator {
     
-	
-    public NumericStringIdGenerator() {
-		this(1, 500, "594", "594", null, YesNo.NO);
+	public AlphaNumericIdGenerator() {
+		this(1, 500, "a15b6", "a15b6", null, YesNo.NO);
 	}
 	
 	/**
@@ -23,12 +22,12 @@ public final class NumericStringIdGenerator extends AbstractStringIdGenerator {
 	 * @param maxVal	可空
 	 * @param isCycle
 	 */
-	public NumericStringIdGenerator(int increment, int fetchSize, String initialVal, String currentVal,
-	                                String maxVal, YesNo isCycle) {
+	public AlphaNumericIdGenerator(int increment, int fetchSize, String initialVal, String currentVal,
+	                               String maxVal, YesNo isCycle) {
 		super(increment, fetchSize, isCycle);
-		this.initialVal = initialVal;
-		this.maxVal = maxVal;
-		this.curVal = currentVal;
+		this.initialVal = initialVal.toLowerCase();
+		this.maxVal = maxVal == null ? null : maxVal.toLowerCase();
+		this.curVal = currentVal.toLowerCase();
 	}
     
 	@Override
@@ -48,7 +47,7 @@ public final class NumericStringIdGenerator extends AbstractStringIdGenerator {
 		    	if(isCycle == YesNo.YES)
 		    		next = initialVal;
 		    	else
-		    		throw new BoundReachedException("NumericStringIdGenerator had reached max value.");
+		    		throw new BoundReachedException("AlphaNumericIdGenerator had reached max value.");
 		    } 
 		}
 		genNum++;
@@ -61,7 +60,7 @@ public final class NumericStringIdGenerator extends AbstractStringIdGenerator {
 	}
 	
 	private String addValue(int val) {
-		int fragLength = 18,
+		int fragLength = 12,
 			num = curVal.length()%fragLength != 0 ? 
 					curVal.length()/fragLength + 1 : curVal.length()/fragLength,
 			endIndex = curVal.length();
@@ -75,15 +74,15 @@ public final class NumericStringIdGenerator extends AbstractStringIdGenerator {
 		}
 		//增加指定的值
 		for(int i = fragVals.length - 1; i >= 0; i--) {
-			Long addedVal = Long.parseLong(fragVals[i]) + val;
-			int overflowLen = addedVal.toString().length() - fragLength;
+			String addedVal = Long.toString(Long.parseLong(fragVals[i], 36) + val, 36);
+			int overflowLen = addedVal.length() - fragLength;
 			if(overflowLen > 0) {
-				String t = addedVal.toString().substring(0, overflowLen);
+				String t = addedVal.substring(0, overflowLen);
 				//设置低一位的值
-				fragVals[i] = addedVal.toString().substring(overflowLen);
+				fragVals[i] = addedVal.substring(overflowLen);
 				val = Integer.parseInt(t);
 			}else {
-				fragVals[i] = addedVal.toString();
+				fragVals[i] = addedVal;
 				break;
 			}
 		}
@@ -105,10 +104,10 @@ public final class NumericStringIdGenerator extends AbstractStringIdGenerator {
 	}
 
     public static void main(String args[]) {
-    	NumericStringIdGenerator g = new NumericStringIdGenerator(2, 10
+    	AlphaNumericIdGenerator g = new AlphaNumericIdGenerator(1, 100
 				, "000100", "000100", 
 				"100100", YesNo.NO);
-    	for(int i = 0; i < 10; i++) {
+    	for(int i = 0; i < 100; i++) {
     		System.out.println(g.nextVal());
     	}
     }

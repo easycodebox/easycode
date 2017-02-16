@@ -1,19 +1,19 @@
 package com.easycodebox.auth.core.service.sys.impl;
 
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.PartnerService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.sys.Partner;
+import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.idgenerator.IdGenerators;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
+import com.easycodebox.common.idgenerator.IdGenerators;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

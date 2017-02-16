@@ -1,16 +1,5 @@
 package com.easycodebox.auth.core.service.sys.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
@@ -21,9 +10,16 @@ import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.cache.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author WangXiaoJin

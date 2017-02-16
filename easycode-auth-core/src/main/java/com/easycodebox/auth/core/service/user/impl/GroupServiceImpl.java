@@ -1,14 +1,16 @@
 package com.easycodebox.auth.core.service.user.impl;
 
 import com.easycodebox.auth.core.dao.user.GroupMapper;
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.user.GroupService;
-import com.easycodebox.auth.core.util.*;
+import com.easycodebox.auth.core.util.CodeMsgExt;
+import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.user.*;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.common.enums.entity.*;
+import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
@@ -18,7 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author WangXiaoJin

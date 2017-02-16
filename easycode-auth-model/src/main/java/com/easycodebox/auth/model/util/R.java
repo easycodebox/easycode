@@ -15,26 +15,6 @@ import static com.easycodebox.jdbc.Property.instance;
  */
 public class R {
 
-	public static class Generator {
-	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.sys.Generator.class;
-		public static final Property 
-			id = instance("id", entity),
-			initialVal = instance("initialVal", entity),
-			currentVal = instance("currentVal", entity),
-			maxVal = instance("maxVal", entity),
-			fetchSize = instance("fetchSize", entity),
-			increment = instance("increment", entity),
-			isCycle = instance("isCycle", entity),
-			creator = instance("creator", entity),
-			createTime = instance("createTime", entity),
-			modifier = instance("modifier", entity),
-			modifyTime = instance("modifyTime", entity),
-			creatorName = instance("creatorName", entity),
-			modifierName = instance("modifierName", entity);
-	
-	}
-	
 	public static class Log {
 	
 		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.entity.sys.Log.class;

@@ -1,4 +1,4 @@
-package com.easycodebox.common.idgenerator.impl;
+package com.easycodebox.common.idgenerator.support;
 
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.idgenerator.exception.BoundReachedException;

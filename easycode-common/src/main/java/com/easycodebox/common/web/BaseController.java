@@ -1,14 +1,12 @@
 package com.easycodebox.common.web;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author WangXiaoJin
@@ -26,55 +24,11 @@ public class BaseController {
 	}
 	
 	/**
-	 * 列表
-	 */
-	public void list() throws Exception {
-		
-	}
-	
-	/**
-	 * 详情
-	 */
-	public void load() throws Exception {
-		
-	}
-	
-	/**
-	 * 新增
-	 */
-	public void add() throws Exception {
-		
-	}
-	
-	/**
 	 * 适用于页面无刷新交互式操作
 	 */
 	/*public void form(HttpServletResponse response) throws Exception {
 		callback(closeDialog(), response);
 	}*/
-	
-	/**
-	 * 修改
-	 */
-	public void update() throws Exception {
-		
-	}
-	
-	/**
-	 * 逻辑删除
-	 */
-	@ResponseBody
-	public void remove() throws Exception {
-		
-	}
-	
-	/**
-	 * 物理删除
-	 */
-	@ResponseBody
-	public void removePhy() throws Exception {
-		
-	}
 	
 	/**
 	 * bool == true return SUC, 否则 return FAIL

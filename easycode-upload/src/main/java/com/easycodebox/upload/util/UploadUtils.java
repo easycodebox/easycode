@@ -2,11 +2,11 @@ package com.easycodebox.upload.util;
 
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.file.*;
-import com.easycodebox.common.idgenerator.impl.AlphaNumericIdGenerator;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
+import com.easycodebox.common.idgenerator.support.AlphaNumericIdGenerator;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;

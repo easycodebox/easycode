@@ -1,16 +1,16 @@
-package com.easycodebox.auth.core.service.sys.impl;
+package com.easycodebox.idgenerator.service.impl;
 
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
-import com.easycodebox.auth.core.service.sys.GeneratorService;
-import com.easycodebox.auth.model.entity.sys.Generator;
-import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.idgenerator.*;
 import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.lang.reflect.Fields;
+import com.easycodebox.idgenerator.entity.Generator;
+import com.easycodebox.idgenerator.service.GeneratorService;
+import com.easycodebox.idgenerator.util.R;
 import com.easycodebox.jdbc.LockMode;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
 import org.springframework.stereotype.Service;

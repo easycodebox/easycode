@@ -1,13 +1,5 @@
 package com.easycodebox.auth.backend.controller.user;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.user.RoleService;
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
@@ -15,10 +7,16 @@ import com.easycodebox.auth.model.entity.user.Role;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.validate.Validators;
 import com.easycodebox.common.web.BaseController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author WangXiaoJin

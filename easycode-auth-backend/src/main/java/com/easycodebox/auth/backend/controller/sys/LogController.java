@@ -1,18 +1,17 @@
 package com.easycodebox.auth.backend.controller.sys;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.LogService;
 import com.easycodebox.auth.model.entity.sys.Log;
 import com.easycodebox.common.error.CodeMsg;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.validate.Validators;
 import com.easycodebox.common.web.BaseController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
 
 /**
  * @author WangXiaoJin

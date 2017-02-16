@@ -2,8 +2,9 @@ package com.easycodebox.auth.model.entity.user;
 
 import com.easycodebox.auth.model.entity.sys.Project;
 import com.easycodebox.auth.model.enums.IdGeneratorEnum;
+import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.idgenerator.IdGeneratedValue;
-import com.easycodebox.common.enums.entity.*;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
 
 import javax.persistence.*;

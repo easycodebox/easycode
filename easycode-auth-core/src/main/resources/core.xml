@@ -10,7 +10,7 @@
        default-lazy-init="true">
 	
 	<!-- 组件扫描 -->
-	<context:component-scan base-package="com.easycodebox">
+	<context:component-scan base-package="com.easycodebox.auth.core,com.easycodebox.idgenerator.service">
 		<context:exclude-filter type="annotation"
 		                        expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
@@ -112,8 +112,14 @@
 		</property>
 	</bean>
 	
-	<bean id="annotatedConfig" class="com.easycodebox.jdbc.config.ConfigEntityBean"
-	      lazy-init="false" p:packagesToScan="com.easycodebox.auth.model.entity"/>
+	<bean id="annotatedConfig" class="com.easycodebox.jdbc.config.ConfigEntityBean" lazy-init="false">
+		<property name="packagesToScan">
+			<array>
+				<value>com.easycodebox.auth.model.entity</value>
+				<value>com.easycodebox.idgenerator.entity</value>
+			</array>
+		</property>
+	</bean>
 	
 	<!-- 数据源配置 -->
 	<!--
@@ -193,7 +199,7 @@
 	      lazy-init="false"/>
 	
 	<!-- =================================== 【ID转换器 - START】  ============================================== -->
-	<bean id="userIdConverter" class="com.easycodebox.auth.core.idconverter.UserIdConverter"
+	<bean id="userIdConverter" class="com.easycodebox.auth.core.idconverter.DefaultUserIdConverter"
 	      c:userService-ref="userService"
 	      p:jdbcHandler-ref="jdbcHandler"/>
 	<bean id="idConverterRegistry" class="com.easycodebox.common.idconverter.IdConverterRegistry"

@@ -23,6 +23,11 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	private String exceptionAttribute = DEFAULT_EXCEPTION_ATTRIBUTE;
 	public static final String MSG_ATTR = "msg";
 	
+	/**
+	 * 标记此请求为pjax的请求参数值
+	 */
+	private String pjaxKey;
+	
 	@Override
 	public ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, 
 			Object handler, Exception ex) {
@@ -39,7 +44,8 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 			error = CodeMsg.FAIL;
 		}
 		
-		if(Https.isAjaxRequest(request)) {
+		if(Https.isAjaxRequest(request) &&
+				request.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
 			response.setContentType("application/json;charset=UTF-8");
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 					.createGenerator(response.getWriter())) {
@@ -84,4 +90,11 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 		return mv;
 	}
 	
+	public String getPjaxKey() {
+		return pjaxKey;
+	}
+	
+	public void setPjaxKey(String pjaxKey) {
+		this.pjaxKey = pjaxKey;
+	}
 }

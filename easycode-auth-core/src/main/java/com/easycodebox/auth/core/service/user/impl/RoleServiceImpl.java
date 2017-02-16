@@ -1,7 +1,6 @@
 package com.easycodebox.auth.core.service.user.impl;
 
 import com.easycodebox.auth.core.dao.user.RoleMapper;
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.user.RoleService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.util.Constants;
@@ -11,6 +10,7 @@ import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;

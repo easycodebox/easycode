@@ -1,21 +1,19 @@
 package com.easycodebox.auth.core.service.sys.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.easycodebox.common.lang.Strings;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.LogService;
 import com.easycodebox.auth.model.entity.sys.Log;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.LogLevel;
+import com.easycodebox.common.idconverter.UserIdConverter;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author WangXiaoJin

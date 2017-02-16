@@ -2,8 +2,8 @@ package com.easycodebox.auth.model.entity.sys;
 
 import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.auth.model.enums.ModuleType;
-import com.easycodebox.common.idgenerator.IdGeneratedValue;
 import com.easycodebox.common.enums.entity.LogLevel;
+import com.easycodebox.common.idgenerator.IdGeneratedValue;
 import com.easycodebox.jdbc.entity.AbstractCreateEntity;
 
 import javax.persistence.*;

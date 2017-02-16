@@ -80,6 +80,11 @@ public class ErrorContextFilter implements Filter {
 	private boolean storeException = false;
 	
 	private ExceptionHandler exceptionHandler;
+	
+	/**
+	 * 标记此请求为pjax的请求参数值
+	 */
+	private String pjaxKey;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -90,7 +95,8 @@ public class ErrorContextFilter implements Filter {
 				logMappings = filterConfig.getInitParameter("logMappings"),
 				isLog = filterConfig.getInitParameter("isLog"),
 				logLevel = filterConfig.getInitParameter("logLevel"),
-				store = filterConfig.getInitParameter("storeException");
+				store = filterConfig.getInitParameter("storeException"),
+				pjaxKey = filterConfig.getInitParameter("pjaxKey");
 		
 		if (Strings.isNotBlank(defaultPage)) {
 			this.defaultPage = defaultPage.trim();
@@ -154,7 +160,9 @@ public class ErrorContextFilter implements Filter {
 		if (Strings.isNotBlank(store)) {
 			this.storeException = Boolean.parseBoolean(store.trim());
 		}
-		
+		if (Strings.isNotBlank(pjaxKey)) {
+			this.pjaxKey = pjaxKey.trim();
+		}
 	}
 	
 	@Override
@@ -250,7 +258,8 @@ public class ErrorContextFilter implements Filter {
 			}
 			
 			//判断请求是否为AJAX请求
-			if(Https.isAjaxRequest(request)) {
+			if(Https.isAjaxRequest(request) &&
+					request.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
 				response.setContentType("application/json;charset=UTF-8");
 				try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 						.createGenerator(response.getWriter())) {
@@ -371,5 +380,12 @@ public class ErrorContextFilter implements Filter {
 	public void setStoreException(boolean storeException) {
 		this.storeException = storeException;
 	}
-
+	
+	public String getPjaxKey() {
+		return pjaxKey;
+	}
+	
+	public void setPjaxKey(String pjaxKey) {
+		this.pjaxKey = pjaxKey;
+	}
 }

@@ -1,16 +1,16 @@
-package com.easycodebox.auth.backend.controller.sys;
+package com.easycodebox.idgenerator.controller.springmvc;
 
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
-import com.easycodebox.auth.core.service.sys.GeneratorService;
-import com.easycodebox.auth.model.entity.sys.Generator;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.validate.Validators;
 import com.easycodebox.common.web.BaseController;
+import com.easycodebox.idgenerator.entity.Generator;
+import com.easycodebox.idgenerator.service.GeneratorService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -25,7 +25,12 @@ public class GeneratorController extends BaseController {
 	private UserIdConverter userIdConverter;
 	@Resource
 	private GeneratorService generatorService;
-
+	
+	@GetMapping("/generator")
+	public String index() throws Exception {
+		return "sys/generator";
+	}
+	
 	/**
 	 * 列表
 	 */

@@ -1,27 +1,34 @@
 package com.easycodebox.auth.backend.controller.user;
 
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.ProjectService;
-import com.easycodebox.auth.core.service.user.*;
+import com.easycodebox.auth.core.service.user.PermissionService;
+import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.model.entity.user.Permission;
-import com.easycodebox.common.enums.entity.*;
-import com.easycodebox.common.error.*;
+import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
+import com.easycodebox.common.error.CodeMsg;
+import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.file.FileInfo;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.dto.DataPage;
-import com.easycodebox.common.validate.*;
+import com.easycodebox.common.validate.Assert;
+import com.easycodebox.common.validate.Validators;
 import com.easycodebox.common.web.BaseController;
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author WangXiaoJin

@@ -1,15 +1,9 @@
 package com.easycodebox.auth.core.service.user.impl;
 
 import com.easycodebox.auth.core.dao.user.PermissionMapper;
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.sys.ProjectService;
-import com.easycodebox.auth.core.service.user.PermissionService;
-import com.easycodebox.auth.core.service.user.RoleProjectService;
-import com.easycodebox.auth.core.service.user.RoleService;
-import com.easycodebox.auth.core.service.user.UserService;
-import com.easycodebox.auth.core.util.AccessTools;
-import com.easycodebox.auth.core.util.CodeMsgExt;
-import com.easycodebox.auth.core.util.Constants;
+import com.easycodebox.auth.core.service.user.*;
+import com.easycodebox.auth.core.util.*;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.sys.Project;
 import com.easycodebox.auth.model.entity.user.Permission;
@@ -21,14 +15,13 @@ import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.freemarker.ConfigurationFactory;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.xml.XmlDataParser;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import freemarker.template.*;
 import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -39,9 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -228,7 +219,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 		//super.truncate();
 		
 		SAXReader reader = new SAXReader();
-		Document document = null;
+		Document document;
 		try {
 			document = reader.read(streams);
 		} finally {

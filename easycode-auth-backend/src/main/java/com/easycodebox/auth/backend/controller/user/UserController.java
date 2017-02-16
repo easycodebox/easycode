@@ -1,14 +1,5 @@
 package com.easycodebox.auth.backend.controller.user;
 
-import javax.annotation.Resource;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.easycodebox.auth.core.idconverter.UserIdConverter;
 import com.easycodebox.auth.core.service.user.GroupService;
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
@@ -18,11 +9,17 @@ import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
+import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.security.SecurityUtils;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.validate.Validators;
 import com.easycodebox.common.web.BaseController;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * @author WangXiaoJin

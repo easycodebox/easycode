@@ -4,7 +4,7 @@ import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.idgenerator.AbstractIdGenerator;
 import com.easycodebox.common.idgenerator.IdGeneratorType;
-import com.easycodebox.common.idgenerator.impl.*;
+import com.easycodebox.common.idgenerator.support.*;
 
 /**
  * @author WangXiaoJin

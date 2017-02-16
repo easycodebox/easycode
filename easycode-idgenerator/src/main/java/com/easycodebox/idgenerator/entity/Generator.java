@@ -1,4 +1,4 @@
-package com.easycodebox.auth.model.entity.sys;
+package com.easycodebox.idgenerator.entity;
 
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.jdbc.entity.AbstractOperateEntity;
