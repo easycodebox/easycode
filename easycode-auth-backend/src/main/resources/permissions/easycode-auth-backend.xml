@@ -20,11 +20,11 @@
 			</permissions>
 		</menu2>
 		
-		<menu2 name="生成策略管理" url="generator" description="生成策略管理页面">
+		<menu2 name="生成策略管理" url="idGenerator" description="生成策略管理页面">
 			<permissions>
-				<permission name="生成策略列表" url="generator/list" description="生成策略列表" />
-				<permission name="生成策略详情" url="generator/load" description="生成策略详情" />
-				<permission name="修改生成策略" url="generator/update" description="修改生成策略" />
+				<permission name="生成策略列表" url="idGenerator/list" description="生成策略列表" />
+				<permission name="生成策略详情" url="idGenerator/load" description="生成策略详情" />
+				<permission name="修改生成策略" url="idGenerator/update" description="修改生成策略" />
 			</permissions>
 		</menu2>
 		

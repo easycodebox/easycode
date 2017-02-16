@@ -55,7 +55,7 @@
 							data-id-field="id"
 							data-unique-id="id"
 							data-select-item-name="ids"
-							data-url="/generator/list.json">
+							data-url="/idGenerator/list.json">
 						<thead hidden>
 							<tr>
 								<th data-checkbox="true" data-click-to-select="true"></th>
@@ -74,12 +74,12 @@
 						</thead>
 					</table>
 					<div id="table-ops" class="hidden">
-						[@shiro.hasPermission name="generator/load"]
+						[@shiro.hasPermission name="idGenerator/load"]
 							<a class="btn btn-xs btn-default loadBtn" data-id="{id}" title="详情" href="#" role="button">
 								<i class="fa fa-reorder"></i>
 							</a>
 						[/@shiro.hasPermission]
-						[@shiro.hasPermission name="generator/update"]
+						[@shiro.hasPermission name="idGenerator/update"]
 							<a class="btn btn-xs btn-default updBtn" data-id="{id}" title="修改" href="#" role="button">
 								<i class="fa fa-edit"></i>
 							</a>
@@ -95,12 +95,12 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/WEB-INF/pages/sys/generator_load.html"/]
+	[#include "/WEB-INF/pages/sys/idGenerator_load.html"/]
 	
 	<!-- 修改 -->
-	<form id="updDialog" class="form-validate none" action="/generator/update.json" data-suc="更新主键生成器成功" data-fail="更新主键生成器失败">
+	<form id="updDialog" class="form-validate none" action="/idGenerator/update.json" data-suc="更新主键生成器成功" data-fail="更新主键生成器失败">
 	
-		<input type="hidden" name="id" v-model="generator.id" />
+		<input type="hidden" name="id" v-model="idGenerator.id" />
 		
 		<table class="table-edit">
 			<tr>
@@ -108,14 +108,14 @@
 					<label class="required">初始值：</label>
 				</th>
 				<td>
-					<input type="text" name="initialVal" class="form-control" v-model="generator.initialVal" data-bvalidator="alphanum,gb.initialVal" maxlength="32" required />
+					<input type="text" name="initialVal" class="form-control" v-model="idGenerator.initialVal" data-bvalidator="alphanum,gb.initialVal" maxlength="32" required />
 				</td>
 				<th>
 					<label class="required">当前值：</label>
 				</th>
 				<td>
-					<input type="hidden" class="oldCurVal" v-model="generator.currentVal" />
-					<input type="text" name="currentVal" class="form-control" v-model="generator.currentVal" data-bvalidator="alphanum,gb.curVal" maxlength="32" required />
+					<input type="hidden" class="oldCurVal" v-model="idGenerator.currentVal" />
+					<input type="text" name="currentVal" class="form-control" v-model="idGenerator.currentVal" data-bvalidator="alphanum,gb.curVal" maxlength="32" required />
 				</td>
 			</tr>
 			
@@ -124,13 +124,13 @@
 					<label>最大值：</label>
 				</th>
 				<td>
-					<input type="text" name="maxVal" class="form-control" v-model="generator.maxVal" data-bvalidator="alphanum,gb.maxVal" maxlength="32" />
+					<input type="text" name="maxVal" class="form-control" v-model="idGenerator.maxVal" data-bvalidator="alphanum,gb.maxVal" maxlength="32" />
 				</td>
 				<th>
 					<label class="required">批次容量：</label>
 				</th>
 				<td>
-					<input type="text" name="fetchSize" class="form-control" v-model="generator.fetchSize" data-bvalidator="digit" maxlength="9" required />
+					<input type="text" name="fetchSize" class="form-control" v-model="idGenerator.fetchSize" data-bvalidator="digit" maxlength="9" required />
 				</td>
 			</tr>
 			
@@ -139,7 +139,7 @@
 					<label class="required">增长值：</label>
 				</th>
 				<td>
-					<input type="text" name="increment" class="form-control" v-model="generator.increment" data-bvalidator="digit" maxlength="9" required />
+					<input type="text" name="increment" class="form-control" v-model="idGenerator.increment" data-bvalidator="digit" maxlength="9" required />
 				</td>
 				<th>
 					<label class="required">是否循环：</label>
@@ -148,7 +148,7 @@
 					[@e.radioEnum name="isCycle" enumName="YesNo"
 							tagAttr='{
 								last: "required data-bvalidator-msg=\'请选择是否循环\'",
-								all: "v-model=\'generator.isCycle.className\'"
+								all: "v-model=\'idGenerator.isCycle.className\'"
 							}'/]
 				</td>
 			</tr>
@@ -157,5 +157,5 @@
 </div>
 	
 <inner-js>
-	[@e.script tagAttr="transient='true'" src="/js/??sys/generator.js" /]
+	[@e.script tagAttr="transient='true'" src="/js/??sys/idGenerator.js" /]
 </inner-js>

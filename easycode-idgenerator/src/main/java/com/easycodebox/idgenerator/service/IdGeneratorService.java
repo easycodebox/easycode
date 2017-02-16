@@ -4,7 +4,7 @@ import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.idgenerator.IdGenerateProcess;
 import com.easycodebox.common.idgenerator.IdGeneratorType;
-import com.easycodebox.idgenerator.entity.Generator;
+import com.easycodebox.idgenerator.entity.IdGenerator;
 
 import java.util.List;
 
@@ -12,27 +12,27 @@ import java.util.List;
  * @author WangXiaoJin
  *
  */
-public interface GeneratorService extends IdGenerateProcess {
+public interface IdGeneratorService extends IdGenerateProcess {
 	
 	/**
 	 * 生成策略列表
 	 * @return
 	 */
-	List<Generator> list();
+	List<IdGenerator> list();
 	
 	/**
 	 * 生成策略详情
 	 * @param id
 	 * @return
 	 */
-	Generator load(String id);
+	IdGenerator load(String id);
 	
 	/**
 	 * 修改生成策略
-	 * @param generator
+	 * @param idGenerator
 	 * @return
 	 */
-	int update(Generator generator);
+	int update(IdGenerator idGenerator);
 	
 	/**
 	 * 更新是否循环
@@ -48,7 +48,7 @@ public interface GeneratorService extends IdGenerateProcess {
 	 * @param pageSize
 	 * @return
 	 */
-	DataPage<Generator> page(String id, YesNo isCycle, int pageNo, int pageSize);
+	DataPage<IdGenerator> page(String id, YesNo isCycle, int pageNo, int pageSize);
 	
 	/**
 	 * 如果指定GeneratorType没有初始化Generator则初始化
@@ -56,6 +56,6 @@ public interface GeneratorService extends IdGenerateProcess {
 	 * @return
 	 * @throws Exception
 	 */
-	Generator incrementAndGet(IdGeneratorType idGeneratorType);
+	IdGenerator incrementAndGet(IdGeneratorType idGeneratorType);
 	
 }

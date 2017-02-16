@@ -10,8 +10,8 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name="sys_generator")
-public class Generator extends AbstractOperateEntity {
+@Table(name="sys_id_generator")
+public class IdGenerator extends AbstractOperateEntity {
 
 	@Id
 	private String id;
@@ -29,11 +29,11 @@ public class Generator extends AbstractOperateEntity {
 	private YesNo isCycle;
 	
 
-	public Generator(){
+	public IdGenerator(){
 	
 	}
 
-	public Generator(String id){
+	public IdGenerator(String id){
 		this.id = id;
 	}
 	

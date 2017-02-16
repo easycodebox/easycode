@@ -15,9 +15,9 @@ import static com.easycodebox.jdbc.Property.instance;
  */
 public class R {
 
-	public static class Generator {
+	public static class IdGenerator {
 	
-		private static final Class<? extends Entity> entity = com.easycodebox.idgenerator.entity.Generator.class;
+		private static final Class<? extends Entity> entity = com.easycodebox.idgenerator.entity.IdGenerator.class;
 		public static final Property 
 			id = instance("id", entity),
 			initialVal = instance("initialVal", entity),

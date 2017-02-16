@@ -28,7 +28,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		this.vm = new Vue({
 			el: '#tmpls',
 			data: {
-				generator: {}
+				idGenerator: {}
 			}
 		});
 	},
@@ -82,7 +82,7 @@ $(function(){
 		scopeSelector: "#data-table",//操作的dom范围
 		targetClass: "isCycle",	//操作成功后修改的目标对象
 		ajaxKey: "id",
-		url: "/generator/updateIsCycle.json",
+		url: "/idGenerator/updateIsCycle.json",
 		change: {
 			"switch-open": {
 				confirmMsg	: "启用循环？",
@@ -99,14 +99,14 @@ $(function(){
 	
 	$("#data-table").on("click", ".loadBtn", function() {
 		var $btn = $(this);
-		$.post("/generator/load.json",{id: $btn.data("id")}, function(data) {
-			gb.vm.generator = data.data;
-			layer.page1(gb.title($btn), $('#loadDialogGenerator'));
+		$.post("/idGenerator/load.json",{id: $btn.data("id")}, function(data) {
+			gb.vm.idGenerator = data.data;
+			layer.page1(gb.title($btn), $('#loadDialogIdGenerator'));
 		});
 	}).on("click", ".updBtn", function() {
 		var $btn = $(this);
-		$.post("/generator/load.json",{id: $btn.data("id")}, function(data) {
-			gb.vm.generator = data.data;
+		$.post("/idGenerator/load.json",{id: $btn.data("id")}, function(data) {
+			gb.vm.idGenerator = data.data;
 			
 			gb.show(gb.title($btn), $('#updDialog'));
 		});

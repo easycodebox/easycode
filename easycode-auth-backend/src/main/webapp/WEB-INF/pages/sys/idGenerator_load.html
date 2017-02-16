@@ -1,10 +1,10 @@
-<table id="loadDialogGenerator" class="table-edit none">
+<table id="loadDialogIdGenerator" class="table-edit none">
 	<tr>
 		<th>
 			<label>策略：</label>
 		</th>
 		<td>
-			{{generator.id}}
+			{{idGenerator.id}}
 		</td>
 	</tr>
 	
@@ -13,13 +13,13 @@
 			<label>初始值：</label>
 		</th>
 		<td>
-			{{generator.initialVal}}
+			{{idGenerator.initialVal}}
 		</td>
 		<th>
 			<label>当前值：</label>
 		</th>
 		<td>
-			{{generator.currentVal}}
+			{{idGenerator.currentVal}}
 		</td>
 	</tr>
 	
@@ -28,13 +28,13 @@
 			<label>最大值：</label>
 		</th>
 		<td>
-			{{generator.maxVal}}
+			{{idGenerator.maxVal}}
 		</td>
 		<th>
 			<label>批次容量：</label>
 		</th>
 		<td>
-			{{generator.fetchSize}}
+			{{idGenerator.fetchSize}}
 		</td>
 	</tr>
 	
@@ -43,13 +43,13 @@
 			<label>增长值：</label>
 		</th>
 		<td>
-			{{generator.increment}}
+			{{idGenerator.increment}}
 		</td>
 		<th>
 			<label>是否循环：</label>
 		</th>
 		<td>
-			{{generator.isCycle.desc}}
+			{{idGenerator.isCycle.desc}}
 		</td>
 	</tr>
 	
@@ -58,13 +58,13 @@
 			<label>创建人：</label>
 		</th>
 		<td>
-			{{generator.creatorName}}
+			{{idGenerator.creatorName}}
 		</td>
 		<th>
 			<label>创建时间：</label>
 		</th>
 		<td>
-			{{generator.createTime | date}}
+			{{idGenerator.createTime | date}}
 		</td>
 	</tr>
 	
@@ -73,13 +73,13 @@
 			<label>修改人：</label>
 		</th>
 		<td>
-			{{generator.modifierName}}
+			{{idGenerator.modifierName}}
 		</td>
 		<th>
 			<label>修改时间：</label>
 		</th>
 		<td>
-			{{generator.modifyTime | date}}
+			{{idGenerator.modifyTime | date}}
 		</td>
 	</tr>
 </table>
