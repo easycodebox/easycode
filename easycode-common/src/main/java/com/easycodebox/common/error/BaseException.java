@@ -13,7 +13,7 @@ public class BaseException extends RuntimeException {
 	}
 
 	/**
-	 * msg格式：“属性{0}不能为空。”,从0开始
+	 * 使用{@link Strings#format(String, Object...)}处理msg
 	 * @param msg
 	 * @param args
 	 */
@@ -22,7 +22,7 @@ public class BaseException extends RuntimeException {
 	}
 	
 	/**
-	 * msg格式：“属性{0}不能为空。”
+	 * 使用{@link Strings#format(String, Object...)}处理msg
 	 * @param msg
 	 * @param cause
 	 * @param args
