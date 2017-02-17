@@ -49,16 +49,20 @@
             value="org.springframework.web.servlet.view.JstlView" />
     </bean> -->
 
-    <!-- freemarker的配置 -->
+    <!--
+        freemarker的配置
+        因为依赖easycode-idgenerator模块，用到了此模块的模板，所以增加了【classpath:/META-INF/resources/】loaderPath。
+        如果模板统一存于相同路径下，则使用FreeMarkerViewResolver的suffix属性配置。
+     -->
     <bean id="freemarkerConfig" class="com.easycodebox.common.web.springmvc.FreeMarkerConfigurer"
           p:freemarkerVariables-ref="properties"
-          p:templateLoaderPath="${freemarker.loader_path}"
+          p:templateLoaderPaths="/,/WEB-INF/pages/,classpath:/META-INF/resources/"
           p:defaultEncoding="${freemarker.default_encoding}"/>
 
     <!-- freemarker视图设置 -->
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
-          p:prefix="/WEB-INF/pages/" p:suffix=".html" p:order="1"
+          p:suffix=".html" p:order="1"
           p:contentType="text/html;charset=utf-8"
           p:viewClass="org.springframework.web.servlet.view.freemarker.FreeMarkerView"
           p:exposeRequestAttributes="true"

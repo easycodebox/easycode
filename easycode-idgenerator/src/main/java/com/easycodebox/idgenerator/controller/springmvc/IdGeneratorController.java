@@ -10,7 +10,8 @@ import com.easycodebox.common.web.BaseController;
 import com.easycodebox.idgenerator.entity.IdGenerator;
 import com.easycodebox.idgenerator.service.IdGeneratorService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -28,7 +29,7 @@ public class IdGeneratorController extends BaseController {
 	
 	@GetMapping("/idGenerator")
 	public String index() throws Exception {
-		return "sys/idGenerator";
+		return "html/idGenerator";
 	}
 	
 	/**
