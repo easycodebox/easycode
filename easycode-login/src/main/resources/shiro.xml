@@ -11,6 +11,8 @@
 
     <!-- 配置shiroFilter的filterChainDefinitions属性文件 -->
     <import resource="shiro-custom.xml"/>
+    <!-- 加载 Shiro Session Cache 配置 -->
+    <import resource="shiro-cache.xml"/>
 
     <!-- 操作SecurityInfo -->
     <bean id="securityInfoHandler" class="com.easycodebox.login.shiro.ShiroSecurityInfoHandler"/>

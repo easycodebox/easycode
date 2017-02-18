@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:cache="http://www.springframework.org/schema/cache"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:c="http://www.springframework.org/schema/c"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
        default-lazy-init="true">
 
     <!-- 启用Spring Cache功能 -->
@@ -14,10 +12,10 @@
 
     <!-- Redis 连接池 -->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
-          p:maxTotal="${redis.pool.maxTotal}"
-          p:maxIdle="${redis.pool.maxIdle}"
-          p:maxWaitMillis="${redis.pool.maxWaitMillis}"
-          p:testOnBorrow="${redis.pool.testOnBorrow}"/>
+          p:maxTotal="${redis.core.pool.maxTotal}"
+          p:maxIdle="${redis.core.pool.maxIdle}"
+          p:maxWaitMillis="${redis.core.pool.maxWaitMillis}"
+          p:testOnBorrow="${redis.core.pool.testOnBorrow}"/>
 
 
     <!--
@@ -54,8 +52,8 @@
     <!-- Jedis ConnectionFactory -->
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
           c:poolConfig-ref="jedisPoolConfig"
-          p:hostName="${redis.host}"
-          p:port="${redis.port}"/>
+          p:hostName="${redis.core.host}"
+          p:port="${redis.core.port}"/>
 
     <!-- JSON序列化 -->
     <bean id="jacksonRedisSerializer"
@@ -74,26 +72,5 @@
     <bean id="methodArgsKeyGenerator" class="com.easycodebox.common.cache.spring.MethodArgsKeyGenerator"/>
     <!-- 适用于批量删除缓存的情况 -->
     <bean id="multiKeyGenerator" class="com.easycodebox.common.cache.spring.MultiKeyGenerator"/>
-
-
-    <!-- **********************************  Shiro Session  ************************************************** -->
-    <!--
-        注：当部署到正式环境时，Shiro Session使用的Redis需要开启RDB、AOF达到持久化的目的，并且需要定时备份RDB文件。
-            纯粹简单作为缓存使用的Redis，需要关闭RDB、AOF功能，因为持久化时是消耗性能的。
-        结论：在生产环境部署两套Redis集群（集群的目的容灾、负载均衡。目前Jedis版本不支持读写分离，且读写都是走Master，
-              有兴趣的朋友可以换成redisson，redisson实现了读写分离。），一套做持久化Session使用，另一套纯粹作为缓存。
-              另外一个更重要的原因是：Shiro Session是提供给所有需要登录的服务使用的，必须使用同一个Redis集群，
-              不然登录状态会乱套的。属于每个服务本身的业务数据基本上都是独立缓存在各自的Redis集群中的。
-    -->
-    <!-- 提供给Shiro缓存Session使用 -->
-    <bean id="shiroRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
-          p:connection-factory-ref="jedisConnectionFactory"/>
-    <bean id="shiroCacheManager" class="com.easycodebox.common.cache.spring.redis.CustomRedisCacheManager"
-          c:redisOperations-ref="shiroRedisTemplate"
-          p:usePrefix="true"
-          p:defaultExpiration="1800"/>
-
-    <bean id="cacheStats" class="com.easycodebox.login.shiro.cache.spring.RedisTemplateCacheStats"
-          p:usePrefix="true"/>
 
 </beans>

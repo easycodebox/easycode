@@ -7,154 +7,155 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
        default-lazy-init="true">
+	
+	<!-- 组件扫描 -->
+	<context:component-scan
+			base-package="com.easycodebox.auth.backend.controller,com.easycodebox.idgenerator.controller">
+		<context:include-filter type="annotation"
+		                        expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<!--
+		继承父context的placeholder对象。因springMVC创建的context是applicationContext的子类，
+		且父context的属性(PropertyPlaceholderConfigurer)在子context中是不能通过${xx}这种占位符获取到，
+		所以需要在子context中重新创建一个PropertyPlaceholderConfigurer的子对象。
+	 -->
+	<bean parent="placeholder"/>
+	
+	<!-- 生成JS的配置文件  -->
+	<bean class="com.easycodebox.common.freemarker.FreemarkerGenerate" init-method="process" lazy-init="false"
+	      p:ftl-path="/config-js.ftl" p:output-path="/js/config.js" p:properties-ref="properties"/>
+	
+	<bean class="com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerMapping"
+	      p:controllerPostfix="Controller">
+		<property name="excludePatterns">
+			<array>
+				<value>/**/*.js</value>
+				<value>/**/*.css</value>
+				<value>/imgs/**</value>
+				<value>/WEB-INF/common/**</value>
+				<value>/errors/**</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver"/>
+	
+	<!-- JSP配置 -->
+	<!-- <bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" p:order="2"
+		p:contentType="text/html;charset=utf-8">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+	</bean> -->
+	
+	<!--
+		freemarker的配置
+		因为依赖easycode-idgenerator模块，用到了此模块的模板，所以增加了【classpath:/META-INF/resources/】loaderPath。
+		如果模板统一存于相同路径下，则使用FreeMarkerViewResolver的suffix属性配置。
+	 -->
+	<bean id="freemarkerConfig" class="com.easycodebox.common.web.springmvc.FreeMarkerConfigurer"
+	      p:freemarkerVariables-ref="properties"
+	      p:templateLoaderPaths="/,/WEB-INF/pages/,classpath:/META-INF/resources/"
+	      p:defaultEncoding="${freemarker.default_encoding}"/>
+	
+	<!-- freemarker视图设置 -->
+	<bean id="viewResolver"
+	      class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+	      p:suffix=".html" p:order="1"
+	      p:contentType="text/html;charset=utf-8"
+	      p:viewClass="org.springframework.web.servlet.view.freemarker.FreeMarkerView"
+	      p:exposeRequestAttributes="true"
+	      p:exposeSpringMacroHelpers="true"
+	      p:requestContextAttribute="request"/>
+	
+	<!-- Support static resource -->
+	<mvc:default-servlet-handler/>
+	
+	<!-- 文件上传 -->
+	<!--
+		maxUploadSize="32505856" ==> 上传文件大小限制为31M，31*1024*1024
+	 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+	      p:defaultEncoding="UTF-8"
+	      p:maxUploadSize="32505856"
+	      p:maxInMemorySize="4096"/>
+	
+	<!-- 异常处理 -->
+	<!-- <bean id="errorViewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+		p:prefix="/errors/" p:suffix=".html" p:order="2"
+		p:contentType="text/html;charset=utf-8"
+		p:viewClass="org.springframework.web.servlet.view.freemarker.FreeMarkerView"
+		p:exposeRequestAttributes="true"
+		p:exposeSpringMacroHelpers="true"
+		p:requestContextAttribute="request" />
 
-    <!-- 组件扫描 -->
-    <context:component-scan base-package="com.easycodebox.auth.backend.controller,com.easycodebox.idgenerator.controller">
-        <context:include-filter type="annotation"
-                                expression="org.springframework.stereotype.Controller"/>
-    </context:component-scan>
-
-    <!--
-        继承父context的placeholder对象。因springMVC创建的context是applicationContext的子类，
-        且父context的属性(PropertyPlaceholderConfigurer)在子context中是不能通过${xx}这种占位符获取到，
-        所以需要在子context中重新创建一个PropertyPlaceholderConfigurer的子对象。
-     -->
-    <bean parent="placeholder"/>
-
-    <!-- 生成JS的配置文件  -->
-    <bean class="com.easycodebox.common.freemarker.FreemarkerGenerate" init-method="process" lazy-init="false"
-          p:ftl-path="/config-js.ftl" p:output-path="/js/config.js" p:properties-ref="properties"/>
-
-    <bean class="com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerMapping"
-          p:controllerPostfix="Controller">
-        <property name="excludePatterns">
-            <array>
-                <value>/**/*.js</value>
-                <value>/**/*.css</value>
-                <value>/imgs/**</value>
-                <value>/WEB-INF/common/**</value>
-                <value>/errors/**</value>
-            </array>
-        </property>
-    </bean>
-
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver"/>
-
-    <!-- JSP配置 -->
-    <!-- <bean
-        class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-        p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" p:order="2"
-        p:contentType="text/html;charset=utf-8">
-        <property name="viewClass"
-            value="org.springframework.web.servlet.view.JstlView" />
-    </bean> -->
-
-    <!--
-        freemarker的配置
-        因为依赖easycode-idgenerator模块，用到了此模块的模板，所以增加了【classpath:/META-INF/resources/】loaderPath。
-        如果模板统一存于相同路径下，则使用FreeMarkerViewResolver的suffix属性配置。
-     -->
-    <bean id="freemarkerConfig" class="com.easycodebox.common.web.springmvc.FreeMarkerConfigurer"
-          p:freemarkerVariables-ref="properties"
-          p:templateLoaderPaths="/,/WEB-INF/pages/,classpath:/META-INF/resources/"
-          p:defaultEncoding="${freemarker.default_encoding}"/>
-
-    <!-- freemarker视图设置 -->
-    <bean id="viewResolver"
-          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
-          p:suffix=".html" p:order="1"
-          p:contentType="text/html;charset=utf-8"
-          p:viewClass="org.springframework.web.servlet.view.freemarker.FreeMarkerView"
-          p:exposeRequestAttributes="true"
-          p:exposeSpringMacroHelpers="true"
-          p:requestContextAttribute="request"/>
-
-    <!-- Support static resource -->
-    <mvc:default-servlet-handler/>
-
-    <!-- 文件上传 -->
-    <!--
-        maxUploadSize="32505856" ==> 上传文件大小限制为31M，31*1024*1024
-     -->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
-          p:defaultEncoding="UTF-8"
-          p:maxUploadSize="32505856"
-          p:maxInMemorySize="4096"/>
-
-    <!-- 异常处理 -->
-    <!-- <bean id="errorViewResolver"
-        class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
-        p:prefix="/errors/" p:suffix=".html" p:order="2"
-        p:contentType="text/html;charset=utf-8"
-        p:viewClass="org.springframework.web.servlet.view.freemarker.FreeMarkerView"
-        p:exposeRequestAttributes="true"
-        p:exposeSpringMacroHelpers="true"
-        p:requestContextAttribute="request" />
-
-    <bean id="exceptionResolver" class="com.easycodebox.common.web.springmvc.DefaultMappingExceptionResolver"
-        p:defaultErrorView="500">
-        <property name="exceptionMappings">
-            <props>
-                <prop key="com.easycodebox.common.error.ErrorContext">500</prop>
-                <prop key="java.lang.Exception">500</prop>
-            </props>
-        </property>
-    </bean> -->
-
-    <bean id="mappingJacksonHttpMessageConverter"
-          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-        <property name="supportedMediaTypes">
-            <list>
-                <value>application/json;charset=UTF-8</value>
-            </list>
-        </property>
-    </bean>
-    <bean id="stringHttpMessageConverter"
-          class="org.springframework.http.converter.StringHttpMessageConverter">
-        <property name="supportedMediaTypes">
-            <list>
-                <value>text/plain;charset=UTF-8</value>
-            </list>
-        </property>
-    </bean>
-    <bean id="conversionService"
-          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-        <property name="converters">
-            <set>
-                <bean class="com.easycodebox.common.web.springmvc.StringToEnumConverterFactory"/>
-            </set>
-        </property>
-        <property name="formatters">
-            <set>
-                <!-- 设置Date类型默认Formatter,全局有效。pattern属性：格式化的默认格式 -->
-                <bean class="org.springframework.format.datetime.DateFormatter"
-                      p:pattern="yyyy-MM-dd HH:mm:ss"/>
-                <!--
-                        默认情况下FormattingConversionServiceFactoryBean已经注册了DateTimeFormatAnnotationFormatterFactory，
-                    由registerDefaultFormatters属性控制，此属性默认为true。
-                        这里再次注册DateTimeFormatAnnotationFormatterFactory的原因如下：
-                        Spring可以对相同类型转换提供多个Converter，以List形式保存，后添加的Converter会被插入到最前面。而注册
-                    默认Formatters的行为在上面DateFormatter之前，所以日期类型转换时，只会用上面的DateFormatter，无论你
-                    有没有在属性上配置@DateTimeFormat注解，Spring都不会使用DateTimeFormatAnnotationFormatterFactory。
-                        因此这里再次注册了DateTimeFormatAnnotationFormatterFactory，让它第一个检查，如果有@DateTimeFormat则
-                    用它，没有则使用上面的DateFormatter。这是最简单的方法，不需要写代码就可以实现需求了。
-                 -->
-                <bean class="org.springframework.format.datetime.DateTimeFormatAnnotationFormatterFactory"/>
-            </set>
-        </property>
-    </bean>
-    <bean id="webBindingInitializer" class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer"
-          p:conversionService-ref="conversionService"/>
-    <!-- 在原有HandlerAdapter基础上扩展自动生成默认视图名功能 -->
-    <bean class="com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerAdapter"
-          p:webBindingInitializer-ref="webBindingInitializer"
-          p:autoView="true">
-        <property name="messageConverters">
-            <list>
-                <ref bean="stringHttpMessageConverter"/>
-                <ref bean="mappingJacksonHttpMessageConverter"/>
-            </list>
-        </property>
-    </bean>
+	<bean id="exceptionResolver" class="com.easycodebox.common.web.springmvc.DefaultMappingExceptionResolver"
+		p:defaultErrorView="500">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="com.easycodebox.common.error.ErrorContext">500</prop>
+				<prop key="java.lang.Exception">500</prop>
+			</props>
+		</property>
+	</bean> -->
+	
+	<bean id="mappingJacksonHttpMessageConverter"
+	      class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="stringHttpMessageConverter"
+	      class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="conversionService"
+	      class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="com.easycodebox.common.web.springmvc.StringToEnumConverterFactory"/>
+			</set>
+		</property>
+		<property name="formatters">
+			<set>
+				<!-- 设置Date类型默认Formatter,全局有效。pattern属性：格式化的默认格式 -->
+				<bean class="org.springframework.format.datetime.DateFormatter"
+				      p:pattern="yyyy-MM-dd HH:mm:ss"/>
+				<!--
+						默认情况下FormattingConversionServiceFactoryBean已经注册了DateTimeFormatAnnotationFormatterFactory，
+					由registerDefaultFormatters属性控制，此属性默认为true。
+						这里再次注册DateTimeFormatAnnotationFormatterFactory的原因如下：
+						Spring可以对相同类型转换提供多个Converter，以List形式保存，后添加的Converter会被插入到最前面。而注册
+					默认Formatters的行为在上面DateFormatter之前，所以日期类型转换时，只会用上面的DateFormatter，无论你
+					有没有在属性上配置@DateTimeFormat注解，Spring都不会使用DateTimeFormatAnnotationFormatterFactory。
+						因此这里再次注册了DateTimeFormatAnnotationFormatterFactory，让它第一个检查，如果有@DateTimeFormat则
+					用它，没有则使用上面的DateFormatter。这是最简单的方法，不需要写代码就可以实现需求了。
+				 -->
+				<bean class="org.springframework.format.datetime.DateTimeFormatAnnotationFormatterFactory"/>
+			</set>
+		</property>
+	</bean>
+	<bean id="webBindingInitializer" class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer"
+	      p:conversionService-ref="conversionService"/>
+	<!-- 在原有HandlerAdapter基础上扩展自动生成默认视图名功能 -->
+	<bean class="com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerAdapter"
+	      p:webBindingInitializer-ref="webBindingInitializer"
+	      p:autoView="true">
+		<property name="messageConverters">
+			<list>
+				<ref bean="stringHttpMessageConverter"/>
+				<ref bean="mappingJacksonHttpMessageConverter"/>
+			</list>
+		</property>
+	</bean>
 
 </beans>
