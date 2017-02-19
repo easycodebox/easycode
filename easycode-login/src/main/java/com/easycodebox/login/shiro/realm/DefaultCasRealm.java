@@ -12,6 +12,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.cas.*;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.jasig.cas.client.validation.TicketValidator;
 
 import javax.annotation.Resource;
@@ -49,7 +50,17 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	public DefaultCasRealm() {
 		super();
 	}
-
+	
+	/**
+	 * 默认返回的key是 pri 本身，导致key太长。重写此方法，返回primary principal作为key，以减少key长度。
+	 * @param principals
+	 * @return
+	 */
+	@Override
+	protected Object getAuthorizationCacheKey(PrincipalCollection principals) {
+		return getAvailablePrincipal(principals);
+	}
+	
 	@Override
 	protected boolean isPermitted(Permission permission, AuthorizationInfo info) {
         Collection<Permission> perms = getPermissions(info);
