@@ -1,27 +1,26 @@
 package com.easycodebox.login.shiro.filter;
 
+import com.easycodebox.common.error.ErrorContext;
+import com.easycodebox.common.lang.Strings;
+import com.easycodebox.common.log.slf4j.Logger;
+import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.cas.CasFilter;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.WebUtils;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-import com.easycodebox.common.lang.Strings;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.cas.CasFilter;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.WebUtils;
-
-import com.easycodebox.common.error.ErrorContext;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
-
 /**
+ * 捕获executeLogin方法抛出的{@link ErrorContext}异常，把特定类的异常信息显示在Cas登录页面上。
  * @author WangXiaoJin
- *
  */
 public class DefaultCasFilter extends CasFilter {
 	
@@ -32,66 +31,47 @@ public class DefaultCasFilter extends CasFilter {
 	private String logoutUrl;
 	
 	@Override
-	protected boolean executeLogin(ServletRequest request,
-			ServletResponse response) throws Exception {
-		AuthenticationToken token = createToken(request, response);
-		if (token == null) {
-			String msg = "createToken method implementation returned null. A valid non-null AuthenticationToken "
-					+ "must be created in order to execute a login attempt.";
-			throw new IllegalStateException(msg);
+	@SuppressWarnings("unchecked")
+	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException exception, ServletRequest request,
+	                                 ServletResponse response) {
+		Subject subject = getSubject(request, response);
+		
+		if (subject.isAuthenticated() || subject.isRemembered()) {
+			subject.logout();
 		}
-		try {
-			Subject subject = getSubject(request, response);
-			subject.login(token);
-			return onLoginSuccess(token, subject, request, response);
-		} catch (Exception e) {
-			return onLoginFailure(token, e, request, response);
-		}
-	}
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	protected boolean onLoginFailure(AuthenticationToken token, Exception exception, ServletRequest request,
-                                     ServletResponse response) {
-        Subject subject = getSubject(request, response);
-        
-        if (subject.isAuthenticated() || subject.isRemembered()) {
-        	 subject.logout();
-        }
-        
-        String url = null;
-        Map queryParams = null;
-        if(exception instanceof ErrorContext
-        		|| (exception.getCause() != null && exception.getCause() instanceof ErrorContext)) {
-        	url = logoutUrl;
-        	queryParams = new HashMap(1);
-        	ErrorContext error = exception instanceof ErrorContext 
-        			? (ErrorContext)exception : (ErrorContext)exception.getCause();
-        	try {
+		
+		String url;
+		Map queryParams = null;
+		if (exception.getCause() != null && exception.getCause() instanceof ErrorContext) {
+			url = logoutUrl;
+			queryParams = new HashMap(1);
+			ErrorContext error = (ErrorContext) exception.getCause();
+			try {
 				queryParams.put("service", Strings.format(reloginUrl,
 						URLEncoder.encode(URLEncoder.encode(error.getMessage(), "UTF-8"), "UTF-8")));
 			} catch (UnsupportedEncodingException e) {
 				log.error("URLEncoder params error : {0}", error.getMessage(), e);
 			}
-        }else {
-        	url = failureUrl;
-        }
-        
-        try {
-            WebUtils.issueRedirect(request, response, url, queryParams);
-        } catch (IOException e) {
-        	log.error("Cannot redirect to failure url : {0}", failureUrl, e);
-        }
-        return false;
-    }
+		} else {
+			url = failureUrl;
+		}
+		
+		try {
+			WebUtils.issueRedirect(request, response, url, queryParams);
+		} catch (IOException e) {
+			log.error("Cannot redirect to failure url : {0}", failureUrl, e);
+		}
+		return false;
+	}
 	
 	public void setFailureUrl(String failureUrl) {
 		this.failureUrl = failureUrl;
 	}
-
+	
 	public void setReloginUrl(String reloginUrl) {
 		this.reloginUrl = reloginUrl;
 	}
-
+	
 	public void setLogoutUrl(String logoutUrl) {
 		this.logoutUrl = logoutUrl;
 	}
