@@ -20,9 +20,9 @@ public abstract class BaseConstants {
 	public static String USER_KEY = "user_info";
 	
 	/**
-	 * 左侧的菜单KEY值
+	 * 项目功能菜单KEY值
 	 */
-	public static String LEFT_MENU_KEY = "left_menu";
+	public static String PROJECT_MENUS = "project_menus";
 	
 	/**
 	 * 权限KEY值

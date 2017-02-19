@@ -13,7 +13,6 @@ import org.apache.shiro.authz.Permission;
 import org.apache.shiro.cas.*;
 import org.apache.shiro.session.Session;
 import org.jasig.cas.client.validation.TicketValidator;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
@@ -33,10 +32,9 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	@Resource
 	private ShiroSecurityInfoHandler securityInfoHandler;
 	
-	@Value("${project}")
-	private String projectNo;
-	@Value("${valid_project_auth:true}")
-	private boolean validProjectAuth;
+	private String project;
+	
+	private boolean validProjectAuth = true;
 	
 	/**
 	 * 全局模式 - 会一次性加载系统中所有的权限，然后系统中明确
@@ -106,7 +104,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 			Map<String, Object> attributes = (Map<String, Object>)info.getPrincipals().asList().get(1);
 			
 			//后期考虑直接从CAS返回角色、权限等信息是否可行
-	        UserFullBo user = userWsService.loginSuc((String)casToken.getPrincipal(), projectNo, validProjectAuth);
+	        UserFullBo user = userWsService.loginSuc((String)casToken.getPrincipal(), project, validProjectAuth);
 	        //设置角色
 	        if (user.getRoleNames() != null) {
 	        	attributes.put(getRoleAttributeNames(), user.getRoleNames());
@@ -122,8 +120,8 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 					user.getStatus(), user.getGroupId(), user.getGroupName());
 	        //存储用户信息
 	        securityInfoHandler.storeSecurityInfo(session, userInfo);
-	        //存储菜单
-	        session.setAttribute(BaseConstants.LEFT_MENU_KEY, treePermissions(null, user.getMenus()));
+	        //项目功能菜单 - 每个项目都可能会有不同的功能菜单，所以增加各自项目的缓存key前缀
+	        session.setAttribute(project + BaseConstants.PROJECT_MENUS, treePermissions(null, user.getMenus()));
 	        
 			return info;
 		} catch (CasAuthenticationException e) {
@@ -167,4 +165,19 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 		this.ticketValidator = ticketValidator;
 	}
 	
+	public String getProject() {
+		return project;
+	}
+	
+	public void setProject(String project) {
+		this.project = project;
+	}
+	
+	public boolean isValidProjectAuth() {
+		return validProjectAuth;
+	}
+	
+	public void setValidProjectAuth(boolean validProjectAuth) {
+		this.validProjectAuth = validProjectAuth;
+	}
 }

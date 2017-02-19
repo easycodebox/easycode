@@ -8,119 +8,120 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util 
 		http://www.springframework.org/schema/util/spring-util.xsd">
+	
+	<!-- 配置shiroFilter的filterChainDefinitions属性文件 -->
+	<import resource="shiro-custom.xml"/>
+	<!-- 加载 Shiro Session Cache 配置 -->
+	<import resource="shiro-cache.xml"/>
+	
+	<!-- 操作SecurityInfo -->
+	<bean id="securityInfoHandler" class="com.easycodebox.login.shiro.ShiroSecurityInfoHandler"/>
+	
+	<!--
+		failureUrl: 配置验证错误时的失败页面
+		reloginUrl: 验证错误后显示登录页面，并提示错误信息。只试用于ErrorContext异常
+	 -->
+	<bean id="casFilter" class="com.easycodebox.login.shiro.filter.DefaultCasFilter"
+	      p:failureUrl="${failure.url}"
+	      p:reloginUrl="${cas.login.full}&amp;msg={0}"
+	      p:logoutUrl="${cas.logout}"/>
+	
+	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter"
+	      p:redirectUrl="${cas.logout}?service=${cas.logout.callback}"/>
+	
+	<bean id="perms" class="com.easycodebox.login.shiro.filter.DefaultPermissionsAuthorizationFilter"/>
+	<bean id="authc" class="com.easycodebox.login.shiro.filter.DefaultFormAuthenticationFilter"/>
+	<bean id="sense" class="com.easycodebox.login.shiro.filter.SenseLoginFilter"/>
+	
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean"
+	      p:securityManager-ref="securityManager"
+	      p:loginUrl="${cas.login.full}"
+	      p:unauthorizedUrl="${unauthorized.url}"
+	      p:filterChainDefinitions-ref="filterChainDefinitions"/>
+	
+	<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO"
+	      p:activeSessionsCacheName="sessionsCache"/>
+	
+	<!--
+		1. 修改Session保存到Cookie中的Key值，JSESSIONID 修改为 sid，解决使用Web容器Session时出现302重定向循环问题。
+		如果你想查看项目中有没有使用Web容器的Session，你可以把sid改成JSESSIONID，这样就会出现302重定向循环问题。
+		原因：因为项目中使用了Shiro的Native Session，如果你用到Web容器的Session时（即调用了request.getSession()
+		或request.getSession(true)），Web容器会根据JSESSIONID的Cookie值去容器里找，没有找到则创建一个新的
+		Web Session然后把此Session Id存入到JSESSIONID的Cookie中。这样就会更新Shiro之前保存的JSESSIONID Cookie值，
+		所以会出现302重定向循环。
 
-    <!-- 配置shiroFilter的filterChainDefinitions属性文件 -->
-    <import resource="shiro-custom.xml"/>
-    <!-- 加载 Shiro Session Cache 配置 -->
-    <import resource="shiro-cache.xml"/>
-
-    <!-- 操作SecurityInfo -->
-    <bean id="securityInfoHandler" class="com.easycodebox.login.shiro.ShiroSecurityInfoHandler"/>
-
-    <!--
-        failureUrl: 配置验证错误时的失败页面
-        reloginUrl: 验证错误后显示登录页面，并提示错误信息。只试用于ErrorContext异常
-     -->
-    <bean id="casFilter" class="com.easycodebox.login.shiro.filter.DefaultCasFilter"
-          p:failureUrl="${failure.url}"
-          p:reloginUrl="${cas.login.full}&amp;msg={0}"
-          p:logoutUrl="${cas.logout}"/>
-
-    <bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter"
-          p:redirectUrl="${cas.logout}?service=${cas.logout.callback}"/>
-
-    <bean id="perms" class="com.easycodebox.login.shiro.filter.DefaultPermissionsAuthorizationFilter"/>
-    <bean id="authc" class="com.easycodebox.login.shiro.filter.DefaultFormAuthenticationFilter"/>
-    <bean id="sense" class="com.easycodebox.login.shiro.filter.SenseLoginFilter"/>
-
-    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean"
-          p:securityManager-ref="securityManager"
-          p:loginUrl="${cas.login.full}"
-          p:unauthorizedUrl="${unauthorized.url}"
-          p:filterChainDefinitions-ref="filterChainDefinitions"/>
-
-    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO"
-          p:activeSessionsCacheName="sessionsCache"/>
-
-    <!--
-        1. 修改Session保存到Cookie中的Key值，JSESSIONID 修改为 sid，解决使用Web容器Session时出现302重定向循环问题。
-        如果你想查看项目中有没有使用Web容器的Session，你可以把sid改成JSESSIONID，这样就会出现302重定向循环问题。
-        原因：因为项目中使用了Shiro的Native Session，如果你用到Web容器的Session时（即调用了request.getSession()
-        或request.getSession(true)），Web容器会根据JSESSIONID的Cookie值去容器里找，没有找到则创建一个新的
-        Web Session然后把此Session Id存入到JSESSIONID的Cookie中。这样就会更新Shiro之前保存的JSESSIONID Cookie值，
-        所以会出现302重定向循环。
-
-        2. 还有一种情况必须改成此Key值：当你本地启动了easycode-cas项目，且你的项目和cas项目共用同一个域名（比如：localhost），
-        只是通过端口号来区分访问哪个项目。这种情况下你第一次登录系统会报错，跳转到500页面，再次请求项目不会出现500页面。这是因为
-        CAS登录校验成功后，会访问本项目的/login地址，此请求中会包含JSESSIONID的cookie中，这是CAS项目生成的cookie，
-        由于CAS项目和本项目用的域是相同的，所以本项目可以拿到此JSESSIONID的cookie值去shiro的session manager中获取
-        对应的Session。这个JSESSIONID对应的session是CAS的Web容器生成的，Shiro获取不到对应的Session就抛出异常了。
-        提示：所以如果你启动的项目和CAS共用同一域，cookie key值就不能定义成JSESSIONID，除非CAS的session也是通过Shiro生成
-        的，且为互相共享Session。
-    -->
-    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie"
-          p:name="sid"/>
-
-    <!--
-        globalSessionTimeout: Session Timeout 30分钟
-     -->
-    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager"
-          p:globalSessionTimeout="1800000"
-          p:sessionDAO-ref="sessionDAO"
-          p:sessionIdCookie-ref="sessionIdCookie"
-          p:sessionValidationSchedulerEnabled="false"/>
-
-    <bean id="securityCacheManager" class="com.easycodebox.login.shiro.cache.spring.SpringCacheManager"
-          c:cacheManager-ref="shiroCacheManager"
-          p:cacheStats-ref="cacheStats"/>
-    <!-- String类型转换成Permission类型 -->
-    <bean id="urlWildcardPermissionResolver"
-          class="com.easycodebox.login.shiro.permission.UrlWildcardPermissionResolver"/>
-    <bean id="ticketValidator" class="org.jasig.cas.client.validation.Cas30ServiceTicketValidator"
-          p:encoding="UTF-8">
-        <constructor-arg index="0" value="${cas.url}"/>
-    </bean>
-    <!--
-        casService: 客户端的回调地址设置，必须和下面的shiro-cas过滤器拦截的地址一致
-     -->
-    <bean id="casRealm" class="com.easycodebox.login.shiro.realm.DefaultCasRealm"
-          p:permissionResolver-ref="urlWildcardPermissionResolver"
-          p:ticketValidator-ref="ticketValidator"
-          p:name="cas"
-          p:globalPermissionMode="true"
-          p:casServerUrlPrefix="${cas.url}"
-          p:casService="${cas.login.callback}"
-          p:roleAttributeNames="roles"
-          p:permissionAttributeNames="permissions"/>
-
-    <!-- 多个realm时必须所有的realm都验证通过 -->
-    <bean id="allSuccessfulStrategy" class="org.apache.shiro.authc.pam.AllSuccessfulStrategy"/>
-    <bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator"
-          p:authenticationStrategy="#{getObject('authenticationStrategy')?:allSuccessfulStrategy}"/>
-
-    <!-- 如果要实现cas的remember me的功能，需要用到下面这个bean，并设置到securityManager的subjectFactory中 -->
-    <bean id="casSubjectFactory" class="org.apache.shiro.cas.CasSubjectFactory"/>
-    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager"
-          p:sessionManager-ref="sessionManager"
-          p:cacheManager-ref="securityCacheManager"
-          p:realms="#{getObject('realms')?:{casRealm}}"
-          p:authenticator-ref="authenticator"
-          p:subjectFactory-ref="casSubjectFactory"/>
-
-    <!-- ======================================================================================= -->
-    <!-- 让spring管理的bean支持@RequiresPermissions、 @RequiresRoles等权限验证注解 -->
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-          depends-on="lifecycleBeanPostProcessor"/>
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"
-          p:securityManager-ref="securityManager"/>
-
-    <!-- ======================================================================================= -->
-    <!-- 
-    	<bean name="ticketValidationFilter" class="org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter"
-    		p:redirectAfterValidation="true"
-    		p:serverName="${cas.login.callback}"
-    		p:ticketValidator-ref="ticketValidator" />
-   	 -->
+		2. 还有一种情况必须改成此Key值：当你本地启动了easycode-cas项目，且你的项目和cas项目共用同一个域名（比如：localhost），
+		只是通过端口号来区分访问哪个项目。这种情况下你第一次登录系统会报错，跳转到500页面，再次请求项目不会出现500页面。这是因为
+		CAS登录校验成功后，会访问本项目的/login地址，此请求中会包含JSESSIONID的cookie中，这是CAS项目生成的cookie，
+		由于CAS项目和本项目用的域是相同的，所以本项目可以拿到此JSESSIONID的cookie值去shiro的session manager中获取
+		对应的Session。这个JSESSIONID对应的session是CAS的Web容器生成的，Shiro获取不到对应的Session就抛出异常了。
+		提示：所以如果你启动的项目和CAS共用同一域，cookie key值就不能定义成JSESSIONID，除非CAS的session也是通过Shiro生成
+		的，且为互相共享Session。
+	-->
+	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie"
+	      p:name="sid"/>
+	
+	<!--
+		globalSessionTimeout: Session Timeout 30分钟
+	 -->
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager"
+	      p:globalSessionTimeout="1800000"
+	      p:sessionDAO-ref="sessionDAO"
+	      p:sessionIdCookie-ref="sessionIdCookie"
+	      p:sessionValidationSchedulerEnabled="false"/>
+	
+	<bean id="securityCacheManager" class="com.easycodebox.login.shiro.cache.spring.SpringCacheManager"
+	      c:cacheManager-ref="shiroCacheManager"
+	      p:cacheStats-ref="cacheStats"/>
+	<!-- String类型转换成Permission类型 -->
+	<bean id="urlWildcardPermissionResolver"
+	      class="com.easycodebox.login.shiro.permission.UrlWildcardPermissionResolver"/>
+	<bean id="ticketValidator" class="org.jasig.cas.client.validation.Cas30ServiceTicketValidator"
+	      p:encoding="UTF-8">
+		<constructor-arg index="0" value="${cas.url}"/>
+	</bean>
+	<!--
+		casService: 客户端的回调地址设置，必须和下面的shiro-cas过滤器拦截的地址一致
+	 -->
+	<bean id="casRealm" class="com.easycodebox.login.shiro.realm.DefaultCasRealm"
+	      p:permissionResolver-ref="urlWildcardPermissionResolver"
+	      p:ticketValidator-ref="ticketValidator"
+	      p:name="cas"
+	      p:globalPermissionMode="true"
+	      p:casServerUrlPrefix="${cas.url}"
+	      p:casService="${cas.login.callback}"
+	      p:roleAttributeNames="roles"
+	      p:permissionAttributeNames="permissions"
+	      p:project="${project}"/>
+	
+	<!-- 多个realm时必须所有的realm都验证通过 -->
+	<bean id="allSuccessfulStrategy" class="org.apache.shiro.authc.pam.AllSuccessfulStrategy"/>
+	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator"
+	      p:authenticationStrategy="#{getObject('authenticationStrategy')?:allSuccessfulStrategy}"/>
+	
+	<!-- 如果要实现cas的remember me的功能，需要用到下面这个bean，并设置到securityManager的subjectFactory中 -->
+	<bean id="casSubjectFactory" class="org.apache.shiro.cas.CasSubjectFactory"/>
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager"
+	      p:sessionManager-ref="sessionManager"
+	      p:cacheManager-ref="securityCacheManager"
+	      p:realms="#{getObject('realms')?:{casRealm}}"
+	      p:authenticator-ref="authenticator"
+	      p:subjectFactory-ref="casSubjectFactory"/>
+	
+	<!-- ======================================================================================= -->
+	<!-- 让spring管理的bean支持@RequiresPermissions、 @RequiresRoles等权限验证注解 -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+	      depends-on="lifecycleBeanPostProcessor"/>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"
+	      p:securityManager-ref="securityManager"/>
+	
+	<!-- ======================================================================================= -->
+	<!--
+		<bean name="ticketValidationFilter" class="org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter"
+			p:redirectAfterValidation="true"
+			p:serverName="${cas.login.callback}"
+			p:ticketValidator-ref="ticketValidator" />
+		-->
 
 </beans>
