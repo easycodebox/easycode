@@ -6,6 +6,7 @@ import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.login.shiro.ShiroSecurityInfoHandler;
 import com.easycodebox.login.shiro.permission.GlobalPermission;
 import com.easycodebox.login.ws.UserWsService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -66,7 +67,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
         Collection<Permission> perms = getPermissions(info);
         //提供给GlobalPermission使用.如果included = true，说明之前已经有GlobalPermission匹配过permission，且没有permission权限
         boolean included = false;
-        if (perms != null && !perms.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(perms)) {
             for (Permission perm : perms) {
             	if (perm instanceof GlobalPermission) {
             		GlobalPermission gp = (GlobalPermission)perm;
