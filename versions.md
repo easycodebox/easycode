@@ -32,7 +32,7 @@
 1. DefaultConfigurableSiteMeshFilter增加是否启用装饰的规则
 2. 升级bvalidator插件
 
-###【v0.3.0-SNAPSHOT】 - 2017.02.19
+###【v0.3.0】 - 2017.02.19
 
 1. 集成Reidis
 2. 类名后缀为Utils的修改成s后缀（StringUtils修改成Strings）

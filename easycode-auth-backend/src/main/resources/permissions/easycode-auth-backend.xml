@@ -2,91 +2,91 @@
 <menu project="EASYCODE-AUTH-BACKEND">
 	
 	<menu1 name="系统管理" icon="fa fa-cogs">
-		<menu2 name="日志管理" url="log" description="日志管理页面">
+		<menu2 name="日志管理" url="/log" description="日志管理页面">
 			<permissions>
-				<permission name="日志列表" url="log/list" description="日志列表" />
-				<permission name="日志详情" url="log/load" description="日志详情" />
-				<permission name="删除日志" url="log/removePhy" description="删除日志" />
+				<permission name="日志列表" url="/log/list" description="日志列表" />
+				<permission name="日志详情" url="/log/load" description="日志详情" />
+				<permission name="删除日志" url="/log/removePhy" description="删除日志" />
 			</permissions>
 		</menu2>
 		
-		<menu2 name="授权项目管理" url="project" description="授权项目管理页面">
+		<menu2 name="授权项目管理" url="/project" description="授权项目管理页面">
 			<permissions>
-				<permission name="授权项目列表" url="project/list" description="授权项目列表" />
-				<permission name="授权项目详情" url="project/load" description="授权项目详情" />
-				<permission name="修改授权项目" url="project/update" description="修改授权项目" />
-				<permission name="删除授权项目" url="project/remove" description="删除授权项目" />
-				<permission name="启用/禁用授权项目" url="project/openClose" description="启用/禁用授权项目" />
+				<permission name="授权项目列表" url="/project/list" description="授权项目列表" />
+				<permission name="授权项目详情" url="/project/load" description="授权项目详情" />
+				<permission name="修改授权项目" url="/project/update" description="修改授权项目" />
+				<permission name="删除授权项目" url="/project/remove" description="删除授权项目" />
+				<permission name="启用/禁用授权项目" url="/project/openClose" description="启用/禁用授权项目" />
 			</permissions>
 		</menu2>
 		
-		<menu2 name="生成策略管理" url="idGenerator" description="生成策略管理页面">
+		<menu2 name="生成策略管理" url="/idGenerator" description="生成策略管理页面">
 			<permissions>
-				<permission name="生成策略列表" url="idGenerator/list" description="生成策略列表" />
-				<permission name="生成策略详情" url="idGenerator/load" description="生成策略详情" />
-				<permission name="修改生成策略" url="idGenerator/update" description="修改生成策略" />
+				<permission name="生成策略列表" url="/idGenerator/list" description="生成策略列表" />
+				<permission name="生成策略详情" url="/idGenerator/load" description="生成策略详情" />
+				<permission name="修改生成策略" url="/idGenerator/update" description="修改生成策略" />
 			</permissions>
 		</menu2>
 		
-		<menu2 name="合作商管理" url="partner" description="合作商管理页面">
+		<menu2 name="合作商管理" url="/partner" description="合作商管理页面">
 			<permissions>
-				<permission name="合作商列表" url="partner/list" description="合作商列表" />
-				<permission name="合作商详情" url="partner/load" description="合作商详情" />
-				<permission name="修改合作商" url="partner/update" description="修改合作商" />
-				<permission name="删除合作商" url="partner/remove" description="删除合作商" />
-				<permission name="启用/禁用合作商" url="partner/openClose" description="启用/禁用合作商" />
+				<permission name="合作商列表" url="/partner/list" description="合作商列表" />
+				<permission name="合作商详情" url="/partner/load" description="合作商详情" />
+				<permission name="修改合作商" url="/partner/update" description="修改合作商" />
+				<permission name="删除合作商" url="/partner/remove" description="删除合作商" />
+				<permission name="启用/禁用合作商" url="/partner/openClose" description="启用/禁用合作商" />
 			</permissions>
 		</menu2>
 	</menu1>
 		
 	<menu1 name="用户管理" icon="fa fa-user">
-		<menu2 name="用户管理" url="user" description="用户管理页面">
+		<menu2 name="用户管理" url="/user" description="用户管理页面">
 			<permissions>
-				<permission name="用户列表" url="user/list" description="用户列表" />
-				<permission name="用户详情" url="user/load" description="用户详情" />
-				<permission name="修改用户" url="user/update" description="修改用户" />
-				<permission name="添加用户" url="user/add" description="添加用户" />
-				<permission name="删除用户" url="user/remove" description="删除用户" />
-				<permission name="启用/禁用用户" url="user/openClose" description="启用/禁用用户" />
-				<permission name="配置用户角色" url="role/cfgByUserId" description="配置用户角色" />
-				<permission name="重置密码" url="user/resetpwd" description="重置指定用户的密码" />
+				<permission name="用户列表" url="/user/list" description="用户列表" />
+				<permission name="用户详情" url="/user/load" description="用户详情" />
+				<permission name="修改用户" url="/user/update" description="修改用户" />
+				<permission name="添加用户" url="/user/add" description="添加用户" />
+				<permission name="删除用户" url="/user/remove" description="删除用户" />
+				<permission name="启用/禁用用户" url="/user/openClose" description="启用/禁用用户" />
+				<permission name="配置用户角色" url="/role/cfgByUserId" description="配置用户角色" />
+				<permission name="重置密码" url="/user/resetpwd" description="重置指定用户的密码" />
 			</permissions>
 		</menu2>
 		
-		<menu2 name="组织管理" url="group" description="组织管理页面">
+		<menu2 name="组织管理" url="/group" description="组织管理页面">
 			<permissions>
-				<permission name="组织列表" url="group/list" description="组织列表" />
-				<permission name="组织详情" url="group/load" description="组织详情" />
-				<permission name="修改组织" url="group/update" description="修改组织" />
-				<permission name="添加组织" url="group/add" description="添加组织" />
-				<permission name="删除组织" url="group/remove" description="删除组织" />
-				<permission name="启用/禁用组织" url="group/openClose" description="启用/禁用组织" />
-				<permission name="配置组织角色" url="role/cfgByGroupId" description="配置组织角色" />
+				<permission name="组织列表" url="/group/list" description="组织列表" />
+				<permission name="组织详情" url="/group/load" description="组织详情" />
+				<permission name="修改组织" url="/group/update" description="修改组织" />
+				<permission name="添加组织" url="/group/add" description="添加组织" />
+				<permission name="删除组织" url="/group/remove" description="删除组织" />
+				<permission name="启用/禁用组织" url="/group/openClose" description="启用/禁用组织" />
+				<permission name="配置组织角色" url="/role/cfgByGroupId" description="配置组织角色" />
 			</permissions>
 		</menu2>
 		
-		<menu2 name="角色管理" url="role" description="角色管理页面">
+		<menu2 name="角色管理" url="/role" description="角色管理页面">
 			<permissions>
-				<permission name="角色列表" url="role/list" description="角色列表" />
-				<permission name="角色详情" url="role/load" description="角色详情" />
-				<permission name="修改角色" url="role/update" description="修改角色" />
-				<permission name="添加角色" url="role/add" description="添加角色" />
-				<permission name="删除角色" url="role/remove" description="删除角色" />
-				<permission name="启用/禁用角色" url="role/openClose" description="启用/禁用角色" />
-				<permission name="角色授权" url="permission/authoriseRole" description="角色授权" />
+				<permission name="角色列表" url="/role/list" description="角色列表" />
+				<permission name="角色详情" url="/role/load" description="角色详情" />
+				<permission name="修改角色" url="/role/update" description="修改角色" />
+				<permission name="添加角色" url="/role/add" description="添加角色" />
+				<permission name="删除角色" url="/role/remove" description="删除角色" />
+				<permission name="启用/禁用角色" url="/role/openClose" description="启用/禁用角色" />
+				<permission name="角色授权" url="/permission/authoriseRole" description="角色授权" />
 			</permissions>
 		</menu2>
 		
-		<menu2 name="权限管理" url="permission" description="权限管理页面">
+		<menu2 name="权限管理" url="/permission" description="权限管理页面">
 			<permissions>
-				<permission name="权限列表" url="permission/list" description="权限列表" />
-				<permission name="权限详情" url="permission/load" description="权限详情" />
-				<permission name="修改权限" url="permission/update" description="修改权限" />
-				<permission name="添加权限" url="permission/add" description="添加权限" />
-				<permission name="删除权限" url="permission/remove" description="删除权限" />
-				<permission name="启用/禁用权限" url="permission/openClose" description="启用/禁用权限" />
-				<permission name="导入权限" url="permission/imports" description="导入权限" />
-				<permission name="导出权限" url="permission/exports" description="导出权限" />
+				<permission name="权限列表" url="/permission/list" description="权限列表" />
+				<permission name="权限详情" url="/permission/load" description="权限详情" />
+				<permission name="修改权限" url="/permission/update" description="修改权限" />
+				<permission name="添加权限" url="/permission/add" description="添加权限" />
+				<permission name="删除权限" url="/permission/remove" description="删除权限" />
+				<permission name="启用/禁用权限" url="/permission/openClose" description="启用/禁用权限" />
+				<permission name="导入权限" url="/permission/imports" description="导入权限" />
+				<permission name="导出权限" url="/permission/exports" description="导出权限" />
 			</permissions>	
 		</menu2>
 	</menu1>

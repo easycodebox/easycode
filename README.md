@@ -7,7 +7,9 @@
 
 2. 统一权限验证/分配 - 所有的系统都可以接入进来，共用同一个权限系统，可视化分配权限
 
-3. easycode-jdbc面向对象编写SQL语句 - 编写SQL时代码补全；高度抽象出增删查改通用接口；编写Service层/Dao层非常简单、非常快捷，效率提升了好几倍
+3. 使用Shiro Session，Session数据并保存至Redis。所有服务共享Session，可以分布式部署服务
+
+4. easycode-jdbc面向对象编写SQL语句 - 编写SQL时代码补全；高度抽象出增删查改通用接口；编写Service层/Dao层非常简单、非常快捷，效率提升了好几倍
 
 	简单例子：
 	
@@ -58,19 +60,19 @@
 	> 上述例子中`R`是通过`easycode-auth-model`（各自项目model包）中`SysTest`测试类的`testGenerateRes`方法生成的。只需要运行此测试方法自动生成R文件  
 	> 如果想在Dao层使用此功能，只需要继承AbstractDaoImpl类；如果在Service层使用，则Service实现类继承AbstractServiceImpl  
 
-4. 主键生成策略 - 主键生成控制权完全由开发者自己控制，不依赖于数据库的主键生成策略。并且可以自由控制生成规则，提供了Integer、Long、纯字母、字母和数字组合等各种生成策略。应用场景：1.数据库的分表分库  2.数据库的更换不需要修改任何代码  3.需要自己控制主键生成规则
+5. 主键生成策略 - 主键生成控制权完全由开发者自己控制，不依赖于数据库的主键生成策略。并且可以自由控制生成规则，提供了Integer、Long、纯字母、字母和数字组合等各种生成策略。应用场景：1.数据库的分表分库  2.数据库的更换不需要修改任何代码  3.需要自己控制主键生成规则
 
-5. 枚举类型的使用 - 项目中任何地方（Dao、Service、Controller、Html等）都是使用的枚举类型，入库时自动把枚举值转换成对应的数字或字符窜（这可以自己定义），枚举类型的好处想必大家都知道，开发快捷、看一眼就知道这个字段可能会出现哪些值、Html页面显示对应的中文含义时直接取枚举值对应的属性就行，以前的做法是需要开发人员自己来写判断逻辑：如果值为1显示啥；值为2显示啥。
+6. 枚举类型的使用 - 项目中任何地方（Dao、Service、Controller、Html等）都是使用的枚举类型，入库时自动把枚举值转换成对应的数字或字符窜（这可以自己定义），枚举类型的好处想必大家都知道，开发快捷、看一眼就知道这个字段可能会出现哪些值、Html页面显示对应的中文含义时直接取枚举值对应的属性就行，以前的做法是需要开发人员自己来写判断逻辑：如果值为1显示啥；值为2显示啥。
 
-6. 监控JS、CSS资源文件，当文件被修改/新增后立即生成对应的压缩文件，压缩文件名自动加上`.min`后缀。如果想研究的话请阅读[easycode-static-watcher](https://github.com/easycodebox/easycode-static-watcher)[【下载链接】](https://github.com/easycodebox/easycode-static-watcher)项目，里面提供了安装使用文档
+7. 监控JS、CSS资源文件，当文件被修改/新增后立即生成对应的压缩文件，压缩文件名自动加上`.min`后缀。如果想研究的话请阅读[easycode-static-watcher](https://github.com/easycodebox/easycode-static-watcher)[【下载链接】](https://github.com/easycodebox/easycode-static-watcher)项目，里面提供了安装使用文档
 
 	多数公司的前端开发是这样搞的，JS、CSS等静态资源文件由前端来管理，等前端开发好相关功能后，该压缩的压缩该合并的合并，然后上传至服务器或者交由后端。当在测试环境或生产环境出了问题了，前端把源码从代码服务器上download下来，在本地测试，解决问题后再压缩合并上传至服务器。太繁琐了，难道压缩合并这种事不能直接交给服务器处理吗？难道就不能直接在服务器端修改一个配置参数后，刷新一下页面直接请求JS源文件，然后前端直接用测试环境或预发环境直接调试（有些现象是和数据有关的，你在本地测试就测不出相关问题）？  
 	
 	使用了`easycode-static-watcher`后，你就不需要在管什么压缩/合并 JS/CSS了，这些事情都交由它处理，你可以自己决定是加载min文件还是源文件，你可以自己决定哪些JS/CSS直接合并（当然合并是需要另一种技术支持的，下面会提到）
 	
-7. 合并JS/CSS文件 - 请使用nginx concat模块
+8. 合并JS/CSS文件 - 请使用nginx concat模块
 
-8. 图片服务器动态生成不同长宽比的小图
+9. 图片服务器动态生成不同长宽比的小图
 	
 	你可以先体验下：  
 	
@@ -86,10 +88,6 @@
 	
 	### **由于时间有限，只能说些大概，后期会提供使用文档。建议看下代码，相信你能得到点启发的，如有`问题/建议`请联系本人**
 
-### 下一版本集成功能
-
-1. Ehcache换成Redis
-2. 提供代码生成工具，生成Model、Dao、Service、Controller、Html、Js等代码。相信集成此功能后，开发将变得更快捷
 
 > 注：后期版本会集成更多的技术
 
@@ -97,8 +95,9 @@
 
 1. MySql
 2. Mybatis + EasyCodeJdbc
+3. SpringDataRedis + Jedis + Redis
 3. CAS + Shiro
-4. Spring + Logback + Ehcache
+4. Spring + Logback
 5. SpringMVC + Freemarker
 6. Sitemesh3 + Pjax
 7. Vuejs + Bootstrap3
@@ -121,7 +120,18 @@
 
 	> 相关配置可自行修改，但密码需要配置为加密的值，用`ConfigTools.encrypt("password")`加密。修改时一定要改全，最好是全局搜索properties文件中包含**jdbc.username**关键字
 
-3. `easycode-auth-backend`项目端口号改为`7080`，`easycode-cas`项目端口号改为`7081`，`easycode-example-app`项目端口号改为`8080`。这三个项目的Context Path 全部修改为`/`。（如果你是用jetty:run启动的话，端口号和根路径默认已经配置好了。jetty启动easycode-cas项目会有点慢，因为这个项目中依赖了很多jar包，jetty会扫描这些jar包加载`web-fragment.xml`，你可以自定义jetty加载规则来提高启动速度。）最后启动这三个项目，启动顺序随意。启动成功后你就可以访问了：
+3. 安装Redis，Redis安装请参考我之前写的文档[Redis安装文档](https://github.com/WangXiaoJin/docs/blob/master/Redis/Redis%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8.md)。
+	
+	示例中我只安装了一个Redis实例，如果你只是用来测试使用，可以只安装一个Redis实例。当你需要部署到生产环境时，你必须部署两套Redis实例。一套用来存储Shiro Session
+	数据，这套实例必须开启RDB、AOF达到持久化功能，防止Redis服务挂了后用户的Session信息也丢失了。另外一套Redis实例只需要作为纯缓存使用，禁用RDB、AOF功能，
+	因为持久化功能会消耗性能的。
+	
+	在Redis配置文件中，我已经列出Redis的Sentinel Mode和Cluster Mode相关配置，使用者只需要把相关注释去掉就行，
+	目前Jedis版本不支持读写分离，读写都是走Master，有兴趣的朋友可以换成redisson，redisson实现了读写分离。
+	
+	安装好Redis后修改相关配置文件[**redis.properties**]
+
+4. `easycode-auth-backend`项目端口号改为`7080`，`easycode-cas`项目端口号改为`7081`，`easycode-example-app`项目端口号改为`8080`。这三个项目的Context Path 全部修改为`/`。（如果你是用jetty:run启动的话，端口号和根路径默认已经配置好了。jetty启动easycode-cas项目会有点慢，因为这个项目中依赖了很多jar包，jetty会扫描这些jar包加载`web-fragment.xml`，你可以自定义jetty加载规则来提高启动速度。）最后启动这三个项目，启动顺序随意。启动成功后你就可以访问了：
 
 	* `http://localhost:7080/` - 权限系统     
 	* `http://localhost:8080/` - 集成easycode的demo
@@ -131,13 +141,13 @@
 
 ### 直接引用easycode jar包
 
-`easycode`的`easycode-common`、`easycode-jdbc`、`easycode-jdbc-mybatis`、`easycode-login`已上传至中央仓库，可直接用Maven依赖
+`easycode`的`easycode-common`、`easycode-jdbc`、`easycode-jdbc-mybatis`、`easycode-login`、`easycode-idgenerator`已上传至中央仓库，可直接用Maven依赖
 
 ```xml
 <dependency>
 	<groupId>com.easycodebox</groupId>
 	<artifactId>easycode-jdbc-mybatis</artifactId>
-	<version>0.2.5</version>
+	<version>0.3.0</version>
 </dependency>
 ```
 

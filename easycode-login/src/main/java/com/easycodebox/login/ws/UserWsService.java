@@ -1,6 +1,6 @@
 package com.easycodebox.login.ws;
 
-import com.easycodebox.auth.model.bo.user.UserFullBo;
+import com.easycodebox.auth.model.bo.user.AuthzInfoBo;
 import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.error.ErrorContext;
@@ -72,13 +72,13 @@ public interface UserWsService {
 	int remove(String[] ids) throws ErrorContext;
 	
 	/**
-	 * 登录成功后返回的用户信息
+	 * 返回用户的授权信息 - 角色、权限、功能菜单
 	 * @param validProjectAuth 是否需要验证此用户有没有权限登录对应的系统。
 	 * 当为true，且project和当前用户的roles如果没有对应关联关系，则此用户没有权限登录此系统。
 	 * 但有些系统（如：前台系统），只需要用户登录成功后就可以访问用户中心，不需要后台配置权限，所以此情况下需要validProjectAuth = false
-	 * @return
+	 * @return {@code return null} 表示此用户(userId)不能登录此系统(peojectNo)
 	 * @throws ErrorContext
 	 */
-	UserFullBo loginSuc(String userId, String projectNo, boolean validProjectAuth) throws ErrorContext;
+	AuthzInfoBo authzInfo(String userId, String projectNo, boolean validProjectAuth) throws ErrorContext;
 	
 }

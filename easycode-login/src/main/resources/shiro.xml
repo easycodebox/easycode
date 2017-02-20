@@ -86,6 +86,8 @@
 	<bean id="casRealm" class="com.easycodebox.login.shiro.realm.DefaultCasRealm"
 	      p:permissionResolver-ref="urlWildcardPermissionResolver"
 	      p:ticketValidator-ref="ticketValidator"
+	      p:userWsService-ref="userWsService"
+	      p:securityInfoHandler-ref="securityInfoHandler"
 	      p:name="cas"
 	      p:globalPermissionMode="true"
 	      p:casServerUrlPrefix="${cas.url}"

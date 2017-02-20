@@ -19,11 +19,11 @@ import java.io.IOException;
 
 /**
  * 如果perms没有参数则等效于perms["user/load"]，其中的"user/load"为请求uri
- * @author WangXiaoJin
  *
+ * @author WangXiaoJin
  */
 public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizationFilter {
-
+	
 	private String pathDivider = Symbol.SLASH;
 	
 	/**
@@ -34,27 +34,24 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
 		if (mappedValue == null) {
-			String path = Https.getShortPath((HttpServletRequest)request);
-			if (path.startsWith(Symbol.SLASH)) {
-				path = path.substring(1);
-			}
+			String path = Https.getShortPath((HttpServletRequest) request);
 			if (!Symbol.SLASH.equals(pathDivider)) {
 				path = path.replace(Symbol.SLASH, pathDivider);
 			}
-			//如果path等于空字符窜，则意味着此请求访问项目的根目录；这里我们排除掉这种情况，因为访问项目的根目录的权限由DefaultCasRealm中控制
-			if (Strings.isNotBlank(path)) {
-				mappedValue = new String[]{path};
+			if (Strings.isBlank(path)) {
+				path = Symbol.SLASH;
 			}
+			mappedValue = new String[]{path};
 		}
 		return super.isAccessAllowed(request, response, mappedValue);
 	}
 	
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
-		HttpServletRequest req = (HttpServletRequest)request;
-		HttpServletResponse res = (HttpServletResponse)response;
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 		
-		if(Https.isAjaxRequest((HttpServletRequest)request) &&
+		if (Https.isAjaxRequest((HttpServletRequest) request) &&
 				req.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
 			response.setContentType("application/json;charset=UTF-8");
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
@@ -63,19 +60,19 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 			} catch (Exception e) {
 				throw new BaseException("Could not write JSON string.", e);
 			}
-		}else {
-			if(request.getParameter(BaseConstants.DIALOG_REQ) != null) {
+		} else {
+			if (request.getParameter(BaseConstants.DIALOG_REQ) != null) {
 				Callbacks.callback(Callbacks.closeDialogQuiet(CodeMsg.FAIL.msg("您没有权限执行此操作")), null, res);
-			}else
+			} else
 				super.onAccessDenied(request, response);
 		}
 		return false;
 	}
-
+	
 	public String getPathDivider() {
 		return pathDivider;
 	}
-
+	
 	public void setPathDivider(String pathDivider) {
 		this.pathDivider = pathDivider;
 	}

@@ -1,38 +1,30 @@
 package com.easycodebox.auth.core.ws.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.easycodebox.common.lang.Strings;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.easycodebox.auth.core.service.sys.ProjectService;
-import com.easycodebox.auth.core.service.user.GroupService;
-import com.easycodebox.auth.core.service.user.PermissionService;
-import com.easycodebox.auth.core.service.user.RoleProjectService;
-import com.easycodebox.auth.core.service.user.RoleService;
-import com.easycodebox.auth.core.service.user.UserService;
+import com.easycodebox.auth.core.service.user.*;
 import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.ws.UserWsService;
-import com.easycodebox.auth.model.bo.user.UserFullBo;
+import com.easycodebox.auth.model.bo.user.AuthzInfoBo;
 import com.easycodebox.auth.model.entity.sys.Project;
-import com.easycodebox.auth.model.entity.user.Permission;
-import com.easycodebox.auth.model.entity.user.Role;
-import com.easycodebox.auth.model.entity.user.User;
+import com.easycodebox.auth.model.entity.user.*;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
+import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 因userWsService已被ws-client.xml中的配置占用，所以改@Service值
@@ -153,8 +145,8 @@ public class UserWsServiceImpl implements UserWsService {
 
 	
 	@Override
-	public UserFullBo loginSuc(String userId, String projectNo,
-			boolean validProjectAuth) throws ErrorContext {
+	public AuthzInfoBo authzInfo(String userId, String projectNo,
+	                            boolean validProjectAuth) throws ErrorContext {
 		User user = userService.load(userId);
 		Assert.notNull(user, CodeMsgExt.PARAM_ERR.fillArgs("用户名"));
 		
@@ -169,8 +161,10 @@ public class UserWsServiceImpl implements UserWsService {
 		
 		if(user.getIsSuperAdmin() == YesNo.NO && validProjectAuth) {
 			//判断此用户所用的角色是否有权限登录此系统
-			boolean permit = roleProjectService.permit(roleIds, projectNo);
-			Assert.isTrue(permit, CodeMsg.FAIL.msg("您没有权限登录此系统"));
+			if (!roleProjectService.permit(roleIds, projectNo)) {
+				//没有权限登录此系统
+				return null;
+			}
 		}
 		
 		Project pro = projectService.load(projectNo);
@@ -185,27 +179,7 @@ public class UserWsServiceImpl implements UserWsService {
 		
 		List<Permission> menus = permissionService.listPermissionsOfUser(user.getId(), pro.getId(), YesNo.YES);
 		
-		UserFullBo bo = new UserFullBo();
-		bo.setId(user.getId());
-		bo.setGroupId(user.getGroupId());
-		bo.setUserNo(user.getUserNo());
-		bo.setUsername(user.getUsername());
-		bo.setNickname(user.getNickname());
-		bo.setPassword(user.getPassword());
-		bo.setRealname(user.getRealname());
-		bo.setStatus(user.getStatus());
-		bo.setIsSuperAdmin(user.getIsSuperAdmin());
-		bo.setPic(user.getPic());
-		bo.setSort(user.getSort());
-		bo.setGender(user.getGender());
-		bo.setEmail(user.getEmail());
-		bo.setMobile(user.getMobile());
-		bo.setLoginFail(user.getLoginFail());
-		if(user.getGroupId() != null) {
-			String groupName = groupService.load(user.getGroupId()).getName();
-			bo.setGroupName(groupName);
-		}
-		
+		AuthzInfoBo bo = new AuthzInfoBo();
 		bo.setRoleIds(Strings.join(roleIds, Symbol.COMMA));
 		bo.setRoleNames(Strings.join(roleNames, Symbol.COMMA));
 		bo.setPermissions(Strings.join(strOps, Symbol.COMMA));

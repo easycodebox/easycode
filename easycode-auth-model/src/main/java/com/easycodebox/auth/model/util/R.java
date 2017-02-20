@@ -1,9 +1,9 @@
 package com.easycodebox.auth.model.util;
 
+import static com.easycodebox.jdbc.Property.instance;
+
 import com.easycodebox.jdbc.Property;
 import com.easycodebox.jdbc.entity.Entity;
-
-import static com.easycodebox.jdbc.Property.instance;
 
 /**
  * <b>直接运行{@link com.easycodebox.jdbc.res.GenerateBeanRes}类会自动生成R文件的。</b>
@@ -244,42 +244,6 @@ public class R {
 			creator = instance("creator", entity),
 			createTime = instance("createTime", entity),
 			creatorName = instance("creatorName", entity);
-	
-	}
-	
-	public static class UserFullBo {
-	
-		private static final Class<? extends Entity> entity = com.easycodebox.auth.model.bo.user.UserFullBo.class;
-		public static final Property 
-			roleNames = instance("roleNames", entity),
-			roleIds = instance("roleIds", entity),
-			permissions = instance("permissions", entity),
-			menus = instance("menus", entity),
-			id = instance("id", entity),
-			groupId = instance("groupId", entity),
-			userNo = instance("userNo", entity),
-			username = instance("username", entity),
-			nickname = instance("nickname", entity),
-			password = instance("password", entity),
-			realname = instance("realname", entity),
-			status = instance("status", entity),
-			deleted = instance("deleted", entity),
-			isSuperAdmin = instance("isSuperAdmin", entity),
-			pic = instance("pic", entity),
-			sort = instance("sort", entity),
-			gender = instance("gender", entity),
-			email = instance("email", entity),
-			mobile = instance("mobile", entity),
-			loginFail = instance("loginFail", entity),
-			group = instance("group", entity),
-			userRoles = instance("userRoles", entity),
-			groupName = instance("groupName", entity),
-			creator = instance("creator", entity),
-			createTime = instance("createTime", entity),
-			modifier = instance("modifier", entity),
-			modifyTime = instance("modifyTime", entity),
-			creatorName = instance("creatorName", entity),
-			modifierName = instance("modifierName", entity);
 	
 	}
 	
