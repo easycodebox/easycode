@@ -66,7 +66,7 @@ public class UploadServlet extends BaseServlet {
 					DiskFileItem item = items.next();
 					if(item.isFormField()) {
 						String fieldName = Strings.trim(item.getFieldName());
-						if(Constants.responseUrlKey.equalsIgnoreCase(fieldName)) {
+						if(Constants.RESPONSE_URL_KEY.equalsIgnoreCase(fieldName)) {
 							//responseUrl 为跨域上传图片的解决方案
 							responseUrl = item.getString();
 						} else if(Constants.TRANSACTION_KEY.equalsIgnoreCase(fieldName)) {

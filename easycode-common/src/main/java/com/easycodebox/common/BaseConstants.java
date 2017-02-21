@@ -10,9 +10,9 @@ import com.easycodebox.common.processor.StaticValue;
 public abstract class BaseConstants {
 	
 	/**
-	 * 返回url路径数据的key值
+	 * response url参数key值
 	 */
-	public static String responseUrlKey = "responseUrl";
+	public static final String RESPONSE_URL_KEY = "responseUrl";
 	
 	/**
 	 * 用户信息的key值

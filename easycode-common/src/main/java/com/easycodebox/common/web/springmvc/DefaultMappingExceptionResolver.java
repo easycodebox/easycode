@@ -27,6 +27,10 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	 * 标记此请求为pjax的请求参数值
 	 */
 	private String pjaxKey;
+	/**
+	 * response url参数key值
+	 */
+	private String responseUrlKey = BaseConstants.RESPONSE_URL_KEY;
 	
 	@Override
 	public ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, 
@@ -67,7 +71,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	
 	@Override
 	protected String determineViewName(Exception ex, HttpServletRequest request) {
-		Object responseUrl = request.getAttribute(BaseConstants.responseUrlKey);
+		Object responseUrl = request.getAttribute(responseUrlKey);
 		if(responseUrl != null) {
 			return responseUrl.toString();
 		}else {
@@ -96,5 +100,13 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	
 	public void setPjaxKey(String pjaxKey) {
 		this.pjaxKey = pjaxKey;
+	}
+	
+	public String getResponseUrlKey() {
+		return responseUrlKey;
+	}
+	
+	public void setResponseUrlKey(String responseUrlKey) {
+		this.responseUrlKey = responseUrlKey;
 	}
 }
