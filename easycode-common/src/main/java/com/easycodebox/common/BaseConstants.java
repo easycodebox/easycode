@@ -17,17 +17,17 @@ public abstract class BaseConstants {
 	/**
 	 * 用户信息的key值
 	 */
-	public static String USER_KEY = "user_info";
+	public static final String USER_KEY = "user_info";
 	
 	/**
 	 * 项目功能菜单KEY值
 	 */
-	public static String PROJECT_MENUS = "project_menus";
+	public static final String PROJECT_MENUS = "project_menus";
 	
 	/**
 	 * 权限KEY值
 	 */
-	public static String PERMISSION_KEY = "permission_key";
+	public static final String PERMISSION_KEY = "permission_key";
 	
 	/**
 	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
@@ -42,8 +42,6 @@ public abstract class BaseConstants {
 	public static String pjaxKey = "X-PJAX";
 	
 	/******************** 通用的配置  *******************************/
-	//无穷大的表现值
-	public static Long infinity = -1L;
 	
 	/**
 	 * 项目所处环境
