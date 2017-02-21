@@ -94,9 +94,6 @@ public abstract class BaseConstants {
 	@StaticValue("${img_url}")
 	public static String imgUrl;
 	
-	@StaticValue("${rmi_ip}")
-	public static String rmiIp;
-	
 	/**
 	 * http请求参数以传统格式传送：
 	 * true	== url.do?name=wang&name=zhang
