@@ -41,21 +41,6 @@ public abstract class BaseConstants {
 	@StaticValue("${pjax_key}")
 	public static String pjaxKey = "X-PJAX";
 	
-	
-	/********************* 数据库配置 *******************************************/
-	
-	@StaticValue("${jdbc.driverClass}")
-	public static String jdbcDriveClass;
-	
-	@StaticValue("${jdbc.url}")
-	public static String jdbcUrl;
-	
-	@StaticValue("${jdbc.username}")
-	public static String jdbcUserName;
-	
-	@StaticValue("${jdbc.password}")
-	public static String jdbcPassword;
-	
 	/******************** 通用的配置  *******************************/
 	//无穷大的表现值
 	public static Long infinity = -1L;
@@ -120,17 +105,6 @@ public abstract class BaseConstants {
 	 * false == url.do?name[]=wang&name[]=zhang
 	 */
 	public static Boolean httpParamTradition = true;
-	
-	/****************************  邮箱       *************************************************************/
-	
-	@StaticValue("${mail.host}")
-	public static String mailHost;
-	@StaticValue("${mail.username}")
-	public static String mailUsername;
-	@StaticValue("${mail.password}")
-	public static String mailPassword;
-	@StaticValue("${mail.from}")
-	public static String mailFrom;
 	
 	/**
 	 * 默认图片路径
