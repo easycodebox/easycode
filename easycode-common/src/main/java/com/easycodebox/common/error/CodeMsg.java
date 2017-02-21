@@ -180,9 +180,9 @@ public class CodeMsg implements Serializable {
 	 */
 	public static class Code {
 		
-		public static final String SUC_CODE 		= BaseConstants.codeSuc;
-		public static final String FAIL_CODE 		= BaseConstants.codeFail;
-		public static final String NO_LOGIN_CODE 	= BaseConstants.codeNoLogin;
+		public static String SUC_CODE 		= BaseConstants.codeSuc;
+		public static String FAIL_CODE 		= BaseConstants.codeFail;
+		public static String NO_LOGIN_CODE 	= BaseConstants.codeNoLogin;
 		
 	}
 	
