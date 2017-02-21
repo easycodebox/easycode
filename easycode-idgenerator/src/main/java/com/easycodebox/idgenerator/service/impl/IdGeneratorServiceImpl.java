@@ -28,7 +28,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  */
 @Transactional
-@Service("generatorService")
+@Service("idGeneratorService")
 public class IdGeneratorServiceImpl extends AbstractServiceImpl<IdGenerator> implements IdGeneratorService {
 
 	private Lock lock = new ReentrantLock();
