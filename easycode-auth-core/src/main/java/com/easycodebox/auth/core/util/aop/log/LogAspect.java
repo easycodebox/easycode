@@ -4,13 +4,15 @@ import com.easycodebox.auth.core.service.sys.LogService;
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.entity.LogLevel;
-import com.easycodebox.common.lang.*;
+import com.easycodebox.common.lang.Strings;
+import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.Https;
-import com.easycodebox.common.security.*;
+import com.easycodebox.common.security.SecurityContexts;
+import com.easycodebox.common.security.SecurityUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.springframework.beans.factory.InitializingBean;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
 
@@ -22,12 +24,14 @@ import javax.servlet.http.HttpServletRequest;
  * 
  */
 @Aspect
-public final class LogAspect implements Ordered, InitializingBean {
+public final class LogAspect implements Ordered {
 	
 	//private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private final int DEFAULT_ORDER = 1;
 	private int order = DEFAULT_ORDER;
+	
+	private boolean traditionalHttp = BaseConstants.TRADITIONAL_HTTP;
 	
 	/**
 	 * 加上@Lazy标记是因为Spring配置了default-lazy-init="true"，且某个bean不是懒加载，
@@ -40,11 +44,6 @@ public final class LogAspect implements Ordered, InitializingBean {
 	@Lazy
 	@Resource
 	private LogService logService;
-	
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		
-	}
 	
 	@Override
 	public int getOrder() {
@@ -62,7 +61,7 @@ public final class LogAspect implements Ordered, InitializingBean {
 				&& SecurityContexts.getCurSecurityContext().getRequest() != null) {
 			HttpServletRequest request = SecurityContexts.getCurSecurityContext().getRequest();
 			logObj.setUrl(request.getRequestURL().toString());
-			logObj.setParams(Strings.substring(Https.getRequestParams(request, 0, BaseConstants.httpParamTradition), 0, 2048));
+			logObj.setParams(Strings.substring(Https.getRequestParams(request, 0, traditionalHttp), 0, 2048));
 			logObj.setClientIp(SecurityUtils.getIp());
 		}
 		logObj.setTitle(log.title());
@@ -106,4 +105,11 @@ public final class LogAspect implements Ordered, InitializingBean {
         return sb.toString();
     }
 	
+	public boolean isTraditionalHttp() {
+		return traditionalHttp;
+	}
+	
+	public void setTraditionalHttp(boolean traditionalHttp) {
+		this.traditionalHttp = traditionalHttp;
+	}
 }
