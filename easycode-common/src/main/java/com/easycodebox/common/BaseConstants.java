@@ -32,8 +32,7 @@ public abstract class BaseConstants {
 	/**
 	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
 	 */
-	@StaticValue("${dialog_req_flag}")
-	public static String DIALOG_REQ = "DIALOG_REQ";
+	public static String DIALOG_REQ_KEY = "DIALOG_REQ";
 	
 	/**
 	 * pjax请求的header key值

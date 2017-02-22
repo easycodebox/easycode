@@ -269,7 +269,7 @@ public class ErrorContextFilter implements Filter {
 					throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
 				}
 			} else {
-				if(request.getParameter(BaseConstants.DIALOG_REQ) != null) {
+				if(request.getParameter(BaseConstants.DIALOG_REQ_KEY) != null) {
 					
 					Callbacks.callback(Callbacks.none(error), null, response);
 				} else {

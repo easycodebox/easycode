@@ -49,7 +49,7 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
         			req.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
     			Https.outJson(CodeMsg.NO_LOGIN, resp);
         	}
-        	else if(req.getParameter(BaseConstants.DIALOG_REQ) != null) {
+        	else if(req.getParameter(BaseConstants.DIALOG_REQ_KEY) != null) {
 				Callbacks.callback(Callbacks.closeDialog((String)null), null, resp);
         	}
         	else

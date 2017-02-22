@@ -61,7 +61,7 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 				throw new BaseException("Could not write JSON string.", e);
 			}
 		} else {
-			if (request.getParameter(BaseConstants.DIALOG_REQ) != null) {
+			if (request.getParameter(BaseConstants.DIALOG_REQ_KEY) != null) {
 				Callbacks.callback(Callbacks.closeDialogQuiet(CodeMsg.FAIL.msg("您没有权限执行此操作")), null, res);
 			} else
 				super.onAccessDenied(request, response);
