@@ -37,10 +37,7 @@ public abstract class BaseConstants {
 	/**
 	 * pjax请求的header key值
 	 */
-	@StaticValue("${pjax_key}")
-	public static String pjaxKey = "X-PJAX";
-	
-	/******************** 通用的配置  *******************************/
+	public static final String PJAX_KEY = "X-PJAX";
 	
 	/**
 	 * 项目所处环境

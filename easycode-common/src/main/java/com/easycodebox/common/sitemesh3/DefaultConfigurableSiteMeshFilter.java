@@ -1,20 +1,14 @@
 package com.easycodebox.common.sitemesh3;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.sitemesh.config.ConfigurableSiteMeshFilter;
-
 import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
+import org.apache.commons.lang.ArrayUtils;
+import org.sitemesh.config.ConfigurableSiteMeshFilter;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * SiteMesh集成pjax
@@ -57,7 +51,7 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 		if (Strings.isNotBlank(pjaxKey)) {
 			this.pjaxKey = pjaxKey.trim();
 		} else {
-			this.pjaxKey = BaseConstants.pjaxKey;
+			this.pjaxKey = BaseConstants.PJAX_KEY;
 		}
 		
 		if (Strings.isNotBlank(decoratedKey)) {

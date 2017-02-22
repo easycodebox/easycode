@@ -56,7 +56,7 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 		HttpServletResponse res = (HttpServletResponse) response;
 		
 		if (Https.isAjaxRequest((HttpServletRequest) request) &&
-				req.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
+				req.getHeader(pjaxKey == null ? BaseConstants.PJAX_KEY : pjaxKey) == null) {
 			response.setContentType("application/json;charset=UTF-8");
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 					.createGenerator(response.getWriter())) {

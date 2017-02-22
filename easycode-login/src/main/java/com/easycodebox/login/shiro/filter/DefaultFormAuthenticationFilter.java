@@ -50,7 +50,7 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
         	HttpServletResponse resp = (HttpServletResponse)response;
         	
         	if(Https.isAjaxRequest(req) &&
-        			req.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
+        			req.getHeader(pjaxKey == null ? BaseConstants.PJAX_KEY : pjaxKey) == null) {
     			Https.outJson(CodeMsg.NO_LOGIN, resp);
         	}
         	else if(req.getParameter(dialogReqKey) != null) {

@@ -266,7 +266,7 @@ public class ErrorContextFilter implements Filter {
 			
 			//判断请求是否为AJAX请求
 			if(Https.isAjaxRequest(request) &&
-					request.getHeader(pjaxKey == null ? BaseConstants.pjaxKey : pjaxKey) == null) {
+					request.getHeader(pjaxKey == null ? BaseConstants.PJAX_KEY : pjaxKey) == null) {
 				response.setContentType("application/json;charset=UTF-8");
 				try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 						.createGenerator(response.getWriter())) {
