@@ -30,6 +30,10 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 	 * 标记此请求为pjax的请求参数值
 	 */
 	private String pjaxKey;
+	/**
+	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
+	 */
+	private String dialogReqKey = BaseConstants.DIALOG_REQ_KEY;
 	
 	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
@@ -61,7 +65,7 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 				throw new BaseException("Could not write JSON string.", e);
 			}
 		} else {
-			if (request.getParameter(BaseConstants.DIALOG_REQ_KEY) != null) {
+			if (request.getParameter(dialogReqKey) != null) {
 				Callbacks.callback(Callbacks.closeDialogQuiet(CodeMsg.FAIL.msg("您没有权限执行此操作")), null, res);
 			} else
 				super.onAccessDenied(request, response);
@@ -84,4 +88,13 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 	public void setPjaxKey(String pjaxKey) {
 		this.pjaxKey = pjaxKey;
 	}
+	
+	public String getDialogReqKey() {
+		return dialogReqKey;
+	}
+	
+	public void setDialogReqKey(String dialogReqKey) {
+		this.dialogReqKey = dialogReqKey;
+	}
+	
 }

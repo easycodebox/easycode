@@ -31,6 +31,10 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	 * response url参数key值
 	 */
 	private String responseUrlKey = BaseConstants.RESPONSE_URL_KEY;
+	/**
+	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
+	 */
+	private String dialogReqKey = BaseConstants.DIALOG_REQ_KEY;
 	
 	@Override
 	public ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, 
@@ -59,7 +63,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 				throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
 			}
 		}else {
-			if(request.getParameter(BaseConstants.DIALOG_REQ_KEY) != null) {
+			if(request.getParameter(dialogReqKey) != null) {
 				Callbacks.callback(Callbacks.none(error), null, response);
 				return null;
 			}
@@ -108,5 +112,13 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	
 	public void setResponseUrlKey(String responseUrlKey) {
 		this.responseUrlKey = responseUrlKey;
+	}
+	
+	public String getDialogReqKey() {
+		return dialogReqKey;
+	}
+	
+	public void setDialogReqKey(String dialogReqKey) {
+		this.dialogReqKey = dialogReqKey;
 	}
 }

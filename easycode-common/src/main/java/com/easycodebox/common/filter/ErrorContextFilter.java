@@ -80,11 +80,14 @@ public class ErrorContextFilter implements Filter {
 	private boolean storeException = false;
 	
 	private ExceptionHandler exceptionHandler;
-	
 	/**
 	 * 标记此请求为pjax的请求参数值
 	 */
 	private String pjaxKey;
+	/**
+	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
+	 */
+	private String dialogReqKey = BaseConstants.DIALOG_REQ_KEY;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -96,7 +99,8 @@ public class ErrorContextFilter implements Filter {
 				isLog = filterConfig.getInitParameter("isLog"),
 				logLevel = filterConfig.getInitParameter("logLevel"),
 				store = filterConfig.getInitParameter("storeException"),
-				pjaxKey = filterConfig.getInitParameter("pjaxKey");
+				pjaxKey = filterConfig.getInitParameter("pjaxKey"),
+				dialogReqKey = filterConfig.getInitParameter("dialogReqKey");
 		
 		if (Strings.isNotBlank(defaultPage)) {
 			this.defaultPage = defaultPage.trim();
@@ -162,6 +166,9 @@ public class ErrorContextFilter implements Filter {
 		}
 		if (Strings.isNotBlank(pjaxKey)) {
 			this.pjaxKey = pjaxKey.trim();
+		}
+		if (Strings.isNotBlank(dialogReqKey)) {
+			this.dialogReqKey = dialogReqKey.trim();
 		}
 	}
 	
@@ -269,7 +276,7 @@ public class ErrorContextFilter implements Filter {
 					throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
 				}
 			} else {
-				if(request.getParameter(BaseConstants.DIALOG_REQ_KEY) != null) {
+				if(request.getParameter(dialogReqKey) != null) {
 					
 					Callbacks.callback(Callbacks.none(error), null, response);
 				} else {
@@ -387,5 +394,13 @@ public class ErrorContextFilter implements Filter {
 	
 	public void setPjaxKey(String pjaxKey) {
 		this.pjaxKey = pjaxKey;
+	}
+	
+	public String getDialogReqKey() {
+		return dialogReqKey;
+	}
+	
+	public void setDialogReqKey(String dialogReqKey) {
+		this.dialogReqKey = dialogReqKey;
 	}
 }
