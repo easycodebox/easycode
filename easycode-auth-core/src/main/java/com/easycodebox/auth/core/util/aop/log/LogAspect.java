@@ -31,7 +31,7 @@ public final class LogAspect implements Ordered {
 	private final int DEFAULT_ORDER = 1;
 	private int order = DEFAULT_ORDER;
 	
-	private boolean traditionalHttp = BaseConstants.TRADITIONAL_HTTP;
+	private boolean traditionalHttp = BaseConstants.httpParamTradition;
 	
 	/**
 	 * 加上@Lazy标记是因为Spring配置了default-lazy-init="true"，且某个bean不是懒加载，
