@@ -45,6 +45,13 @@ public class CommonProperties extends NamedSupport {
 	 */
 	@Value("${img.default:default/default.jpg}")
 	private String imgDefault = "default/default.jpg";
+	/**
+	 * http请求参数以传统格式传送：
+	 * true	== url.do?name=wang&name=zhang
+	 * false == url.do?name[]=wang&name[]=zhang
+	 */
+	@Value("${traditional_http:true}")
+	private boolean traditionalHttp = true;
 	
 	public CommonProperties() {
 		this(DEFAULT_NAME);
@@ -92,5 +99,13 @@ public class CommonProperties extends NamedSupport {
 	
 	public void setImgDefault(String imgDefault) {
 		this.imgDefault = imgDefault;
+	}
+	
+	public boolean isTraditionalHttp() {
+		return traditionalHttp;
+	}
+	
+	public void setTraditionalHttp(boolean traditionalHttp) {
+		this.traditionalHttp = traditionalHttp;
 	}
 }

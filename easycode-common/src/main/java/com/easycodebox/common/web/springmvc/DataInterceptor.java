@@ -60,7 +60,7 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 		  新版通过浏览器端实现此功能
 		 */
 		if (cacheHisUri) {
-			CacheHisUris.cacheHisUri(handlerMethod.getMethod(), request);
+			CacheHisUris.cacheHisUri(handlerMethod.getMethod(), request, commonProps.isTraditionalHttp());
 		}
 
 	}

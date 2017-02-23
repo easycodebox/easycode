@@ -1,6 +1,6 @@
 package com.easycodebox.common.tag;
 
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.Https;
@@ -23,6 +23,7 @@ public class CacheUrl extends TagExt implements ParamParent {
 	private String content;
 	private Map<String, String> extraParams = new LinkedHashMap<>(4);
 	private String[] excludeParams;
+	private Boolean traditionalHttp;
 	
 	@Override
 	protected void init() {
@@ -59,6 +60,9 @@ public class CacheUrl extends TagExt implements ParamParent {
 		if(condition != null && !condition) {
 			return SKIP_BODY;
 		}
+		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
+		props = props == null ? CommonProperties.instance() : props;
+		traditionalHttp = traditionalHttp == null ? props.isTraditionalHttp() : traditionalHttp;
 		extraParams = new LinkedHashMap<>();
 		return super.doStartTag();
 	}
@@ -78,7 +82,7 @@ public class CacheUrl extends TagExt implements ParamParent {
 		try {
 			//添加当前请求的参数
 			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-			String url = Https.getFullRequestUrl(request, 2, BaseConstants.httpParamTradition, excludeParams);
+			String url = Https.getFullRequestUrl(request, 2, traditionalHttp, excludeParams);
 			url = Https.addParams2Url(url, params.toString());
 			pageContext.getOut().append(String.format(content, url));
 		} catch (IOException e) {
@@ -117,4 +121,11 @@ public class CacheUrl extends TagExt implements ParamParent {
 		}
 	}
 	
+	public Boolean getTraditionalHttp() {
+		return traditionalHttp;
+	}
+	
+	public void setTraditionalHttp(Boolean traditionalHttp) {
+		this.traditionalHttp = traditionalHttp;
+	}
 }

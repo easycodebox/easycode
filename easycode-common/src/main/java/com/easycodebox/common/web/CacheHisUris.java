@@ -1,6 +1,5 @@
 package com.easycodebox.common.web;
 
-import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
@@ -62,7 +61,7 @@ public class CacheHisUris {
 	 * @return	true 该请求有@CacheHisUri注解， false 反之
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean cacheHisUri(Method method, HttpServletRequest request) {
+	public static boolean cacheHisUri(Method method, HttpServletRequest request, boolean traditional) {
 		boolean isCacheUri = isCacheHisMethod(method);
 		try {
 			HttpSession session = request.getSession();
@@ -79,7 +78,7 @@ public class CacheHisUris {
 					while(uris.size() >= CACHE_NUM) {
 						uris.remove(0);
 					}
-					String fullUri = Https.getFullRequestUri(request, 2, BaseConstants.httpParamTradition);
+					String fullUri = Https.getFullRequestUri(request, 2, traditional);
 					//缓存uri地址
 					uris.add(fullUri);
 					log.debug("cache hisUri = {0}", fullUri);
@@ -88,13 +87,13 @@ public class CacheHisUris {
 					
 				}
 				
-				String curUri = uris == null || uris.size() == 0 ? Symbol.EMPTY : uris.get(uris.size() - 1),
-						backUri = uris == null || uris.size() < 2 ? Symbol.EMPTY : uris.get(uris.size() - 2);
+				String curUri = uris.size() == 0 ? Symbol.EMPTY : uris.get(uris.size() - 1),
+						backUri = uris.size() < 2 ? Symbol.EMPTY : uris.get(uris.size() - 2);
 				request.setAttribute(CUR_URI, curUri);
 				request.setAttribute(BACK_URI, backUri);
 				
-			}else {
-				String backUri = uris == null || uris.size() == 0 ? Symbol.EMPTY : uris.get(uris.size() - 1);
+			} else {
+				String backUri = uris.size() == 0 ? Symbol.EMPTY : uris.get(uris.size() - 1);
 				request.setAttribute(BACK_URI, backUri);
 			}
 		} catch (Exception e) {

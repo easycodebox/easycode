@@ -1,6 +1,5 @@
 package com.easycodebox.common.net;
 
-import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.file.MimeTypes;
 import com.easycodebox.common.file.UploadFileInfo;
 import com.easycodebox.common.jackson.Jacksons;
@@ -255,7 +254,7 @@ public class Https {
 	 * @throws JsonMappingException 
 	 * @throws JsonGenerationException 
 	 */
-	public static String assembleParams(Map<?, ?> params, Collection<?> jsonKeys, String... excludeKeys) throws IOException  {
+	public static String assembleParams(boolean traditional, Map<?, ?> params, Collection<?> jsonKeys, String... excludeKeys) throws IOException  {
 		StringBuilder sb = new StringBuilder();
 		if(params != null && params.size() > 0) {
 			loopKey:
@@ -287,7 +286,7 @@ public class Https {
 						Object[] vals = (Object[])value;
 	        			for(Object val : vals) {
 	        				if(val == null) continue;
-	        				sb.append(key).append(BaseConstants.httpParamTradition ? "" : "[]")
+	        				sb.append(key).append(traditional ? Symbol.EMPTY : "[]")
 	        				.append(Symbol.EQ)
 	        				.append(URLEncoder.encode(val.toString(), "UTF-8"))
 	        				.append("&");
@@ -296,7 +295,7 @@ public class Https {
 					}else if(value instanceof Collection) {
 						for(Object val : (Collection<?>)value) {
 							if(val == null) continue;
-							sb.append(key).append(BaseConstants.httpParamTradition ? "" : "[]")
+							sb.append(key).append(traditional ? Symbol.EMPTY : "[]")
 	        				.append(Symbol.EQ)
 	        				.append(URLEncoder.encode(val.toString(), "UTF-8"))
 	        				.append("&");
@@ -626,7 +625,7 @@ public class Https {
 		 * @throws InterruptedException 
 		 */
 		public static String get(String url, boolean asyn) throws IOException, InterruptedException, ExecutionException {
-			return get(url, asyn, null);
+			return get(url, asyn, true, null);
 		}
 		
 		/**
@@ -639,8 +638,8 @@ public class Https {
 		 * @throws ExecutionException 
 		 * @throws InterruptedException 
 	     */
-		public static String get(String url, boolean asyn, Map<String, ?> params) throws IOException, InterruptedException, ExecutionException {
-			return get(url, asyn, params, null);
+		public static String get(String url, boolean asyn, boolean traditional, Map<String, ?> params) throws IOException, InterruptedException, ExecutionException {
+			return get(url, asyn, traditional, params, null);
 		}
 		
 		/**
@@ -654,12 +653,12 @@ public class Https {
 		 * @throws ExecutionException 
 		 * @throws InterruptedException 
 	     */
-		public static String get(String url, boolean asyn, Map<String, ?> params, Collection<Object> jsonKeys) 
+		public static String get(String url, boolean asyn, boolean traditional, Map<String, ?> params, Collection<Object> jsonKeys)
 				throws IOException, InterruptedException, ExecutionException {
-			return get(url, asyn, params, jsonKeys, "UTF-8");
+			return get(url, asyn, traditional, params, jsonKeys, "UTF-8");
 		}
 		
-		public static String get(final String url, boolean asyn,
+		public static String get(final String url, boolean asyn, final boolean traditional,
 				final Map<String, ?> params, final Collection<Object> jsonKeys,
 				final String charset) throws IOException, InterruptedException, ExecutionException {
 			if(asyn) {
@@ -669,7 +668,7 @@ public class Https {
 					@Override
 					public String call() throws Exception {
 						try {
-							return get(url, params, jsonKeys, charset);
+							return get(url, traditional, params, jsonKeys, charset);
 						} catch (Exception e) {
 							if(log.isErrorEnabled()) {
 								log.error("get " + url + " request error.", e);
@@ -683,7 +682,7 @@ public class Https {
 
 				return f.get();
 			}else
-				return get(url, params, jsonKeys, charset);
+				return get(url, traditional, params, jsonKeys, charset);
 			
 		}
 
@@ -697,11 +696,11 @@ public class Https {
 		 * @throws ClientProtocolException 
 		 * @throws IOException 
 	     */
-	    public static String get(String url, Map<String, ?> params, Collection<Object> jsonKeys, String charset) 
+	    public static String get(String url, boolean traditional, Map<String, ?> params, Collection<Object> jsonKeys, String charset)
 	    		throws IOException {
 	        if(Strings.isBlank(url)) return null;
 	        if(params != null && !params.isEmpty()) {
-	        	String paramStr = assembleParams(params, jsonKeys);
+	        	String paramStr = assembleParams(traditional, params, jsonKeys);
                 url = addParams2Url(url, paramStr);
             }
 	        HttpGet httpGet = new HttpGet(url);

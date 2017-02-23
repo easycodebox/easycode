@@ -1,6 +1,6 @@
 package com.easycodebox.common.tag;
 
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.Https;
 import org.apache.taglibs.standard.tag.common.core.ParamParent;
@@ -31,6 +31,7 @@ public class Page extends AbstractHtmlTag implements ParamParent {
 	private String nextPage;
 
 	private boolean antoAddParam;
+	private Boolean traditionalHttp;
 	
 	/**
 	 * 不对外暴露
@@ -61,6 +62,9 @@ public class Page extends AbstractHtmlTag implements ParamParent {
 	@Override
 	public int doStartTag() throws JspException {
 		params = new LinkedHashMap<>();
+		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
+		props = props == null ? CommonProperties.instance() : props;
+		traditionalHttp = traditionalHttp == null ? props.isTraditionalHttp() : traditionalHttp;
 		return super.doStartTag();
 	}
 
@@ -79,7 +83,7 @@ public class Page extends AbstractHtmlTag implements ParamParent {
 			//自动添加上次请求的参数
 			if(antoAddParam) {
 				HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-				String ps = Https.getRequestParams(request, 2, BaseConstants.httpParamTradition, "pageNo");
+				String ps = Https.getRequestParams(request, 2, traditionalHttp, "pageNo");
 				if(ps.length() > 0)
 					paramStr.append(paramStr.length() > 0 ? Symbol.AND_MARK : Symbol.EMPTY).append(ps);
 			}
@@ -232,5 +236,12 @@ public class Page extends AbstractHtmlTag implements ParamParent {
 	public void setAntoAddParam(Object antoAddParam) {
 		this.antoAddParam = obtainVal(antoAddParam, Boolean.class);
 	}
-
+	
+	public Boolean getTraditionalHttp() {
+		return traditionalHttp;
+	}
+	
+	public void setTraditionalHttp(Boolean traditionalHttp) {
+		this.traditionalHttp = traditionalHttp;
+	}
 }

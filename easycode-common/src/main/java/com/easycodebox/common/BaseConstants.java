@@ -36,11 +36,4 @@ public abstract class BaseConstants {
 	 */
 	public static final String PJAX_KEY = "X-PJAX";
 	
-	/**
-	 * http请求参数以传统格式传送：
-	 * true	== url.do?name=wang&name=zhang
-	 * false == url.do?name[]=wang&name[]=zhang
-	 */
-	public static Boolean httpParamTradition = true;
-	
 }
