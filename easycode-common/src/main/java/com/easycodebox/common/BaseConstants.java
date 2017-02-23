@@ -52,31 +52,6 @@ public abstract class BaseConstants {
 	@StaticValue("${trans_min_js_css}")
 	public static boolean transMinJsCss = true;
 	
-	/******** code/msg  *******/
-	@StaticValue("${code_key}")
-	public static String codeKey = "code";
-	
-	@StaticValue("${msg_key}")
-	public static String msgKey = "msg";
-	
-	@StaticValue("${data_key}")
-	public static String dataKey = "data";
-	
-	@StaticValue("${code.suc}")
-	public static String codeSuc = "0";
-	
-	@StaticValue("${code.fail}")
-	public static String codeFail = "1";
-	
-	@StaticValue("${code.no.login}")
-	public static String codeNoLogin = "2";
-	
-	/**
-	 * 临时文件名
-	 */
-	@StaticValue("${tmp_file}")
-	public static String tmpFile = "tmp";
-	
 	/**
 	 * 当前项目的根路径：http://www.xxx.com
 	 */

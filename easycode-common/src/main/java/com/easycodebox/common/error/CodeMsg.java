@@ -1,17 +1,19 @@
 package com.easycodebox.common.error;
 
-import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.file.PropertiesPool;
-import com.easycodebox.common.jackson.*;
+import com.easycodebox.common.jackson.CodeMsgSerializer;
+import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.io.*;
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -180,9 +182,9 @@ public class CodeMsg implements Serializable {
 	 */
 	public static class Code {
 		
-		public static String SUC_CODE 		= BaseConstants.codeSuc;
-		public static String FAIL_CODE 		= BaseConstants.codeFail;
-		public static String NO_LOGIN_CODE 	= BaseConstants.codeNoLogin;
+		public static String SUC_CODE 		= "0";
+		public static String FAIL_CODE 	= "1";
+		public static String NO_LOGIN_CODE = "2";
 		
 	}
 	
