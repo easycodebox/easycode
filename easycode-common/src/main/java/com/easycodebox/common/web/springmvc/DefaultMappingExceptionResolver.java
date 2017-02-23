@@ -1,6 +1,6 @@
 package com.easycodebox.common.web.springmvc;
 
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.error.*;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.net.Https;
@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,12 +23,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	private String exceptionAttribute = DEFAULT_EXCEPTION_ATTRIBUTE;
 	public static final String MSG_ATTR = "msg";
 	
-	private CommonProperties commonProperties;
-	
-	@PostConstruct
-	public void init() throws Exception {
-		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
-	}
+	private CommonProperties commonProperties = CommonProperties.instance();
 	
 	@Override
 	public ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, 

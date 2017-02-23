@@ -1,7 +1,7 @@
 package com.easycodebox.auth.core.config;
 
 import com.easycodebox.common.NamedSupport;
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import org.springframework.beans.factory.annotation.Value;
 
 /**

@@ -1,29 +1,18 @@
 package com.easycodebox.common.freemarker;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.Properties;
-
-import javax.servlet.ServletContext;
-
-import org.apache.commons.io.IOUtils;
-import org.springframework.context.ResourceLoaderAware;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.web.context.ServletContextAware;
-
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.processor.Processor;
 import com.easycodebox.common.validate.Assert;
+import freemarker.template.*;
+import org.apache.commons.io.IOUtils;
+import org.springframework.context.ResourceLoaderAware;
+import org.springframework.core.io.*;
+import org.springframework.web.context.ServletContextAware;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import javax.servlet.ServletContext;
+import java.io.*;
+import java.util.Properties;
 
 /**
  * 快速构建Freemarker生成文件功能类
@@ -38,6 +27,7 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware, Servl
 	
 	private ServletContext servletContext;
 	
+	private FreemarkerProperties freemarkerProperties = FreemarkerProperties.instance();
 	/**
 	 * 使用的模板是否基于classPath
 	 */
@@ -63,7 +53,7 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware, Servl
 		Writer out = null;
 		try {
 			log.info("Start generate file '{0}' by freemarker.", outputPath);
-			Configuration cfg = ConfigurationFactory.instance(classPathTpl ? null : servletContext);
+			Configuration cfg = ConfigurationFactory.instance(freemarkerProperties, classPathTpl ? null : servletContext);
 			Template tpl = cfg.getTemplate(ftlPath);
 			Resource resource = resourceLoader.getResource(outputPath);
 			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resource.getFile()), encoding));
@@ -126,5 +116,12 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware, Servl
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
-
+	
+	public FreemarkerProperties getFreemarkerProperties() {
+		return freemarkerProperties;
+	}
+	
+	public void setFreemarkerProperties(FreemarkerProperties freemarkerProperties) {
+		this.freemarkerProperties = freemarkerProperties;
+	}
 }

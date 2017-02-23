@@ -1,6 +1,6 @@
 package com.easycodebox.common.tag;
 
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.ProjectEnv;
 import com.easycodebox.common.lang.Strings;

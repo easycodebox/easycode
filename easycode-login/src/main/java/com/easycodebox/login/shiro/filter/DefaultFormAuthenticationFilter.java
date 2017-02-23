@@ -1,6 +1,6 @@
 package com.easycodebox.login.shiro.filter;
 
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
@@ -8,7 +8,6 @@ import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -23,13 +22,8 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
 	
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	private CommonProperties commonProperties;
+	private CommonProperties commonProperties = CommonProperties.instance();
 	
-	@PostConstruct
-	public void init() throws Exception {
-		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
-	}
-
 	@Override
 	protected boolean onAccessDenied(ServletRequest request,
 			ServletResponse response) throws Exception {

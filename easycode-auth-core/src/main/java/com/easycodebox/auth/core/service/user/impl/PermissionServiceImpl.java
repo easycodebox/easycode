@@ -353,7 +353,7 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 			throws TemplateException, IOException {
 		List<Permission> os = treePermissions(null, this.list(projectId, null, null), null);
 		Project project = projectService.load(projectId);
-		Configuration cfg = ConfigurationFactory.instance();
+		Configuration cfg = ConfigurationFactory.instance(null);
 		//设置包装器，并将对象包装为数据模型
 		Template tpl = cfg.getTemplate(ftlRes);
 		Map<String, Object> root = new HashMap<>();

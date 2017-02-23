@@ -24,7 +24,10 @@
 	
 	<!-- 生成JS的配置文件  -->
 	<bean class="com.easycodebox.common.freemarker.FreemarkerGenerate" init-method="process" lazy-init="false"
-	      p:ftl-path="/config-js.ftl" p:output-path="/js/config.js" p:properties-ref="properties"/>
+	      p:ftl-path="/config-js.ftl"
+	      p:output-path="/js/config.js"
+	      p:freemarkerProperties-ref="freemarkerProperties"
+	      p:properties-ref="properties"/>
 	
 	<bean class="com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerMapping"
 	      p:controllerPostfix="Controller">
@@ -56,6 +59,7 @@
 		如果模板统一存于相同路径下，则使用FreeMarkerViewResolver的suffix属性配置。
 	 -->
 	<bean id="freemarkerConfig" class="com.easycodebox.common.web.springmvc.FreeMarkerConfigurer"
+	      p:freemarkerProperties-ref="freemarkerProperties"
 	      p:freemarkerVariables-ref="properties"
 	      p:templateLoaderPaths="/,/WEB-INF/pages/,classpath:/META-INF/resources/"
 	      p:defaultEncoding="${freemarker.default_encoding}"/>

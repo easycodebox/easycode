@@ -1,7 +1,7 @@
 package com.easycodebox.auth.core.util.aop.log;
 
 import com.easycodebox.auth.core.service.sys.LogService;
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.lang.Strings;
@@ -16,7 +16,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,7 +31,7 @@ public final class LogAspect implements Ordered {
 	private final int DEFAULT_ORDER = 1;
 	private int order = DEFAULT_ORDER;
 	
-	private CommonProperties commonProperties;
+	private CommonProperties commonProperties = CommonProperties.instance();
 	
 	/**
 	 * 加上@Lazy标记是因为Spring配置了default-lazy-init="true"，且某个bean不是懒加载，
@@ -45,11 +44,6 @@ public final class LogAspect implements Ordered {
 	@Lazy
 	@Resource
 	private LogService logService;
-	
-	@PostConstruct
-	public void init() throws Exception {
-		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
-	}
 	
 	@Override
 	public int getOrder() {

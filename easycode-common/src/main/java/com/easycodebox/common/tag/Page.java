@@ -1,6 +1,6 @@
 package com.easycodebox.common.tag;
 
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.net.Https;
 import org.apache.taglibs.standard.tag.common.core.ParamParent;

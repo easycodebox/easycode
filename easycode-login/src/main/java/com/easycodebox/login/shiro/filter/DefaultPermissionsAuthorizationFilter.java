@@ -1,6 +1,6 @@
 package com.easycodebox.login.shiro.filter;
 
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.jackson.Jacksons;
@@ -11,7 +11,6 @@ import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
 import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -27,12 +26,7 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 	
 	private String pathDivider = Symbol.SLASH;
 	
-	private CommonProperties commonProperties;
-	
-	@PostConstruct
-	public void init() throws Exception {
-		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
-	}
+	private CommonProperties commonProperties = CommonProperties.instance();
 	
 	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {

@@ -1,18 +1,14 @@
 package com.easycodebox.common.freemarker;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletContext;
-
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.processor.StaticValue;
-
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.WebappTemplateLoader;
 import freemarker.core.TemplateDateFormatFactory;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
+
+import javax.servlet.ServletContext;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author WangXiaoJin
@@ -21,36 +17,6 @@ import freemarker.template.TemplateException;
 public class ConfigurationFactory {
 	
 	//private static final Logger log = LoggerFactory.getLogger(ConfigurationFactory.class);
-	
-	@StaticValue("${freemarker.default_encoding}")
-	public static String DEFAULT_ENCODING = "UTF-8";
-	
-	@StaticValue("${freemarker.locale}")
-	public static String LOCALE = "zh_CN";
-	
-	@StaticValue("${freemarker.loader_path}")
-	public static String LOADER_PATH = Symbol.SLASH;
-	
-	@StaticValue("${freemarker.template_update_delay}")
-	public static String TEMPLATE_UPDATE_DELAY = "3600";
-	
-	@StaticValue("${freemarker.classic_compatible}")
-	public static String CLASSIC_COMPATIBLE = "true";
-
-	@StaticValue("${freemarker.datetime_format}")
-	public static String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	
-	@StaticValue("${freemarker.date_format}")
-	public static String DATE_FORMAT = "yyyy-MM-dd";
-	
-	@StaticValue("${freemarker.time_format}")
-	public static String TIME_FORMAT = "HH:mm:ss";
-	
-	@StaticValue("${freemarker.number_format}")
-	public static String NUMBER_FORMAT = "#.##";
-	
-	@StaticValue("${freemarker.tag_syntax}")
-	public static String TAG_SYNTAX = "auto_detect";
 	
 	/**
 	 * 相对于项目的classes路径而言
@@ -63,14 +29,15 @@ public class ConfigurationFactory {
 	
 	/**
 	 * 返回classes为加载器的Configuration,根路径为classes路径
+	 * @param props 可以传null，为null时默认配置使用{@link FreemarkerProperties#instance()}
 	 * @return
 	 * @throws TemplateException
 	 */
-	public static Configuration instance() throws TemplateException {
+	public static Configuration instance(FreemarkerProperties props) throws TemplateException {
 		if (INSTANCE == null) {
 			synchronized (ConfigurationFactory.class) {
 				if (INSTANCE == null) {
-					INSTANCE = produce(null);
+					INSTANCE = produce(props, null);
 				}
 			}
 		}
@@ -79,16 +46,17 @@ public class ConfigurationFactory {
 	
 	/**
 	 * 返回web项目的Configuration，加载路径为项目的根路径
+	 * @param props 可以传null，为null时默认配置使用{@link FreemarkerProperties#instance()}
 	 * @param servletContext
 	 * @return
 	 * @throws TemplateException
 	 */
-	public static Configuration instance(ServletContext servletContext) throws TemplateException {
-		if (servletContext == null) return instance();
+	public static Configuration instance(FreemarkerProperties props, ServletContext servletContext) throws TemplateException {
+		if (servletContext == null) return instance(props);
 		if (WEB_INSTANCE == null) {
 			synchronized (ConfigurationFactory.class) {
 				if (WEB_INSTANCE == null) {
-					WEB_INSTANCE = produce(servletContext);
+					WEB_INSTANCE = produce(props, servletContext);
 				}
 			}
 		}
@@ -106,26 +74,20 @@ public class ConfigurationFactory {
 		return WEB_INSTANCE;
 	}
 	
-	/**
-	 * 传ServletContext参数，同时创建WebappTemplateLoader的Configuration
-	 * @param servletContext
-	 * @throws TemplateException
-	 */
-	public static void setServletContext(ServletContext servletContext) throws TemplateException {
-		instance(servletContext);
-	}
-	
-	private static Configuration produce(ServletContext servletContext) throws TemplateException {
+	private static Configuration produce(FreemarkerProperties props,
+	                                     ServletContext servletContext) throws TemplateException {
+		props = props == null ? FreemarkerProperties.instance() : props;
+		
 		Configuration cfg = new Configuration(Configuration.VERSION_2_3_24);
-		cfg.setDefaultEncoding(DEFAULT_ENCODING);
-		cfg.setSetting("locale", LOCALE);
+		cfg.setDefaultEncoding(props.getDefaultEncoding());
+		cfg.setSetting("locale", props.getLocale());
 		cfg.setTemplateLoader(servletContext == null ? 
-				new ClassTemplateLoader(ConfigurationFactory.class, LOADER_PATH)
-				: new WebappTemplateLoader(servletContext, LOADER_PATH));
-		cfg.setSetting("template_update_delay", TEMPLATE_UPDATE_DELAY);
-		cfg.setSetting("classic_compatible", CLASSIC_COMPATIBLE);
-		cfg.setSetting("number_format", NUMBER_FORMAT);
-		cfg.setSetting("tag_syntax", TAG_SYNTAX);
+				new ClassTemplateLoader(ConfigurationFactory.class, props.getLoaderPath())
+				: new WebappTemplateLoader(servletContext, props.getLoaderPath()));
+		cfg.setSetting("template_update_delay", props.getTemplateUpdateDelay());
+		cfg.setSetting("classic_compatible", props.getClassicCompatible());
+		cfg.setSetting("number_format", props.getNumberFormat());
+		cfg.setSetting("tag_syntax", props.getTagSyntax());
 		
 		/*
 		cfg.setSetting("datetime_format", DATETIME_FORMAT);
@@ -136,9 +98,9 @@ public class ConfigurationFactory {
 		Map<String, TemplateDateFormatFactory> customDateFormats = new HashMap<>();
 		customDateFormats.put("date", JavaTemplateDateFormatFactory.INSTANCE);
 		cfg.setCustomDateFormats(customDateFormats);
-		cfg.setDateTimeFormat("@date " + DATETIME_FORMAT);
-		cfg.setDateFormat("@date " + DATE_FORMAT);
-		cfg.setTimeFormat("@date " + TIME_FORMAT);
+		cfg.setDateTimeFormat("@date " + props.getDatetimeFormat());
+		cfg.setDateFormat("@date " + props.getDateFormat());
+		cfg.setTimeFormat("@date " + props.getTimeFormat());
 		
 		return cfg;
 	}

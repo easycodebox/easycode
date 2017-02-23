@@ -1,6 +1,6 @@
 package com.easycodebox.common.sitemesh3;
 
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import org.apache.commons.lang.ArrayUtils;

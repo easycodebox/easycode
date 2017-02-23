@@ -1,6 +1,5 @@
-package com.easycodebox.common.config;
+package com.easycodebox.common;
 
-import com.easycodebox.common.NamedSupport;
 import com.easycodebox.common.enums.entity.ProjectEnv;
 import org.springframework.beans.factory.annotation.Value;
 

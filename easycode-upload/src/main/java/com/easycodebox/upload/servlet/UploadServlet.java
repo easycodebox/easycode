@@ -1,6 +1,6 @@
 package com.easycodebox.upload.servlet;
 
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.*;

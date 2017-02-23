@@ -82,38 +82,27 @@
 			</array>
 		</property>
 	</bean>
-	<!-- 处理类的静态变量 ，当properties文件中没有配置值且Class类中已初始化，则值会反刷进properties中 -->
-	<bean id="staticValueProcessor" class="com.easycodebox.common.processor.StaticValueProcessor"
-	      init-method="process" lazy-init="false" depends-on="exePropertyPlaceholder">
-		<property name="properties" ref="properties"/>
-		<property name="classes">
-			<list>
-				<value>com.easycodebox.auth.core.util.Constants</value>
-				<value>com.easycodebox.common.freemarker.ConfigurationFactory</value>
-			</list>
-		</property>
-	</bean>
 	<bean id="placeholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-	      depends-on="staticValueProcessor"
 	      p:properties-ref="properties">
 		<property name="ignoreResourceNotFound" value="true"/>
 	</bean>
 	<!-- 属性刷到PropertiesPool中 -->
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
-	      depends-on="staticValueProcessor"
 	      p:targetClass="com.easycodebox.common.file.PropertiesPool"
 	      p:targetMethod="addProperties"
 	      p:arguments-ref="properties"/>
 	
 	<!-- 属性文件的中的配置加载进对应的Bean中 -->
-	<bean id="commonProperties" class="com.easycodebox.common.config.CommonProperties" lazy-init="false"/>
+	<bean id="commonProperties" class="com.easycodebox.common.CommonProperties" lazy-init="false"/>
 	<bean id="coreProperties" class="com.easycodebox.auth.core.config.CoreProperties" lazy-init="false"/>
+	<bean id="freemarkerProperties" class="com.easycodebox.common.freemarker.FreemarkerProperties" lazy-init="false"/>
 	<!-- 把属性文件Bean注册进ServletContext attributes -->
 	<bean class="com.easycodebox.common.servlet.ServletContextAttrRegistry" lazy-init="false">
 		<property name="nameds">
 			<array>
-				<ref bean="commonProperties"/>
 				<ref bean="coreProperties"/>
+				<ref bean="commonProperties"/>
+				<ref bean="freemarkerProperties"/>
 			</array>
 		</property>
 	</bean>

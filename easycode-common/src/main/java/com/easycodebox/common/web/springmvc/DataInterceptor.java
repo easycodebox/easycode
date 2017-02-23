@@ -1,6 +1,6 @@
 package com.easycodebox.common.web.springmvc;
 
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
@@ -10,7 +10,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,15 +28,8 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 	private boolean imgUrl = true;
 	private final String IMG_URL_KEY = "imgUrl";
 	
-	private CommonProperties commonProperties;
+	private CommonProperties commonProperties = CommonProperties.instance();
 
-	@PostConstruct
-	public void init() throws Exception {
-		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
-	}
-		
-		
-	
 	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,

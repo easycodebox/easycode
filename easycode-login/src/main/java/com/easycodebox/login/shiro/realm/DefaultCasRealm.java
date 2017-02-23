@@ -2,7 +2,7 @@ package com.easycodebox.login.shiro.realm;
 
 import com.easycodebox.auth.model.bo.user.AuthzInfoBo;
 import com.easycodebox.auth.model.entity.user.User;
-import com.easycodebox.common.config.CommonProperties;
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.Strings;

@@ -80,7 +80,7 @@ public class GenerateBeanRes {
 		
 		Writer out = null;
 		try {
-			Configuration cfg = ConfigurationFactory.instance();
+			Configuration cfg = ConfigurationFactory.instance(null);
 			//方法1
 			/*URL url = GenerateBeanRes.class.getResource("");
 			File tlFile = new File(url.toURI());
