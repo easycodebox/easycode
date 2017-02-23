@@ -1,4 +1,4 @@
-package com.easycodebox.common.web.springmvc;
+package com.easycodebox.common.spring;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;

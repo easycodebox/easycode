@@ -118,32 +118,6 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="conversionService"
-	      class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-		<property name="converters">
-			<set>
-				<bean class="com.easycodebox.common.web.springmvc.StringToEnumConverterFactory"/>
-			</set>
-		</property>
-		<property name="formatters">
-			<set>
-				<!-- 设置Date类型默认Formatter,全局有效。pattern属性：格式化的默认格式 -->
-				<bean class="org.springframework.format.datetime.DateFormatter"
-				      p:pattern="yyyy-MM-dd HH:mm:ss"/>
-				<!--
-						默认情况下FormattingConversionServiceFactoryBean已经注册了DateTimeFormatAnnotationFormatterFactory，
-					由registerDefaultFormatters属性控制，此属性默认为true。
-						这里再次注册DateTimeFormatAnnotationFormatterFactory的原因如下：
-						Spring可以对相同类型转换提供多个Converter，以List形式保存，后添加的Converter会被插入到最前面。而注册
-					默认Formatters的行为在上面DateFormatter之前，所以日期类型转换时，只会用上面的DateFormatter，无论你
-					有没有在属性上配置@DateTimeFormat注解，Spring都不会使用DateTimeFormatAnnotationFormatterFactory。
-						因此这里再次注册了DateTimeFormatAnnotationFormatterFactory，让它第一个检查，如果有@DateTimeFormat则
-					用它，没有则使用上面的DateFormatter。这是最简单的方法，不需要写代码就可以实现需求了。
-				 -->
-				<bean class="org.springframework.format.datetime.DateTimeFormatAnnotationFormatterFactory"/>
-			</set>
-		</property>
-	</bean>
 	<bean id="webBindingInitializer" class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer"
 	      p:conversionService-ref="conversionService"/>
 	<!-- 在原有HandlerAdapter基础上扩展自动生成默认视图名功能 -->
