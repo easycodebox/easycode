@@ -60,9 +60,6 @@
 		</property>
 		<property name="properties">
 			<value>
-				code_key=code
-				msg_key=msg
-				data_key=data
 				code.suc=0
 				code.fail=1
 				code.no.login=2

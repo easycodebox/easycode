@@ -7,9 +7,9 @@ window.BaseData = {
 	userInfo: null,
 	suc: "${code\.suc}",	//请求返回成功的标识
 	noLogin: "${code\.no\.login}",//Ajax请求返回未登录状态
-	code: "${code_key}",   	//code的key值
-	msg: "${msg_key}",     	//msg的key值
-	data: "${data_key}",   	//data的key值
+	code: "${code_key!'code'}",   	//code的key值
+	msg: "${msg_key!'msg'}",     	//msg的key值
+	data: "${data_key!'data'}",   	//data的key值
 	init: function(data) {
 		return utils.extend(this, data);
 	}
