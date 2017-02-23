@@ -67,19 +67,7 @@
 		</property>
 	</bean>
 	<!-- ===================================== 【配置文件 - END】  ================================================== -->
-	<!-- 计算属性值中的值引用。例：cas.login=${cas.url}/login -->
-	<bean id="exePropertyPlaceholder" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
-	      depends-on="properties" lazy-init="false"
-	      p:targetClass="com.easycodebox.common.file.PropertiesUtils"
-	      p:targetMethod="processPlaceholder">
-		<property name="arguments">
-			<array>
-				<ref bean="properties"/>
-				<value>true</value>
-			</array>
-		</property>
-	</bean>
-	<bean id="placeholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+	<bean id="placeholder" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"
 	      p:properties-ref="properties">
 		<property name="ignoreResourceNotFound" value="true"/>
 	</bean>

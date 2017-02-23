@@ -43,11 +43,11 @@ public class DynamicTypeHandlerRegister {
 	/**
 	 * 注册的TypeHandler类型
 	 */
-	private Class<TypeHandler> typeHandlerClass;
+	private Class<? extends TypeHandler> typeHandlerClass;
 	
 	private volatile boolean registered;
 	
-	public DynamicTypeHandlerRegister(Class filterClass, Class<TypeHandler> typeHandlerClass) {
+	public DynamicTypeHandlerRegister(Class filterClass, Class<? extends TypeHandler> typeHandlerClass) {
 		Assert.notNull(filterClass);
 		Assert.notNull(typeHandlerClass);
 		this.filterClass = filterClass;
@@ -105,11 +105,11 @@ public class DynamicTypeHandlerRegister {
 		this.filterClass = filterClass;
 	}
 	
-	public Class<TypeHandler> getTypeHandlerClass() {
+	public Class<? extends TypeHandler> getTypeHandlerClass() {
 		return typeHandlerClass;
 	}
 	
-	public void setTypeHandlerClass(Class<TypeHandler> typeHandlerClass) {
+	public void setTypeHandlerClass(Class<? extends TypeHandler> typeHandlerClass) {
 		this.typeHandlerClass = typeHandlerClass;
 	}
 }
