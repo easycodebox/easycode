@@ -32,7 +32,7 @@ public final class LogAspect implements Ordered {
 	private final int DEFAULT_ORDER = 1;
 	private int order = DEFAULT_ORDER;
 	
-	private CommonProperties commonProps;
+	private CommonProperties commonProperties;
 	
 	/**
 	 * 加上@Lazy标记是因为Spring配置了default-lazy-init="true"，且某个bean不是懒加载，
@@ -48,7 +48,7 @@ public final class LogAspect implements Ordered {
 	
 	@PostConstruct
 	public void init() throws Exception {
-		commonProps = commonProps == null ? CommonProperties.instance() : commonProps;
+		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
 	}
 	
 	@Override
@@ -67,7 +67,7 @@ public final class LogAspect implements Ordered {
 				&& SecurityContexts.getCurSecurityContext().getRequest() != null) {
 			HttpServletRequest request = SecurityContexts.getCurSecurityContext().getRequest();
 			logObj.setUrl(request.getRequestURL().toString());
-			logObj.setParams(Strings.substring(Https.getRequestParams(request, 0, commonProps.isTraditionalHttp()), 0, 2048));
+			logObj.setParams(Strings.substring(Https.getRequestParams(request, 0, commonProperties.isTraditionalHttp()), 0, 2048));
 			logObj.setClientIp(SecurityUtils.getIp());
 		}
 		logObj.setTitle(log.title());
@@ -111,11 +111,11 @@ public final class LogAspect implements Ordered {
         return sb.toString();
     }
 	
-	public CommonProperties getCommonProps() {
-		return commonProps;
+	public CommonProperties getCommonProperties() {
+		return commonProperties;
 	}
 	
-	public void setCommonProps(CommonProperties commonProps) {
-		this.commonProps = commonProps;
+	public void setCommonProperties(CommonProperties commonProperties) {
+		this.commonProperties = commonProperties;
 	}
 }

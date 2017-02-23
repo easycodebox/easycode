@@ -28,7 +28,7 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 	private boolean imgUrl = true;
 	private final String IMG_URL_KEY = "imgUrl";
 	
-	private CommonProperties commonProps;
+	private CommonProperties commonProperties;
 
 	@Override
 	public void postHandle(HttpServletRequest request,
@@ -40,18 +40,18 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 
 		if (modelAndView != null) {
-			commonProps = commonProps == null ? CommonProperties.instance() : commonProps;
+			commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
 			
 			if (basePath) {
-				modelAndView.addObject(BASE_PATH_KEY, commonProps.getBasePath() == null
-						?  Https.getBasePath(request) : commonProps.getBasePath());
+				modelAndView.addObject(BASE_PATH_KEY, commonProperties.getBasePath() == null
+						?  Https.getBasePath(request) : commonProperties.getBasePath());
 			}
 
 			if (imgUrl) {
-				if (Strings.isBlank(commonProps.getImgUrl())) {
+				if (Strings.isBlank(commonProperties.getImgUrl())) {
 					log.warn("Has no config IMG_URL constant.");
 				} else
-					modelAndView.addObject(IMG_URL_KEY, commonProps.getImgUrl());
+					modelAndView.addObject(IMG_URL_KEY, commonProperties.getImgUrl());
 			}
 
 		}
@@ -60,7 +60,7 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 		  新版通过浏览器端实现此功能
 		 */
 		if (cacheHisUri) {
-			CacheHisUris.cacheHisUri(handlerMethod.getMethod(), request, commonProps.isTraditionalHttp());
+			CacheHisUris.cacheHisUri(handlerMethod.getMethod(), request, commonProperties.isTraditionalHttp());
 		}
 
 	}
@@ -86,11 +86,11 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 		this.cacheHisUri = cacheHisUri;
 	}
 	
-	public CommonProperties getCommonProps() {
-		return commonProps;
+	public CommonProperties getCommonProperties() {
+		return commonProperties;
 	}
 	
-	public void setCommonProps(CommonProperties commonProps) {
-		this.commonProps = commonProps;
+	public void setCommonProperties(CommonProperties commonProperties) {
+		this.commonProperties = commonProperties;
 	}
 }
