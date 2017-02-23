@@ -1,6 +1,6 @@
 package com.easycodebox.common.web.springmvc;
 
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
@@ -27,6 +27,8 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 
 	private boolean imgUrl = true;
 	private final String IMG_URL_KEY = "imgUrl";
+	
+	private CommonProperties commonProps;
 
 	@Override
 	public void postHandle(HttpServletRequest request,
@@ -38,17 +40,18 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 
 		if (modelAndView != null) {
-
+			commonProps = commonProps == null ? CommonProperties.instance() : commonProps;
+			
 			if (basePath) {
-				modelAndView.addObject(BASE_PATH_KEY, BaseConstants.basePath == null ? 
-						BaseConstants.basePath = Https.getBasePath(request) : BaseConstants.basePath);
+				modelAndView.addObject(BASE_PATH_KEY, commonProps.getBasePath() == null
+						?  Https.getBasePath(request) : commonProps.getBasePath());
 			}
 
 			if (imgUrl) {
-				if (Strings.isBlank(BaseConstants.imgUrl)) {
+				if (Strings.isBlank(commonProps.getImgUrl())) {
 					log.warn("Has no config IMG_URL constant.");
 				} else
-					modelAndView.addObject(IMG_URL_KEY, BaseConstants.imgUrl);
+					modelAndView.addObject(IMG_URL_KEY, commonProps.getImgUrl());
 			}
 
 		}
@@ -82,5 +85,12 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 	public void setCacheHisUri(boolean cacheHisUri) {
 		this.cacheHisUri = cacheHisUri;
 	}
-
+	
+	public CommonProperties getCommonProps() {
+		return commonProps;
+	}
+	
+	public void setCommonProps(CommonProperties commonProps) {
+		this.commonProps = commonProps;
+	}
 }

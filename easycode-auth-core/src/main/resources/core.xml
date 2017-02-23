@@ -105,6 +105,18 @@
 	      p:targetMethod="addProperties"
 	      p:arguments-ref="properties"/>
 	
+	<!-- 属性文件的中的配置加载进对应的Bean中 -->
+	<bean id="commonProps" class="com.easycodebox.common.config.CommonProperties"/>
+	<!-- 把属性文件Bean注册进ServletContext attributes -->
+	<bean class="com.easycodebox.common.servlet.ServletContextAttrRegistry">
+		<property name="nameds">
+			<array>
+				<ref bean="commonProps"/>
+			</array>
+		</property>
+	</bean>
+	
+	
 	<!-- 配置日志 -->
 	<bean id="logAspect" class="com.easycodebox.auth.core.util.aop.log.LogAspect"/>
 	

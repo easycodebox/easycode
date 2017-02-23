@@ -1,8 +1,5 @@
 package com.easycodebox.common;
 
-import com.easycodebox.common.enums.entity.ProjectEnv;
-import com.easycodebox.common.processor.StaticValue;
-
 /**
  * @author WangXiaoJin
  * 
@@ -40,53 +37,10 @@ public abstract class BaseConstants {
 	public static final String PJAX_KEY = "X-PJAX";
 	
 	/**
-	 * 项目所处环境
-	 */
-	@StaticValue("${project_env}")
-	public static ProjectEnv projectEnv;
-	/**
-	 * 使用script/style标签时，是否自动显示压缩后的文件： 
-	 * test.js  --> test.min.js
-	 * test.css --> test.min.css
-	 */
-	@StaticValue("${trans_min_js_css}")
-	public static boolean transMinJsCss = true;
-	
-	/**
-	 * 当前项目的根路径：http://www.xxx.com
-	 */
-	@StaticValue("${base_path}")
-	public static String basePath;
-	
-	/**
-	 * 图片根地址
-	 * 注意：子类实现此配置
-	 */
-	@StaticValue("${img_url}")
-	public static String imgUrl;
-	
-	/**
 	 * http请求参数以传统格式传送：
 	 * true	== url.do?name=wang&name=zhang
 	 * false == url.do?name[]=wang&name[]=zhang
 	 */
 	public static Boolean httpParamTradition = true;
-	
-	/**
-	 * 默认图片路径
-	 */
-	public static class Imgs {
-		
-		/**
-		 * 默认头像
-		 */
-		public static String face = "default/face.jpg";
-		
-		/**
-		 * 默认图片
-		 */
-		public static String defaultImg = "default/default.jpg";
-
-	}
 	
 }

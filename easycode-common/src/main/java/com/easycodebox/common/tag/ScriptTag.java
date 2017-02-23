@@ -1,6 +1,6 @@
 package com.easycodebox.common.tag;
 
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.ProjectEnv;
 import com.easycodebox.common.lang.Strings;
@@ -46,8 +46,10 @@ public class ScriptTag extends AbstractHtmlTag {
 		type = "text/javascript";
 		separator = Symbol.COMMA;
 		boundary = "??";
-		env = BaseConstants.projectEnv;
-		min = BaseConstants.transMinJsCss;
+		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
+		props = props == null ? CommonProperties.instance() : props;
+		env = props.getProjectEnv();
+		min = props.isTransMinJsCss();
 		super.init();
 	}
 	

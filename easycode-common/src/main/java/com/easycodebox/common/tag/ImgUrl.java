@@ -1,6 +1,6 @@
 package com.easycodebox.common.tag;
 
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.lang.*;
 import com.easycodebox.common.validate.Assert;
 
@@ -20,11 +20,14 @@ public class ImgUrl extends AbstractHtmlTag {
 	private Boolean lazy;
 	private Boolean imgTag;
 	
-	private String defaultImg = "imgs/util/blank.gif";
+	private String imgDefault;
 	
 	@Override
 	protected void init() {
-		root = BaseConstants.imgUrl;
+		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
+		props = props == null ? CommonProperties.instance() : props;
+		root = props.getImgUrl();
+		imgDefault = props.getImgDefault();
 		mode = "ADD";
 		lazy = false;
 		imgTag = true;
@@ -37,7 +40,7 @@ public class ImgUrl extends AbstractHtmlTag {
 		
 		Assert.notBlank(rule, "rule can't not be null.");
 		
-		url = Strings.isBlank(url) ? BaseConstants.Imgs.defaultImg : url;
+		url = Strings.isBlank(url) ? imgDefault : url;
 		StringBuilder sb = new StringBuilder(root)
 			.append(Symbol.SLASH);
 		if(mode.equalsIgnoreCase("ADD"))
@@ -56,8 +59,8 @@ public class ImgUrl extends AbstractHtmlTag {
 		if(imgTag) {
 			StringBuilder sb = new StringBuilder()
 				.append("<img " + super.generateHtml())
-				.append(lazy ? " lazy='" + imgUrl + "' src='" 
-				+ defaultImg + "' " : " src='" + imgUrl + "' " )
+				.append(lazy ? " lazy='" + imgUrl + "' src='" + root + Symbol.SLASH
+				+ imgDefault + "' " : " src='" + imgUrl + "' " )
 				.append(" />");
 			imgUrl = sb.toString();
 		}
