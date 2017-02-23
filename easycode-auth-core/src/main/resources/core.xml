@@ -86,11 +86,6 @@
 	      p:properties-ref="properties">
 		<property name="ignoreResourceNotFound" value="true"/>
 	</bean>
-	<!-- 属性刷到PropertiesPool中 -->
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
-	      p:targetClass="com.easycodebox.common.file.PropertiesPool"
-	      p:targetMethod="addProperties"
-	      p:arguments-ref="properties"/>
 	
 	<!-- 属性文件的中的配置加载进对应的Bean中 -->
 	<bean id="commonProperties" class="com.easycodebox.common.CommonProperties" lazy-init="false"/>
