@@ -1,5 +1,6 @@
 package com.easycodebox.upload.servlet;
 
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.*;
@@ -66,7 +67,7 @@ public class UploadServlet extends BaseServlet {
 					DiskFileItem item = items.next();
 					if(item.isFormField()) {
 						String fieldName = Strings.trim(item.getFieldName());
-						if(Constants.RESPONSE_URL_KEY.equalsIgnoreCase(fieldName)) {
+						if(CommonProperties.instance().getResponseUrlKey().equalsIgnoreCase(fieldName)) {
 							//responseUrl 为跨域上传图片的解决方案
 							responseUrl = item.getString();
 						} else if(Constants.TRANSACTION_KEY.equalsIgnoreCase(fieldName)) {

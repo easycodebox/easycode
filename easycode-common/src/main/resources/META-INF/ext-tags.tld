@@ -1090,13 +1090,13 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description><![CDATA[This tag environment. Valid value: "DEV"/"TEST"/"PRE"/"PROD". Default value is BaseConstants.projectEnv.]]></description>
+			<description><![CDATA[This tag environment. Valid value: "DEV"/"TEST"/"PRE"/"PROD". Default value is CommonProperties.projectEnv.]]></description>
 			<name>env</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description><![CDATA[Is format js url to min.js. Default value is BaseConstants.transMinJsCss.]]></description>
+			<description><![CDATA[Is format js url to min.js. Default value is CommonProperties.transMinJsCss.]]></description>
 			<name>min</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -1268,13 +1268,13 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description><![CDATA[This tag environment. Valid value: "DEV"/"TEST"/"PRE"/"PROD". Default value is BaseConstants.projectEnv.]]></description>
+			<description><![CDATA[This tag environment. Valid value: "DEV"/"TEST"/"PRE"/"PROD". Default value is CommonProperties.projectEnv.]]></description>
 			<name>env</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description><![CDATA[Is format css url to min.css. Default value is BaseConstants.transMinJsCss.]]></description>
+			<description><![CDATA[Is format css url to min.css. Default value is CommonProperties.transMinJsCss.]]></description>
 			<name>min</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>

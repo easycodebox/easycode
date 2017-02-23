@@ -1,6 +1,6 @@
 package com.easycodebox.common.filter;
 
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.enums.DetailEnums;
 import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.error.*;
@@ -80,14 +80,8 @@ public class ErrorContextFilter implements Filter {
 	private boolean storeException = false;
 	
 	private ExceptionHandler exceptionHandler;
-	/**
-	 * 标记此请求为pjax的请求参数值
-	 */
-	private String pjaxKey;
-	/**
-	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
-	 */
-	private String dialogReqKey = BaseConstants.DIALOG_REQ_KEY;
+	
+	private CommonProperties commonProperties;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -98,9 +92,7 @@ public class ErrorContextFilter implements Filter {
 				logMappings = filterConfig.getInitParameter("logMappings"),
 				isLog = filterConfig.getInitParameter("isLog"),
 				logLevel = filterConfig.getInitParameter("logLevel"),
-				store = filterConfig.getInitParameter("storeException"),
-				pjaxKey = filterConfig.getInitParameter("pjaxKey"),
-				dialogReqKey = filterConfig.getInitParameter("dialogReqKey");
+				store = filterConfig.getInitParameter("storeException");
 		
 		if (Strings.isNotBlank(defaultPage)) {
 			this.defaultPage = defaultPage.trim();
@@ -164,11 +156,9 @@ public class ErrorContextFilter implements Filter {
 		if (Strings.isNotBlank(store)) {
 			this.storeException = Boolean.parseBoolean(store.trim());
 		}
-		if (Strings.isNotBlank(pjaxKey)) {
-			this.pjaxKey = pjaxKey.trim();
-		}
-		if (Strings.isNotBlank(dialogReqKey)) {
-			this.dialogReqKey = dialogReqKey.trim();
+		if (commonProperties == null) {
+			commonProperties = (CommonProperties) filterConfig.getServletContext().getAttribute(CommonProperties.DEFAULT_NAME);
+			commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
 		}
 	}
 	
@@ -266,7 +256,7 @@ public class ErrorContextFilter implements Filter {
 			
 			//判断请求是否为AJAX请求
 			if(Https.isAjaxRequest(request) &&
-					request.getHeader(pjaxKey == null ? BaseConstants.PJAX_KEY : pjaxKey) == null) {
+					request.getHeader(commonProperties.getPjaxKey()) == null) {
 				response.setContentType("application/json;charset=UTF-8");
 				try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 						.createGenerator(response.getWriter())) {
@@ -276,7 +266,7 @@ public class ErrorContextFilter implements Filter {
 					throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
 				}
 			} else {
-				if(request.getParameter(dialogReqKey) != null) {
+				if(request.getParameter(commonProperties.getDialogReqKey()) != null) {
 					
 					Callbacks.callback(Callbacks.none(error), null, response);
 				} else {
@@ -388,19 +378,11 @@ public class ErrorContextFilter implements Filter {
 		this.storeException = storeException;
 	}
 	
-	public String getPjaxKey() {
-		return pjaxKey;
+	public CommonProperties getCommonProperties() {
+		return commonProperties;
 	}
 	
-	public void setPjaxKey(String pjaxKey) {
-		this.pjaxKey = pjaxKey;
-	}
-	
-	public String getDialogReqKey() {
-		return dialogReqKey;
-	}
-	
-	public void setDialogReqKey(String dialogReqKey) {
-		this.dialogReqKey = dialogReqKey;
+	public void setCommonProperties(CommonProperties commonProperties) {
+		this.commonProperties = commonProperties;
 	}
 }

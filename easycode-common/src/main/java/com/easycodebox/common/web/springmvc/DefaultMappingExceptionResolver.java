@@ -1,6 +1,6 @@
 package com.easycodebox.common.web.springmvc;
 
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.error.*;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.net.Https;
@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,18 +24,12 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	private String exceptionAttribute = DEFAULT_EXCEPTION_ATTRIBUTE;
 	public static final String MSG_ATTR = "msg";
 	
-	/**
-	 * 标记此请求为pjax的请求参数值
-	 */
-	private String pjaxKey;
-	/**
-	 * response url参数key值
-	 */
-	private String responseUrlKey = BaseConstants.RESPONSE_URL_KEY;
-	/**
-	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
-	 */
-	private String dialogReqKey = BaseConstants.DIALOG_REQ_KEY;
+	private CommonProperties commonProperties;
+	
+	@PostConstruct
+	public void init() throws Exception {
+		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
+	}
 	
 	@Override
 	public ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, 
@@ -53,7 +48,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 		}
 		
 		if(Https.isAjaxRequest(request) &&
-				request.getHeader(pjaxKey == null ? BaseConstants.PJAX_KEY : pjaxKey) == null) {
+				request.getHeader(commonProperties.getPjaxKey()) == null) {
 			response.setContentType("application/json;charset=UTF-8");
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 					.createGenerator(response.getWriter())) {
@@ -63,7 +58,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 				throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
 			}
 		}else {
-			if(request.getParameter(dialogReqKey) != null) {
+			if(request.getParameter(commonProperties.getDialogReqKey()) != null) {
 				Callbacks.callback(Callbacks.none(error), null, response);
 				return null;
 			}
@@ -75,7 +70,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	
 	@Override
 	protected String determineViewName(Exception ex, HttpServletRequest request) {
-		Object responseUrl = request.getAttribute(responseUrlKey);
+		Object responseUrl = request.getAttribute(commonProperties.getResponseUrlKey());
 		if(responseUrl != null) {
 			return responseUrl.toString();
 		}else {
@@ -98,27 +93,11 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 		return mv;
 	}
 	
-	public String getPjaxKey() {
-		return pjaxKey;
+	public CommonProperties getCommonProperties() {
+		return commonProperties;
 	}
 	
-	public void setPjaxKey(String pjaxKey) {
-		this.pjaxKey = pjaxKey;
-	}
-	
-	public String getResponseUrlKey() {
-		return responseUrlKey;
-	}
-	
-	public void setResponseUrlKey(String responseUrlKey) {
-		this.responseUrlKey = responseUrlKey;
-	}
-	
-	public String getDialogReqKey() {
-		return dialogReqKey;
-	}
-	
-	public void setDialogReqKey(String dialogReqKey) {
-		this.dialogReqKey = dialogReqKey;
+	public void setCommonProperties(CommonProperties commonProperties) {
+		this.commonProperties = commonProperties;
 	}
 }

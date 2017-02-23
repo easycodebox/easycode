@@ -1,6 +1,6 @@
 package com.easycodebox.common.sitemesh3;
 
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import org.apache.commons.lang.ArrayUtils;
@@ -22,7 +22,7 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 	 */
 	private boolean pjax;
 	
-	private String pjaxKey;
+	private CommonProperties commonProperties;
 	
 	/**
 	 * 是否启用装饰器的参数名
@@ -38,7 +38,6 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 	public void init(FilterConfig filterConfig) throws ServletException {
 		super.init(filterConfig);
 		String pjax = filterConfig.getInitParameter("pjax"),
-				pjaxKey = filterConfig.getInitParameter("pjaxKey"),
 				decoratedKey = filterConfig.getInitParameter("decoratedKey"),
 				noDecVals = filterConfig.getInitParameter("noDecVals");
 		
@@ -46,12 +45,6 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 			this.pjax = Boolean.parseBoolean(pjax.trim());
 		} else {
 			this.pjax = true;
-		}
-		
-		if (Strings.isNotBlank(pjaxKey)) {
-			this.pjaxKey = pjaxKey.trim();
-		} else {
-			this.pjaxKey = BaseConstants.PJAX_KEY;
 		}
 		
 		if (Strings.isNotBlank(decoratedKey)) {
@@ -63,7 +56,10 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 		} else {
 			this.noDecVals = new String[]{ "false", "0" };
 		}
-		
+		if (commonProperties == null) {
+			commonProperties = (CommonProperties) filterConfig.getServletContext().getAttribute(CommonProperties.DEFAULT_NAME);
+			commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
+		}
 	}
 
 	@Override
@@ -71,7 +67,7 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 			throws IOException, ServletException {
 		if (pjax) {
 			HttpServletRequest request = (HttpServletRequest)servletRequest;
-			if (request.getHeader(pjaxKey) != null) {
+			if (request.getHeader(commonProperties.getPjaxKey()) != null) {
 				filterChain.doFilter(servletRequest, servletResponse);
 				return;
 			}
@@ -84,5 +80,12 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 			super.doFilter(servletRequest, servletResponse, filterChain);
 		}
 	}
-
+	
+	public CommonProperties getCommonProperties() {
+		return commonProperties;
+	}
+	
+	public void setCommonProperties(CommonProperties commonProperties) {
+		this.commonProperties = commonProperties;
+	}
 }

@@ -1,11 +1,8 @@
 package com.easycodebox.login.shiro;
 
-import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.lang.dto.UserInfo;
 import com.easycodebox.common.net.Https;
-import com.easycodebox.common.security.SecurityContext;
-import com.easycodebox.common.security.SecurityContexts;
-import com.easycodebox.common.security.SecurityUtils.SecurityInfoHandler;
+import com.easycodebox.common.security.*;
 import com.easycodebox.common.validate.Assert;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -18,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author WangXiaoJin
  *
  */
-public class ShiroSecurityInfoHandler implements SecurityInfoHandler<Session, UserInfo> {
+public class ShiroSecurityInfoHandler extends AbstractSecurityInfoHandler<Session, UserInfo> {
 
 	@Override
 	public SecurityContext<UserInfo> newSecurityContext(Session storage, HttpServletRequest request,
@@ -45,14 +42,14 @@ public class ShiroSecurityInfoHandler implements SecurityInfoHandler<Session, Us
 
 	@Override
 	public UserInfo getSecurityInfo(Session storage) {
-		return storage == null ? null : (UserInfo)storage.getAttribute(BaseConstants.USER_KEY);
+		return storage == null ? null : (UserInfo)storage.getAttribute(getKey());
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public void storeSecurityInfo(Session storage, UserInfo securityInfo) {
 		Assert.notNull(storage);
-		storage.setAttribute(BaseConstants.USER_KEY, securityInfo);
+		storage.setAttribute(getKey(), securityInfo);
 		SecurityContext<UserInfo> sc = (SecurityContext<UserInfo>)SecurityContexts.getCurSecurityContext();
 		if(sc == null) {
 			SecurityContext<UserInfo> tmp = new SecurityContext<>();
@@ -68,7 +65,7 @@ public class ShiroSecurityInfoHandler implements SecurityInfoHandler<Session, Us
 	@Override
 	public void destroySecurityInfo(Session storage) {
 		if (storage == null) return ;
-		storage.removeAttribute(BaseConstants.USER_KEY);
+		storage.removeAttribute(getKey());
 		SecurityContexts.setCurSecurityContext(null);
 	}
 

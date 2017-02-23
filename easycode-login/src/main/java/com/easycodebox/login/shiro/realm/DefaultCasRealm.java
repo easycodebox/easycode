@@ -2,7 +2,7 @@ package com.easycodebox.login.shiro.realm;
 
 import com.easycodebox.auth.model.bo.user.AuthzInfoBo;
 import com.easycodebox.auth.model.entity.user.User;
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.Strings;
@@ -60,6 +60,8 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	 */
 	private TicketValidator ticketValidator;
 	
+	private CommonProperties commonProperties;
+	
 	public DefaultCasRealm() {
 		super();
 	}
@@ -70,6 +72,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 		Assert.notNull(userWsService);
 		Assert.notNull(securityInfoHandler);
 		Assert.notBlank(project);
+		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
 	}
 	
 	/**
@@ -205,7 +208,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 			//存储用户信息
 	        securityInfoHandler.storeSecurityInfo(session, userInfo);
 	        //项目功能菜单 - 每个项目都可能会有不同的功能菜单，所以增加各自项目的缓存key前缀
-	        session.setAttribute(project + BaseConstants.PROJECT_MENUS, treePermissions(null, authzInfo.getMenus()));
+	        session.setAttribute(project + commonProperties.getProjectMenuKey(), treePermissions(null, authzInfo.getMenus()));
 	        
 			return info;
 		} catch (CasAuthenticationException e) {
@@ -265,11 +268,11 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 					//获取当前Session
 					Session session = SecurityUtils.getSubject().getSession(false);
 					//项目功能菜单 - 每个项目都可能会有不同的功能菜单，所以增加各自项目的缓存key前缀
-					session.setAttribute(project + BaseConstants.PROJECT_MENUS, treePermissions(null, authzInfo.getMenus()));
+					session.setAttribute(project + commonProperties.getProjectMenuKey(), treePermissions(null, authzInfo.getMenus()));
 				}
 			}
 			// If the info is not null and the cache has been created, then cache the authorization info.
-			if (info != null && cache != null) {
+			if (cache != null) {
 				if (log.isTraceEnabled()) {
 					log.trace("Caching authorization info for principals: [" + principals + "].");
 				}
@@ -441,5 +444,13 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 	
 	public void setSecurityInfoHandler(ShiroSecurityInfoHandler securityInfoHandler) {
 		this.securityInfoHandler = securityInfoHandler;
+	}
+	
+	public CommonProperties getCommonProperties() {
+		return commonProperties;
+	}
+	
+	public void setCommonProperties(CommonProperties commonProperties) {
+		this.commonProperties = commonProperties;
 	}
 }

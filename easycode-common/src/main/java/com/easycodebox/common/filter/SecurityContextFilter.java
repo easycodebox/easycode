@@ -1,20 +1,11 @@
 package com.easycodebox.common.filter;
 
-import java.io.IOException;
+import com.easycodebox.common.security.*;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.easycodebox.common.security.SecurityContext;
-import com.easycodebox.common.security.SecurityContexts;
-import com.easycodebox.common.security.SecurityUtils;
-import com.easycodebox.common.security.SecurityUtils.SecurityInfoHandler;
+import java.io.IOException;
 
 /**
  * @author WangXiaoJin
@@ -22,10 +13,10 @@ import com.easycodebox.common.security.SecurityUtils.SecurityInfoHandler;
  */
 public class SecurityContextFilter implements Filter {
 
-	private SecurityInfoHandler<?, ?> securityInfoHandler = SecurityUtils.SESSION_SECURITY_INFO_HANDLER;
+	private SecurityInfoHandler<?, ?> securityInfoHandler;
 	
 	@Override
-	public void destroy() {
+	public void init(FilterConfig filterConfig) throws ServletException {
 		
 	}
 
@@ -40,14 +31,13 @@ public class SecurityContextFilter implements Filter {
 		} finally {
 			SecurityContexts.resetSecurityContext();
 		}
-		
 	}
-
+	
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+	public void destroy() {
 		
 	}
-
+	
 	public SecurityInfoHandler<?, ?> getSecurityInfoHandler() {
 		return securityInfoHandler;
 	}
@@ -55,5 +45,5 @@ public class SecurityContextFilter implements Filter {
 	public void setSecurityInfoHandler(SecurityInfoHandler<?, ?> securityInfoHandler) {
 		this.securityInfoHandler = securityInfoHandler;
 	}
-
+	
 }

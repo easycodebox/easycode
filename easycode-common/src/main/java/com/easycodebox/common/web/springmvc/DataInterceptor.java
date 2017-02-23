@@ -10,6 +10,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,6 +31,13 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 	
 	private CommonProperties commonProperties;
 
+	@PostConstruct
+	public void init() throws Exception {
+		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
+	}
+		
+		
+	
 	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
@@ -40,7 +48,6 @@ public class DataInterceptor extends HandlerInterceptorAdapter {
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 
 		if (modelAndView != null) {
-			commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
 			
 			if (basePath) {
 				modelAndView.addObject(BASE_PATH_KEY, commonProperties.getBasePath() == null

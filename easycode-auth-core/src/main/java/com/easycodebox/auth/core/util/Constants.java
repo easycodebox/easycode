@@ -1,13 +1,12 @@
 package com.easycodebox.auth.core.util;
 
-import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.processor.StaticValue;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public class Constants extends BaseConstants {
+public class Constants {
 	
 	//重置后的新密码
 	@StaticValue("${reset_pwd}")

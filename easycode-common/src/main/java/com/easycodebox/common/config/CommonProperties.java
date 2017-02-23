@@ -52,6 +52,31 @@ public class CommonProperties extends NamedSupport {
 	 */
 	@Value("${traditional_http:true}")
 	private boolean traditionalHttp = true;
+	/**
+	 * pjax请求的header key值
+	 */
+	private String pjaxKey = "X-PJAX";
+	/**
+	 * response url参数key值
+	 */
+	private String responseUrlKey = "responseUrl";
+	/**
+	 * 用户信息的key值
+	 */
+	private String userKey = "user_info";
+	/**
+	 * 项目功能菜单KEY值
+	 */
+	private String projectMenuKey = "project_menu";
+	/**
+	 * 权限KEY值
+	 */
+	private String permissionKey = "permission";
+	/**
+	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
+	 */
+	private String dialogReqKey = "DIALOG_REQ";
+	
 	
 	public CommonProperties() {
 		this(DEFAULT_NAME);
@@ -107,5 +132,53 @@ public class CommonProperties extends NamedSupport {
 	
 	public void setTraditionalHttp(boolean traditionalHttp) {
 		this.traditionalHttp = traditionalHttp;
+	}
+	
+	public String getPjaxKey() {
+		return pjaxKey;
+	}
+	
+	public void setPjaxKey(String pjaxKey) {
+		this.pjaxKey = pjaxKey;
+	}
+	
+	public String getResponseUrlKey() {
+		return responseUrlKey;
+	}
+	
+	public void setResponseUrlKey(String responseUrlKey) {
+		this.responseUrlKey = responseUrlKey;
+	}
+	
+	public String getUserKey() {
+		return userKey;
+	}
+	
+	public void setUserKey(String userKey) {
+		this.userKey = userKey;
+	}
+	
+	public String getProjectMenuKey() {
+		return projectMenuKey;
+	}
+	
+	public void setProjectMenuKey(String projectMenuKey) {
+		this.projectMenuKey = projectMenuKey;
+	}
+	
+	public String getPermissionKey() {
+		return permissionKey;
+	}
+	
+	public void setPermissionKey(String permissionKey) {
+		this.permissionKey = permissionKey;
+	}
+	
+	public String getDialogReqKey() {
+		return dialogReqKey;
+	}
+	
+	public void setDialogReqKey(String dialogReqKey) {
+		this.dialogReqKey = dialogReqKey;
 	}
 }

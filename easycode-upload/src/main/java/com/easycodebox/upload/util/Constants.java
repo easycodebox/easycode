@@ -1,15 +1,14 @@
 package com.easycodebox.upload.util;
 
-import java.io.File;
-
-import com.easycodebox.common.BaseConstants;
 import com.easycodebox.common.file.PropertiesPool;
+
+import java.io.File;
 
 /**
  * @author WangXiaoJin
  * 
  */
-public class Constants extends BaseConstants {
+public class Constants {
 	
 	static {
 		

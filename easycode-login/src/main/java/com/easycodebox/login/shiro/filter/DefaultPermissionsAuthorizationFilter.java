@@ -1,6 +1,6 @@
 package com.easycodebox.login.shiro.filter;
 
-import com.easycodebox.common.BaseConstants;
+import com.easycodebox.common.config.CommonProperties;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.jackson.Jacksons;
@@ -11,6 +11,7 @@ import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
 import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -26,14 +27,12 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 	
 	private String pathDivider = Symbol.SLASH;
 	
-	/**
-	 * 标记此请求为pjax的请求参数值
-	 */
-	private String pjaxKey;
-	/**
-	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
-	 */
-	private String dialogReqKey = BaseConstants.DIALOG_REQ_KEY;
+	private CommonProperties commonProperties;
+	
+	@PostConstruct
+	public void init() throws Exception {
+		commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
+	}
 	
 	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
@@ -56,7 +55,7 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 		HttpServletResponse res = (HttpServletResponse) response;
 		
 		if (Https.isAjaxRequest((HttpServletRequest) request) &&
-				req.getHeader(pjaxKey == null ? BaseConstants.PJAX_KEY : pjaxKey) == null) {
+				req.getHeader(commonProperties.getPjaxKey()) == null) {
 			response.setContentType("application/json;charset=UTF-8");
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 					.createGenerator(response.getWriter())) {
@@ -65,7 +64,7 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 				throw new BaseException("Could not write JSON string.", e);
 			}
 		} else {
-			if (request.getParameter(dialogReqKey) != null) {
+			if (request.getParameter(commonProperties.getDialogReqKey()) != null) {
 				Callbacks.callback(Callbacks.closeDialogQuiet(CodeMsg.FAIL.msg("您没有权限执行此操作")), null, res);
 			} else
 				super.onAccessDenied(request, response);
@@ -81,20 +80,11 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 		this.pathDivider = pathDivider;
 	}
 	
-	public String getPjaxKey() {
-		return pjaxKey;
+	public CommonProperties getCommonProperties() {
+		return commonProperties;
 	}
 	
-	public void setPjaxKey(String pjaxKey) {
-		this.pjaxKey = pjaxKey;
+	public void setCommonProperties(CommonProperties commonProperties) {
+		this.commonProperties = commonProperties;
 	}
-	
-	public String getDialogReqKey() {
-		return dialogReqKey;
-	}
-	
-	public void setDialogReqKey(String dialogReqKey) {
-		this.dialogReqKey = dialogReqKey;
-	}
-	
 }
