@@ -24,10 +24,6 @@ public class ImgUrl extends AbstractHtmlTag {
 	
 	@Override
 	protected void init() {
-		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
-		props = props == null ? CommonProperties.instance() : props;
-		root = props.getImgUrl();
-		imgDefault = props.getImgDefault();
 		mode = "ADD";
 		lazy = false;
 		imgTag = true;
@@ -37,6 +33,10 @@ public class ImgUrl extends AbstractHtmlTag {
 	
 	@Override
 	public int doStartTag() throws JspException {
+		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
+		props = props == null ? CommonProperties.instance() : props;
+		root = root == null ? props.getImgUrl() : root;
+		imgDefault = imgDefault == null ? props.getImgDefault() : imgDefault;
 		
 		Assert.notBlank(rule, "rule can't not be null.");
 		

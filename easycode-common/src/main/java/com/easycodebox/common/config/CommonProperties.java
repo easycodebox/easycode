@@ -20,14 +20,14 @@ public class CommonProperties extends NamedSupport {
 	/**
 	 * 项目所处环境
 	 */
-	@Value("${project_env}")
+	@Value("${project_env:DEV}")
 	private ProjectEnv projectEnv = ProjectEnv.DEV;
 	/**
 	 * 使用script/style标签时，是否自动显示压缩后的文件：
 	 * test.js  --> test.min.js
 	 * test.css --> test.min.css
 	 */
-	@Value("${trans_min_js_css}")
+	@Value("${trans_min_js_css:true}")
 	private boolean transMinJsCss = true;
 	/**
 	 * 当前项目的根路径：http://www.xxx.com
@@ -43,7 +43,7 @@ public class CommonProperties extends NamedSupport {
 	/**
 	 * 默认图片
 	 */
-	@Value("${img.default}")
+	@Value("${img.default:default/default.jpg}")
 	private String imgDefault = "default/default.jpg";
 	
 	public CommonProperties() {

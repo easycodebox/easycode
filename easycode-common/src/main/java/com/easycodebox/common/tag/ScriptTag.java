@@ -39,22 +39,22 @@ public class ScriptTag extends AbstractHtmlTag {
 	 * 是否把该标签的url添加.min后缀（转换成压缩后的url）<br>
 	 * DEV 环境会忽略此属性
 	 */
-	private boolean min;
+	private Boolean min;
 	
 	@Override
 	protected void init() {
 		type = "text/javascript";
 		separator = Symbol.COMMA;
 		boundary = "??";
-		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
-		props = props == null ? CommonProperties.instance() : props;
-		env = props.getProjectEnv();
-		min = props.isTransMinJsCss();
 		super.init();
 	}
 	
 	@Override
 	public int doStartTag() throws JspException {
+		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
+		props = props == null ? CommonProperties.instance() : props;
+		env = env == null ? props.getProjectEnv() : env;
+		min = min == null ? props.isTransMinJsCss() : min;
 		
 		StringBuilder sb = new StringBuilder("<script ");
 		if(type != null)
