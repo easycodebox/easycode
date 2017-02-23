@@ -1,22 +1,10 @@
 package com.easycodebox.auth.core.util;
 
-import com.easycodebox.common.processor.StaticValue;
-
 /**
  * @author WangXiaoJin
  * 
  */
 public class Constants {
-	
-	//重置后的新密码
-	@StaticValue("${reset_pwd}")
-	public static String resetPwd;
-	
-	/**
-	 * 是否可以修改super admin信息
-	 */
-	@StaticValue("${operate_super_admin}")
-	public static boolean operateSuperAdmin;
 	
 	/**
 	 * 混合存储缓存的KeyGenerator bean name

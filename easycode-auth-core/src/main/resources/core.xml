@@ -107,11 +107,13 @@
 	
 	<!-- 属性文件的中的配置加载进对应的Bean中 -->
 	<bean id="commonProperties" class="com.easycodebox.common.config.CommonProperties" lazy-init="false"/>
+	<bean id="coreProperties" class="com.easycodebox.auth.core.config.CoreProperties" lazy-init="false"/>
 	<!-- 把属性文件Bean注册进ServletContext attributes -->
 	<bean class="com.easycodebox.common.servlet.ServletContextAttrRegistry" lazy-init="false">
 		<property name="nameds">
 			<array>
 				<ref bean="commonProperties"/>
+				<ref bean="coreProperties"/>
 			</array>
 		</property>
 	</bean>

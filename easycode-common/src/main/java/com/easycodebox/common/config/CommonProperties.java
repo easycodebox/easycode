@@ -17,6 +17,14 @@ public class CommonProperties extends NamedSupport {
 		return INSTANCE == null ? (INSTANCE = new CommonProperties()) : INSTANCE;
 	}
 	
+	public CommonProperties() {
+		this(DEFAULT_NAME);
+	}
+	
+	public CommonProperties(String name) {
+		super(name);
+	}
+	
 	/**
 	 * 项目所处环境
 	 */
@@ -76,15 +84,6 @@ public class CommonProperties extends NamedSupport {
 	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
 	 */
 	private String dialogReqKey = "DIALOG_REQ";
-	
-	
-	public CommonProperties() {
-		this(DEFAULT_NAME);
-	}
-	
-	public CommonProperties(String name) {
-		super(name);
-	}
 	
 	public ProjectEnv getProjectEnv() {
 		return projectEnv;

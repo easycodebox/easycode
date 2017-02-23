@@ -1,9 +1,9 @@
 package com.easycodebox.auth.backend.controller.user;
 
+import com.easycodebox.auth.core.config.CoreProperties;
 import com.easycodebox.auth.core.service.user.GroupService;
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.CodeMsgExt;
-import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.model.entity.user.Group;
 import com.easycodebox.auth.model.entity.user.User;
 import com.easycodebox.common.enums.entity.OpenClose;
@@ -34,6 +34,8 @@ public class UserController extends BaseController {
 	private GroupService groupService;
 	@Resource
 	private UserIdConverter userIdConverter;
+	@Resource
+	private CoreProperties coreProperties;
 
 	/**
 	 * 列表
@@ -161,7 +163,7 @@ public class UserController extends BaseController {
 			return CodeMsg.FAIL.msg("请重新登录");
 		} else if(!user.getPassword().equals(oldPwd)) {
 			return CodeMsg.FAIL.msg("原密码输入错误");
-		} else if (!Constants.operateSuperAdmin && user.getIsSuperAdmin() == YesNo.YES) {
+		} else if (!coreProperties.isModifySuperAdmin() && user.getIsSuperAdmin() == YesNo.YES) {
 			return CodeMsg.FAIL.msg("您不能修改超级管理员密码");
 		} else {
 			int num = userService.updatePwd(DigestUtils.md5Hex(pwd), SecurityUtils.getUserId());

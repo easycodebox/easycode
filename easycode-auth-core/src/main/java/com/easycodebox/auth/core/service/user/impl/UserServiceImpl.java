@@ -1,5 +1,6 @@
 package com.easycodebox.auth.core.service.user.impl;
 
+import com.easycodebox.auth.core.config.CoreProperties;
 import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.*;
 import com.easycodebox.auth.core.util.aop.log.Log;
@@ -20,6 +21,7 @@ import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -28,10 +30,13 @@ import java.util.List;
 @Service("userService")
 public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
 	
+	@Resource
+	private CoreProperties coreProperties;
+	
 	@Override
 	public List<User> list() {
 		return super.list(sql()
-				.eq(R.User.isSuperAdmin, Constants.operateSuperAdmin ? null : YesNo.NO)
+				.eq(R.User.isSuperAdmin, coreProperties.isModifySuperAdmin() ? null : YesNo.NO)
 				.eq(R.User.deleted, YesNo.NO)
 				.desc(R.User.sort)
 				.desc(R.User.createTime)
@@ -73,7 +78,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 		if (Strings.isBlank(user.getRealname()))
 			user.setRealname(null);
 		if (Strings.isBlank(user.getPassword()))
-			user.setPassword(DigestUtils.md5Hex(Constants.resetPwd));
+			user.setPassword(DigestUtils.md5Hex(coreProperties.getResetPwd()));
 		if (user.getSort() == null)
 			user.setSort(0);
 		if (Strings.isBlank(user.getMobile()))
@@ -189,7 +194,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 				.likeTrim(R.User.email, email)
 				.likeTrim(R.User.mobile, mobile)
 				.eq(R.User.status, status)
-				.eq(R.User.isSuperAdmin, Constants.operateSuperAdmin ? null : YesNo.NO)
+				.eq(R.User.isSuperAdmin, coreProperties.isModifySuperAdmin() ? null : YesNo.NO)
 				.eq(R.User.deleted, YesNo.NO)
 				.desc(R.User.sort)
 				.desc(R.User.createTime)
@@ -213,7 +218,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 				.likeTrim(R.User.email, email)
 				.likeTrim(R.User.mobile, mobile)
 				.eq(R.User.status, status)
-				.eq(R.User.isSuperAdmin, Constants.operateSuperAdmin ? null : YesNo.NO)
+				.eq(R.User.isSuperAdmin, coreProperties.isModifySuperAdmin() ? null : YesNo.NO)
 				.eq(R.User.deleted, YesNo.NO)
 				.in(R.User.id, ids)
 				.desc(R.User.sort)

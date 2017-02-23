@@ -1,9 +1,9 @@
 package com.easycodebox.auth.core.ws.impl;
 
+import com.easycodebox.auth.core.config.CoreProperties;
 import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.*;
 import com.easycodebox.auth.core.util.CodeMsgExt;
-import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.ws.UserWsService;
 import com.easycodebox.auth.model.bo.user.AuthzInfoBo;
 import com.easycodebox.auth.model.entity.sys.Project;
@@ -47,6 +47,8 @@ public class UserWsServiceImpl implements UserWsService {
 	private RoleProjectService roleProjectService;
 	@Resource
 	private ProjectService projectService;
+	@Resource
+	private CoreProperties coreProperties;
 	
 	@Override
 	public User load(String id) throws ErrorContext {
@@ -74,7 +76,7 @@ public class UserWsServiceImpl implements UserWsService {
 		Assert.notNull(user, CodeMsg.FAIL.msg("没有此用户"));
 		oldPwd = DigestUtils.md5Hex(oldPwd);
 		Assert.isTrue(user.getPassword().equals(oldPwd), CodeMsg.FAIL.msg("密码错误"));
-		if (!Constants.operateSuperAdmin && user.getIsSuperAdmin() == YesNo.YES) {
+		if (!coreProperties.isModifySuperAdmin() && user.getIsSuperAdmin() == YesNo.YES) {
 			throw ErrorContext.instance("您不能修改超级管理员密码");
 		} else {
 			return userService.updatePwd(DigestUtils.md5Hex(newPwd), id);
