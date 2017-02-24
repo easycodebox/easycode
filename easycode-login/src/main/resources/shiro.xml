@@ -23,7 +23,7 @@
 	 -->
 	<bean id="casFilter" class="com.easycodebox.login.shiro.filter.DefaultCasFilter"
 	      p:failureUrl="${failure.url}"
-	      p:reloginUrl="${cas.login.full}&amp;msg={0}"
+	      p:reloginUrl="${cas.login}&amp;msg={0}"
 	      p:logoutUrl="${cas.logout}"/>
 	
 	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter"
@@ -35,7 +35,7 @@
 	
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean"
 	      p:securityManager-ref="securityManager"
-	      p:loginUrl="${cas.login.full}"
+	      p:loginUrl="${cas.login}"
 	      p:unauthorizedUrl="${unauthorized.url}"
 	      p:filterChainDefinitions-ref="filterChainDefinitions"/>
 	
