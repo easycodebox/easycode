@@ -31,6 +31,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -88,7 +89,7 @@ public class CoreConfig {
 	/**
 	 * MyBatis Mapper文件base packages
 	 */
-	private String[] mapperPackages = {
+	private static String[] mapperPackages = {
 			"com.easycodebox.auth.core.dao"
 	};
 	
@@ -98,6 +99,10 @@ public class CoreConfig {
 	@Autowired
 	private Environment environment;
 	
+	/**
+	 * 因{@link PropertySourcesPlaceholderConfigurer}实现了{@link BeanFactoryPostProcessor}接口且类上有{@link Configuration}，
+	 * 所以方法必须是{@code static}
+	 */
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeholder() throws IOException {
 		Properties props = new Properties();
@@ -262,8 +267,12 @@ public class CoreConfig {
 		return new DefaultSqlSessionTemplate(sqlSessionFactory);
 	}
 	
+	/**
+	 * 因{@link MapperScannerConfigurer}实现了{@link BeanFactoryPostProcessor}接口且类上有{@link Configuration}，
+	 * 所以方法必须是{@code static}
+	 */
 	@Bean
-	public MapperScannerConfigurer mapperScannerConfigurer() {
+	public static MapperScannerConfigurer mapperScannerConfigurer() {
 		MapperScannerConfigurer configurer = new MapperScannerConfigurer();
 		configurer.setBasePackage(Strings.join(mapperPackages, Symbol.COMMA));
 		return configurer;
