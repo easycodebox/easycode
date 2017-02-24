@@ -322,7 +322,7 @@ public class CoreConfig {
 	@Bean
 	public FormattingConversionServiceFactoryBean conversionService() {
 		FormattingConversionServiceFactoryBean factoryBean = new FormattingConversionServiceFactoryBean();
-		factoryBean.setConverters(Collections.singleton(StringToEnumConverterFactory.class));
+		factoryBean.setConverters(Collections.singleton(new StringToEnumConverterFactory()));
 		Set<Object> formatters = new HashSet<>();
 		//设置Date类型默认Formatter,全局有效。pattern属性：格式化的默认格式
 		DateFormatter dateFormatter = new DateFormatter();
