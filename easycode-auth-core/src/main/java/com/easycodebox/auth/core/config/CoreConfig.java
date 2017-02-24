@@ -32,7 +32,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.format.datetime.DateFormatter;
@@ -93,6 +95,9 @@ public class CoreConfig {
 	@Autowired
 	private CoreProperties coreProperties;
 	
+	@Autowired
+	private Environment environment;
+	
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeholder() throws IOException {
 		Properties props = new Properties();
@@ -129,6 +134,29 @@ public class CoreConfig {
 		registry.setNameds(new Named[] {commonProperties(), freemarkerProperties(), coreProperties});
 		return registry;
 	}
+	
+	/**
+	 * 把环境变量拷贝到map中，供其他类使用。通过{@link PropertySource}加载的属性文件，最终生成Properties类，
+	 * 而此类是线程安全的，性能会有一定的损耗，应在只读的场景下转成非线程安全的Map
+	 */
+	@Bean
+	@SuppressWarnings("unchecked")
+	public Map properties() {
+		Map props = new HashMap();
+		if (environment instanceof ConfigurableEnvironment) {
+			ConfigurableEnvironment configEnv = (ConfigurableEnvironment) environment;
+			for (org.springframework.core.env.PropertySource<?> source : configEnv.getPropertySources()) {
+				if (source instanceof EnumerablePropertySource) {
+					EnumerablePropertySource eps = (EnumerablePropertySource) source;
+					for (String key : eps.getPropertyNames()) {
+						props.put(key, eps.getProperty(key));
+					}
+				}
+			}
+		}
+		return props;
+	}
+	
 	/**
 	 * 配置日志
 	 */

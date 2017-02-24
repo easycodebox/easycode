@@ -12,7 +12,6 @@ import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
 import java.io.*;
-import java.util.Properties;
 
 /**
  * 快速构建Freemarker生成文件功能类
@@ -44,7 +43,7 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware, Servl
 	
 	private String encoding = "UTF-8";
 	
-	private Properties properties;
+	private Object dataModel;
 	
 	@Override
 	public Object process() {
@@ -57,7 +56,7 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware, Servl
 			Template tpl = cfg.getTemplate(ftlPath);
 			Resource resource = resourceLoader.getResource(outputPath);
 			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resource.getFile()), encoding));
-			tpl.process(properties, out);
+			tpl.process(dataModel, out);
 			log.info("Generate file '{0}' successfully by freemarker.", outputPath);
 		} catch (TemplateException | IOException e) {
 			log.error("Freemarker generate file error.", e);
@@ -108,13 +107,13 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware, Servl
 	public void setClassPathTpl(boolean classPathTpl) {
 		this.classPathTpl = classPathTpl;
 	}
-
-	public Properties getProperties() {
-		return properties;
+	
+	public Object getDataModel() {
+		return dataModel;
 	}
-
-	public void setProperties(Properties properties) {
-		this.properties = properties;
+	
+	public void setDataModel(Object dataModel) {
+		this.dataModel = dataModel;
 	}
 	
 	public FreemarkerProperties getFreemarkerProperties() {
