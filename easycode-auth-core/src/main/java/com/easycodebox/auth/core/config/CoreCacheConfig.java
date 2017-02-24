@@ -4,6 +4,7 @@ import com.easycodebox.common.cache.spring.MethodArgsKeyGenerator;
 import com.easycodebox.common.cache.spring.MultiKeyGenerator;
 import com.easycodebox.common.cache.spring.redis.CustomRedisCacheManager;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,7 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 @Configuration
 @EnableCaching
-public class CoreCacheConfig {
+public class CoreCacheConfig extends CachingConfigurerSupport {
 	
 	@Value("${redis.core.host}")
 	private String redisHost;
@@ -112,6 +113,7 @@ public class CoreCacheConfig {
 	}
 	
 	@Bean
+	@Override
 	public CustomRedisCacheManager cacheManager() {
 		CustomRedisCacheManager cacheManager = new CustomRedisCacheManager(redisTemplate());
 		cacheManager.setUsePrefix(true);
