@@ -27,7 +27,7 @@
 	      p:ftl-path="/config-js.ftl"
 	      p:output-path="/js/config.js"
 	      p:freemarkerProperties-ref="freemarkerProperties"
-	      p:properties-ref="properties"/>
+	      p:dataModel-ref="properties"/>
 	
 	<bean class="com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerMapping"
 	      p:controllerPostfix="Controller">
