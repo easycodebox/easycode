@@ -8,7 +8,7 @@
 	default-lazy-init="true">
 
 	<bean name="/ws/user" class="org.springframework.remoting.caucho.HessianServiceExporter"
-		p:service-ref="UserWsServer"
-		p:serviceInterface="com.easycodebox.auth.core.ws.UserWsService" />
+		p:service-ref="userWsServer"
+		p:serviceInterface="com.easycodebox.login.ws.UserWsService" />
 	
 </beans>
