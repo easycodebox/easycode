@@ -104,7 +104,7 @@ public class CoreConfig {
 	 * 所以方法必须是{@code static}
 	 */
 	@Bean
-	public static PropertySourcesPlaceholderConfigurer placeholder() throws IOException {
+	public static PropertySourcesPlaceholderConfigurer placeholder() {
 		PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
 		configurer.setIgnoreResourceNotFound(true);
 		configurer.setTrimValues(true);
