@@ -105,39 +105,11 @@ public class CoreConfig {
 	 */
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeholder() throws IOException {
-		Properties props = new Properties();
-		props.setProperty("code.suc", Code.SUC_CODE);
-		props.setProperty("code.fail", Code.FAIL_CODE);
-		props.setProperty("code.no.login", Code.NO_LOGIN_CODE);
-		
 		PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
 		configurer.setIgnoreResourceNotFound(true);
 		configurer.setTrimValues(true);
-		configurer.setProperties(props);
+		configurer.setProperties(customProperties());
 		return configurer;
-	}
-	/**
-	 * 配置项刷入Bean中
-	 */
-	@Bean
-	public CommonProperties commonProperties() {
-		return new CommonProperties();
-	}
-	/**
-	 * 配置项刷入Bean中
-	 */
-	@Bean
-	public FreemarkerProperties freemarkerProperties() {
-		return new FreemarkerProperties();
-	}
-	/**
-	 * 配置Bean注册进ServletContext Attributes
-	 */
-	@Bean
-	public ServletContextAttrRegistry servletContextAttrRegistry() {
-		ServletContextAttrRegistry registry = new ServletContextAttrRegistry();
-		registry.setNameds(new Named[] {commonProperties(), freemarkerProperties(), coreProperties});
-		return registry;
 	}
 	
 	/**
@@ -159,7 +131,50 @@ public class CoreConfig {
 				}
 			}
 		}
+		//增加自定义的属性资源
+		Properties custom = customProperties();
+		for (Object key : custom.keySet()) {
+			props.put(key, custom.get(key));
+		}
 		return props;
+	}
+	
+	/**
+	 * 返回自定义的属性资源
+	 * @return
+	 */
+	private static Properties customProperties() {
+		Properties props = new Properties();
+		props.setProperty("code.suc", Code.SUC_CODE);
+		props.setProperty("code.fail", Code.FAIL_CODE);
+		props.setProperty("code.no.login", Code.NO_LOGIN_CODE);
+		return props;
+	}
+	
+	/**
+	 * 配置项刷入Bean中
+	 */
+	@Bean
+	public CommonProperties commonProperties() {
+		return new CommonProperties();
+	}
+	
+	/**
+	 * 配置项刷入Bean中
+	 */
+	@Bean
+	public FreemarkerProperties freemarkerProperties() {
+		return new FreemarkerProperties();
+	}
+	
+	/**
+	 * 配置Bean注册进ServletContext Attributes
+	 */
+	@Bean
+	public ServletContextAttrRegistry servletContextAttrRegistry() {
+		ServletContextAttrRegistry registry = new ServletContextAttrRegistry();
+		registry.setNameds(new Named[] {commonProperties(), freemarkerProperties(), coreProperties});
+		return registry;
 	}
 	
 	/**
@@ -174,6 +189,7 @@ public class CoreConfig {
 	public DetailEnumIdGenTypeParser idGenTypeParser() {
 		return new DetailEnumIdGenTypeParser(IdGeneratorEnum.class);
 	}
+	
 	/**
 	 * 配置枚举类型工厂
 	 */
@@ -190,6 +206,7 @@ public class CoreConfig {
 		bean.setPackagesToScan(entityPackages);
 		return bean;
 	}
+	
 	/**
 	 * 数据源配置 <p/>
 	 * initialSize/minIdle/maxActive ==> 配置初始化大小、最小、最大 <p/>
@@ -285,6 +302,7 @@ public class CoreConfig {
 	public DefaultJdbcHandler jdbcHandler() {
 		return new DefaultJdbcHandler();
 	}
+	
 	/**
 	 * jdbc处理器，实际处理sql的类
 	 */
