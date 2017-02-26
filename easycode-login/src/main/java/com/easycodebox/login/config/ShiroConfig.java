@@ -1,6 +1,7 @@
 package com.easycodebox.login.config;
 
 import com.easycodebox.common.cache.spring.redis.CustomRedisCacheManager;
+import com.easycodebox.common.filter.SecurityContextFilter;
 import com.easycodebox.login.shiro.ShiroSecurityInfoHandler;
 import com.easycodebox.login.shiro.cache.spring.RedisTemplateCacheStats;
 import com.easycodebox.login.shiro.cache.spring.SpringCacheManager;
@@ -27,6 +28,8 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * @author WangXiaoJin
@@ -65,16 +68,22 @@ public class ShiroConfig {
 	/**
 	 * Shiro权限配置文件
 	 */
-	@Value("${shiro.filter.file:classpath:shiro-filter.properties}")
+	@Value("${shiro.filter.file:classpath:shiro-filterResource.properties}")
 	private String shiroFilterFile;
 	
-	@Autowired
+	@Resource
 	private CustomRedisCacheManager shiroCacheManager;
 	
-	@Autowired
+	@Resource
 	private RedisTemplateCacheStats cacheStats;
 	
-	@Autowired
+	/**
+	 * 此处不能换成{@link Autowired}，因为{@link Autowired}会根据类型来进行匹配，而easycode-auth-core包中
+	 * 有一个{@code UserWsServiceImpl}类，所以会直接依赖core包里的实例，
+	 * 不会依赖{@link WsClientConfig#userWsService()}实例，这和Spring的实例初始化顺序有关。就算你用了
+	 * {@link Autowired}、{@link org.springframework.beans.factory.annotation.Qualifier}组合也不能解决上述问题。
+	 */
+	@Resource
 	private UserWsService userWsService;
 	
 	/**
@@ -83,6 +92,16 @@ public class ShiroConfig {
 	@Bean
 	public ShiroSecurityInfoHandler securityInfoHandler() {
 		return new ShiroSecurityInfoHandler();
+	}
+	
+	/**
+	 * Security Info拦截器
+	 */
+	@Bean
+	public SecurityContextFilter securityFilter() {
+		SecurityContextFilter filter = new SecurityContextFilter();
+		filter.setSecurityInfoHandler(securityInfoHandler());
+		return filter;
 	}
 	
 	/**
@@ -266,10 +285,14 @@ public class ShiroConfig {
 		return manager;
 	}
 	
-	/**
-	 * 让spring管理的bean支持@RequiresPermissions、 @RequiresRoles等权限验证注解
+	/* ------------------------  BEGIN  --------------------------------------- */
+	/*
+		让spring管理的bean支持@RequiresPermissions、 @RequiresRoles等权限验证注解
+		使用此功能时需要注意：项目中同时使用DefaultAdvisorAutoProxyCreator、<aop:config />、<aop:aspectj-autoproxy/>
+		时，可能会出现Double Proxy和代理混乱的情况，使用之前请充分测试，尽量只用一个。
+		easycode项目没用到基于注解的权限控制，都是走Url控制的，所以此功能我没有全面测试。
 	 */
-	@Bean
+	/*@Bean
 	@DependsOn("lifecycleBeanPostProcessor")
 	public static DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
 		return new DefaultAdvisorAutoProxyCreator();
@@ -280,7 +303,8 @@ public class ShiroConfig {
 		AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
 		advisor.setSecurityManager(securityManager());
 		return advisor;
-	}
+	}*/
+	/* ------------------------  END  --------------------------------------- */
 	
 	/*@Bean
 	public Cas30ProxyReceivingTicketValidationFilter ticketValidationFilter() {

@@ -10,13 +10,11 @@ import com.easycodebox.common.Named;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.EnumClassFactory;
 import com.easycodebox.common.error.CodeMsg.Code;
-import com.easycodebox.common.filter.SecurityContextFilter;
 import com.easycodebox.common.freemarker.FreemarkerProperties;
 import com.easycodebox.common.idconverter.*;
 import com.easycodebox.common.idgenerator.DetailEnumIdGenTypeParser;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.security.SecurityInfoHandler;
 import com.easycodebox.common.servlet.ServletContextAttrRegistry;
 import com.easycodebox.common.spring.ApplicationContextFactory;
 import com.easycodebox.common.spring.StringToEnumConverterFactory;
@@ -30,7 +28,6 @@ import org.apache.ibatis.session.AutoMappingBehavior;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.PropertySource;
@@ -44,7 +41,6 @@ import org.springframework.format.support.FormattingConversionServiceFactoryBean
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -93,10 +89,10 @@ public class CoreConfig {
 			"com.easycodebox.auth.core.dao"
 	};
 	
-	@Autowired
+	@javax.annotation.Resource
 	private CoreProperties coreProperties;
 	
-	@Autowired
+	@javax.annotation.Resource
 	private Environment environment;
 	
 	/**
@@ -336,15 +332,6 @@ public class CoreConfig {
 		return registry;
 	}
 	/* =================================== 【ID转换器 - END 】  ============================================== */
-	
-	/* =============================== 【security info拦截器 - START】  ======================================= */
-	@Bean
-	public SecurityContextFilter securityFilter(SecurityInfoHandler securityInfoHandler) {
-		SecurityContextFilter filter = new SecurityContextFilter();
-		filter.setSecurityInfoHandler(securityInfoHandler);
-		return filter;
-	}
-	/* =============================== 【security info拦截器 - END 】  ======================================= */
 	
 	@Bean
 	public FormattingConversionServiceFactoryBean conversionService() {
