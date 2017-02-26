@@ -16,7 +16,6 @@ import org.apache.shiro.cas.CasSubjectFactory;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
-import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.config.IniFilterChainResolverFactory;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
@@ -24,7 +23,6 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
@@ -68,7 +66,7 @@ public class ShiroConfig {
 	/**
 	 * Shiro权限配置文件
 	 */
-	@Value("${shiro.filter.file:classpath:shiro-filterResource.properties}")
+	@Value("${shiro.filter.file:classpath:shiro-filter.properties}")
 	private String shiroFilterFile;
 	
 	@Resource
