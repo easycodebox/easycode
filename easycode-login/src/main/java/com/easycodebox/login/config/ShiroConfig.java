@@ -250,18 +250,19 @@ public class ShiroConfig {
 	}
 	
 	@Bean
-	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+	public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
 	}
 	
 	@Bean
 	public DefaultWebSecurityManager securityManager() {
 		DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
-		manager.setSessionManager(sessionManager());
-		manager.setCacheManager(securityCacheManager());
-		manager.setRealm(casRealm());
+		//authenticator必须在realm前面设值，因为setRealm时会有条件的设置authenticator里的realm
 		manager.setAuthenticator(authenticator());
 		manager.setSubjectFactory(casSubjectFactory());
+		manager.setCacheManager(securityCacheManager());
+		manager.setSessionManager(sessionManager());
+		manager.setRealm(casRealm());
 		return manager;
 	}
 	
@@ -269,7 +270,8 @@ public class ShiroConfig {
 	 * 让spring管理的bean支持@RequiresPermissions、 @RequiresRoles等权限验证注解
 	 */
 	@Bean
-	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+	@DependsOn("lifecycleBeanPostProcessor")
+	public static DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
 		return new DefaultAdvisorAutoProxyCreator();
 	}
 	
