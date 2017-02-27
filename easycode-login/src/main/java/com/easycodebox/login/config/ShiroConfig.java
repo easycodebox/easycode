@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -88,9 +89,6 @@ public class ShiroConfig {
 	@Autowired(required = false)
 	private AuthenticationStrategy authenticationStrategy;
 	
-	/**
-	 * 获取所有的Realm
-	 */
 	@Autowired
 	private List<Realm> realms;
 	
@@ -279,6 +277,18 @@ public class ShiroConfig {
 	
 	@Bean
 	public DefaultWebSecurityManager securityManager() {
+		realms = realms == null ? new ArrayList<Realm>() : realms;
+		boolean existCasRealm = false;
+		for (Realm realm : realms) {
+			if (realm == casRealm()) {
+				existCasRealm = true;
+				break;
+			}
+		}
+		if (!existCasRealm) {
+			realms.add(0, casRealm());
+		}
+		
 		DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
 		//authenticator必须在realm前面设值，因为setRealm时会有条件的设置authenticator里的realm
 		manager.setAuthenticator(authenticator());
