@@ -3,6 +3,7 @@ package com.easycodebox.auth.backend.config;
 import com.easycodebox.common.freemarker.FreemarkerGenerate;
 import com.easycodebox.common.freemarker.FreemarkerProperties;
 import com.easycodebox.common.web.springmvc.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
@@ -32,10 +33,10 @@ import java.util.Map;
 })
 public class ServletConfig extends DelegatingWebMvcConfiguration {
 	
-	@Resource
+	@Autowired
 	private FreemarkerProperties freemarkerProperties;
 	
-	@Resource
+	@Autowired
 	private FormattingConversionService conversionService;
 	
 	@Resource

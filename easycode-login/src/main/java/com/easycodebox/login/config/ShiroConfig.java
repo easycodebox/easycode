@@ -71,10 +71,10 @@ public class ShiroConfig {
 	@Value("${shiro.filter.file:classpath:shiro-filter.properties}")
 	private String shiroFilterFile;
 	
-	@Resource
+	@Autowired
 	private CustomRedisCacheManager shiroCacheManager;
 	
-	@Resource
+	@Autowired
 	private RedisTemplateCacheStats cacheStats;
 	
 	/**

@@ -28,6 +28,7 @@ import org.apache.ibatis.session.AutoMappingBehavior;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.PropertySource;
@@ -89,10 +90,10 @@ public class CoreConfig {
 			"com.easycodebox.auth.core.dao"
 	};
 	
-	@javax.annotation.Resource
+	@Autowired
 	private CoreProperties coreProperties;
 	
-	@javax.annotation.Resource
+	@Autowired
 	private Environment environment;
 	
 	/**
