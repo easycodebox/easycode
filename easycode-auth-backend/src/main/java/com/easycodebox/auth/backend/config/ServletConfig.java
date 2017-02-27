@@ -74,6 +74,11 @@ public class ServletConfig extends DelegatingWebMvcConfiguration {
 		return new AcceptHeaderLocaleResolver();
 	}
 	
+	/**
+	 * freemarker的配置 <p/>
+	 * 因为依赖easycode-idgenerator模块，用到了此模块的模板，所以增加了【classpath:/META-INF/resources/】loaderPath。 <p/>
+	 * 如果模板统一存于相同路径下，则使用FreeMarkerViewResolver的suffix属性配置。
+	 */
 	@Bean
 	public FreeMarkerConfigurer freemarkerConfig() {
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
