@@ -14,10 +14,10 @@ import com.easycodebox.common.web.BaseController;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,9 +28,9 @@ import java.util.List;
 @Controller
 public class GroupController extends BaseController {
 	
-	@Resource
+	@Autowired
 	private UserIdConverter userIdConverter;
-	@Resource
+	@Autowired
 	private GroupService groupService;
 
 	/**

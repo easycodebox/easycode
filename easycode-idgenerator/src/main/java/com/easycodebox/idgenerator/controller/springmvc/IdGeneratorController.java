@@ -9,11 +9,10 @@ import com.easycodebox.common.validate.Validators;
 import com.easycodebox.common.web.BaseController;
 import com.easycodebox.idgenerator.entity.IdGenerator;
 import com.easycodebox.idgenerator.service.IdGeneratorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.annotation.Resource;
 
 /**
  * @author WangXiaoJin
@@ -22,9 +21,9 @@ import javax.annotation.Resource;
 @Controller
 public class IdGeneratorController extends BaseController {
 	
-	@Resource
+	@Autowired
 	private UserIdConverter userIdConverter;
-	@Resource
+	@Autowired
 	private IdGeneratorService idGeneratorService;
 	
 	@GetMapping("/idGenerator")

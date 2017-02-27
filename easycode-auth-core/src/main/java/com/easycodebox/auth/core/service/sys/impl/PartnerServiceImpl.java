@@ -11,26 +11,26 @@ import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.idconverter.UserIdConverter;
+import com.easycodebox.common.idgenerator.IdGenerators;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.common.idgenerator.IdGenerators;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * @author WangXiaoJin
  *
  */
-@Service("partnerService")
+@Service
 public class PartnerServiceImpl extends AbstractServiceImpl<Partner> implements PartnerService {
 
-	@Resource
+	@Autowired
 	private UserIdConverter userIdConverter;
 	
 	@Override

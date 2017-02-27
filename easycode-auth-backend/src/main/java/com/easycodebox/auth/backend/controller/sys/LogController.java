@@ -8,10 +8,9 @@ import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.validate.Validators;
 import com.easycodebox.common.web.BaseController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.annotation.Resource;
 
 /**
  * @author WangXiaoJin
@@ -20,9 +19,9 @@ import javax.annotation.Resource;
 @Controller
 public class LogController extends BaseController {
 	
-	@Resource
+	@Autowired
 	private UserIdConverter userIdConverter;
-	@Resource
+	@Autowired
 	private LogService logService;
 
 	/**

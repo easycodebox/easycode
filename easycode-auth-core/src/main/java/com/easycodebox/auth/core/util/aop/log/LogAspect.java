@@ -13,10 +13,10 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -42,7 +42,7 @@ public final class LogAspect implements Ordered {
 	 * 2. 增加@Lazy配置，如下
 	 */
 	@Lazy
-	@Resource
+	@Autowired
 	private LogService logService;
 	
 	@Override

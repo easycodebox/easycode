@@ -2,13 +2,15 @@ package com.easycodebox.auth.core.service.user.impl;
 
 import com.easycodebox.auth.core.config.CoreProperties;
 import com.easycodebox.auth.core.service.user.UserService;
-import com.easycodebox.auth.core.util.*;
+import com.easycodebox.auth.core.util.CodeMsgExt;
+import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.aop.log.Log;
 import com.easycodebox.auth.model.entity.user.User;
+import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.auth.model.enums.ModuleType;
 import com.easycodebox.auth.model.util.R;
-import com.easycodebox.auth.model.enums.IdGeneratorEnum;
-import com.easycodebox.common.enums.entity.*;
+import com.easycodebox.common.enums.entity.OpenClose;
+import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.idgenerator.IdGenerators;
 import com.easycodebox.common.lang.Strings;
@@ -17,20 +19,20 @@ import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.JoinType;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * @author WangXiaoJin
  */
-@Service("userService")
+@Service
 public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
 	
-	@Resource
+	@Autowired
 	private CoreProperties coreProperties;
 	
 	@Override

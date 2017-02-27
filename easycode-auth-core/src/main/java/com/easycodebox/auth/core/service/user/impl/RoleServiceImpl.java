@@ -14,24 +14,24 @@ import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * @author WangXiaoJin
  *
  */
-@Service("roleService")
+@Service
 public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleService {
 
-	@Resource
+	@Autowired
 	private UserIdConverter userIdConverter;
 	
-	@Resource
+	@Autowired
 	private RoleMapper roleMapper;
 	
 	@Override

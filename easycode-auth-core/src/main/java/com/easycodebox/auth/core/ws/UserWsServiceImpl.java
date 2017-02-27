@@ -19,10 +19,10 @@ import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.login.ws.UserWsService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,19 +35,19 @@ public class UserWsServiceImpl implements UserWsService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	@Resource
+	@Autowired
 	private UserService userService;
-	@Resource
+	@Autowired
 	private GroupService groupService;
-	@Resource
+	@Autowired
 	private RoleService roleService;
-	@Resource
+	@Autowired
 	private PermissionService permissionService;
-	@Resource
+	@Autowired
 	private RoleProjectService roleProjectService;
-	@Resource
+	@Autowired
 	private ProjectService projectService;
-	@Resource
+	@Autowired
 	private CoreProperties coreProperties;
 	
 	@Override

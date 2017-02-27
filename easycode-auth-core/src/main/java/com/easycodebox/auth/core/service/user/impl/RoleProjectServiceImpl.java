@@ -1,12 +1,5 @@
 package com.easycodebox.auth.core.service.user.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.RoleProjectService;
 import com.easycodebox.auth.core.util.aop.log.Log;
@@ -17,15 +10,20 @@ import com.easycodebox.auth.model.util.R;
 import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author WangXiaoJin
  *
  */
-@Service("roleProjectService")
+@Service
 public class RoleProjectServiceImpl extends AbstractServiceImpl<RoleProject> implements RoleProjectService {
 
-	@Resource
+	@Autowired
 	private ProjectService projectService;
 	
 	@Override

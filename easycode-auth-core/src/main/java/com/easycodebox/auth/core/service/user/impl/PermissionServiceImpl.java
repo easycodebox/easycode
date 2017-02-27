@@ -25,12 +25,12 @@ import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.io.*;
 import java.util.*;
 
@@ -39,22 +39,22 @@ import static com.easycodebox.common.lang.Strings.*;
 /**
  * @author WangXiaoJin
  */
-@Service("permissionService")
+@Service
 public class PermissionServiceImpl extends AbstractServiceImpl<Permission> implements PermissionService {
 	
-	@Resource
+	@Autowired
 	private UserIdConverter userIdConverter;
 	
-	@Resource
+	@Autowired
 	private RoleService roleService;
-	@Resource
+	@Autowired
 	private UserService userService;
-	@Resource
+	@Autowired
 	private ProjectService projectService;
-	@Resource
+	@Autowired
 	private RoleProjectService roleProjectService;
 	
-	@Resource
+	@Autowired
 	private PermissionMapper permissionMapper;
 	
 	@Override

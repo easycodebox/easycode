@@ -10,10 +10,10 @@ import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.validate.Validators;
 import com.easycodebox.common.web.BaseController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,9 +23,9 @@ import java.util.List;
 @Controller
 public class ProjectController extends BaseController {
 	
-	@Resource
+	@Autowired
 	private UserIdConverter userIdConverter;
-	@Resource
+	@Autowired
 	private ProjectService projectService;
 
 	/**

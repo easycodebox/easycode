@@ -9,20 +9,20 @@ import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * @author WangXiaoJin
  *
  */
-@Service("logService")
+@Service
 public class LogServiceImpl extends AbstractServiceImpl<Log> implements LogService {
 
-	@Resource
+	@Autowired
 	private UserIdConverter userIdConverter;
 	
 	@Override

@@ -13,11 +13,11 @@ import com.easycodebox.idgenerator.service.IdGeneratorService;
 import com.easycodebox.idgenerator.util.R;
 import com.easycodebox.jdbc.LockMode;
 import com.easycodebox.jdbc.support.AbstractServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -28,15 +28,15 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  */
 @Transactional
-@Service("idGeneratorService")
+@Service
 public class IdGeneratorServiceImpl extends AbstractServiceImpl<IdGenerator> implements IdGeneratorService {
 
 	private Lock lock = new ReentrantLock();
 	
-	@Resource
+	@Autowired
 	private UserIdConverter userIdConverter;
 	
-	@Resource
+	@Autowired
 	private AbstractIdGenTypeParser idGenTypeParser;
 	
 	@Override
