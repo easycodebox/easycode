@@ -86,7 +86,7 @@ public class CoreConfig {
 	/**
 	 * MyBatis Mapper文件base packages
 	 */
-	private static String[] mapperPackages = {
+	private static final String[] mapperPackages = {
 			"com.easycodebox.auth.core.dao"
 	};
 	
