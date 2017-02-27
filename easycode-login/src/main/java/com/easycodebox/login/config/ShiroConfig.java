@@ -10,10 +10,10 @@ import com.easycodebox.login.shiro.permission.UrlWildcardPermissionResolver;
 import com.easycodebox.login.shiro.realm.DefaultCasRealm;
 import com.easycodebox.login.ws.UserWsService;
 import org.apache.commons.collections.MapUtils;
-import org.apache.shiro.authc.pam.AllSuccessfulStrategy;
-import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
+import org.apache.shiro.authc.pam.*;
 import org.apache.shiro.cas.CasSubjectFactory;
 import org.apache.shiro.config.Ini;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author WangXiaoJin
@@ -83,6 +84,15 @@ public class ShiroConfig {
 	 */
 	@Resource
 	private UserWsService userWsService;
+	
+	@Autowired(required = false)
+	private AuthenticationStrategy authenticationStrategy;
+	
+	/**
+	 * 获取所有的Realm
+	 */
+	@Autowired
+	private List<Realm> realms;
 	
 	/**
 	 * 操作SecurityInfo
@@ -244,17 +254,13 @@ public class ShiroConfig {
 	}
 	
 	/**
-	 * 多个realm时必须所有的realm都验证通过
+	 * 默认使用{@link AllSuccessfulStrategy}策略，即必须全部验证通过
 	 */
 	@Bean
-	public AllSuccessfulStrategy allSuccessfulStrategy() {
-		return new AllSuccessfulStrategy();
-	}
-	
-	@Bean
 	public ModularRealmAuthenticator authenticator() {
+		AuthenticationStrategy auth = authenticationStrategy == null ? new AllSuccessfulStrategy() : authenticationStrategy;
 		ModularRealmAuthenticator authenticator = new ModularRealmAuthenticator();
-		authenticator.setAuthenticationStrategy(allSuccessfulStrategy());
+		authenticator.setAuthenticationStrategy(auth);
 		return authenticator;
 	}
 	
@@ -279,7 +285,7 @@ public class ShiroConfig {
 		manager.setSubjectFactory(casSubjectFactory());
 		manager.setCacheManager(securityCacheManager());
 		manager.setSessionManager(sessionManager());
-		manager.setRealm(casRealm());
+		manager.setRealms(realms);
 		return manager;
 	}
 	
