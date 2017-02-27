@@ -3,48 +3,48 @@ package com.easycodebox.auth.backend.config;
 import com.easycodebox.common.freemarker.FreemarkerGenerate;
 import com.easycodebox.common.freemarker.FreemarkerProperties;
 import com.easycodebox.common.web.springmvc.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
-import org.springframework.core.convert.ConversionService;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-import java.util.*;
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Spring MVC 配置
  * @author WangXiaoJin
  */
 @Configuration
-@EnableWebMvc
 @ComponentScan(basePackages = {
 		"com.easycodebox.auth.backend.controller",
 		"com.easycodebox.idgenerator.controller"
 })
-public class ServletConfig extends WebMvcConfigurerAdapter {
+public class ServletConfig extends DelegatingWebMvcConfiguration {
 	
-	@Autowired
+	@Resource
 	private FreemarkerProperties freemarkerProperties;
 	
-	@Autowired
-	private ConversionService conversionService;
+	@Resource
+	private FormattingConversionService conversionService;
 	
-	@Autowired
+	@Resource
 	private Map properties;
 	
 	/**
 	 * 生成JS的配置文件
 	 */
-	@Bean
+	@Bean(initMethod = "process")
 	public FreemarkerGenerate freemarkerGenerate() {
 		FreemarkerGenerate generate = new FreemarkerGenerate();
 		generate.setFtlPath("/config-js.ftl");
@@ -54,8 +54,8 @@ public class ServletConfig extends WebMvcConfigurerAdapter {
 		return generate;
 	}
 	
-	@Bean
-	public DefaultRequestMappingHandlerMapping defaultRequestMappingHandlerMapping() {
+	@Override
+	protected RequestMappingHandlerMapping createRequestMappingHandlerMapping() {
 		DefaultRequestMappingHandlerMapping mapping = new DefaultRequestMappingHandlerMapping();
 		mapping.setControllerPostfix("Controller");
 		mapping.setExcludePatterns(new String[]{
@@ -73,20 +73,6 @@ public class ServletConfig extends WebMvcConfigurerAdapter {
 		return new AcceptHeaderLocaleResolver();
 	}
 	
-	/**
-	 * JSP配置
-	 */
-	/*@Bean
-	public InternalResourceViewResolver internalResourceViewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/jsp/");
-		resolver.setSuffix(".jsp");
-		resolver.setOrder(2);
-		resolver.setContentType("text/html;charset=utf-8");
-		resolver.setViewClass(JstlView.class);
-		return resolver;
-	}*/
-	
 	@Bean
 	public FreeMarkerConfigurer freemarkerConfig() {
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
@@ -100,8 +86,9 @@ public class ServletConfig extends WebMvcConfigurerAdapter {
 	/**
 	 * freemarker视图设置
 	 */
-	@Bean
-	public FreeMarkerViewResolver viewResolver() {
+	@Override
+	protected void configureViewResolvers(ViewResolverRegistry registry) {
+		super.configureViewResolvers(registry);
 		FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
 		resolver.setSuffix(".html");
 		resolver.setOrder(1);
@@ -110,13 +97,16 @@ public class ServletConfig extends WebMvcConfigurerAdapter {
 		resolver.setExposeRequestAttributes(true);
 		resolver.setExposeSpringMacroHelpers(true);
 		resolver.setRequestContextAttribute("request");
-		return resolver;
+		registry.viewResolver(resolver);
 	}
 	
-	/*
-	<!-- Support static resource -->
-	<mvc:default-servlet-handler/>
-	*/
+	/**
+	 * 启用默认Servlet
+	 */
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		configurer.enable();
+	}
 	
 	/**
 	 * 文件上传 <p/>
@@ -132,50 +122,28 @@ public class ServletConfig extends WebMvcConfigurerAdapter {
 		return resolver;
 	}
 	
-	/* -------- 异常处理 ------------ */
-	/*@Bean
-	public FreeMarkerViewResolver errorViewResolver() {
-		FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
-		resolver.setPrefix("/errors/");
-		resolver.setSuffix(".html");
-		resolver.setOrder(2);
-		resolver.setContentType("text/html;charset=utf-8");
-		resolver.setViewClass(FreeMarkerView.class);
-		resolver.setExposeRequestAttributes(true);
-		resolver.setExposeSpringMacroHelpers(true);
-		resolver.setRequestContextAttribute("request");
-		return resolver;
+	@Override
+	protected RequestMappingHandlerAdapter createRequestMappingHandlerAdapter() {
+		DefaultRequestMappingHandlerAdapter adapter = new DefaultRequestMappingHandlerAdapter();
+		adapter.setAutoView(true);
+		return adapter;
 	}
 	
 	@Bean
-	public DefaultMappingExceptionResolver exceptionResolver() {
-		Properties props = new Properties();
-		props.setProperty("com.easycodebox.common.error.ErrorContext", "500");
-		props.setProperty("java.lang.Exception", "500");
-		DefaultMappingExceptionResolver resolver = new DefaultMappingExceptionResolver();
-		resolver.setDefaultErrorView("500");
-		resolver.setExceptionMappings(props);
-		return resolver;
-	}*/
+	@Override
+	public FormattingConversionService mvcConversionService() {
+		addFormatters(conversionService);
+		return conversionService;
+	}
 	
-	@Bean
-	public DefaultRequestMappingHandlerAdapter defaultRequestMappingHandlerAdapter() {
-		DefaultRequestMappingHandlerAdapter adapter = new DefaultRequestMappingHandlerAdapter();
-		ConfigurableWebBindingInitializer webBindingInitializer = new ConfigurableWebBindingInitializer();
-		webBindingInitializer.setConversionService(conversionService);
-		adapter.setWebBindingInitializer(webBindingInitializer);
-		adapter.setAutoView(true);
-		
-		List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+	@Override
+	protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();
 		stringHttpMessageConverter.setSupportedMediaTypes(MediaType.parseMediaTypes("text/plain;charset=UTF-8"));
 		MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
 		jackson2HttpMessageConverter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/json;charset=UTF-8"));
-		messageConverters.add(stringHttpMessageConverter);
-		messageConverters.add(jackson2HttpMessageConverter);
-				
-		adapter.setMessageConverters(messageConverters);
-		return adapter;
+		converters.add(stringHttpMessageConverter);
+		converters.add(jackson2HttpMessageConverter);
 	}
 	
 }
