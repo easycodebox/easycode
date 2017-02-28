@@ -119,7 +119,7 @@ public class ShiroConfig {
 	public DefaultCasFilter casFilter() {
 		DefaultCasFilter filter = new DefaultCasFilter();
 		filter.setFailureUrl(failureUrl);
-		filter.setReloginUrl(casLogin + "&amp;msg={0}");
+		filter.setReloginUrl(casLogin + "&msg={0}");
 		filter.setLogoutUrl(casLogout);
 		return filter;
 	}
