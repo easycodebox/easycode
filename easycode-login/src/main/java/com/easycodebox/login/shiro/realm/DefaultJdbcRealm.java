@@ -1,11 +1,10 @@
 package com.easycodebox.login.shiro.realm;
 
-import javax.sql.DataSource;
-
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import com.easycodebox.common.enums.entity.LogLevel;
+import com.easycodebox.common.error.ErrorContext;
+import com.easycodebox.common.log.slf4j.Logger;
+import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.cas.CasToken;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
@@ -16,10 +15,7 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.easycodebox.common.enums.entity.LogLevel;
-import com.easycodebox.common.error.ErrorContext;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import javax.sql.DataSource;
 
 /**
  * 
@@ -32,6 +28,10 @@ public class DefaultJdbcRealm extends JdbcRealm {
 	
 	private JdbcTemplate jdbcTemplate;
 	private String authFailMsg;
+	/**
+	 * 如果在Session共享的模式下，rowMapper转换的数据类型必须所有的服务都认识，不然其他登录其他服务时会抛序列化数据异常，
+	 * 此时建议不要设置rowMapper，默认返回Map类型
+	 */
 	private RowMapper<?> rowMapper;
 	
 	public DefaultJdbcRealm() {
