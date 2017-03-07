@@ -101,16 +101,6 @@ public class ShiroConfig {
 	}
 	
 	/**
-	 * Security Info拦截器
-	 */
-	@Bean
-	public SecurityContextFilter securityFilter() {
-		SecurityContextFilter filter = new SecurityContextFilter();
-		filter.setSecurityInfoHandler(securityInfoHandler());
-		return filter;
-	}
-	
-	/**
 	 * failureUrl: 配置验证错误时的失败页面
 	 * <p/>
 	 * reloginUrl: 验证错误后显示登录页面，并提示错误信息。只试用于ErrorContext异常

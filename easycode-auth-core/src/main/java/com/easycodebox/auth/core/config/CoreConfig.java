@@ -6,7 +6,6 @@ import com.easycodebox.auth.core.service.user.UserService;
 import com.easycodebox.auth.core.util.aop.log.LogAspect;
 import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.CommonProperties;
-import com.easycodebox.common.Named;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.EnumClassFactory;
 import com.easycodebox.common.error.CodeMsg.Code;
@@ -15,7 +14,6 @@ import com.easycodebox.common.idconverter.*;
 import com.easycodebox.common.idgenerator.DetailEnumIdGenTypeParser;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.servlet.ServletContextAttrRegistry;
 import com.easycodebox.common.spring.ApplicationContextFactory;
 import com.easycodebox.common.spring.StringToEnumConverterFactory;
 import com.easycodebox.jdbc.config.ConfigEntityBean;
@@ -162,16 +160,6 @@ public class CoreConfig {
 	@Bean
 	public FreemarkerProperties freemarkerProperties() {
 		return new FreemarkerProperties();
-	}
-	
-	/**
-	 * 配置Bean注册进ServletContext Attributes
-	 */
-	@Bean
-	public ServletContextAttrRegistry servletContextAttrRegistry() {
-		ServletContextAttrRegistry registry = new ServletContextAttrRegistry();
-		registry.setNameds(new Named[] {commonProperties(), freemarkerProperties(), coreProperties});
-		return registry;
 	}
 	
 	/**

@@ -14,6 +14,7 @@
 		<param-value>
 			com.easycodebox.login.config.WsClientConfig
 			com.easycodebox.auth.core.config.CoreConfig
+			com.easycodebox.auth.backend.config.ServletConfig
 			com.easycodebox.login.config.ShiroConfig
         </param-value>
 	</context-param>
@@ -130,7 +131,7 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				com.easycodebox.auth.backend.config.ServletConfig
+				com.easycodebox.auth.backend.config.SpringMvcConfig
 				com.easycodebox.login.config.WsServerConfig
 			</param-value>
 		</init-param>
