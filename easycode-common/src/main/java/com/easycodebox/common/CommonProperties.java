@@ -39,8 +39,8 @@ public class CommonProperties extends NamedSupport {
 	/**
 	 * 当前项目的根路径：http://www.xxx.com
 	 */
-	@Value("${base_path}")
-	private String basePath;
+	@Value("${base_path:/}")
+	private String basePath = "/";
 	/**
 	 * 图片根地址
 	 * 注意：子类实现此配置
