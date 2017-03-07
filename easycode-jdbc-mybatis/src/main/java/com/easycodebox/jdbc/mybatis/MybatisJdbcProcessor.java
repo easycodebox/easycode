@@ -128,7 +128,7 @@ public class MybatisJdbcProcessor implements JdbcProcessor {
 		statementBuilder.databaseId(sqlGrammar.getDatabaseId());
 		statementBuilder.lang(getLanguageDriver(sqlGrammar.getLang()));
 		statementBuilder.resultOrdered(sqlGrammar.isResultOrdered());
-		statementBuilder.resulSets(sqlGrammar.getResultSets());
+		statementBuilder.resultSets(sqlGrammar.getResultSets());
 		statementBuilder.timeout(configuration.getDefaultStatementTimeout());
 
 		setStatementParameterMap(null, parameterType, statementBuilder);
