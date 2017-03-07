@@ -14,9 +14,9 @@
 		<param-value>
 			com.easycodebox.login.config.WsClientConfig
 			com.easycodebox.auth.core.config.CoreConfig
-			com.easycodebox.auth.backend.config.ServletConfig
+			com.easycodebox.auth.core.config.ServletConfig
 			com.easycodebox.login.config.ShiroConfig
-        </param-value>
+		</param-value>
 	</context-param>
 	<context-param>
 		<param-name>webAppRootKey</param-name>

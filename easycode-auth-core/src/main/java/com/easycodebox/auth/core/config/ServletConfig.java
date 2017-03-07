@@ -1,4 +1,4 @@
-package com.easycodebox.auth.backend.config;
+package com.easycodebox.auth.core.config;
 
 import com.easycodebox.auth.core.config.CoreProperties;
 import com.easycodebox.common.CommonProperties;
@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Servlet 配置
+ * Servlet 配置 <br/>
+ * 因为此配置为通用配置，所以放在core包里
  * @author WangXiaoJin
  */
 @Configuration
