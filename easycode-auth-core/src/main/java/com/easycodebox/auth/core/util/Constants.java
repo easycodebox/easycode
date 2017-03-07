@@ -7,13 +7,20 @@ package com.easycodebox.auth.core.util;
 public class Constants {
 	
 	/**
+	 * 集成测试KEY
+	 */
+	public static final String INTEGRATION_TEST_KEY = "integrationTest";
+	
+	/**
 	 * 混合存储缓存的KeyGenerator bean name
 	 */
 	public static final String METHOD_ARGS_KEY_GENERATOR = "methodArgsKeyGenerator";
+	
 	/**
 	 * 批量删除缓存的KeyGenerator bean name
 	 */
 	public static final String MULTI_KEY_GENERATOR = "multiKeyGenerator";
+	
 	/**
 	 * CacheName的缩写
 	 */

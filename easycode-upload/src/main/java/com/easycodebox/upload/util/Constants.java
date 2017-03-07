@@ -24,6 +24,11 @@ public class Constants {
 	}
 	
 	/**
+	 * 集成测试KEY
+	 */
+	public static final String INTEGRATION_TEST_KEY = "integrationTest";
+	
+	/**
 	 * 上传多个文件时，是否事务控制。即当一个文件上传失败，所有的文件都上传失败 <br>
 	 * 当没用事务时，上传文件失败的错误信息会存放在fileInfo中error属性中，否则错误信息存放于CodeMsg的msg属性。<br>
 	 * transaction 默认值: false。

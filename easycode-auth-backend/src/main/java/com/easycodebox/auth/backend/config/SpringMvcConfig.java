@@ -5,6 +5,7 @@ import com.easycodebox.common.freemarker.FreemarkerProperties;
 import com.easycodebox.common.web.springmvc.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -24,13 +25,17 @@ import java.util.Map;
 
 /**
  * Spring MVC 配置
+ *
  * @author WangXiaoJin
  */
 @Configuration
-@ComponentScan(basePackages = {
-		"com.easycodebox.auth.backend.controller",
-		"com.easycodebox.idgenerator.controller"
-})
+@ComponentScan(
+		basePackages = {
+				"com.easycodebox.auth.backend.controller",
+				"com.easycodebox.idgenerator.controller"
+		},
+		excludeFilters = @Filter(Configuration.class)
+)
 public class SpringMvcConfig extends DelegatingWebMvcConfiguration {
 	
 	@Autowired
@@ -117,6 +122,7 @@ public class SpringMvcConfig extends DelegatingWebMvcConfiguration {
 	/**
 	 * 文件上传 <p/>
 	 * maxUploadSize="32505856" ==> 上传文件大小限制为31M，31*1024*1024
+	 *
 	 * @return
 	 */
 	@Bean
