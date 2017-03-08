@@ -11,10 +11,17 @@ public class FreemarkerProperties extends NamedSupport {
 	
 	public static final String DEFAULT_NAME = FreemarkerProperties.class.getName();
 	
-	private static FreemarkerProperties INSTANCE;
+	private static volatile FreemarkerProperties instance;
 	
 	public static FreemarkerProperties instance() {
-		return INSTANCE == null ? (INSTANCE = new FreemarkerProperties()) : INSTANCE;
+		if (instance == null) {
+			synchronized (FreemarkerProperties.class) {
+				if (instance == null) {
+					instance = new FreemarkerProperties();
+				}
+			}
+		}
+		return instance;
 	}
 	
 	public FreemarkerProperties() {

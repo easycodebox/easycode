@@ -10,10 +10,17 @@ public class CommonProperties extends NamedSupport {
 	
 	public static final String DEFAULT_NAME = CommonProperties.class.getName();
 	
-	private static CommonProperties INSTANCE;
+	private static volatile CommonProperties instance;
 	
 	public static CommonProperties instance() {
-		return INSTANCE == null ? (INSTANCE = new CommonProperties()) : INSTANCE;
+		if (instance == null) {
+			synchronized (CommonProperties.class) {
+				if (instance == null) {
+					instance = new CommonProperties();
+				}
+			}
+		}
+		return instance;
 	}
 	
 	public CommonProperties() {

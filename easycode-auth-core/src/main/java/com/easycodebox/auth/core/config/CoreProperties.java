@@ -1,6 +1,5 @@
 package com.easycodebox.auth.core.config;
 
-import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.NamedSupport;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,10 +12,17 @@ public class CoreProperties extends NamedSupport {
 	
 	public static final String DEFAULT_NAME = CoreProperties.class.getName();
 	
-	private static CommonProperties INSTANCE;
+	private static volatile CoreProperties instance;
 	
-	public static CommonProperties instance() {
-		return INSTANCE == null ? (INSTANCE = new CommonProperties()) : INSTANCE;
+	public static CoreProperties instance() {
+		if (instance == null) {
+			synchronized (CoreProperties.class) {
+				if (instance == null) {
+					instance = new CoreProperties();
+				}
+			}
+		}
+		return instance;
 	}
 	
 	public CoreProperties() {

@@ -21,11 +21,11 @@ public class ConfigurationFactory {
 	/**
 	 * 相对于项目的classes路径而言
 	 */
-	private volatile static Configuration INSTANCE = null;
+	private static volatile Configuration INSTANCE = null;
 	/**
 	 * 相当于web项目的根路径
 	 */
-	private volatile static Configuration WEB_INSTANCE = null;
+	private static volatile Configuration WEB_INSTANCE = null;
 	
 	/**
 	 * 返回classes为加载器的Configuration,根路径为classes路径
