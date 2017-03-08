@@ -1,5 +1,6 @@
 package com.easycodebox.auth.backend.config;
 
+import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.common.freemarker.FreemarkerGenerate;
 import com.easycodebox.common.freemarker.FreemarkerProperties;
 import com.easycodebox.common.web.springmvc.*;
@@ -51,6 +52,7 @@ public class SpringMvcConfig extends DelegatingWebMvcConfiguration {
 	 * 生成JS的配置文件
 	 */
 	@Bean(initMethod = "process")
+	@Profile("!" + Constants.INTEGRATION_TEST_KEY)
 	public FreemarkerGenerate freemarkerGenerate() {
 		FreemarkerGenerate generate = new FreemarkerGenerate();
 		generate.setFtlPath("/config-js.ftl");
