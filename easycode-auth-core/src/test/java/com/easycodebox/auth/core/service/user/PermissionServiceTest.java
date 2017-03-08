@@ -1,32 +1,23 @@
 package com.easycodebox.auth.core.service.user;
 
-import com.easycodebox.auth.core.util.test.BaseTest;
+import com.easycodebox.auth.core.AbstractTest;
+import com.easycodebox.auth.model.entity.user.Permission;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class PermissionServiceTest extends BaseTest<PermissionService> {
+import java.util.List;
 
+import static org.junit.Assert.*;
+
+public class PermissionServiceTest extends AbstractTest {
+
+	@Autowired
+	private PermissionService permissionService;
+	
 	@Test
 	public void testListPermissionsOfRoles() {
-		log.info(bean.listPermissionsOfRoles(new Integer[]{1}, 2, null));
-	}
-	
-	@Test
-	public void testListPermissionsOfUser() {
-		log.info(bean.listPermissionsOfUser("1", 1, null));
-	}
-	
-	@Test
-	public void testListPermissionIds() {
-		//log.info(bean.listPermissionIds("a15p2", null));
-	}
-	
-	@Test
-	public void testPage() {
-		try {
-			log.info(bean.page("  cc  ", "  ", null, null, null, null, 4, 15));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		List<Permission> data = permissionService.listPermissionsOfRoles(new Integer[]{1}, 2, null);
+		assertTrue(data.size() > 0);
 	}
 	
 }

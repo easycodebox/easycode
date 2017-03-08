@@ -3,7 +3,6 @@ package com.easycodebox.auth.core.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.easycodebox.auth.core.idconverter.DefaultUserIdConverter;
 import com.easycodebox.auth.core.service.user.UserService;
-import com.easycodebox.auth.core.util.Constants;
 import com.easycodebox.auth.core.util.aop.log.LogAspect;
 import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.CommonProperties;
@@ -205,7 +204,7 @@ public class CoreConfig {
 	 * filters ==> 配置监控统计拦截的filters <p/>
 	 * connectionProperties ==> config.decrypt用于解密数据库密码 <p/>
 	 */
-	@Profile("!" + Constants.INTEGRATION_TEST_KEY)
+	//@Profile("!" + Constants.INTEGRATION_TEST_KEY)
 	@Bean(initMethod = "init", destroyMethod = "close")
 	public DruidDataSource dataSource() throws SQLException {
 		DruidDataSource dataSource = new DruidDataSource();
