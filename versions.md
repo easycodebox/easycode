@@ -43,6 +43,7 @@
 7. 优化主键生成策略相关功能
 8. 增加easycode-idgenerator模块
 
-###【v0.3.1】 - 2017.02.25
+###【v0.3.1】 - 2017.03.05
 
 1. Spring XML配置换成Java Config
+2. 集成Spring Test
