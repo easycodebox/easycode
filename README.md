@@ -116,7 +116,10 @@
 
 1. 下载[easycode](https://github.com/easycodebox/easycode)和[easycode-example](https://github.com/easycodebox/easycode-example)[【下载链接】](https://github.com/easycodebox/easycode-example)代码
 
-2. 在本地数据库中新增加`easycode-auth`和`easycode-example`两个库，分别把`/easycode/docs/db/auth/easycode-auth.sql`、`/easycode-example/docs/db/easycode-example.sql`sql文件数据导入数据库。项目中数据库相关配置在`jdbc.properties`和`cas.properties`文件中。默认配置，账号：root 密码：root 
+2. 在本地数据库中新增加`easycode-auth`和`easycode-example`两个库。项目中数据库相关配置在`jdbc.properties`和`cas.properties`文件中。默认配置，账号：root 密码：root 
+	
+	* 在`easycode-auth` DB中执行 `easycode-auth-core/src/test/resources/easycode-auth-data.sql`、`easycode-auth-core/src/test/resources/easycode-auth-schema.sql`
+	* 在`easycode-example` DB中执行 `easycode-example-core/src/test/resources/easycode-example-data.sql`、`easycode-example-core/src/test/resources/easycode-example-schema.sql`
 
 	> 相关配置可自行修改，但密码需要配置为加密的值，用`ConfigTools.encrypt("password")`加密。修改时一定要改全，最好是全局搜索properties文件中包含**jdbc.username**关键字
 
