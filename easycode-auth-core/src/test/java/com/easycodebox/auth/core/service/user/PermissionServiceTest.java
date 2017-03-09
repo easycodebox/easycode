@@ -5,8 +5,6 @@ import com.easycodebox.auth.model.entity.user.Permission;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 public class PermissionServiceTest extends AbstractTest {
@@ -15,9 +13,9 @@ public class PermissionServiceTest extends AbstractTest {
 	private PermissionService permissionService;
 	
 	@Test
-	public void testListPermissionsOfRoles() {
-		List<Permission> data = permissionService.listPermissionsOfRoles(new Integer[]{1}, 2, null);
-		assertTrue(data.size() > 0);
+	public void testLoad() {
+		Permission data = permissionService.load(101000000L, null, null);
+		assertNotNull("获取权限信息失败", data);
 	}
 	
 }
