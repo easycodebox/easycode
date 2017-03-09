@@ -133,7 +133,7 @@ public class CoreConfig {
 		for (Object key : custom.keySet()) {
 			props.put(key, custom.get(key));
 		}
-		return props;
+		return Collections.unmodifiableMap(props);
 	}
 	
 	/**
