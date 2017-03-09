@@ -11,6 +11,7 @@ public abstract class AbstractIdGenTypeParser {
 	
 	public abstract IdGeneratorType parsePersistentKey(String persistentKey);
 	
+	@SuppressWarnings("unchecked")
 	public static IdGeneratorType parseIdGeneratedValue(IdGeneratedValue idGeneratedValue) {
 		IdGeneratorType idGeneratorType = null;
 		if (idGeneratedValue.strategy() == Strategy.ENUM) {

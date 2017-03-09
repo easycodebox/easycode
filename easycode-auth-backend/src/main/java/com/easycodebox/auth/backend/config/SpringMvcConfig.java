@@ -37,6 +37,7 @@ import java.util.Map;
 		},
 		excludeFilters = @Filter(Configuration.class)
 )
+@SuppressWarnings("Duplicates")
 public class SpringMvcConfig extends DelegatingWebMvcConfiguration {
 	
 	@Autowired
@@ -87,6 +88,7 @@ public class SpringMvcConfig extends DelegatingWebMvcConfiguration {
 	 * 如果模板统一存于相同路径下，则使用FreeMarkerViewResolver的suffix属性配置。
 	 */
 	@Bean
+	@SuppressWarnings("unchecked")
 	public FreeMarkerConfigurer freemarkerConfig() {
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
 		configurer.setFreemarkerProperties(freemarkerProperties);

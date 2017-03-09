@@ -419,11 +419,11 @@ $(function() {
 		$("[data-sidebarskin='toggle']").off(".frame").on("click.frame", function() {
 			var sidebar = $(".control-sidebar");
 			if (sidebar.hasClass("control-sidebar-dark")) {
-				sidebar.removeClass("control-sidebar-dark")
-				sidebar.addClass("control-sidebar-light")
+				sidebar.removeClass("control-sidebar-dark");
+				sidebar.addClass("control-sidebar-light");
 			} else {
-				sidebar.removeClass("control-sidebar-light")
-				sidebar.addClass("control-sidebar-dark")
+				sidebar.removeClass("control-sidebar-light");
+				sidebar.addClass("control-sidebar-dark");
 			}
 		});
 
