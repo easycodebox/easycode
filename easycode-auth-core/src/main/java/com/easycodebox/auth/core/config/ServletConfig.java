@@ -19,17 +19,6 @@ import org.springframework.context.annotation.Configuration;
 public class ServletConfig {
 	
 	/**
-	 * 配置Bean注册进ServletContext Attributes
-	 */
-	@Bean
-	public ServletContextAttrRegistry servletContextAttrRegistry(CommonProperties commonProperties,
-			FreemarkerProperties freemarkerProperties, CoreProperties coreProperties) {
-		ServletContextAttrRegistry registry = new ServletContextAttrRegistry();
-		registry.setNameds(new Named[] {commonProperties, freemarkerProperties, coreProperties});
-		return registry;
-	}
-	
-	/**
 	 * Security Info拦截器
 	 */
 	@Bean

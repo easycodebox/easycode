@@ -157,8 +157,7 @@ public class ErrorContextFilter implements Filter {
 			this.storeException = Boolean.parseBoolean(store.trim());
 		}
 		if (commonProperties == null) {
-			commonProperties = (CommonProperties) filterConfig.getServletContext().getAttribute(CommonProperties.DEFAULT_NAME);
-			commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
+			commonProperties = CommonProperties.instance();
 		}
 	}
 	

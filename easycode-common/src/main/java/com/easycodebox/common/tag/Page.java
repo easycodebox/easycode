@@ -62,8 +62,7 @@ public class Page extends AbstractHtmlTag implements ParamParent {
 	@Override
 	public int doStartTag() throws JspException {
 		params = new LinkedHashMap<>();
-		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
-		props = props == null ? CommonProperties.instance() : props;
+		CommonProperties props = CommonProperties.instance();
 		traditionalHttp = traditionalHttp == null ? props.isTraditionalHttp() : traditionalHttp;
 		return super.doStartTag();
 	}

@@ -33,8 +33,7 @@ public class ImgUrl extends AbstractHtmlTag {
 	
 	@Override
 	public int doStartTag() throws JspException {
-		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
-		props = props == null ? CommonProperties.instance() : props;
+		CommonProperties props = CommonProperties.instance();
 		root = root == null ? props.getImgUrl() : root;
 		imgDefault = imgDefault == null ? props.getImgDefault() : imgDefault;
 		

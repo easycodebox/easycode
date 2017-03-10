@@ -1,15 +1,12 @@
 package com.easycodebox.common.freemarker;
 
-import com.easycodebox.common.NamedSupport;
 import com.easycodebox.common.lang.Symbol;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author WangXiaoJin
  */
-public class FreemarkerProperties extends NamedSupport {
-	
-	public static final String DEFAULT_NAME = FreemarkerProperties.class.getName();
+public class FreemarkerProperties {
 	
 	private static volatile FreemarkerProperties instance;
 	
@@ -24,12 +21,8 @@ public class FreemarkerProperties extends NamedSupport {
 		return instance;
 	}
 	
-	public FreemarkerProperties() {
-		this(DEFAULT_NAME);
-	}
-	
-	public FreemarkerProperties(String name) {
-		super(name);
+	private FreemarkerProperties() {
+		
 	}
 	
 	@Value("${freemarker.default_encoding:UTF-8}")

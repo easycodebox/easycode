@@ -57,8 +57,7 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 			this.noDecVals = new String[]{ "false", "0" };
 		}
 		if (commonProperties == null) {
-			commonProperties = (CommonProperties) filterConfig.getServletContext().getAttribute(CommonProperties.DEFAULT_NAME);
-			commonProperties = commonProperties == null ? CommonProperties.instance() : commonProperties;
+			commonProperties = CommonProperties.instance();
 		}
 	}
 

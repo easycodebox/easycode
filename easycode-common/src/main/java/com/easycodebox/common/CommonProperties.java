@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 /**
  * @author WangXiaoJin
  */
-public class CommonProperties extends NamedSupport {
-	
-	public static final String DEFAULT_NAME = CommonProperties.class.getName();
+public class CommonProperties {
 	
 	private static volatile CommonProperties instance;
 	
@@ -23,12 +21,8 @@ public class CommonProperties extends NamedSupport {
 		return instance;
 	}
 	
-	public CommonProperties() {
-		this(DEFAULT_NAME);
-	}
-	
-	public CommonProperties(String name) {
-		super(name);
+	private CommonProperties() {
+		
 	}
 	
 	/**

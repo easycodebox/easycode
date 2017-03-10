@@ -60,8 +60,7 @@ public class CacheUrl extends TagExt implements ParamParent {
 		if(condition != null && !condition) {
 			return SKIP_BODY;
 		}
-		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
-		props = props == null ? CommonProperties.instance() : props;
+		CommonProperties props = CommonProperties.instance();
 		traditionalHttp = traditionalHttp == null ? props.isTraditionalHttp() : traditionalHttp;
 		extraParams = new LinkedHashMap<>();
 		return super.doStartTag();

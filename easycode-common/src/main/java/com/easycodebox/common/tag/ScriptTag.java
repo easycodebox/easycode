@@ -51,8 +51,7 @@ public class ScriptTag extends AbstractHtmlTag {
 	
 	@Override
 	public int doStartTag() throws JspException {
-		CommonProperties props = (CommonProperties) pageContext.findAttribute(CommonProperties.DEFAULT_NAME);
-		props = props == null ? CommonProperties.instance() : props;
+		CommonProperties props = CommonProperties.instance();
 		env = env == null ? props.getProjectEnv() : env;
 		min = min == null ? props.isTransMinJsCss() : min;
 		
