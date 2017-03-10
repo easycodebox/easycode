@@ -19,6 +19,7 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 @Configuration
 @EnableCaching
+@SuppressWarnings("Duplicates")
 public class CoreCacheConfig extends CachingConfigurerSupport {
 	
 	@Value("${redis.core.host}")
