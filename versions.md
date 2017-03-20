@@ -47,3 +47,7 @@
 
 1. Spring XML配置换成Java Config
 2. 集成Spring Test
+
+###【v0.3.2】 - 2017.03.26
+
+1. 集成Spring Boot
