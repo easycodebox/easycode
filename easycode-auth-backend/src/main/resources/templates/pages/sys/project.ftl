@@ -1,10 +1,10 @@
-[#include "/WEB-INF/common/core.ftl"/]
+[#include "/common/core.ftl"/]
 
-<title>EasyCode | 角色</title>
+<title>EasyCode | 项目</title>
 
 <section class="content-header">
 	<h1>
-		角色 <small>角色</small>
+		项目 <small>项目</small>
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -21,10 +21,15 @@
 			<div class="box">
 				<div class="box-body">
 				
-					<form id="query-form" class="form-inline search words4">
+					<form id="query-form" class="form-inline search words5">
 						<div class="form-group">
-							<label>角色名：</label>
+							<label>项目名：</label>
 							<input type="text" class="form-control" name="name" />
+						</div>
+						
+						<div class="form-group">
+							<label>项目编号：</label>
+							<input type="text" class="form-control" name="projectNo" />
 						</div>
 						
 						<div class="form-group">
@@ -47,18 +52,18 @@
 				<div class="box-body">
 					
 					<div id="toolbar" class="btn-group">
-						[@shiro.hasPermission name="role/add"]
-                       		<button type="button" title="新增" id="addBtn" class="btn btn-default">
+						[@shiro.hasPermission name="project/add"]
+							<button type="button" title="新增" id="addBtn" class="btn btn-default">
                        			<i class="fa fa-plus"></i>
                        		</button>
-                       	[/@shiro.hasPermission]
-                       	[@shiro.hasPermission name="role/remove"]
-                       		<button type="button" title="批量删除" class="btn btn-default" onclick="gb.remove('/role/remove.json')">
+                        [/@shiro.hasPermission]
+                        [@shiro.hasPermission name="project/remove"]
+                        	<button type="button" title="批量删除" class="btn btn-default" onclick="gb.remove('/project/remove.json')">
                        			<i class="fa fa-remove"></i>
                        		</button>
-                       	[/@shiro.hasPermission]
-                       	[@shiro.hasPermission name="role/openClose"]
-                       		<button type="button" title="启用" class="handler switch-open batch btn btn-default">
+                        [/@shiro.hasPermission]
+                        [@shiro.hasPermission name="project/openClose"]
+                        	<button type="button" title="启用" class="handler switch-open batch btn btn-default">
                         		<i class="fa fa-toggle-on"></i>
                         	</button>
 							<button type="button" title="禁用" class="handler switch-close batch btn btn-default">
@@ -73,15 +78,16 @@
 							data-id-field="id"
 							data-unique-id="id"
 							data-select-item-name="ids"
-							data-url="/role/list.json">
+							data-url="/project/list.json">
 						<thead hidden>
 							<tr>
 								<th data-checkbox="true" data-click-to-select="true"></th>
 								<th data-formatter="gb.table.fmtOrder" data-click-to-select="true">序号</th>
-								<th data-field="name">角色名</th>
+								<th data-field="name">项目名</th>
+								<th data-field="projectNo">项目编号</th>
 								<th data-field="sort">排序值</th>
 								<th data-field="status" data-formatter="gb.table.fmtOpenClose">启动/禁用</th>
-								<th data-field="description">描述</th>
+								<th data-field="remark">备注</th>
 								<th data-field="creatorName">创建人</th>
 								<th data-field="createTime" data-formatter="gb.table.fmtDate">创建时间</th>
 								<th data-formatter="gb.table.fmtOps">操作</th>
@@ -89,28 +95,23 @@
 						</thead>
 					</table>
 					<div id="table-ops" class="hidden">
-						[@shiro.hasPermission name="role/load"]
+						[@shiro.hasPermission name="project/load"]
 							<a class="btn btn-xs btn-default loadBtn" data-id="{id}" title="详情" href="#" role="button">
 								<i class="fa fa-reorder"></i>
 							</a>
 						[/@shiro.hasPermission]
-						[@shiro.hasPermission name="role/update"]
+						[@shiro.hasPermission name="project/update"]
 							<a class="btn btn-xs btn-default updBtn" data-id="{id}" title="修改" href="#" role="button">
 								<i class="fa fa-edit"></i>
 							</a>
 						[/@shiro.hasPermission]
-						[@shiro.hasPermission name="role/remove"]
-							<a class="btn btn-xs btn-default" href="javascript:gb.remove('/role/remove.json', '{id}');" title="删除" role="button">
+						[@shiro.hasPermission name="project/remove"]
+							<a class="btn btn-xs btn-default" href="javascript:gb.remove('/project/remove.json', '{id}');" title="删除" role="button">
 								<i class="fa fa-remove"></i>
 							</a>
 						[/@shiro.hasPermission]
-						[@shiro.hasPermission name="permission/authoriseRole"]
-							<a class="btn btn-xs btn-default cfgOpsBtn" data-id="{id}" title="配置权限" href="#" role="button">
-								<i class="fa fa-cog"></i>
-							</a>
-						[/@shiro.hasPermission]
 					</div>
-					
+									
 				</div>
 			</div>
 			
@@ -120,27 +121,33 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/user/role_load.html"/]
+	[#include "/sys/project_load.ftl"/]
 	
 	<!-- 新增 -->
-	<form id="addDialog" class="form-validate none" action="/role/add.json" data-suc="新增角色成功" data-fail="新增角色失败">
+	<form id="addDialog" class="form-validate none" action="/project/add.json" data-suc="新增项目成功" data-fail="新增项目失败">
 		<table class="table-edit">
 			<tr>
 				<th>
-					<label class="required">角色名：</label>
+					<label class="required">项目名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="role.name" data-bvalidator="gb.existName" maxlength="32" required />
+					<input type="text" name="name" class="form-control" v-model="project.name" data-bvalidator="gb.existName" maxlength="32" required />
 				</td>
 				<th>
-					<label class="required">排序值：</label>
+					<label class="required">项目编号：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="role.sort" data-bvalidator="digit" maxlength="9" required />
+					<input type="text" name="projectNo" class="form-control" v-model="project.projectNo" data-bvalidator="gb.existProjectNo" maxlength="32" required />
 				</td>
 			</tr>
 			
 			<tr>
+				<th>
+					<label class="required">排序值：</label>
+				</th>
+				<td>
+					<input type="text" name="sort" class="form-control" v-model="project.sort" data-bvalidator="digit" maxlength="9" required />
+				</td>
 				<th>
 					<label class="required">状态：</label>
 				</th>
@@ -148,58 +155,59 @@
 					[@e.radioEnum name="status" enumName="OpenClose" 
 							tagAttr='{
 								last: "required data-bvalidator-msg=\'请选择状态\'",
-								all: "v-model=\'role.status.className\'"
+								all: "v-model=\'project.status.className\'"
 							}'/]
 				</td>
 			</tr>
 			
 			<tr>
 				<th>
-					<label>描述：</label>
-				</th>
-				<td colspan="3">
-					<textarea name="description" class="form-control" v-model="role.description" maxlength="512"> </textarea>
-				</td>
-			</tr>
-			
-			<tr>
-				<th>
 					<label>备注：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="remark" class="form-control" v-model="role.remark" maxlength="512"> </textarea>
+					<textarea name="remark" class="form-control" v-model="project.remark" maxlength="512"> </textarea>
 				</td>
 			</tr>
 		</table>
 	</form>
 	
 	<!-- 修改 -->
-	<form id="updDialog" class="form-validate none" action="/role/update.json" data-suc="更新角色成功" data-fail="更新角色失败">
+	<form id="updDialog" class="form-validate none" action="/project/update.json" data-suc="更新项目成功" data-fail="更新项目失败">
 	
-		<input type="hidden" name="id" v-model="role.id" />
+		<input type="hidden" name="id" v-model="project.id" />
 		
 		<table class="table-edit">
 			<tr>
 				<th>
-					<label class="required">角色名：</label>
+					<label class="required">项目名：</label>
 				</th>
 				<td>
-					<input type="text" name="name" class="form-control" v-model="role.name" data-bvalidator="gb.existName" maxlength="32" required />
+					<input type="text" name="name" class="form-control" v-model="project.name" data-bvalidator="gb.existName" maxlength="32" required />
 				</td>
 				<th>
-					<label class="required">排序值：</label>
+					<label class="required">项目编号：</label>
 				</th>
 				<td>
-					<input type="text" name="sort" class="form-control" v-model="role.sort" data-bvalidator="digit" maxlength="9" required />
+					<input type="text" name="projectNo" class="form-control" v-model="project.projectNo" data-bvalidator="gb.existProjectNo" maxlength="32" required />
 				</td>
 			</tr>
 			
 			<tr>
 				<th>
-					<label>描述：</label>
+					<label class="required">排序值：</label>
 				</th>
-				<td colspan="3">
-					<textarea name="description" class="form-control" v-model="role.description" maxlength="512"></textarea>
+				<td>
+					<input type="text" name="sort" class="form-control" v-model="project.sort" data-bvalidator="digit" maxlength="9" required />
+				</td>
+				<th>
+					<label class="required">状态：</label>
+				</th>
+				<td>
+					[@e.radioEnum name="status" enumName="OpenClose" 
+							tagAttr='{
+								last: "required data-bvalidator-msg=\'请选择状态\'",
+								all: "v-model=\'project.status.className\'"
+							}'/]
 				</td>
 			</tr>
 			
@@ -208,7 +216,7 @@
 					<label>备注：</label>
 				</th>
 				<td colspan="3">
-					<textarea name="remark" class="form-control" v-model="role.remark" maxlength="512"></textarea>
+					<textarea name="remark" class="form-control" v-model="project.remark" maxlength="512"></textarea>
 				</td>
 			</tr>
 		</table>
@@ -216,5 +224,5 @@
 </div>
 
 <inner-js>
-	<script type="text/javascript" transient="true" src="/js/user/role.js"></script>
+	<script type="text/javascript" transient="true" src="/js/sys/project.js"></script>
 </inner-js>

@@ -2,9 +2,9 @@ package com.easycodebox.auth.core.config;
 
 import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.error.CodeMsg.Code;
-import com.easycodebox.common.freemarker.FreemarkerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -51,7 +51,9 @@ public class PropertyConfig {
 				if (source instanceof EnumerablePropertySource) {
 					EnumerablePropertySource eps = (EnumerablePropertySource) source;
 					for (String key : eps.getPropertyNames()) {
-						props.put(key, eps.getProperty(key));
+						if (!props.containsKey(key)) {
+							props.put(key, eps.getProperty(key));
+						}
 					}
 				}
 			}
@@ -82,13 +84,9 @@ public class PropertyConfig {
 	}
 	
 	@Bean
+	@ConfigurationProperties(prefix = "common")
 	public CommonProperties commonProperties() {
 		return CommonProperties.instance();
-	}
-	
-	@Bean
-	public FreemarkerProperties freemarkerProperties() {
-		return FreemarkerProperties.instance();
 	}
 	
 }

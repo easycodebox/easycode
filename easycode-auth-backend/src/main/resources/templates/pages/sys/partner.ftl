@@ -1,4 +1,4 @@
-[#include "/WEB-INF/common/core.ftl"/]
+[#include "/common/core.ftl"/]
 
 <title>EasyCode | 合作商</title>
 
@@ -127,7 +127,7 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/sys/partner_load.html"/]
+	[#include "/sys/partner_load.ftl"/]
 	
 	<!-- 新增 -->
 	<form id="addDialog" class="form-validate none" action="/partner/add.json" data-suc="新增合作商成功" data-fail="新增合作商失败">

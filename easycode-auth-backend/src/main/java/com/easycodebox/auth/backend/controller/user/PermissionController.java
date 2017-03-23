@@ -155,7 +155,7 @@ public class PermissionController extends BaseController {
 		response.setContentType(request.getServletContext().getMimeType(filename));
 		response.setHeader("Content-Disposition", "attachment;fileName=" + filename);
 		try (Writer writer = response.getWriter()) {
-			permissionService.exportToXml("permissions.ftl", projectId, writer);
+			permissionService.exportToXml("templates/permissions.ftl", projectId, writer);
 		}
 	}
 	

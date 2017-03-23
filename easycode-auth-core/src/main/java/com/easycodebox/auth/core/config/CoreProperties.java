@@ -27,12 +27,10 @@ public class CoreProperties {
 	/**
 	 * 重置后的新密码
 	 */
-	@Value("${reset_pwd}")
 	private String resetPwd;
 	/**
 	 * 是否可以修改super admin信息
 	 */
-	@Value("${modify_super_admin}")
 	private boolean modifySuperAdmin;
 	
 	@Value("${jdbc.url}")

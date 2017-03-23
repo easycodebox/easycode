@@ -1,4 +1,4 @@
-[#include "/WEB-INF/common/core.ftl"/]
+[#include "/common/core.ftl"/]
 
 <title>EasyCode | 欢迎页面</title>
 

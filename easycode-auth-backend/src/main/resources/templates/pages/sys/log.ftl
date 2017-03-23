@@ -1,4 +1,4 @@
-[#include "/WEB-INF/common/core.ftl"/]
+[#include "/common/core.ftl"/]
 
 <title>EasyCode | 日志</title>
 
@@ -128,7 +128,7 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/sys/log_load.html"/]
+	[#include "/sys/log_load.ftl"/]
 </div>
 
 <inner-js>

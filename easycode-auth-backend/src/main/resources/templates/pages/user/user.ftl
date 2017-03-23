@@ -1,4 +1,4 @@
-[#include "/WEB-INF/common/core.ftl"/]
+[#include "/common/core.ftl"/]
 
 <title>EasyCode | 用户</title>
 
@@ -156,7 +156,7 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/user/user_load.html"/]
+	[#include "/user/user_load.ftl"/]
 	
 	<!-- 新增 -->
 	<form id="addDialog" class="form-validate none" action="/user/add.json" data-suc="新增用户成功" data-fail="新增用户失败">

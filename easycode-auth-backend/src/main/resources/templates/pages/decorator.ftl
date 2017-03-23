@@ -1,18 +1,18 @@
-[#include "/WEB-INF/common/core.ftl"/]
+[#include "/common/core.ftl"/]
 <!DOCTYPE HTML>
 <html>
 <head>
-[#include "/WEB-INF/common/meta.html"/]
+[#include "/common/meta.ftl"/]
 <title><sitemesh:write property='title' /></title>
-[#include "/WEB-INF/common/styles.html"/]
+[#include "/common/styles.ftl"/]
 <sitemesh:write property='head' />
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
-	[#include "/WEB-INF/common/header.html"/]
+	[#include "/common/header.ftl"/]
 	
-	[#include "/WEB-INF/common/left.html"/]
+	[#include "/common/left.ftl"/]
 	
 	<div id="pjax-container" class="content-wrapper">
 		
@@ -20,12 +20,12 @@
 		
 	</div>
 	
-	[#include "/WEB-INF/common/footer.html"/]
+	[#include "/common/footer.ftl"/]
 	
-	[#include "/WEB-INF/common/control-sidebar.html"/]
+	[#include "/common/control-sidebar.ftl"/]
 	
 </div>
-[#include "/WEB-INF/common/scripts.html"/]
+[#include "/common/scripts.ftl"/]
 <sitemesh:write property='inner-js' />
 </body>
 </html>

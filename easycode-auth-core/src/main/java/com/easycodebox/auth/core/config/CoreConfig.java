@@ -7,6 +7,7 @@ import com.easycodebox.auth.core.util.aop.log.LogAspect;
 import com.easycodebox.auth.model.enums.IdGeneratorEnum;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.EnumClassFactory;
+import com.easycodebox.common.freemarker.ConfigurationPostProcessor;
 import com.easycodebox.common.idconverter.*;
 import com.easycodebox.common.idgenerator.DetailEnumIdGenTypeParser;
 import com.easycodebox.common.lang.Strings;
@@ -53,10 +54,8 @@ import java.util.*;
 		excludeFilters = @Filter(Configuration.class)
 )
 @PropertySource(ignoreResourceNotFound = true, value = {
-		"classpath:core.properties",
 		"classpath:jdbc.properties",
 		"classpath:redis.properties",
-		"classpath:url.properties",
 		"classpath:mail.properties",
 		"classpath:login.properties"
 })
@@ -87,6 +86,15 @@ public class CoreConfig {
 	
 	@Autowired
 	private CoreProperties coreProperties;
+	
+	/**
+	 * 增加自定义日期格式化工厂
+	 * @return
+	 */
+	@Bean
+	public static ConfigurationPostProcessor freemarkerCfgPostProcessor() {
+		return new ConfigurationPostProcessor();
+	}
 	
 	/**
 	 * 配置日志

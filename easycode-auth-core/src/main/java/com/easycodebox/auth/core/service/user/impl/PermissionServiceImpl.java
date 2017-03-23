@@ -14,7 +14,6 @@ import com.easycodebox.common.enums.entity.OpenClose;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.freemarker.ConfigurationFactory;
 import com.easycodebox.common.idconverter.UserIdConverter;
 import com.easycodebox.common.lang.dto.DataPage;
 import com.easycodebox.common.validate.Assert;
@@ -41,6 +40,9 @@ import static com.easycodebox.common.lang.Strings.*;
  */
 @Service
 public class PermissionServiceImpl extends AbstractServiceImpl<Permission> implements PermissionService {
+	
+	@Autowired
+	private Configuration configuration;
 	
 	@Autowired
 	private UserIdConverter userIdConverter;
@@ -353,9 +355,8 @@ public class PermissionServiceImpl extends AbstractServiceImpl<Permission> imple
 			throws TemplateException, IOException {
 		List<Permission> os = treePermissions(null, this.list(projectId, null, null), null);
 		Project project = projectService.load(projectId);
-		Configuration cfg = ConfigurationFactory.instance(null);
 		//设置包装器，并将对象包装为数据模型
-		Template tpl = cfg.getTemplate(ftlRes);
+		Template tpl = configuration.getTemplate(ftlRes);
 		Map<String, Object> root = new HashMap<>();
 		root.put("project", project.getProjectNo());
 		root.put("os", os);
