@@ -1,7 +1,6 @@
 package com.easycodebox.login.config;
 
 import com.easycodebox.common.cache.spring.redis.CustomRedisCacheManager;
-import com.easycodebox.common.filter.SecurityContextFilter;
 import com.easycodebox.login.shiro.ShiroSecurityInfoHandler;
 import com.easycodebox.login.shiro.cache.spring.RedisTemplateCacheStats;
 import com.easycodebox.login.shiro.cache.spring.SpringCacheManager;
@@ -28,8 +27,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.Filter;
+import java.util.*;
 
 /**
  * @author WangXiaoJin
@@ -100,45 +99,25 @@ public class ShiroConfig {
 		return new ShiroSecurityInfoHandler();
 	}
 	
-	/**
-	 * failureUrl: 配置验证错误时的失败页面
-	 * <p/>
-	 * reloginUrl: 验证错误后显示登录页面，并提示错误信息。只试用于ErrorContext异常
-	 */
-	@Bean
-	public DefaultCasFilter casFilter() {
-		DefaultCasFilter filter = new DefaultCasFilter();
-		filter.setFailureUrl(failureUrl);
-		filter.setReloginUrl(casLogin + "&msg={0}");
-		filter.setLogoutUrl(casLogout);
-		return filter;
-	}
-	
-	@Bean
-	public LogoutFilter logoutFilter() {
-		LogoutFilter filter = new LogoutFilter();
-		filter.setRedirectUrl(casLogout + "?service=" + casLogoutCallback);
-		return filter;
-	}
-	
-	@Bean
-	public DefaultPermissionsAuthorizationFilter perms() {
-		return new DefaultPermissionsAuthorizationFilter();
-	}
-	
-	@Bean
-	public DefaultFormAuthenticationFilter authc() {
-		return new DefaultFormAuthenticationFilter();
-	}
-	
-	@Bean
-	public SenseLoginFilter sense() {
-		return new SenseLoginFilter();
-	}
-	
 	@Bean
 	public ShiroFilterFactoryBean shiroFilter() {
 		ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
+		
+		//设置Filter映射
+		LinkedHashMap<String, Filter> filterMap = new LinkedHashMap<>();
+		DefaultCasFilter casFilter = new DefaultCasFilter();
+		casFilter.setFailureUrl(failureUrl);    //配置验证错误时的失败页面
+		casFilter.setReloginUrl(casLogin + "&msg={0}"); //验证错误后显示登录页面，并提示错误信息。只试用于ErrorContext异常
+		casFilter.setLogoutUrl(casLogout);
+		filterMap.put("casFilter", casFilter);
+		LogoutFilter logoutFilter = new LogoutFilter();
+		logoutFilter.setRedirectUrl(casLogout + "?service=" + casLogoutCallback);
+		filterMap.put("logoutFilter", logoutFilter);
+		filterMap.put("perms", new DefaultPermissionsAuthorizationFilter());
+		filterMap.put("authc", new DefaultFormAuthenticationFilter());
+		filterMap.put("sense", new SenseLoginFilter());
+		factoryBean.setFilters(filterMap);
+		
 		factoryBean.setSecurityManager(securityManager());
 		factoryBean.setLoginUrl(casLogin);
 		factoryBean.setUnauthorizedUrl(unauthorizedUrl);
