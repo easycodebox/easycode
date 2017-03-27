@@ -35,10 +35,8 @@ import java.util.Map;
  * @author WangXiaoJin
  */
 @Configuration
-@EnableAspectJAutoProxy
 @ComponentScan(basePackages = "com.easycodebox.idgenerator.service")
 @PropertySource(ignoreResourceNotFound = true, value = {
-		"classpath:redis.properties",
 		"classpath:mail.properties",
 		"classpath:login.properties"
 })
