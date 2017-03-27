@@ -19,9 +19,6 @@ import com.easycodebox.jdbc.mybatis.type.DetailEnumTypeHandler;
 import com.easycodebox.jdbc.support.DefaultJdbcHandler;
 import org.apache.ibatis.session.AutoMappingBehavior;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.*;
@@ -62,9 +59,6 @@ public class CoreConfig {
 			"com.easycodebox.auth.model.entity",
 			"com.easycodebox.idgenerator.entity"
 	};
-	
-	@Autowired
-	private CoreProperties coreProperties;
 	
 	/**
 	 * 增加自定义日期格式化工厂
