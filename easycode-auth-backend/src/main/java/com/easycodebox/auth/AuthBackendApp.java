@@ -1,11 +1,12 @@
 package com.easycodebox.auth;
 
+import com.easycodebox.auth.core.config.PropertyConfig;
 import com.easycodebox.login.config.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
-import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @author WangXiaoJin
@@ -21,19 +22,11 @@ public class AuthBackendApp {
 				//"--debug"
 		//};
 		/* ----------------- 测试配置 END ------------------- */
-		
-		boolean existConfigName = false;
-		for (String arg : args) {
-			if (arg.startsWith("--spring.config.name=")) {
-				existConfigName = true;
-				break;
-			}
-		}
-		if (!existConfigName) {
-			args = Arrays.copyOf(args, args.length + 1);
-			args[args.length - 1] = "--spring.config.name=application,core-application";
-		}
-		SpringApplication.run(AuthBackendApp.class, args);
+		Map<String, Object> props = PropertyConfig.defaultProperties();
+		props.put("spring.config.name", "application,core-application");
+		SpringApplication application = new SpringApplication(AuthBackendApp.class);
+		application.setDefaultProperties(props);
+		application.run(args);
 	}
 	
 }

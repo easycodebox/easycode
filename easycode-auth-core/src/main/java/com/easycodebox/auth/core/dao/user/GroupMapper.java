@@ -1,16 +1,17 @@
 package com.easycodebox.auth.core.dao.user;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.easycodebox.auth.model.entity.user.Group;
 import com.easycodebox.common.enums.entity.OpenClose;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author WangXiaoJin
  *
  */
+@Mapper
 public interface GroupMapper {
 
 	Group load(@Param("id")Integer id);

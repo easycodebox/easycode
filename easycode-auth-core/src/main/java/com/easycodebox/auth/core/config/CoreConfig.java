@@ -15,11 +15,9 @@ import com.easycodebox.common.spring.ApplicationContextFactory;
 import com.easycodebox.jdbc.config.ConfigEntityBean;
 import com.easycodebox.jdbc.mybatis.*;
 import com.easycodebox.jdbc.mybatis.spring.DefaultSqlSessionFactoryBean;
-import com.easycodebox.jdbc.mybatis.spring.DefaultSqlSessionTemplate;
 import com.easycodebox.jdbc.mybatis.type.DetailEnumTypeHandler;
 import com.easycodebox.jdbc.support.DefaultJdbcHandler;
 import org.apache.ibatis.session.AutoMappingBehavior;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +61,6 @@ public class CoreConfig {
 	private String[] entityPackages = {
 			"com.easycodebox.auth.model.entity",
 			"com.easycodebox.idgenerator.entity"
-	};
-	/**
-	 * MyBatis Mapper文件base packages
-	 */
-	private static final String[] mapperPackages = {
-			"com.easycodebox.auth.core.dao"
 	};
 	
 	@Autowired
@@ -121,7 +113,6 @@ public class CoreConfig {
 	}
 	
 	/* ----------------------   配置MyBatis   ----------------------------------*/
-	
 	/**
 	 * autoMappingBehavior=FULL : 查询结果支持嵌套属性赋值,默认不支持（PARTIAL）
 	 */
@@ -150,22 +141,6 @@ public class CoreConfig {
 		factoryBean.setMapperLocations(new Resource[]{new ClassPathResource("CommonMapper.xml")});
 		factoryBean.setDynamicTypeHandlerRegister(detailEnumRegister());
 		return factoryBean;
-	}
-	
-	@Bean
-	public DefaultSqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws SQLException {
-		return new DefaultSqlSessionTemplate(sqlSessionFactory);
-	}
-	
-	/**
-	 * 因{@link MapperScannerConfigurer}实现了{@link BeanFactoryPostProcessor}接口且类上有{@link Configuration}，
-	 * 所以方法必须是{@code static}
-	 */
-	@Bean
-	public static MapperScannerConfigurer mapperScannerConfigurer() {
-		MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-		configurer.setBasePackage(Strings.join(mapperPackages, Symbol.COMMA));
-		return configurer;
 	}
 	
 	/**

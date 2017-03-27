@@ -1,26 +1,12 @@
 package com.easycodebox.auth.core.config;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 /**
  * @author WangXiaoJin
  */
+@ConfigurationProperties(prefix = "core")
 public class CoreProperties {
-	
-	private static volatile CoreProperties instance;
-	
-	public static CoreProperties instance() {
-		if (instance == null) {
-			synchronized (CoreProperties.class) {
-				if (instance == null) {
-					instance = new CoreProperties();
-				}
-			}
-		}
-		return instance;
-	}
-	
-	private CoreProperties() {
-		
-	}
 	
 	/**
 	 * 重置后的新密码
