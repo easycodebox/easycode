@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
-	<property resource="mail.properties" />
+	
+	<springProperty name="mail.host" source="spring.mail.host" scope="context"/>
+	<springProperty name="mail.username" source="spring.mail.username" scope="context"/>
+	<springProperty name="mail.password" source="spring.mail.password" scope="context"/>
+	<springProperty name="mail.from" source="spring.mail.properties.from" scope="context"/>
+	<springProperty name="mail.to" source="spring.mail.properties.to" scope="context"/>
+	<springProperty name="mail.log.subject" source="spring.mail.log.subject" scope="context"/>
 
 	<contextName>${LOG_PATH}</contextName>
 

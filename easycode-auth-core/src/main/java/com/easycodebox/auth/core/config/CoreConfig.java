@@ -37,7 +37,6 @@ import java.util.Map;
 @Configuration
 @ComponentScan(basePackages = "com.easycodebox.idgenerator.service")
 @PropertySource(ignoreResourceNotFound = true, value = {
-		"classpath:mail.properties",
 		"classpath:login.properties"
 })
 @SuppressWarnings("Duplicates")
