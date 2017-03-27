@@ -6,8 +6,7 @@ import com.easycodebox.common.cache.spring.redis.CustomRedisCacheManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -59,6 +58,7 @@ public class CoreCacheConfig extends CachingConfigurerSupport {
 	 * Jedis ConnectionFactory
 	 */
 	@Bean
+	@Primary
 	public JedisConnectionFactory jedisConnectionFactory() {
 		JedisConnectionFactory factory = new JedisConnectionFactory(jedisPoolConfig());
 		factory.setHostName(redisHost);

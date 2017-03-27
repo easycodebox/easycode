@@ -1,13 +1,10 @@
 package com.easycodebox.auth.backend.config;
 
-import com.easycodebox.auth.core.util.Constants;
-import com.easycodebox.common.freemarker.FreemarkerGenerate;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerAdapter;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerMapping;
 import org.springframework.boot.autoconfigure.web.WebMvcRegistrations;
 import org.springframework.boot.autoconfigure.web.WebMvcRegistrationsAdapter;
 import org.springframework.context.annotation.*;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -20,13 +17,7 @@ import java.util.Map;
  * @author WangXiaoJin
  */
 @Configuration
-@ComponentScan(
-		basePackages = {
-				"com.easycodebox.auth.backend.controller",
-				"com.easycodebox.idgenerator.controller"
-		},
-		excludeFilters = @Filter(Configuration.class)
-)
+@ComponentScan(basePackages = "com.easycodebox.idgenerator.controller")
 @SuppressWarnings("Duplicates")
 public class SpringMvcConfig {
 	
@@ -36,16 +27,16 @@ public class SpringMvcConfig {
 	/**
 	 * 生成JS的配置文件
 	 */
-	@Bean(initMethod = "process")
+	/*@Bean(initMethod = "process")
 	@Profile("!" + Constants.INTEGRATION_TEST_KEY)
 	public FreemarkerGenerate freemarkerGenerate(freemarker.template.Configuration configuration) {
 		FreemarkerGenerate generate = new FreemarkerGenerate();
-		generate.setFtlPath("/templates/config-js.ftl");
+		generate.setFtlPath("/config-js.ftl");
 		generate.setOutputPath("/js/config.js");
 		generate.setConfiguration(configuration);
 		generate.setDataModel(properties);
 		return generate;
-	}
+	}*/
 	
 	@Bean
 	public WebMvcRegistrations webMvcRegistrations() {
