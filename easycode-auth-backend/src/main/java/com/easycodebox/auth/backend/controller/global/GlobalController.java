@@ -36,9 +36,15 @@ public class GlobalController extends BaseController {
 	public void decorator(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		AbstractTemplateView view = (AbstractTemplateView)viewResolver.resolveViewName("decorator", 
 				localeResolver.resolveLocale(request));
-		//因为此请求是Sitemesh forward进来的，如果不做下面配置的话会重复设置参数，而Spring MVC碰到重复参数名会抛异常
+		//因为此请求是Sitemesh forward进来的，如果不做下面两个Override配置的话会重复设置Model，而Spring MVC碰到重复参数名会抛异常
 		//详细逻辑请阅读 {@link AbstractTemplateView} 的 renderMergedOutputModel方法
-		view.setAllowRequestOverride(true);
+		
+		//启用spring.freemarker.expose-request-attributes=true时则需要启用下面的代码
+		//view.setAllowRequestOverride(true);
+		
+		//启用spring.freemarker.expose-session-attributes=true时则需要启用下面的代码
+		//view.setAllowSessionOverride(true);
+		
 		view.setExposeSpringMacroHelpers(false);
 		view.render(null, request, response);
 	}
