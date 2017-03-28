@@ -128,7 +128,7 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/sys/log_load.ftl"/]
+	[#include "/pages/sys/log_load.ftl"/]
 </div>
 
 <inner-js>

@@ -121,7 +121,7 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/sys/project_load.ftl"/]
+	[#include "/pages/sys/project_load.ftl"/]
 	
 	<!-- 新增 -->
 	<form id="addDialog" class="form-validate none" action="/project/add.json" data-suc="新增项目成功" data-fail="新增项目失败">

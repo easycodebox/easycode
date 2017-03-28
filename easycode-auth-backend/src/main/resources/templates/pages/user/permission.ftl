@@ -156,7 +156,7 @@
 
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/user/permission_load.ftl"/]
+	[#include "/pages/user/permission_load.ftl"/]
 	
 	<!-- 新增 -->
 	<form id="addDialog" class="form-validate none" action="/permission/add.json" data-suc="新增权限成功" data-fail="新增权限失败">

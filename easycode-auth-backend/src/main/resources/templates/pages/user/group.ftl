@@ -125,7 +125,7 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/user/group_load.ftl"/]
+	[#include "/pages/user/group_load.ftl"/]
 	
 	<!-- 新增 -->
 	<form id="addDialog" class="form-validate none" action="/group/add.json" data-suc="新增组织成功" data-fail="新增组织失败">

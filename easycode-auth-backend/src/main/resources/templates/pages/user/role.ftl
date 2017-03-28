@@ -120,7 +120,7 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/user/role_load.ftl"/]
+	[#include "/pages/user/role_load.ftl"/]
 	
 	<!-- 新增 -->
 	<form id="addDialog" class="form-validate none" action="/role/add.json" data-suc="新增角色成功" data-fail="新增角色失败">
