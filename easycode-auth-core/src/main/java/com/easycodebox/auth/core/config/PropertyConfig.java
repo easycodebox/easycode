@@ -32,7 +32,7 @@ public class PropertyConfig {
 	
 	@Bean
 	@SuppressWarnings("unchecked")
-	public Map properties(Environment environment) {
+	public static Map properties(Environment environment) {
 		Map props = new HashMap();
 		if (environment instanceof ConfigurableEnvironment) {
 			ConfigurableEnvironment configEnv = (ConfigurableEnvironment) environment;
