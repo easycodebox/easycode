@@ -3,7 +3,10 @@ package com.easycodebox.auth.backend.config;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerAdapter;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerMapping;
 import freemarker.ext.jsp.TaglibFactory.ClasspathMetaInfTldSource;
+import freemarker.template.SimpleHash;
+import freemarker.template.TemplateModelException;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.web.WebMvcRegistrations;
 import org.springframework.boot.autoconfigure.web.WebMvcRegistrationsAdapter;
@@ -12,8 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -37,7 +39,6 @@ public class SpringMvcConfig {
 						"/**/*.js",
 						"/**/*.css",
 						"/imgs/**",
-						"/WEB-INF/common/**",
 						"/errors/**"
 				});
 				return mapping;
@@ -59,7 +60,7 @@ public class SpringMvcConfig {
 	 * @return
 	 */
 	@Bean
-	public static BeanPostProcessor freeMarkerConfigPostProcessor() {
+	public static BeanPostProcessor freeMarkerConfigPostProcessor(final Map properties) {
 		return new BeanPostProcessor() {
 			@Override
 			public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -73,6 +74,13 @@ public class SpringMvcConfig {
 					//修改MetaInfTldSources加载Taglib规则 - 默认加载/WEB-INF/lib下面的jar
 					List<ClasspathMetaInfTldSource> tldSources = Collections.singletonList(new ClasspathMetaInfTldSource(Pattern.compile(".*")));
 					config.getTaglibFactory().setMetaInfTldSources(tldSources);
+					//设置Freemarker全局变量
+					try {
+						config.getConfiguration().setAllSharedVariables(new SimpleHash(properties, config.getConfiguration().getObjectWrapper()));
+					} catch (TemplateModelException e) {
+						throw new NotWritablePropertyException(FreeMarkerConfig.class, "configuration",
+								"Invoke Configuration setAllSharedVariables method error.", e);
+					}
 				}
 				return bean;
 			}
