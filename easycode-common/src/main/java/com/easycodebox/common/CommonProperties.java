@@ -1,7 +1,6 @@
 package com.easycodebox.common;
 
 import com.easycodebox.common.enums.entity.ProjectEnv;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author WangXiaoJin
@@ -28,37 +27,31 @@ public class CommonProperties {
 	/**
 	 * 项目所处环境
 	 */
-	@Value("${project_env:DEV}")
 	private ProjectEnv projectEnv = ProjectEnv.DEV;
 	/**
 	 * 使用script/style标签时，是否自动显示压缩后的文件：
 	 * test.js  --> test.min.js
 	 * test.css --> test.min.css
 	 */
-	@Value("${trans_min_js_css:true}")
 	private boolean transMinJsCss = true;
 	/**
 	 * 当前项目的根路径：http://www.xxx.com
 	 */
-	@Value("${base_path:/}")
 	private String basePath = "/";
 	/**
 	 * 图片根地址
 	 * 注意：子类实现此配置
 	 */
-	@Value("${img_url}")
 	private String imgUrl;
 	/**
 	 * 默认图片
 	 */
-	@Value("${img.default:default/default.jpg}")
 	private String imgDefault = "default/default.jpg";
 	/**
 	 * http请求参数以传统格式传送：
 	 * true	== url.do?name=wang&name=zhang
 	 * false == url.do?name[]=wang&name[]=zhang
 	 */
-	@Value("${traditional_http:true}")
 	private boolean traditionalHttp = true;
 	/**
 	 * pjax请求的header key值

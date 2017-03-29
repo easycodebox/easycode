@@ -222,7 +222,7 @@ public class Classes extends org.apache.commons.lang.ClassUtils {
 	}
 	
 	/**
-	 * com.deying.util.interceptor => interceptor
+	 * com.easycodebox.util.interceptor => interceptor
 	 * @param pkg
 	 * @return
 	 */
@@ -233,7 +233,7 @@ public class Classes extends org.apache.commons.lang.ClassUtils {
 	}
 	
 	/**
-	 * com.deying.util.interceptor.Test.class => interceptor
+	 * com.easycodebox.util.interceptor.Test.class => interceptor
 	 * @param clazz
 	 * @return
 	 */

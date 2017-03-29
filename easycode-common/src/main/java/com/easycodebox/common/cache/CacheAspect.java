@@ -2,11 +2,13 @@ package com.easycodebox.common.cache;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.*;
+import com.easycodebox.common.log.slf4j.Logger;
+import com.easycodebox.common.log.slf4j.LoggerFactory;
 import net.sf.ehcache.*;
 import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.Resource;
@@ -30,7 +32,6 @@ public final class CacheAspect implements Ordered, InitializingBean {
 	private CacheManager cacheManager;
 	private Resource configLocation;
 	private boolean shared = false;
-	private String cacheManagerName;
 	private int maxElementsInMemory = 10000;
 	private int maxElementsOnDisk = 10000000;
 	private MemoryStoreEvictionPolicy memoryStoreEvictionPolicy = MemoryStoreEvictionPolicy.LRU;
@@ -80,9 +81,6 @@ public final class CacheAspect implements Ordered, InitializingBean {
 			}else {
 				this.cacheManager = new CacheManager();
 			}
-		}
-		if (this.cacheManagerName != null) {
-			this.cacheManager.setName(this.cacheManagerName);
 		}
 	
 	}
@@ -193,10 +191,6 @@ public final class CacheAspect implements Ordered, InitializingBean {
 
 	public void setShared(boolean shared) {
 		this.shared = shared;
-	}
-
-	public void setCacheManagerName(String cacheManagerName) {
-		this.cacheManagerName = cacheManagerName;
 	}
 
 	public void setCacheManager(CacheManager cacheManager) {

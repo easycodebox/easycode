@@ -3,12 +3,20 @@ package com.easycodebox.common.sitemesh3;
 import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.lang.reflect.Classes;
+import com.easycodebox.common.log.slf4j.Logger;
+import com.easycodebox.common.log.slf4j.LoggerFactory;
 import org.apache.commons.lang.ArrayUtils;
 import org.sitemesh.config.ConfigurableSiteMeshFilter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.*;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * SiteMesh集成pjax
@@ -16,6 +24,8 @@ import java.io.IOException;
  *
  */
 public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilter {
+	
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	/**
 	 * 是否启用pjax校验
@@ -78,6 +88,43 @@ public class DefaultConfigurableSiteMeshFilter extends ConfigurableSiteMeshFilte
 		} else {
 			super.doFilter(servletRequest, servletResponse, filterChain);
 		}
+	}
+	
+	/**
+	 * 当集成Spring Boot后加载不了configFile，所以增加了ClassLoader加载configFile的备选方案
+	 * @param filterConfig
+	 * @param configFilePath
+	 * @return
+	 * @throws ServletException
+	 */
+	@Override
+	protected Element loadConfigXml(FilterConfig filterConfig, String configFilePath) throws ServletException {
+		Element element = super.loadConfigXml(filterConfig, configFilePath);
+		if (element == null) {
+			try {
+				InputStream stream = Classes.getClassLoader().getResourceAsStream(configFilePath);
+				if (stream == null) {
+					log.info("No config file present - using ClassLoader. Tried: {}", configFilePath);
+					return null;
+				}
+				try {
+					log.info("Loading SiteMesh 3 config file from ClassLoader {}", configFilePath);
+					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+					DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+					Document document = documentBuilder.parse(stream);
+					return document.getDocumentElement();
+				} catch (SAXException e) {
+					throw new ServletException("Could not parse " + configFilePath + " (loaded by ClassLoader)", e);
+				} finally {
+					stream.close();
+				}
+			} catch (ParserConfigurationException e) {
+				throw new ServletException("Could not initialize DOM parser", e);
+			} catch (IOException e) {
+				throw new ServletException(e);
+			}
+		}
+		return element;
 	}
 	
 	public CommonProperties getCommonProperties() {
