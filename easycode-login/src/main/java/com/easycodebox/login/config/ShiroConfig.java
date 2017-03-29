@@ -23,8 +23,9 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
@@ -34,41 +35,11 @@ import java.util.*;
  * @author WangXiaoJin
  */
 @Configuration
-@Import(ShiroCacheConfig.class)
+@EnableConfigurationProperties(LoginProperties.class)
 public class ShiroConfig {
 	
-	@Value("${project}")
-	private String project;
-	
-	@Value("${cas.url}")
-	private String casUrl;
-	
-	@Value("${cas.callback}")
-	private String casCallback;
-	
-	@Value("${cas.login}")
-	private String casLogin;
-	
-	@Value("${cas.login.callback}")
-	private String casLoginCallback;
-	
-	@Value("${cas.logout}")
-	private String casLogout;
-	
-	@Value("${cas.logout.callback}")
-	private String casLogoutCallback;
-	
-	@Value("${failure.url}")
-	private String failureUrl;
-	
-	@Value("${unauthorized.url}")
-	private String unauthorizedUrl;
-	
-	/**
-	 * Shiro权限配置文件
-	 */
-	@Value("${shiro.filter.file:classpath:shiro-filter.properties}")
-	private String shiroFilterFile;
+	@Autowired
+	private LoginProperties loginProperties;
 	
 	@Autowired
 	private CustomRedisCacheManager shiroCacheManager;
@@ -106,12 +77,12 @@ public class ShiroConfig {
 		//设置Filter映射
 		LinkedHashMap<String, Filter> filterMap = new LinkedHashMap<>();
 		DefaultCasFilter casFilter = new DefaultCasFilter();
-		casFilter.setFailureUrl(failureUrl);    //配置验证错误时的失败页面
-		casFilter.setReloginUrl(casLogin + "&msg={0}"); //验证错误后显示登录页面，并提示错误信息。只试用于ErrorContext异常
-		casFilter.setLogoutUrl(casLogout);
+		casFilter.setFailureUrl(loginProperties.getFailureUrl()); //配置验证错误时的失败页面
+		casFilter.setReloginUrl(loginProperties.getCasLogin() + "&msg={0}"); //验证错误后显示登录页面，并提示错误信息。只试用于ErrorContext异常
+		casFilter.setLogoutUrl(loginProperties.getCasLogout());
 		filterMap.put("casFilter", casFilter);
 		LogoutFilter logoutFilter = new LogoutFilter();
-		logoutFilter.setRedirectUrl(casLogout + "?service=" + casLogoutCallback);
+		logoutFilter.setRedirectUrl(loginProperties.getCasLogout() + "?service=" + loginProperties.getCasLogoutCallback());
 		filterMap.put("logoutFilter", logoutFilter);
 		filterMap.put("perms", new DefaultPermissionsAuthorizationFilter());
 		filterMap.put("authc", new DefaultFormAuthenticationFilter());
@@ -119,11 +90,11 @@ public class ShiroConfig {
 		factoryBean.setFilters(filterMap);
 		
 		factoryBean.setSecurityManager(securityManager());
-		factoryBean.setLoginUrl(casLogin);
-		factoryBean.setUnauthorizedUrl(unauthorizedUrl);
+		factoryBean.setLoginUrl(loginProperties.getCasLogin());
+		factoryBean.setUnauthorizedUrl(loginProperties.getUnauthorizedUrl());
 		//加载权限配置
 		Ini ini = new Ini();
-		ini.loadFromPath(shiroFilterFile);
+		ini.loadFromPath(loginProperties.getShiroFilterFile());
 		//did they explicitly state a 'urls' section?  Not necessary, but just in case:
 		Ini.Section section = ini.getSection(IniFilterChainResolverFactory.URLS);
 		if (MapUtils.isEmpty(section)) {
@@ -195,7 +166,7 @@ public class ShiroConfig {
 	
 	@Bean
 	public Cas30ServiceTicketValidator ticketValidator() {
-		Cas30ServiceTicketValidator validator = new Cas30ServiceTicketValidator(casUrl);
+		Cas30ServiceTicketValidator validator = new Cas30ServiceTicketValidator(loginProperties.getCasUrl());
 		validator.setEncoding("UTF-8");
 		return validator;
 	}
@@ -212,11 +183,11 @@ public class ShiroConfig {
 		realm.setSecurityInfoHandler(securityInfoHandler());
 		realm.setName("cas");
 		realm.setGlobalPermissionMode(true);
-		realm.setCasServerUrlPrefix(casUrl);
-		realm.setCasService(casLoginCallback);
+		realm.setCasServerUrlPrefix(loginProperties.getCasUrl());
+		realm.setCasService(loginProperties.getCasLoginCallback());
 		realm.setRoleAttributeNames("roles");
 		realm.setPermissionAttributeNames("permissions");
-		realm.setProject(project);
+		realm.setProject(loginProperties.getProject());
 		return realm;
 	}
 	

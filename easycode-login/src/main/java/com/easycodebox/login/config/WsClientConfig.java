@@ -1,7 +1,7 @@
 package com.easycodebox.login.config;
 
 import com.easycodebox.login.ws.UserWsService;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.caucho.HessianProxyFactoryBean;
@@ -12,13 +12,13 @@ import org.springframework.remoting.caucho.HessianProxyFactoryBean;
 @Configuration
 public class WsClientConfig {
 	
-	@Value("${auth.ws.url}")
-	private String authWsUrl;
+	@Autowired
+	private LoginProperties loginProperties;
 	
 	@Bean
 	public HessianProxyFactoryBean userWsService() {
 		HessianProxyFactoryBean factoryBean = new HessianProxyFactoryBean();
-		factoryBean.setServiceUrl(authWsUrl + "/user");
+		factoryBean.setServiceUrl(loginProperties.getAuthWsUrl() + "/user");
 		factoryBean.setServiceInterface(UserWsService.class);
 		return factoryBean;
 	}
