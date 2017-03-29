@@ -12,8 +12,8 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
-import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -25,23 +25,6 @@ import java.util.regex.Pattern;
 @ComponentScan(basePackages = "com.easycodebox.idgenerator.controller")
 @SuppressWarnings("Duplicates")
 public class SpringMvcConfig {
-	
-	@Resource
-	private Map properties;
-	
-	/**
-	 * 生成JS的配置文件
-	 */
-	/*@Bean(initMethod = "process")
-	@Profile("!" + Constants.INTEGRATION_TEST_KEY)
-	public FreemarkerGenerate freemarkerGenerate(freemarker.template.Configuration configuration) {
-		FreemarkerGenerate generate = new FreemarkerGenerate();
-		generate.setFtlPath("/config-js.ftl");
-		generate.setOutputPath("/js/config.js");
-		generate.setConfiguration(configuration);
-		generate.setDataModel(properties);
-		return generate;
-	}*/
 	
 	@Bean
 	public WebMvcRegistrations webMvcRegistrations() {

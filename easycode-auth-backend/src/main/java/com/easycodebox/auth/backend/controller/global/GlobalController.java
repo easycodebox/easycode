@@ -2,7 +2,10 @@ package com.easycodebox.auth.backend.controller.global;
 
 import com.easycodebox.common.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -10,6 +13,8 @@ import org.springframework.web.servlet.view.AbstractTemplateView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author WangXiaoJin
@@ -23,6 +28,9 @@ public class GlobalController extends BaseController {
 	
 	@Autowired
 	private LocaleResolver localeResolver;
+	
+	@Autowired
+	private Map properties;
 	
 	/**
 	 * index
@@ -47,6 +55,18 @@ public class GlobalController extends BaseController {
 		
 		view.setExposeSpringMacroHelpers(false);
 		view.render(null, request, response);
+	}
+	
+	/**
+	 * 生成JS的配置文件
+	 */
+	@GetMapping("/js/config")
+	public String configJs(HttpServletResponse response, Model model) throws Exception {
+		CacheControl cacheControl = CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic();
+		response.addHeader("Cache-Control", cacheControl.getHeaderValue());
+		response.addHeader("Content-Type", "application/javascript;charset=UTF-8");
+		model.addAllAttributes(properties);
+		return "config-js";
 	}
 	
 }
