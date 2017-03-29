@@ -1,4 +1,4 @@
-[#include "/WEB-INF/common/core.ftl"/]
+[#include "/common/core.ftl"/]
 
 <title>EasyCode | 主键生成器</title>
 
@@ -95,7 +95,7 @@
 	
 <!-- 模板页 -->
 <div id="tmpls">
-	[#include "/html/idGenerator_load.html"/]
+	[#include "/pages/idGenerator_load.ftl"/]
 	
 	<!-- 修改 -->
 	<form id="updDialog" class="form-validate none" action="/idGenerator/update.json" data-suc="更新主键生成器成功" data-fail="更新主键生成器失败">

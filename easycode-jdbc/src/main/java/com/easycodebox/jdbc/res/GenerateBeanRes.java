@@ -1,6 +1,6 @@
 package com.easycodebox.jdbc.res;
 
-import com.easycodebox.common.freemarker.ConfigurationFactory;
+import com.easycodebox.common.freemarker.Freemarkers;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.reflect.Classes;
@@ -10,7 +10,6 @@ import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.GenerateRes;
 import com.easycodebox.jdbc.entity.Entity;
 import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.TemplateLoader;
 import freemarker.template.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -53,7 +52,7 @@ public class GenerateBeanRes {
 	 */
 	private String packageName;
 	
-	private TemplateLoader templateLoader;
+	private Configuration configuration;
 	
 	/**
 	 * 生成资源文件
@@ -80,21 +79,22 @@ public class GenerateBeanRes {
 		
 		Writer out = null;
 		try {
-			Configuration cfg = ConfigurationFactory.instance(null);
-			//方法1
-			/*URL url = GenerateBeanRes.class.getResource("");
-			File tlFile = new File(url.toURI());
-			cfg.setDirectoryForTemplateLoading(tlFile);*/
-			
-			//方法2
-			/*URL url = GenerateBeanRes.class.getResource("");
-			cfg.setTemplateLoader(new FileTemplateLoader(new File(url.toURI())));*/
-			
-			//方法3
-			cfg.setTemplateLoader(templateLoader == null ? new ClassTemplateLoader(GenerateBeanRes.class, Symbol.EMPTY) : templateLoader);
-			
+			if (configuration == null) {
+				configuration = Freemarkers.simpleCfg();
+				//方法1
+				/*URL url = GenerateBeanRes.class.getResource("");
+				File tlFile = new File(url.toURI());
+				cfg.setDirectoryForTemplateLoading(tlFile);*/
+					
+				//方法2
+				/*URL url = GenerateBeanRes.class.getResource("");
+				cfg.setTemplateLoader(new FileTemplateLoader(new File(url.toURI())));*/
+				
+				//方法3
+				configuration.setTemplateLoader(new ClassTemplateLoader(GenerateBeanRes.class, Symbol.EMPTY));
+			}
 			//设置包装器，并将对象包装为数据模型
-			Template tpl = cfg.getTemplate(template, "UTF-8");
+			Template tpl = configuration.getTemplate(template, "UTF-8");
 			Map<String, Object> root = new LinkedHashMap<>();
 			root.put("data", processRes2BeanData(rs));
 			File outPutFile = new File(outputFile);
@@ -273,13 +273,12 @@ public class GenerateBeanRes {
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
-
-	public TemplateLoader getTemplateLoader() {
-		return templateLoader;
-	}
-
-	public void setTemplateLoader(TemplateLoader templateLoader) {
-		this.templateLoader = templateLoader;
+	
+	public Configuration getConfiguration() {
+		return configuration;
 	}
 	
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
 }

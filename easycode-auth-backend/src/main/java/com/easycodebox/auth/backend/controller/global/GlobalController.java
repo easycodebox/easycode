@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 @Controller
+@SuppressWarnings("Duplicates")
 public class GlobalController extends BaseController {
 	
 	@Autowired

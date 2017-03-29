@@ -28,7 +28,7 @@ public class IdGeneratorController extends BaseController {
 	
 	@GetMapping("/idGenerator")
 	public String index() throws Exception {
-		return "html/idGenerator";
+		return "idGenerator";
 	}
 	
 	/**
