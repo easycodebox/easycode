@@ -16,6 +16,7 @@ import java.util.*;
  */
 @Configuration
 @EnableConfigurationProperties(CoreProperties.class)
+@SuppressWarnings("Duplicates")
 public class PropertyConfig {
 	
 	/**
