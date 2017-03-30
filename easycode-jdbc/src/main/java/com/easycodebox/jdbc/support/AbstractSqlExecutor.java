@@ -150,8 +150,8 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 	 * @return
 	 * @throws Exception
 	 */
-	@SafeVarargs
-	public final <V extends DetailEnum<?>> int deletePhy(Serializable idVal, V... status) {
+	@SuppressWarnings("unchecked")
+	public <V extends DetailEnum<?>> int deletePhy(Serializable idVal, V... status) {
 		return this.deletePhy(idVal, entityClass, status);
 	}
 	
@@ -162,8 +162,8 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 	 * @return
 	 * @throws Exception
 	 */
-	@SafeVarargs
-	public final <K extends Entity, V extends DetailEnum<?>> int deletePhy(Serializable idVal, Class<K> entityClass, V... status) {
+	@SuppressWarnings("unchecked")
+	public <K extends Entity, V extends DetailEnum<?>> int deletePhy(Serializable idVal, Class<K> entityClass, V... status) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass);
 		if(status != null && status.length > 0) {
@@ -203,13 +203,13 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 		return jdbcProcessor.delete(sql(entityClass), "TRUNCATE TABLE " + tableName , null, int.class);
 	}
 	
-	@SafeVarargs
-	public final <V extends DetailEnum<?>> boolean exist(Serializable idVal,  V... status) {
+	@SuppressWarnings("unchecked")
+	public <V extends DetailEnum<?>> boolean exist(Serializable idVal,  V... status) {
 		return this.exist(idVal, entityClass, status);
 	}
 	
-	@SafeVarargs
-	public final <K extends Entity, V extends DetailEnum<?>> boolean exist(Serializable idVal, Class<K> entityClass, V... status) {
+	@SuppressWarnings("unchecked")
+	public <K extends Entity, V extends DetailEnum<?>> boolean exist(Serializable idVal, Class<K> entityClass, V... status) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass);
 		int valCount = idVal.getClass().isArray() ? ((Object[])idVal).length : idVal instanceof Collection<?>
@@ -228,23 +228,23 @@ public abstract class AbstractSqlExecutor<T extends Entity> {
 		return count(sqlGrammar) > 0;
 	}
 	
-	@SafeVarargs
-	public final <V extends DetailEnum<?>> T get(Serializable id, V... status) {
+	@SuppressWarnings("unchecked")
+	public <V extends DetailEnum<?>> T get(Serializable id, V... status) {
 		return get(id, (LockMode)null, status);
 	}
 	
-	@SafeVarargs
-	public final <K extends Entity, V extends DetailEnum<?>> K get(Serializable id, Class<K> entityClass, V... status) {
+	@SuppressWarnings("unchecked")
+	public <K extends Entity, V extends DetailEnum<?>> K get(Serializable id, Class<K> entityClass, V... status) {
 		return get(id, entityClass, null, status);
 	}
 	
-	@SafeVarargs
-	public final <V extends DetailEnum<?>> T get(Serializable id, LockMode lockMode, V... status) {
+	@SuppressWarnings("unchecked")
+	public <V extends DetailEnum<?>> T get(Serializable id, LockMode lockMode, V... status) {
 		return this.get(id, entityClass, lockMode, status);
 	}
 	
-	@SafeVarargs
-	public final <K extends Entity, V extends DetailEnum<?>> K get(Serializable id, Class<K> entityClass, LockMode lockMode, V... status) {
+	@SuppressWarnings("unchecked")
+	public <K extends Entity, V extends DetailEnum<?>> K get(Serializable id, Class<K> entityClass, LockMode lockMode, V... status) {
 		List<PkColumn> pks = AnnotateUtils.getPrimaryKeys(entityClass);
 		SqlGrammar sqlGrammar = sql(entityClass)
 				.eq(Property.instance(pks.get(0).getName(), entityClass, false), id);
