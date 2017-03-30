@@ -1,21 +1,13 @@
 package com.easycodebox.common.test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Iterator;
-
-import org.springframework.jdbc.support.JdbcUtils;
-
 import com.easycodebox.common.net.Https;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.jdbc.support.JdbcUtils;
+
+import java.io.*;
+import java.sql.*;
+import java.util.Iterator;
 
 public class TestCitySql {
 	
@@ -23,7 +15,7 @@ public class TestCitySql {
 	private static ResultSet resultSet = null;
 	
 	private static String driverClass = "com.mysql.jdbc.Driver";
-	private static String jdbcUrl = "jdbc:mysql://192.168.1.9:3306/botest?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true";
+	private static String jdbcUrl = "jdbc:mysql://192.168.1.9:3306/botest?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false";
 	private static String user = "";
 	private static String password = "";
 	
