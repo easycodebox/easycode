@@ -1,6 +1,5 @@
 package com.easycodebox.common.filter;
 
-import com.easycodebox.common.enums.entity.LogLevel;
 import com.easycodebox.common.log.slf4j.LogLevelConfig;
 
 /**
@@ -32,11 +31,6 @@ public class LogLevelException extends RuntimeException {
 		super(cause);
 	}
 	
-	public LogLevelException reset() {
-		logLevelConfig.setLogLevel(LogLevel.ERROR);
-		return this;
-	}
-
 	public LogLevelConfig getLogLevelConfig() {
 		return logLevelConfig;
 	}

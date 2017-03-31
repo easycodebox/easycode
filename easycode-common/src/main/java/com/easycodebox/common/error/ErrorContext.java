@@ -46,20 +46,7 @@ public class ErrorContext extends LogLevelException {
 	}
 	
 	public static ErrorContext instance(CodeMsg error, Throwable cause, Object... args) {
-		ErrorContext errorContext = LOCAL.get();
-		if(errorContext == null) {
-			errorContext = new ErrorContext(error == null ? null : error.fillArgs(args), cause);
-			LOCAL.set(errorContext);
-		}
-		return errorContext;
-	}
-	
-	/**
-	 * 判断当前线程有没有产生错误
-	 * @return
-	 */
-	public static boolean hasError() {
-		return LOCAL.get() != null;
+		return new ErrorContext(error == null ? null : error.fillArgs(args), cause);
 	}
 	
 	public ErrorContext error(CodeMsg error) {
@@ -72,11 +59,26 @@ public class ErrorContext extends LogLevelException {
 		return this;
 	}
 	
-	public ErrorContext reset() {
-		super.reset();
-		this.error = null;
+	/**
+	 * 判断当前线程有没有产生错误
+	 * @return
+	 */
+	public static boolean hasError() {
+		return LOCAL.get() != null;
+	}
+	
+	/**
+	 * 存储当前异常对象到线程变量中
+	 */
+	public void store() {
+		LOCAL.set(this);
+	}
+	
+	/**
+	 * 清空当前线程变量的异常信息
+	 */
+	public static void clear() {
 		LOCAL.remove();
-		return this;
 	}
 
 	public CodeMsg getError() {

@@ -293,7 +293,8 @@ public class ErrorContextFilter implements Filter {
 				}
 			}
 		} finally {
-			ErrorContext.instance().reset();
+			if (ErrorContext.hasError())
+				ErrorContext.clear();
 		}
 	}
 
