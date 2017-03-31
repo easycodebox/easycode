@@ -22,5 +22,5 @@
 	select2/4.0.3/select2.js,
 	pjax/1.9.6/jquery.pjax.js" /]
 	
-<script type="text/javascript" src="/js/config"></script>
+<script type="text/javascript" src="/config.js"></script>
 <script type="text/javascript" src="/js/global.js"></script>

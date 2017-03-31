@@ -61,7 +61,7 @@ public class GlobalController extends BaseController {
 	/**
 	 * 生成JS的配置文件
 	 */
-	@GetMapping("/js/config")
+	@GetMapping("/config")
 	public String configJs(HttpServletResponse response, Model model) throws Exception {
 		CacheControl cacheControl = CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic();
 		response.addHeader("Cache-Control", cacheControl.getHeaderValue());
