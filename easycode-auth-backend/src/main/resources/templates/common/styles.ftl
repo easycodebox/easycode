@@ -1,4 +1,4 @@
-<link rel="shortcut icon" href="/imgs/frame/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 [@e.link env="PROD" href="http://cdn.easycodebox.com/??
 	pace/0.7.5/themes/pace-theme-center-circle.css,
 	bootstrap/3.3.6/css/bootstrap.min.css,
