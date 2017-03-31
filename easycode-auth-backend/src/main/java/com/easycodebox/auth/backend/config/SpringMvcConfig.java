@@ -8,9 +8,10 @@ import freemarker.template.TemplateModelException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.boot.autoconfigure.web.WebMvcRegistrations;
-import org.springframework.boot.autoconfigure.web.WebMvcRegistrationsAdapter;
+import org.springframework.boot.autoconfigure.web.*;
 import org.springframework.context.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
@@ -83,6 +84,19 @@ public class SpringMvcConfig {
 				}
 				return bean;
 			}
+		};
+	}
+	
+	@Bean
+	public BasicErrorController errorController(ErrorAttributes errorAttributes, ServerProperties serverProperties,
+	                                            List<ErrorViewResolver> errorViewResolvers) {
+		return new BasicErrorController(errorAttributes, serverProperties.getError(), errorViewResolvers) {
+			
+			@RequestMapping(path = "/{status}", produces = "text/html")
+			public String status(@PathVariable String status) {
+				return "error/" + status;
+			}
+			
 		};
 	}
 	
