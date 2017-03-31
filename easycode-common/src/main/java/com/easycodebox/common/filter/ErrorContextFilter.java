@@ -47,13 +47,13 @@ public class ErrorContextFilter implements Filter {
 	private int defaultStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 	
 	/**
-	 * 格式：com.xxx.SpecificException = redirect:/errors/500.html, com.xxx.AuthException = /errors/403.html <br>
+	 * 格式：com.xxx.SpecificException = redirect:/error/500.html, com.xxx.AuthException = /error/403.html <br>
 	 * 分隔符可以是 <b>,</b> 或者 <b>\n</b> 
 	 */
 	private Map<Class<?>, String> exceptionMappings = Collections.emptyMap();
 	
 	/**
-	 * 格式：/errors/500.html = 500, /errors/403.html = 403 <br>
+	 * 格式：/error/500.html = 500, /error/403.html = 403 <br>
 	 * key对应exceptionMappings的value（page页面）<br>
 	 * value对应http的status值 <br>
 	 * 分隔符可以是 <b>,</b> 或者 <b>\n</b> 

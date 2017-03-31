@@ -6,7 +6,7 @@
 
 	<!-- Exclude path from decoration. -->
 	<mapping path="/css/*" exclude="true" />
-	<mapping path="/errors/*" exclude="true" />
+	<mapping path="/error/*" exclude="true" />
 	<mapping path="/imgs/*" exclude="true" />
 	<mapping path="/js/*" exclude="true" />
 	

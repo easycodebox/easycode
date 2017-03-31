@@ -36,10 +36,9 @@ public class SpringMvcConfig {
 				DefaultRequestMappingHandlerMapping mapping = new DefaultRequestMappingHandlerMapping();
 				mapping.setControllerPostfix("Controller");
 				mapping.setExcludePatterns(new String[]{
-						"/**/*.js",
-						"/**/*.css",
-						"/imgs/**",
-						"/errors/**"
+						"/js/**",
+						"/css/**",
+						"/imgs/**"
 				});
 				return mapping;
 			}

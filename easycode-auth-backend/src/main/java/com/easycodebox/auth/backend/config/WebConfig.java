@@ -2,7 +2,6 @@ package com.easycodebox.auth.backend.config;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import com.easycodebox.common.filter.ErrorContextFilter;
 import com.easycodebox.common.filter.SecurityContextFilter;
 import com.easycodebox.common.security.SecurityInfoHandler;
 import com.easycodebox.common.sitemesh3.DefaultConfigurableSiteMeshFilter;
@@ -24,7 +23,7 @@ public class WebConfig {
 	@Bean
 	public FilterRegistrationBean webStatFilter() {
 		FilterRegistrationBean bean = new FilterRegistrationBean(new WebStatFilter());
-		bean.addInitParameter("exclusions", "/css/*,/imgs/*,/js/*,/errors/*,/druid/*");
+		bean.addInitParameter("exclusions", "/css/*,/imgs/*,/js/*,/error/*,/druid/*");
 		return bean;
 	}
 	
@@ -35,13 +34,6 @@ public class WebConfig {
 	@Bean
 	public ServletRegistrationBean statViewServlet() {
 		return new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
-	}
-	
-	@Bean
-	public FilterRegistrationBean errorContextFilter() {
-		FilterRegistrationBean bean = new FilterRegistrationBean(new ErrorContextFilter());
-		bean.addInitParameter("defaultPage", "/errors/500.html");
-		return bean;
 	}
 	
 	@Bean
