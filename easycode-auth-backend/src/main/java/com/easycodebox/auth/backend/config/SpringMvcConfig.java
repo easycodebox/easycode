@@ -1,5 +1,6 @@
 package com.easycodebox.auth.backend.config;
 
+import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerAdapter;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerMapping;
 import freemarker.ext.jsp.TaglibFactory.ClasspathMetaInfTldSource;
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.web.*;
 import org.springframework.context.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
@@ -87,6 +89,31 @@ public class SpringMvcConfig {
 		};
 	}
 	
+	/**
+	 * 自定义ErrorAttributes，存储{@link com.easycodebox.common.error.CodeMsg} 属性
+	 */
+	@Bean
+	public ErrorAttributes errorAttributes() {
+		return new DefaultErrorAttributes() {
+			@Override
+			public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes, boolean includeStackTrace) {
+				Map<String, Object> attributes = super.getErrorAttributes(requestAttributes, includeStackTrace);
+				Throwable error = getError(requestAttributes);
+				if (error instanceof ErrorContext) {
+					ErrorContext ec = (ErrorContext) error;
+					if (ec.getError() != null) {
+						attributes.put("code", ec.getError().getCode());
+						attributes.put("msg", ec.getError().getMsg());
+					}
+				}
+				return attributes;
+			}
+		};
+	}
+	
+	/**
+	 * 增加直接访问/error/目录下页面功能
+	 */
 	@Bean
 	public BasicErrorController errorController(ErrorAttributes errorAttributes, ServerProperties serverProperties,
 	                                            List<ErrorViewResolver> errorViewResolvers) {
