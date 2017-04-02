@@ -12,6 +12,7 @@ import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
+import org.springframework.http.MediaType;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -254,9 +255,8 @@ public class ErrorContextFilter implements Filter {
 			}
 			
 			//判断请求是否为AJAX请求
-			if(Https.isAjaxRequest(request) &&
-					request.getHeader(commonProperties.getPjaxKey()) == null) {
-				response.setContentType("application/json;charset=UTF-8");
+			if(!Https.isResponseHtml(request)) {
+				response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 				try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 						.createGenerator(response.getWriter())) {
 					Jacksons.NON_NULL.writeValue(jsonGenerator, error);

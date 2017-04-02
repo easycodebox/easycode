@@ -25,6 +25,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.*;
@@ -32,6 +33,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.Collections;
 import java.util.concurrent.*;
 
 /**
@@ -340,29 +342,38 @@ public class Https {
 	 * @param request
 	 * @return
 	 */
-	public static boolean isAjaxRequest(HttpServletRequest request) { 
-		    String header = request.getHeader("X-Requested-With");
+	public static boolean isAjaxRequest(HttpServletRequest request) {
+		String header = request.getHeader("X-Requested-With");
 		return header != null && "XMLHttpRequest".equals(header);
 	}
 	
 	/**
-	 * 判断是否为ajax请求
+	 * 判断是否响应Html资源
 	 * @param request
 	 * @return
 	 */
-	public static boolean isResponseJson(HttpServletRequest request) { 
-		String accept = request.getHeader("Accept");
-		return accept != null && accept.trim().startsWith("application/json");
+	public static boolean isResponseHtml(HttpServletRequest request) {
+		boolean isHtmlReq = false;
+		for (MediaType mediaType : getMimeTypes(request)) {
+			if (MediaType.TEXT_HTML.includes(mediaType)) {
+				isHtmlReq = true;
+				break;
+			}
+		}
+		return isHtmlReq;
 	}
 	
 	/**
-	 * 判断是否为ajax请求
+	 * 根据request获取MediaType列表
 	 * @param request
 	 * @return
 	 */
-	public static boolean isResponseHtml(HttpServletRequest request) { 
-		String accept = request.getHeader("Accept");
-		return accept != null && accept.trim().startsWith("text/html");
+	public static List<MediaType> getMimeTypes(HttpServletRequest request) {
+		Enumeration<String> headers = request.getHeaders(HttpHeaders.ACCEPT);
+		ArrayList<String> headerValues = Collections.list(headers);
+		List<MediaType> mediaTypes = MediaType.parseMediaTypes(headerValues);
+		MediaType.sortBySpecificityAndQuality(mediaTypes);
+		return mediaTypes;
 	}
 	
 	/**
@@ -552,7 +563,7 @@ public class Https {
 	 * 
 	 */
 	public static void outJson(String str, HttpServletResponse response) {
-		response.setContentType("application/json;charset=UTF-8");
+		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		outString(str, response);
 	}
 	
@@ -561,7 +572,7 @@ public class Https {
 	 * 
 	 */
 	public static void outJson(Object obj, HttpServletResponse response) {
-		response.setContentType("application/json;charset=UTF-8");
+		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		outObject(obj, response);
 	}
 	

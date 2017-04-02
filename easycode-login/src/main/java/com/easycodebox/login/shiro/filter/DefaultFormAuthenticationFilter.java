@@ -41,15 +41,12 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
                         "Authentication url [{0}]", getLoginUrl());
         	HttpServletRequest req = (HttpServletRequest)request;
         	HttpServletResponse resp = (HttpServletResponse)response;
-        	
-        	if(Https.isAjaxRequest(req) &&
-        			req.getHeader(commonProperties.getPjaxKey()) == null) {
+			
+        	if(!Https.isResponseHtml(req)) {
     			Https.outJson(CodeMsg.NO_LOGIN, resp);
-        	}
-        	else if(req.getParameter(commonProperties.getDialogReqKey()) != null) {
+        	} else if (req.getParameter(commonProperties.getDialogReqKey()) != null) {
 				Callbacks.callback(Callbacks.closeDialog((String)null), null, resp);
-        	}
-        	else
+        	} else
         		saveRequestAndRedirectToLogin(request, response);
             return false;
         }

@@ -6,6 +6,7 @@ import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
@@ -41,9 +42,8 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 			error = CodeMsg.FAIL;
 		}
 		
-		if(Https.isAjaxRequest(request) &&
-				request.getHeader(commonProperties.getPjaxKey()) == null) {
-			response.setContentType("application/json;charset=UTF-8");
+		if(!Https.isResponseHtml(request)) {
+			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 					.createGenerator(response.getWriter())) {
 				Jacksons.NON_NULL.writeValue(jsonGenerator, error);
@@ -51,7 +51,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 			}catch (Exception jsonEx) {
 				throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
 			}
-		}else {
+		} else {
 			if(request.getParameter(commonProperties.getDialogReqKey()) != null) {
 				Callbacks.callback(Callbacks.none(error), null, response);
 				return null;

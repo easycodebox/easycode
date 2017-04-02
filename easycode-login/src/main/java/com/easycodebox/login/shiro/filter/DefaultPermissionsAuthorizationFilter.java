@@ -10,6 +10,7 @@ import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.fasterxml.jackson.core.JsonGenerator;
 import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
+import org.springframework.http.MediaType;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -48,9 +49,8 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
-		if (Https.isAjaxRequest((HttpServletRequest) request) &&
-				req.getHeader(commonProperties.getPjaxKey()) == null) {
-			response.setContentType("application/json;charset=UTF-8");
+		if (!Https.isResponseHtml(req)) {
+			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
 					.createGenerator(response.getWriter())) {
 				Jacksons.NON_NULL.writeValue(jsonGenerator, CodeMsg.FAIL.msg("您没有权限执行此操作"));
