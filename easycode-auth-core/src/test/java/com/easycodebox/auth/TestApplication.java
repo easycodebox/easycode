@@ -1,4 +1,4 @@
-package com.easycodebox.auth.core;
+package com.easycodebox.auth;
 
 import com.easycodebox.auth.core.config.CoreConfig;
 import com.easycodebox.auth.core.util.Constants;
@@ -15,10 +15,10 @@ import javax.sql.DataSource;
  * @author WangXiaoJin
  */
 @SpringBootApplication
-public class CoreTestApplication {
+public class TestApplication {
 	
 	@TestConfiguration
-	public class CoreTestConfig {
+	public static class CoreTestConfig {
 		
 		/**
 		 * 当easycode-jdbc-mybatis支持HSQL时再开启此功能，

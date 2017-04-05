@@ -1,6 +1,6 @@
 package com.easycodebox.auth.backend;
 
-import com.easycodebox.auth.AuthBackendTestApplication;
+import com.easycodebox.auth.TestApplication;
 import com.easycodebox.auth.core.AbstractTest;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
  * @author WangXiaoJin
  */
 @SpringBootTest(
-		classes = AuthBackendTestApplication.class,
+		classes = TestApplication.class,
 		properties = {
 				"spring.config.name=application,core-application"
 		}

@@ -1,5 +1,6 @@
 package com.easycodebox.auth.core;
 
+import com.easycodebox.auth.TestApplication;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringRunner.class)
 @Transactional  //回滚修改数据库的数据
 @SpringBootTest(
-		classes = CoreTestApplication.class,
+		classes = TestApplication.class,
 		webEnvironment = WebEnvironment.NONE,
 		properties = {
 				//"logging.level.root=DEBUG",
