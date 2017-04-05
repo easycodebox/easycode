@@ -93,7 +93,6 @@ public class CoreConfig {
 		return bean;
 	}
 	
-	//@Profile("!" + Constants.INTEGRATION_TEST_KEY)
 	@Bean
 	@ConfigurationProperties(prefix = "spring.datasource.druid")
 	public DataSource dataSource(DataSourceProperties properties) throws SQLException {
