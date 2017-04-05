@@ -1,11 +1,8 @@
 package com.easycodebox.auth.core;
 
-import com.easycodebox.auth.core.config.CoreConfig;
-import com.easycodebox.auth.core.config.CoreTestConfig;
-import com.easycodebox.auth.core.util.Constants;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringRunner.class)
 @Transactional  //回滚修改数据库的数据
-@ContextConfiguration(classes = {
-		CoreConfig.class,
-		CoreTestConfig.class
-})
-@ActiveProfiles(Constants.INTEGRATION_TEST_KEY)
+@SpringBootTest(
+		classes = CoreTestApplication.class,
+		webEnvironment = WebEnvironment.NONE,
+		properties = {
+				//"logging.level.root=DEBUG",
+				//"logging.level.org.apache.tomcat=INFO",
+				//"debug=true",
+				"spring.config.name=application,core-application"
+		}
+)
 public abstract class AbstractTest {
 	
 }
