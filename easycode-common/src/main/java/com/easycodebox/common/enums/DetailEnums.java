@@ -18,11 +18,8 @@ public final class DetailEnums {
 	public static <T extends DetailEnum<?>> T parse(Class<T> clazz, Object value) {
 		if (!clazz.isEnum()) return null;
 		for(T t : clazz.getEnumConstants()) {
-			if(t.getValue() == null && value == null) {
-				return t;
-			} else if(t.getValue() == null || value == null) {
-				continue;
-			} else if(t.getValue().equals(value)) {
+			if(t.getValue() == null && value == null
+					|| value != null && value.equals(t.getValue())) {
 				return t;
 			}
 		}
@@ -106,15 +103,13 @@ public final class DetailEnums {
 			}
         	
         	//根据枚举的索引赋值
-        	if(data == null && enableOrdinal) {
+        	if(data == null && enableOrdinal && value != null) {
         		try {
 					int index = Integer.parseInt(value);
-					for(T e : enumType.getEnumConstants()) {
-	    				if(((Enum)e).ordinal() == index) {
-	    					data = e;
-	    					break;
-	    				}
-	    			}
+			        T[] constants = enumType.getEnumConstants();
+			        if (index < constants.length) {
+				        data = constants[index];
+			        }
 				} catch (NumberFormatException ignored) {
 					
 				}
