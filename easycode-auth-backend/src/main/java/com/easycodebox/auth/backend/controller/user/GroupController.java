@@ -15,12 +15,10 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,7 +37,7 @@ public class GroupController extends BaseController {
 	 * 列表
 	 */
 	@ResponseBody
-	public CodeMsg list(Group group, @DateTimeFormat(pattern = "yyyy-MM-dd") Date create, DataPage<Group> dataPage) throws Exception {
+	public CodeMsg list(Group group, DataPage<Group> dataPage) throws Exception {
 		DataPage<Group> data = groupService.page(group.getParentName(), group.getName(), 
 				group.getStatus(), dataPage.getPageNo(), dataPage.getPageSize());
 		for (Group item : data.getData()) {

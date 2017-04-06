@@ -14,14 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.web.*;
 import org.springframework.context.annotation.*;
-import org.springframework.core.annotation.Order;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
@@ -38,14 +35,8 @@ import java.util.regex.Pattern;
  */
 @Configuration
 @ComponentScan(basePackages = "com.easycodebox.idgenerator.controller")
-@Order()
 @SuppressWarnings("Duplicates")
-public class SpringMvcConfig extends WebMvcConfigurerAdapter {
-	
-	@Override
-	public void addFormatters(FormatterRegistry registry) {
-		super.addFormatters(registry);
-	}
+public class SpringMvcConfig {
 	
 	@Bean
 	public WebMvcRegistrations webMvcRegistrations() {
