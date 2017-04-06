@@ -29,7 +29,7 @@
 						
 						<div class="form-group">
 							<label>组名：</label>
-							<input type="text" class="form-control" name="name" />
+							<input type="text" class="form-control" name="create" />
 						</div>
 						
 						<div class="form-group">

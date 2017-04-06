@@ -12,7 +12,6 @@ import com.easycodebox.common.idgenerator.DetailEnumIdGenTypeParser;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.spring.ApplicationContextFactory;
-import com.easycodebox.common.spring.StringToEnumConverterFactory;
 import com.easycodebox.jdbc.config.ConfigEntityBean;
 import com.easycodebox.jdbc.mybatis.*;
 import com.easycodebox.jdbc.mybatis.spring.DefaultSqlSessionFactoryBean;
@@ -25,13 +24,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.format.datetime.DateFormatter;
-import org.springframework.format.datetime.DateTimeFormatAnnotationFormatterFactory;
-import org.springframework.format.support.FormattingConversionServiceFactoryBean;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * core包Spring配置
@@ -174,29 +171,5 @@ public class CoreConfig {
 		return registry;
 	}
 	/* =================================== 【ID转换器 - END 】  ============================================== */
-	
-	@Bean
-	public static FormattingConversionServiceFactoryBean conversionService() {
-		FormattingConversionServiceFactoryBean factoryBean = new FormattingConversionServiceFactoryBean();
-		factoryBean.setConverters(Collections.singleton(new StringToEnumConverterFactory()));
-		Set<Object> formatters = new HashSet<>();
-		//设置Date类型默认Formatter,全局有效。pattern属性：格式化的默认格式
-		DateFormatter dateFormatter = new DateFormatter();
-		dateFormatter.setPattern("yyyy-MM-dd HH:mm:ss");
-		formatters.add(dateFormatter);
-		/*
-		默认情况下FormattingConversionServiceFactoryBean已经注册了DateTimeFormatAnnotationFormatterFactory，
-		由registerDefaultFormatters属性控制，此属性默认为true。
-		这里再次注册DateTimeFormatAnnotationFormatterFactory的原因如下：
-		Spring可以对相同类型转换提供多个Converter，以List形式保存，后添加的Converter会被插入到最前面。而注册
-		默认Formatters的行为在上面DateFormatter之前，所以日期类型转换时，只会用上面的DateFormatter，无论你
-		有没有在属性上配置@DateTimeFormat注解，Spring都不会使用DateTimeFormatAnnotationFormatterFactory。
-		因此这里再次注册了DateTimeFormatAnnotationFormatterFactory，让它第一个检查，如果有@DateTimeFormat则
-		用它，没有则使用上面的DateFormatter。这是最简单的方法，不需要写代码就可以实现需求了。
-		*/
-		formatters.add(new DateTimeFormatAnnotationFormatterFactory());
-		factoryBean.setFormatters(formatters);
-		return factoryBean;
-	}
 	
 }
