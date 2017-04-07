@@ -2,6 +2,7 @@ package com.easycodebox.upload.config;
 
 import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.error.CodeMsg.Code;
+import com.easycodebox.common.freemarker.ConfigurationPostProcessor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -55,6 +56,15 @@ public class UploadConfig {
 	@ConfigurationProperties(prefix = "common")
 	public CommonProperties commonProperties() {
 		return CommonProperties.instance();
+	}
+	
+	/**
+	 * 增加自定义日期格式化工厂
+	 * @return
+	 */
+	@Bean
+	public static ConfigurationPostProcessor freemarkerCfgPostProcessor() {
+		return new ConfigurationPostProcessor();
 	}
 	
 }
