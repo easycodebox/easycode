@@ -3,6 +3,7 @@ package com.easycodebox.common.zookeeper.curator;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.lang.reflect.Classes;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.curator.RetryPolicy;
@@ -51,7 +52,7 @@ public class ZooKeeperTest {
 					for (String file : cfgFiles) {
 						String fileNode = node + Symbol.SLASH + FilenameUtils.getName(file);
 						stat = client.checkExists().forPath(fileNode);
-						try (InputStream input = ZooKeeperTest.class.getResourceAsStream(file)) {
+						try (InputStream input = Classes.getClassLoader().getResourceAsStream(file)) {
 							if (stat == null) {
 								client.create().forPath(fileNode, IOUtils.toByteArray(input));
 							} else {

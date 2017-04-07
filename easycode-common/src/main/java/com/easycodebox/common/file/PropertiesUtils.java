@@ -2,7 +2,9 @@ package com.easycodebox.common.file;
 
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.StringToken.StringFormatToken;
-import com.easycodebox.common.log.slf4j.*;
+import com.easycodebox.common.lang.reflect.Classes;
+import com.easycodebox.common.log.slf4j.Logger;
+import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.xml.XmlDataParser;
 import org.apache.commons.lang.StringUtils;
@@ -49,7 +51,7 @@ public class PropertiesUtils {
 	public static void loadFile(Properties properties, String resource) throws IOException {
 		Assert.notNull(properties, "'properties' can't be null.");
 		log.info("properties load file {0}.", resource);
-		try (InputStream i = PropertiesPool.class.getResourceAsStream(resource)) {
+		try (InputStream i = Classes.getClassLoader().getResourceAsStream(resource)) {
 			properties.load(i);
 		}
 	}
@@ -80,7 +82,7 @@ public class PropertiesUtils {
 	public static void loadXmlFile(Properties properties, String resource) throws IOException, DocumentException, XMLParseException {
 		Assert.notNull(properties, "'properties' can't be null.");
 		log.info("properties load xml file {0}.", resource);
-		try (InputStream is = PropertiesPool.class.getResourceAsStream(resource)) {
+		try (InputStream is = Classes.getClassLoader().getResourceAsStream(resource)) {
 			loadXmlFile(properties, is);
 		}
 	}
