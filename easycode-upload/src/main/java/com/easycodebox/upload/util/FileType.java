@@ -1,10 +1,9 @@
 package com.easycodebox.upload.util;
 
-import java.util.Map;
-
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.file.PropertiesPool;
-import com.easycodebox.common.lang.Symbol;
+
+import java.util.Map;
 
 /**
  * @author WangXiaoJin
@@ -45,11 +44,11 @@ public enum FileType implements DetailEnum<String> {
 	}
 	
 	/**
-	 * 获取文件类型的上传根目录
+	 * 存储文件的文件夹名
 	 * @return
 	 */
-	public String getRoot() {
-		return Constants.UPLOAD_PATH + Symbol.SLASH + fileDir;
+	public String getFileDir() {
+		return fileDir;
 	}
 	
 	@Override

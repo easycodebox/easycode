@@ -58,7 +58,7 @@ $(function(){
 	//新增功能 - 上传图片
 	$("#uploadImgsAdd").uploadImg({
 		id: "addImg",
-		picType: "partnerContract",
+		fileKey: "partnerContract",
 		picInput: "contractAdd",
 		imgRule: "r150c150",
 		picDiv: "uploadImgsAdd",
@@ -68,7 +68,7 @@ $(function(){
 	//修改功能 - 上传图片
 	$("#uploadImgsUpd").uploadImg({
 		id: "updImg",
-		picType: "partnerContract",
+		fileKey: "partnerContract",
 		picInput: "contractUpd",
 		imgRule: "r150c150",
 		picDiv: "uploadImgsUpd",

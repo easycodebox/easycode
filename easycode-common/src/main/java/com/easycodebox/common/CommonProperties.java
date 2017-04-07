@@ -28,51 +28,67 @@ public class CommonProperties {
 	 * 项目所处环境
 	 */
 	private ProjectEnv projectEnv = ProjectEnv.DEV;
+	
 	/**
 	 * 使用script/style标签时，是否自动显示压缩后的文件：
 	 * test.js  --> test.min.js
 	 * test.css --> test.min.css
 	 */
 	private boolean transMinJsCss = true;
+	
 	/**
 	 * 当前项目的根路径：http://www.xxx.com
 	 */
 	private String basePath = "/";
+	
+	/**
+	 * 存放临时文件的文件名
+	 */
+	private String tmpFilename = "tmp";
+	
 	/**
 	 * 图片根地址
 	 * 注意：子类实现此配置
 	 */
 	private String imgUrl;
+	
 	/**
 	 * 默认图片
 	 */
 	private String imgDefault = "default/default.jpg";
+	
 	/**
 	 * http请求参数以传统格式传送：
 	 * true	== url.do?name=wang&name=zhang
 	 * false == url.do?name[]=wang&name[]=zhang
 	 */
 	private boolean traditionalHttp = true;
+	
 	/**
 	 * pjax请求的header key值
 	 */
 	private String pjaxKey = "X-PJAX";
+	
 	/**
 	 * response url参数key值
 	 */
 	private String responseUrlKey = "responseUrl";
+	
 	/**
 	 * 用户信息的key值
 	 */
 	private String userKey = "user_info";
+	
 	/**
 	 * 项目功能菜单KEY值
 	 */
 	private String projectMenuKey = "project_menu";
+	
 	/**
 	 * 权限KEY值
 	 */
 	private String permissionKey = "permission";
+	
 	/**
 	 * 标记此次请求是弹出框发送的请求，controller返回callback(closeDialog(), response)格式的数据
 	 */
@@ -100,6 +116,14 @@ public class CommonProperties {
 	
 	public void setBasePath(String basePath) {
 		this.basePath = basePath;
+	}
+	
+	public String getTmpFilename() {
+		return tmpFilename;
+	}
+	
+	public void setTmpFilename(String tmpFilename) {
+		this.tmpFilename = tmpFilename;
 	}
 	
 	public String getImgUrl() {

@@ -1,19 +1,22 @@
 package com.easycodebox.upload.util;
 
+import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.enums.entity.YesNo;
 import com.easycodebox.common.file.*;
+import com.easycodebox.common.idgenerator.support.AlphaNumericIdGenerator;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.idgenerator.support.AlphaNumericIdGenerator;
-import org.apache.commons.fileupload.disk.DiskFileItem;
+import com.easycodebox.upload.config.UploadProperties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
@@ -21,64 +24,82 @@ import java.util.regex.Pattern;
 
 /**
  * @author WangXiaoJin
- * 
+ *
  */
-public class UploadUtils {
+@Component
+public class UploadHandler {
 	
-	private static final Logger log = LoggerFactory.getLogger(UploadUtils.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	private static AlphaNumericIdGenerator generator = null;
-	private static final int INCREMENT = 1, 
-							FETCHSIZE = 500; 
+	private AlphaNumericIdGenerator generator = null;
+	private final int INCREMENT = 1, FETCHSIZE = 500;
 						
-						//文件名初始值
-	public static String FILENAME_INIT_VAL = null,
-						//文件名的当前值
-						FILENAME_CUR_VAL = null,
-						//文件名的最大值
-						FILENAME_MAX_VAL = null;
 	private static final ReentrantLock lock = new ReentrantLock();
 	
-	static {
+	private UploadProperties uploadProperties;
+	
+	private CommonProperties commonProperties;
+	
+	public UploadHandler(UploadProperties uploadProperties, CommonProperties commonProperties) {
+		this.uploadProperties = uploadProperties;
+		this.commonProperties = commonProperties;
+	}
+	
+	@PostConstruct
+	public void init() {
+		PropertiesPool.loadPropertiesFile(uploadProperties.getConfigFile(), true, true);
 		
-		PropertiesPool.loadPropertiesFile(Constants.FILENAME_PROPS_PATH, true, true);
+		String initVal = PropertiesPool.getProperty("filename_init_val"),
+			curVal = PropertiesPool.getProperty("filename_cur_val"),
+			maxVal = PropertiesPool.getProperty("filename_max_val");
 		
-		FILENAME_INIT_VAL = PropertiesPool.getProperty("filename_init_val");
-		FILENAME_CUR_VAL = PropertiesPool.getProperty("filename_cur_val");
-		FILENAME_MAX_VAL = PropertiesPool.getProperty("filename_max_val");
+		if (Strings.isBlank(initVal)) {
+			initVal = uploadProperties.getFilenameInitVal();
+		}else {
+			uploadProperties.setFilenameInitVal(initVal);
+		}
+		if (Strings.isBlank(curVal)) {
+			curVal = uploadProperties.getFilenameCurVal();
+		} else {
+			uploadProperties.setFilenameCurVal(curVal);
+		}
+		if (Strings.isBlank(maxVal)) {
+			maxVal = uploadProperties.getFilenameMaxVal();
+		} else {
+			uploadProperties.setFilenameMaxVal(maxVal);
+		}
 		
-		generator = new AlphaNumericIdGenerator(
-				INCREMENT, FETCHSIZE, FILENAME_INIT_VAL, FILENAME_CUR_VAL, 
-				FILENAME_MAX_VAL, YesNo.YES);
-		
+		generator = new AlphaNumericIdGenerator(INCREMENT, FETCHSIZE, initVal, curVal, maxVal, YesNo.YES);
 		storeFilenameProp(true);
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param init	判断调用此方法是否是项目初始化时调用的
 	 * @return
 	 */
-	private static String storeFilenameProp(boolean init) {
+	private String storeFilenameProp(boolean init) {
 		lock.lock();
 		try {
 			if(!init) {
 				String nextVal = generator.nextVal();
-				if(nextVal != null)
+				if (nextVal != null)
 					return nextVal;
 			}
-			//下一批次的值作为FILENAME_CUR_VAL
-			FILENAME_CUR_VAL = generator.nextStepVal(FILENAME_CUR_VAL);
+			//根据uploadPropertiescur.filenameCurVal返回下批次开始值
+			String nextStepVal = generator.nextStepVal(uploadProperties.getFilenameCurVal());
+			//将下批次值刷入uploadPropertiescur.filenameCurVal
+			uploadProperties.setFilenameCurVal(nextStepVal);
 			Properties prop = new Properties();
-			prop.setProperty("filename_init_val", FILENAME_INIT_VAL);
-			prop.setProperty("filename_cur_val", FILENAME_CUR_VAL);
-			prop.setProperty("filename_max_val", FILENAME_MAX_VAL);
+			prop.setProperty("filename_init_val", generator.getInitialVal());
+			prop.setProperty("filename_cur_val", nextStepVal);
+			prop.setProperty("filename_max_val", generator.getMaxVal());
 			try {
-				PropertiesUtils.store(prop, Constants.FILENAME_PROPS_PATH);
+				PropertiesUtils.store(prop, uploadProperties.getConfigFile());
 			} catch (IOException e) {
 				log.error("store properties error.", e);
 			}
-		}finally {
+		} finally {
 			lock.unlock();
 		}
 		return null;
@@ -88,12 +109,12 @@ public class UploadUtils {
 	 * 获取下一个文件名
 	 * @return
 	 */
-	public static String getNextFileName() {
+	public String getNextFileName() {
 		String nextVal = generator.nextVal();
 		//nextVal == null 本批次数据已经用完，需要加载下批数据
-		while(nextVal == null) {
+		while (nextVal == null) {
 			nextVal = storeFilenameProp(false);
-			if(nextVal == null)
+			if (nextVal == null)
 				nextVal = generator.nextVal();
 		}
 		return nextVal;
@@ -104,40 +125,39 @@ public class UploadUtils {
 	 * @param path
 	 * @param imgNames   期望使用的图片名字，若果为null， 则使用默认规则生成图片名
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public static Image[] uploadImg(FileType fileType, List<DiskFileItem> itemList, String path, Image[] imgsInfo, 
-			String[] imgNames, boolean transaction) throws Exception {
+	public Image[] uploadImg(FileType fileType, MultipartFile[] itemList, String path, Image[] imgsInfo,
+	                         String[] imgNames, boolean transaction) throws Exception {
 		int eqIndex = path.indexOf(Symbol.QUESTION);
-		path = Constants.TMP_FILE + Symbol.SLASH 
+		path = commonProperties.getTmpFilename() + Symbol.SLASH
 				+ (eqIndex == -1 ? path : path.substring(0, eqIndex));
-		String absolutePath = fileType.getRoot() + Symbol.SLASH + path,
+		String absolutePath = uploadProperties.getPath() + Symbol.SLASH + fileType.getFileDir() + Symbol.SLASH + path,
 				error = null;
 		File absoluteFile = new File(absolutePath);
 		if(!absoluteFile.exists()) {
 			absoluteFile.mkdirs();
 			String[] frags = path.split(Symbol.SLASH);
-			String tmpPath = fileType.getRoot();
-			File fragPath = null;
+			String tmpPath = uploadProperties.getPath() + Symbol.SLASH + fileType.getFileDir();
 			for(String frag : frags) {
 				if(Strings.isBlank(frag))
 					continue;
-				fragPath = new File(tmpPath +=  Symbol.SLASH + frag);
+				File fragPath = new File(tmpPath +=  Symbol.SLASH + frag);
 				fragPath.setWritable(true, false);
 				fragPath.setReadable(true, false);
 				fragPath.setExecutable(true, false);
 			}
 		}
-		for(int i = 0; i < itemList.size(); i++) {
+		for(int i = 0; i < itemList.length; i++) {
 			if(imgsInfo[i].getError() != null)
 				continue;
-			DiskFileItem item = itemList.get(i);
-			imgsInfo[i].setOldName(FilenameUtils.getName(item.getName()));
+			MultipartFile item = itemList[i];
+			imgsInfo[i].setOldName(FilenameUtils.getName(item.getOriginalFilename()));
 			try {
-				String imgName = (imgNames == null || imgNames[i] == null 
+				String imgName = (imgNames == null || imgNames[i] == null
 						? getNextFileName() : imgNames[i]) + "." + imgsInfo[i].getType();
 				File file = new File(absolutePath + Symbol.SLASH + imgName);
-				item.write(file);
+				item.transferTo(file);
 				file.setWritable(false, false);
 				file.setReadable(true, false);
 				file.setExecutable(false, false);
@@ -149,8 +169,7 @@ public class UploadUtils {
 	        	if (transaction) {
 	        		throw e;
 	        	} else {
-	        		imgsInfo[i].setError(error);
-	        		continue;
+	        		imgsInfo[i].setError(e.getMessage());
 	        	}
 	        	/* ------ error ------ */
 			}
@@ -168,38 +187,37 @@ public class UploadUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static FileInfo[] uploadFile(FileType fileType, List<DiskFileItem> itemList, String path, FileInfo[] fileInfos, 
+	public FileInfo[] uploadFile(FileType fileType, MultipartFile[] itemList, String path, FileInfo[] fileInfos,
 			String[] filenames, boolean transaction) throws Exception {
 		int eqIndex = path.indexOf(Symbol.QUESTION);
-		path = Constants.TMP_FILE + Symbol.SLASH 
+		path = commonProperties.getTmpFilename() + Symbol.SLASH
 				+ (eqIndex == -1 ? path : path.substring(0, eqIndex));
-		String absolutePath = fileType.getRoot() + Symbol.SLASH + path,
+		String absolutePath = uploadProperties.getPath() + Symbol.SLASH + fileType.getFileDir() + Symbol.SLASH + path,
 				error = null;
 		File absoluteFile = new File(absolutePath);
 		if(!absoluteFile.exists()) {
 			absoluteFile.mkdirs();
 			String[] frags = path.split(Symbol.SLASH);
-			String tmpPath = fileType.getRoot();
-			File fragPath = null;
+			String tmpPath = uploadProperties.getPath() + Symbol.SLASH + fileType.getFileDir();
 			for(String frag : frags) {
 				if(Strings.isBlank(frag))
 					continue;
-				fragPath = new File(tmpPath +=  Symbol.SLASH + frag);
+				File fragPath = new File(tmpPath +=  Symbol.SLASH + frag);
 				fragPath.setWritable(true, false);
 				fragPath.setReadable(true, false);
 				fragPath.setExecutable(true, false);
 			}
 		}
-		for(int i = 0; i < itemList.size(); i++) {
+		for(int i = 0; i < itemList.length; i++) {
 			if(fileInfos[i].getError() != null)
 				continue;
-			DiskFileItem item = itemList.get(i);
-			fileInfos[i].setOldName(FilenameUtils.getName(item.getName()));
+			MultipartFile item = itemList[i];
+			fileInfos[i].setOldName(FilenameUtils.getName(item.getOriginalFilename()));
 			try {
-				String filename = (filenames == null || filenames[i] == null ? getNextFileName() : filenames[i]) 
+				String filename = (filenames == null || filenames[i] == null ? getNextFileName() : filenames[i])
 						+ (fileInfos[i].getType() == null ? Symbol.EMPTY : Symbol.PERIOD + fileInfos[i].getType());
 				File file = new File(absolutePath + Symbol.SLASH + filename);
-				item.write(file);
+				item.transferTo(file);
 				file.setWritable(false, false);
 				file.setReadable(true, false);
 				file.setExecutable(false, false);
@@ -211,8 +229,7 @@ public class UploadUtils {
 	        	if (transaction) {
 	        		throw e;
 	        	} else {
-	        		fileInfos[i].setError(error);
-	        		continue;
+	        		fileInfos[i].setError(e.getMessage());
 	        	}
 	        	/* ------ error ------ */
 			}
@@ -224,18 +241,18 @@ public class UploadUtils {
 	/**
 	 * 删除服务器上的图片
 	 * @param fileNames 可以传数组
-	 * @return 
+	 * @return
 	 */
-	public static boolean delete(FileType fileType, String ...fileNames) {
+	public boolean delete(FileType fileType, String ...fileNames) {
 		Pattern p = Pattern.compile("^([a-z]+(/[a-z]+)*/[0-9a-z]+)(_[0-9a-z]+)*(\\.[a-z]+)$");
 		int count = 0;
 		for(int i = 0; i < fileNames.length; i++) {
 			Matcher m = p.matcher(fileNames[i]);
 			String original = null;
 			if(m.find()) {
-				String deletePath = fileType.getRoot() + Symbol.SLASH + Constants.DELETE_FILE_PATH
-							+ Symbol.SLASH + m.group(1);
-				original = fileType.getRoot() + Symbol.SLASH + m.group(1);
+				String deletePath = uploadProperties.getPath() + Symbol.SLASH + fileType.getFileDir() + Symbol.SLASH
+						+ uploadProperties.getDeleteFilename() + Symbol.SLASH + m.group(1);
+				original = uploadProperties.getPath() + Symbol.SLASH + fileType.getFileDir() + Symbol.SLASH + m.group(1);
 				File deleteDir = new File(deletePath);
 				if(!deleteDir.getParentFile().exists())
 					deleteDir.getParentFile().mkdirs();
@@ -253,18 +270,4 @@ public class UploadUtils {
 		return count == fileNames.length;
 	}
 	
-	public static void main(String[] args) {
-		String a = "/data/uplud/tmp/".replaceFirst(
-				"(.*?" + Symbol.SLASH + Constants.TMP_FILE 
-				+ Symbol.SLASH + "\\w+).*", "$1");
-		System.out.println(a);
-		/*String original = "f:/a/b/c",
-				deletePath = "f:/delete/a/b/c";
-		File deleteDir = new File(deletePath);
-		if(!deleteDir.getParentFile().exists()) 
-			deleteDir.getParentFile().mkdirs();
-		new File(original).renameTo(new File(deletePath));*/
-		//new File(original + "/a.jpg").renameTo(new File(deletePath + "/a.jpg"));
-	}
-
 }

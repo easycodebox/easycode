@@ -48,22 +48,12 @@
 			
 			<comment>活动主图</comment>
 			<entry key="activity" value="activity/master?wg(50)hg(50)" />
-			<comment>商品</comment>
-			<entry key="product" value="activity/product?wg(200)hg(200)" />
 			
 			<comment>会员头像</comment>
 			<entry key="portrait" value="member/portrait?wg(80)hg(80)" />
 			
 			<comment>相册图片</comment>
 			<entry key="album" value="album?wg(100)hg(100)" />
-			
-			<comment>广告图片</comment>
-			<entry key="ad" value="ad" />
-			
-			<comment>公告点评</comment>
-			<entry key="noticeCmt" value="comment/notice" />
-			<comment>商铺点评</comment>
-			<entry key="shopCmt" value="comment/shop" />
 			
 			<comment>合作商合同</comment>
 			<entry key="partnerContract" value="contract/partner?wg(200)hg(200)" />
@@ -73,18 +63,6 @@
 			
 			<comment>工业PDA采集图片</comment>
 			<entry key="industry-pda" value="industry/pda" />
-			
-			<comment>IC新闻图片</comment>
-			<entry key="ic-news" value="is/news" />
-			<comment>IC活动图片</comment>
-			<entry key="ic-activity" value="is/activity" />
-			<comment>IC开发板图片</comment>
-			<entry key="ic-board" value="is/board" />
-			<comment>IC案例图片</comment>
-			<entry key="ic-case" value="is/case" />
-			<comment>IC常见问题</comment>
-			<entry key="ic-usual-issue" value="is/usualissue" />
-			
 		</map>
 	</data>
 
