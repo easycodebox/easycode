@@ -21,11 +21,13 @@ public class ShiroSecurityInfoHandler extends AbstractSecurityInfoHandler<Sessio
 	public SecurityContext<UserInfo> newSecurityContext(Session storage, HttpServletRequest request,
 			HttpServletResponse response) {
 		if (storage == null) {
-			storage = SecurityUtils.getSubject().getSession();
+			storage = SecurityUtils.getSubject().getSession(false);
 		}
 		SecurityContext<UserInfo> context = new SecurityContext<>();
 		UserInfo user = getSecurityInfo(storage);
-		context.setSessionId(storage.getId());
+		if (storage != null) {
+			context.setSessionId(storage.getId());
+		}
 		if(user != null) {
 			context.setSecurity(user);
 		}
