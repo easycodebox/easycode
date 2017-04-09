@@ -5,6 +5,7 @@ import com.alibaba.druid.support.http.WebStatFilter;
 import com.easycodebox.common.filter.SecurityContextFilter;
 import com.easycodebox.common.security.SecurityInfoHandler;
 import com.easycodebox.common.sitemesh3.DefaultConfigurableSiteMeshFilter;
+import com.easycodebox.login.shiro.filter.ThreadContextFilter;
 import org.springframework.boot.web.servlet.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,11 @@ public class WebConfig {
 	@Bean
 	public ServletRegistrationBean statViewServlet() {
 		return new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
+	}
+	
+	@Bean
+	public FilterRegistrationBean threadContextFilter() {
+		return new FilterRegistrationBean(new ThreadContextFilter());
 	}
 	
 	@Bean

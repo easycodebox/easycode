@@ -2,6 +2,7 @@ package com.easycodebox.login.config;
 
 import com.easycodebox.common.cache.spring.redis.CustomRedisCacheManager;
 import com.easycodebox.login.shiro.ShiroSecurityInfoHandler;
+import com.easycodebox.login.shiro.cache.FastCacheSessionDAO;
 import com.easycodebox.login.shiro.cache.spring.RedisTemplateCacheStats;
 import com.easycodebox.login.shiro.cache.spring.SpringCacheManager;
 import com.easycodebox.login.shiro.filter.*;
@@ -13,7 +14,6 @@ import org.apache.shiro.authc.pam.*;
 import org.apache.shiro.cas.CasSubjectFactory;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.realm.Realm;
-import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.config.IniFilterChainResolverFactory;
@@ -107,8 +107,8 @@ public class ShiroConfig {
 	}
 	
 	@Bean
-	public EnterpriseCacheSessionDAO sessionDAO() {
-		EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
+	public FastCacheSessionDAO sessionDAO() {
+		FastCacheSessionDAO sessionDAO = new FastCacheSessionDAO();
 		sessionDAO.setActiveSessionsCacheName("sessionsCache");
 		return sessionDAO;
 	}
