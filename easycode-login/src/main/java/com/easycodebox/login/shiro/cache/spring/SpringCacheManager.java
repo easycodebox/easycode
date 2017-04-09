@@ -20,6 +20,7 @@ public class SpringCacheManager implements CacheManager {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <K, V> Cache<K, V> getCache(String name) throws CacheException {
         return new SpringCache(cacheManager.getCache(name), cacheStats);
     }

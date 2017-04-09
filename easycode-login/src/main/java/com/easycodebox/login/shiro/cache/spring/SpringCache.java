@@ -23,6 +23,7 @@ public class SpringCache<K, V> implements Cache<K, V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V get(K key) throws CacheException {
         try {
             org.springframework.cache.Cache.ValueWrapper val = cache.get(key);
@@ -69,11 +70,13 @@ public class SpringCache<K, V> implements Cache<K, V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Set<K> keys() {
         return cacheStats == null ? null : cacheStats.keys(cache);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<V> values() {
         return cacheStats == null ? null : cacheStats.values(cache);
     }

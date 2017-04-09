@@ -3,7 +3,6 @@ package com.easycodebox.auth.core.ws;
 import com.easycodebox.auth.core.config.CoreProperties;
 import com.easycodebox.auth.core.service.sys.ProjectService;
 import com.easycodebox.auth.core.service.user.*;
-import com.easycodebox.auth.core.util.CodeMsgExt;
 import com.easycodebox.auth.model.bo.user.AuthzInfoBo;
 import com.easycodebox.auth.model.entity.sys.Project;
 import com.easycodebox.auth.model.entity.user.*;
@@ -150,7 +149,7 @@ public class UserWsServiceImpl implements UserWsService {
 	public AuthzInfoBo authzInfo(String userId, String projectNo,
 	                            boolean validProjectAuth) throws ErrorContext {
 		User user = userService.load(userId);
-		Assert.notNull(user, CodeMsgExt.PARAM_ERR.fillArgs("用户名"));
+		Assert.notNull(user, CodeMsg.FAIL.msg("{0}参数错误", "用户名"));
 		
 		List<Role> roles = roleService.listOpenedByUserId(user.getId());
 		String[] roleNames = new String[roles.size()];
@@ -170,7 +169,7 @@ public class UserWsServiceImpl implements UserWsService {
 		}
 		
 		Project pro = projectService.load(projectNo);
-		Assert.notNull(pro, CodeMsgExt.PARAM_ERR.fillArgs("项目编号"));
+		Assert.notNull(pro, CodeMsg.FAIL.msg("{0}参数错误", "项目编号"));
 		List<Permission> allOs = permissionService.listAllOpsOfUser(user.getId(), pro.getId(), null);
 		List<String> strOps = new ArrayList<>(allOs.size());
 		for(Permission o : allOs) {
