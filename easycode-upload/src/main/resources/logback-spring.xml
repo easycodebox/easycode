@@ -1,111 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	
-	<springProperty name="mail.host" source="spring.mail.host" scope="context"/>
-	<springProperty name="mail.username" source="spring.mail.username" scope="context"/>
-	<springProperty name="mail.password" source="spring.mail.password" scope="context"/>
-	<springProperty name="mail.from" source="spring.mail.properties.from" scope="context"/>
-	<springProperty name="mail.to" source="spring.mail.properties.to" scope="context"/>
-	<springProperty name="mail.log.subject" source="spring.mail.logSubject" scope="context"/>
-
-	<contextName>${LOG_PATH}</contextName>
-
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-		</encoder>
-	</appender>
-
-	<appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOG_PATH}/info.log</file>
-
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${LOG_PATH}/info-%d{yyyy-MM-dd}.(%i).log</fileNamePattern>
-			<maxHistory>30</maxHistory>
-			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>50MB</maxFileSize>
-			</timeBasedFileNamingAndTriggeringPolicy>
-		</rollingPolicy>
-
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-		</encoder>
-	</appender>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
 	
-	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<!-- ThresholdFilter：大于或等于level属性值则匹配。 LevelFilter：只有等于level属性才匹配。  -->
-		<!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>WARN</level>
-		</filter> -->
-		<filter class="ch.qos.logback.classic.filter.LevelFilter">
-			<level>ERROR</level>
-			<onMatch>NEUTRAL</onMatch>
-			<onMismatch>DENY</onMismatch>
-		</filter>
-		
-		<file>${LOG_PATH}/error.log</file>
-
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${LOG_PATH}/error-%d{yyyy-MM-dd}.(%i).log</fileNamePattern>
-			<maxHistory>30</maxHistory>
-			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>50MB</maxFileSize>
-			</timeBasedFileNamingAndTriggeringPolicy>
-		</rollingPolicy>
-
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-		</encoder>
-	</appender>
-	
-	<appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<filter class="ch.qos.logback.classic.filter.LevelFilter">
-			<level>WARN</level>
-			<onMatch>NEUTRAL</onMatch>
-			<onMismatch>DENY</onMismatch>
-		</filter>
-		
-		<file>${LOG_PATH}/warn.log</file>
-
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${LOG_PATH}/warn-%d{yyyy-MM-dd}.(%i).log</fileNamePattern>
-			<maxHistory>30</maxHistory>
-			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>50MB</maxFileSize>
-			</timeBasedFileNamingAndTriggeringPolicy>
-		</rollingPolicy>
-
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-		</encoder>
-	</appender>
-
-	<appender name="ERROR_MAIL" class="ch.qos.logback.classic.net.SMTPAppender">
-		<!-- 发送邮件的最小时间间隔，默认为60s -->
-		<evaluator class="com.easycodebox.common.log.logback.TimeIntervalEvaluator" />
-		<smtpHost>${mail.host}</smtpHost>
-		<username>${mail.username}</username>
-		<password>${mail.password}</password>
-		<from>${mail.from}</from>
-		<to>${mail.to}</to>
-		<subject>【${mail.log.subject}】:【%-5level】- %logger{20} - %m</subject>
-		<layout class="ch.qos.logback.classic.PatternLayout">
-			<pattern>%date [%thread] %-5level %logger{36} - %msg%n</pattern>
-		</layout>
-	</appender>
+	<!-- <logger name="druid.sql" level="DEBUG" /> -->
 	
 	<springProfile name="default">
 		<root level="INFO">
-			<appender-ref ref="STDOUT" />
+			<appender-ref ref="CONSOLE" />
 		</root>
 	</springProfile>
 	
-	<springProfile name="!default">
+	<springProfile name="DEV,TEST,PRE,PROD">
 		<root level="INFO">
-			<appender-ref ref="INFO" />
-			<appender-ref ref="WARN" />
-			<appender-ref ref="ERROR" />
-			<appender-ref ref="ERROR_MAIL" />
+			<appender-ref ref="FILE" />
 		</root>
 	</springProfile>
   
