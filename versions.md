@@ -51,3 +51,4 @@
 ###【v0.3.2】 - 2017.03.26
 
 1. 集成Spring Boot
+2. 提升Shiro从Redis获取Shiro Session的性能

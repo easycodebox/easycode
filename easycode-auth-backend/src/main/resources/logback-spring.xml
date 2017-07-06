@@ -13,7 +13,7 @@
 		</root>
 	</springProfile>
 	
-	<springProfile name="DEV,TEST,PRE,PROD">
+	<springProfile name="dev,test,pre,prod">
 		<root level="INFO">
 			<appender-ref ref="FILE" />
 		</root>

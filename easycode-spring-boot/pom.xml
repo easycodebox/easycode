@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>com.easycodebox</groupId>
+		<artifactId>easycode-parent</artifactId>
+		<version>0.3.2</version>
+	</parent>
+	
+	<artifactId>easycode-spring-boot</artifactId>
+	<name>easycode-spring-boot</name>
+	
+	<dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>easycode-common</artifactId>
+        </dependency>
+        
+		<!-- Spring Boot -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+</project>

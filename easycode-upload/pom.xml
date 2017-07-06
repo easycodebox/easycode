@@ -16,7 +16,7 @@
 		<!-- 项目jar包 -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>easycode-common</artifactId>
+			<artifactId>easycode-spring-boot</artifactId>
 		</dependency>
 		<!-- 第三方jar包 -->
 		<dependency>

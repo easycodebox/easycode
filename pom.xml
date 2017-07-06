@@ -21,6 +21,7 @@
 	
 	<modules>
 		<module>easycode-common</module>
+		<module>easycode-spring-boot</module>
 		<module>easycode-jdbc</module>
 		<module>easycode-jdbc-mybatis</module>
 		<module>easycode-auth-backend</module>
@@ -80,6 +81,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>easycode-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>easycode-spring-boot</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
