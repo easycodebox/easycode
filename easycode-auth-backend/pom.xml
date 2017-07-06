@@ -12,6 +12,11 @@
 	<packaging>jar</packaging>
 	<name>easycode-auth-backend Maven Webapp</name>
 	
+	<properties>
+		<!-- 此配置不是必须的，当项目中有多个类有main方法且都有@SpringBootApplication注解，则需要此配置 -->
+		<start-class>com.easycodebox.auth.AuthBackendApp</start-class>
+	</properties>
+	
 	<dependencies>
 		<!-- 项目jar包 -->
 		<dependency>
