@@ -58,6 +58,22 @@ public final class DetailEnums {
         return sb.substring( 0 , sb.length() - 1 );
     }
 	
+	/**
+	 * String值可以是：
+	 * 1、YES ==> enum class name
+	 * 2、0	==> DetailEnum的value属性
+	 * 3、是	==> DetailEnum的desc属性
+	 * 4、枚举的索引值
+	 * 转换优先级顺序: className -> value属性 -> desc属性 -> 枚举的索引值
+	 * @param enumType
+	 * @param value
+	 * @param enableOrdinal	是否开启枚举的ordinal匹配
+	 * @return
+	 */
+	public static <T> T deserialize(Class<T> enumType, String value, boolean enableOrdinal) {
+    	return deserialize(enumType, value, false, enableOrdinal);
+	}
+	
     /**
      * String值可以是：
 	 * 1、YES ==> enum class name
@@ -67,11 +83,12 @@ public final class DetailEnums {
 	 * 转换优先级顺序: className -> value属性 -> desc属性 -> 枚举的索引值
      * @param enumType
      * @param value
+     * @param ignoreCase    比较值时是否忽略大小写
      * @param enableOrdinal	是否开启枚举的ordinal匹配
      * @return
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <T> T deserialize(Class<T> enumType, String value, boolean enableOrdinal) {
+    public static <T> T deserialize(Class<T> enumType, String value, boolean ignoreCase, boolean enableOrdinal) {
     	if (!enumType.isEnum()) return null;
     	T data = null;
 		try {
@@ -84,7 +101,9 @@ public final class DetailEnums {
 				//根据DetailEnum的Valuel属性赋值
 	        	for(DetailEnum e : (DetailEnum[])enumType.getEnumConstants()) {
 					if(e.getValue() == null && value == null
-							|| value != null && e.getValue() != null && value.equals(e.getValue().toString())) {
+							|| value != null && e.getValue() != null
+								&& (ignoreCase ? value.equalsIgnoreCase(e.getValue().toString())
+									: value.equals(e.getValue().toString())) ) {
 						data = (T)e;
 						break;
 					}
@@ -94,7 +113,9 @@ public final class DetailEnums {
 	        		//根据DetailEnum的desc属性赋值
 	        		for(DetailEnum e : (DetailEnum[])enumType.getEnumConstants()) {
 	        			if(e.getDesc() == null && value == null
-	        					|| value != null && e.getDesc() != null && value.equals(e.getDesc())) {
+	        					|| value != null && e.getDesc() != null
+						            && (ignoreCase ? value.equalsIgnoreCase(e.getDesc())
+						                    : value.equals(e.getDesc())) ) {
 	        				data = (T)e;
 	        				break;
 	        			}
@@ -117,5 +138,5 @@ public final class DetailEnums {
         }
 		return data;
     }
-    
+	
 }

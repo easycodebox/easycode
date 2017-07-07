@@ -4,6 +4,7 @@ import com.easycodebox.common.enums.DetailEnum;
 
 public enum ProjectEnv implements DetailEnum<String> {
 	
+	DEFAULT("DEFAULT", "私有环境"), //私人本地开发环境
 	DEV("DEV", "开发环境"),
 	TEST("TEST", "测试环境"),
 	PRE("PRE", "预发环境"),

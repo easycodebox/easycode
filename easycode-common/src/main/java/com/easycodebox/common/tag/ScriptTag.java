@@ -60,11 +60,11 @@ public class ScriptTag extends AbstractHtmlTag {
 			sb.append("type=\"").append(type).append("\" ");
 		if(src != null) {
 			src = src.replaceAll("\\s*", "");
-			if(env != ProjectEnv.DEV && min) {
+			if(env != ProjectEnv.DEFAULT && min) {
 				//自动转换成压缩后的min.js
 				src = src.replaceAll("(?<!\\.min)\\.js(?=" + Pattern.quote(separator) + "|\\?|$)", ".min.js");
 			}
-			sb.append("src=\"").append(env == ProjectEnv.DEV ? "{0}" : src).append("\" ");
+			sb.append("src=\"").append(env == ProjectEnv.DEFAULT ? "{0}" : src).append("\" ");
 		}
 		if(charset != null)
 			sb.append("charset=\"").append(charset).append("\" ");
@@ -76,7 +76,7 @@ public class ScriptTag extends AbstractHtmlTag {
 		
 		try {
 			JspWriter write = pageContext.getOut();
-			if(env == ProjectEnv.DEV) {
+			if(env == ProjectEnv.DEFAULT) {
 				String tag = sb.toString();
 				String[] srcFrags = src.split(Pattern.quote(boundary));
 				if(srcFrags.length == 1) {
@@ -139,7 +139,7 @@ public class ScriptTag extends AbstractHtmlTag {
 
 	public void setEnv(String env) {
 		if (Strings.isNotBlank(env)) {
-			this.env = DetailEnums.deserialize(ProjectEnv.class, env, false);
+			this.env = DetailEnums.deserialize(ProjectEnv.class, env, true, false);
 		}
 	}
 

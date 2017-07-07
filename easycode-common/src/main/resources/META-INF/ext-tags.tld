@@ -1085,7 +1085,7 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description><![CDATA[This tag environment. Valid value: "DEV"/"TEST"/"PRE"/"PROD". Default value is CommonProperties.projectEnv.]]></description>
+			<description><![CDATA[This tag environment. Valid value: "default"/"dev"/"test"/"pre"/"prod". Default value is CommonProperties.projectEnv.]]></description>
 			<name>env</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -1263,7 +1263,7 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description><![CDATA[This tag environment. Valid value: "DEV"/"TEST"/"PRE"/"PROD". Default value is CommonProperties.projectEnv.]]></description>
+			<description><![CDATA[This tag environment. Valid value: "default"/"dev"/"test"/"pre"/"prod". Default value is CommonProperties.projectEnv.]]></description>
 			<name>env</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>

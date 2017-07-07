@@ -354,7 +354,7 @@
 </div>
 
 <inner-js>
-	[@e.script env="PROD" src="http://cdn.easycodebox.com/jquery-file-upload/9.12.3/js/??
+	[@e.script env="prod" src="http://cdn.easycodebox.com/jquery-file-upload/9.12.3/js/??
 		vendor/jquery.ui.widget.js,
 		jquery.iframe-transport.js,
 		jquery.fileupload.js,

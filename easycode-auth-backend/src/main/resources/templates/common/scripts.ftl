@@ -1,5 +1,5 @@
 [#-- merge='true' 属性 layer用到 --]
-[@e.script env="PROD" tagAttr="merge='true'" src="http://cdn.easycodebox.com/??
+[@e.script env="prod" tagAttr="merge='true'" src="http://cdn.easycodebox.com/??
 	pace/0.7.5/pace.js,
 	jquery/2.2.4/jquery.min.js,
 	bootstrap/3.3.6/js/bootstrap.min.js,

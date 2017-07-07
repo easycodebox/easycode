@@ -51,6 +51,11 @@ public class PropertyConfig {
 		return Collections.unmodifiableMap(props);
 	}
 	
+	/**
+	 * ConfigurationProperties使用了{@link org.springframework.boot.bind.RelaxedConversionService}来转换枚举类型,
+	 * 所以传的枚举属性值会忽略大小写进行匹配的。
+	 * @return
+	 */
 	@Bean
 	@ConfigurationProperties(prefix = "common")
 	public CommonProperties commonProperties() {

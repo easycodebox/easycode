@@ -27,7 +27,7 @@ public class CommonProperties {
 	/**
 	 * 项目所处环境
 	 */
-	private ProjectEnv projectEnv = ProjectEnv.DEV;
+	private ProjectEnv projectEnv = ProjectEnv.DEFAULT;
 	
 	/**
 	 * 使用script/style标签时，是否自动显示压缩后的文件：

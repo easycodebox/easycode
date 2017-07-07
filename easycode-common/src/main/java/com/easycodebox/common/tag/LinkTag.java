@@ -63,11 +63,11 @@ public class LinkTag extends AbstractHtmlTag {
 			sb.append("type=\"").append(type).append("\" ");
 		if(href != null) {
 			href = href.replaceAll("\\s*", "");
-			if(env != ProjectEnv.DEV && min) {
+			if(env != ProjectEnv.DEFAULT && min) {
 				//自动转换成压缩后的min.css
 				href = href.replaceAll("(?<!\\.min)\\.css(?=" + Pattern.quote(separator) + "|\\?|$)", ".min.css");
 			}
-			sb.append("href=\"").append(env == ProjectEnv.DEV ? "{0}" : href).append("\" ");
+			sb.append("href=\"").append(env == ProjectEnv.DEFAULT ? "{0}" : href).append("\" ");
 		}
 		if(media != null)
 			sb.append("media=\"").append(media).append("\" ");
@@ -77,7 +77,7 @@ public class LinkTag extends AbstractHtmlTag {
 		
 		try {
 			JspWriter write = pageContext.getOut();
-			if(env == ProjectEnv.DEV) {
+			if(env == ProjectEnv.DEFAULT) {
 				String tag = sb.toString();
 				String[] srcFrags = href.split(Pattern.quote(boundary));
 				if(srcFrags.length == 1) {
@@ -128,7 +128,7 @@ public class LinkTag extends AbstractHtmlTag {
 
 	public void setEnv(String env) {
 		if (Strings.isNotBlank(env)) {
-			this.env = DetailEnums.deserialize(ProjectEnv.class, env, false);
+			this.env = DetailEnums.deserialize(ProjectEnv.class, env, true, false);
 		}
 	}
 
