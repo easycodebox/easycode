@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	
+	<!-- 增加${HOSTNAME} - 适用于Docker部署的项目 -->
+	<property name="FILE_LOG_PATTERN" value="${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} ${HOSTNAME} ${LOG_LEVEL_PATTERN:-%p} ${PID:- } --- [%t] %logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+	
 	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
 	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
