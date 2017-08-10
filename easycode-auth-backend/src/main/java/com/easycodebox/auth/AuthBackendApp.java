@@ -2,6 +2,7 @@ package com.easycodebox.auth;
 
 import com.easycodebox.auth.core.config.PropertyConfig;
 import com.easycodebox.login.config.*;
+import com.easycodebox.spring.boot.Application;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -27,7 +28,7 @@ public class AuthBackendApp {
 		props.put("spring.config.name", "application,core-application");
 		SpringApplication application = new SpringApplication(AuthBackendApp.class);
 		application.setDefaultProperties(props);
-		application.run(args);
+		Application.run(application, args);
 	}
 	
 }

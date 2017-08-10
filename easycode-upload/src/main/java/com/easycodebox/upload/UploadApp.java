@@ -1,6 +1,6 @@
 package com.easycodebox.upload;
 
-import org.springframework.boot.SpringApplication;
+import com.easycodebox.spring.boot.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -17,7 +17,7 @@ public class UploadApp {
 				"--debug"
 		};*/
 		/* ----------------- 测试配置 END ------------------- */
-		SpringApplication.run(UploadApp.class, args);
+		Application.run(UploadApp.class, args);
 	}
 	
 }

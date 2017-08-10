@@ -1,4 +1,4 @@
-package com.easycodebox.spring.boot;
+package com.easycodebox.spring.boot.env;
 
 import com.easycodebox.common.log.slf4j.Logger;
 import com.easycodebox.common.log.slf4j.LoggerFactory;
