@@ -2,8 +2,9 @@ package com.easycodebox.auth.core.util;
 
 import com.easycodebox.auth.core.service.user.PermissionService;
 import com.easycodebox.auth.model.entity.user.Permission;
-import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.spring.BeanFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 

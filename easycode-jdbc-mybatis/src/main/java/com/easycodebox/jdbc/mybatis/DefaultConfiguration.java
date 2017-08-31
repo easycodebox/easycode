@@ -1,11 +1,10 @@
 package com.easycodebox.jdbc.mybatis;
 
-import org.apache.ibatis.mapping.MappedStatement;
-
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.reflect.Fields;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author WangXiaoJin

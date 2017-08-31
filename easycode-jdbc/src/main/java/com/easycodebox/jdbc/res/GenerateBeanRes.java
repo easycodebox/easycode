@@ -4,8 +4,6 @@ import com.easycodebox.common.freemarker.Freemarkers;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.reflect.Classes;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.jdbc.GenerateRes;
 import com.easycodebox.jdbc.entity.Entity;
@@ -13,6 +11,8 @@ import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.asm.ClassReader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -174,7 +174,7 @@ public class GenerateBeanRes {
 					}
 					data.setProperties(properties);
 					if(log.isInfoEnabled()) {
-						log.info("==== Add {0} class to resources.", clazz);
+						log.info("==== Add {} class to resources.", clazz);
 					}
 					beanDatas.add(data);
 				}

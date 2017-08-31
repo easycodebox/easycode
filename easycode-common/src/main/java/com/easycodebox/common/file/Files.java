@@ -1,21 +1,25 @@
 package com.easycodebox.common.file;
 
-import com.easycodebox.common.error.*;
+import com.easycodebox.common.error.BaseException;
+import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.exception.NonEnlargedException;
 import com.easycodebox.common.lang.*;
-import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.validate.Assert;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.*;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
-import java.util.*;
-import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author WangXiaoJin
@@ -37,7 +41,7 @@ public class Files {
 		 try {
 			 courseFile = directory.getCanonicalPath();
 		 } catch (IOException e) {
-			 log.error("The method getAbsolutePathWithClass in HttpUtil:" + e.getMessage());
+			 log.error("Execute getAbsolutePathWithClass error.", e);
 		 }
 		 return courseFile;
 	}
@@ -434,17 +438,17 @@ public class Files {
 				if(mimeType != null) {
 					realFileExts = MimeTypes.getExtensions(mimeType);
 					if(realFileExts == null) {
-						log.warn("File 'mime.types' not contain mime type pair '{0}'-'{1}'. Please ADD this pair.", mimeType, fileType);
+						log.warn("File 'mime.types' not contain mime type pair '{}'-'{}'. Please ADD this pair.", mimeType, fileType);
 					}else if(realFileExts.length > 0) {
 						boolean exist = true;
 						if (fileType != null && !ArrayUtils.contains(realFileExts, fileType)) {
-							log.warn("File 'mime.types' not contain mime type pair '{0}'-'{1}'. Please VERIFY this pair.", mimeType, fileType);
+							log.warn("File 'mime.types' not contain mime type pair '{}'-'{}'. Please VERIFY this pair.", mimeType, fileType);
 							exist = false;
 						}
 						fileType = fileType == null || !exist ? realFileExts[0] : fileType;
 					}
 				} else {
-					log.warn("Filename '{0}' can't analyse mime type by Tika.", filenames[i]);
+					log.warn("Filename '{}' can't analyse mime type by Tika.", filenames[i]);
 				}
 				file.setType(fileType);
 				

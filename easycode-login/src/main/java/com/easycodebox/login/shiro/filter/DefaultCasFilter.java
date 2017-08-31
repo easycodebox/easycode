@@ -2,13 +2,13 @@ package com.easycodebox.login.shiro.filter;
 
 import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.Strings;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.cas.CasFilter;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -50,7 +50,7 @@ public class DefaultCasFilter extends CasFilter {
 				queryParams.put("service", Strings.format(reloginUrl,
 						URLEncoder.encode(URLEncoder.encode(error.getMessage(), "UTF-8"), "UTF-8")));
 			} catch (UnsupportedEncodingException e) {
-				log.error("URLEncoder params error : {0}", error.getMessage(), e);
+				log.error("URLEncoder params error : {}", error.getMessage(), e);
 			}
 		} else {
 			url = failureUrl;
@@ -59,7 +59,7 @@ public class DefaultCasFilter extends CasFilter {
 		try {
 			WebUtils.issueRedirect(request, response, url, queryParams);
 		} catch (IOException e) {
-			log.error("Cannot redirect to failure url : {0}", failureUrl, e);
+			log.error("Cannot redirect to failure url : {}", failureUrl, e);
 		}
 		return false;
 	}

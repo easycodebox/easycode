@@ -1,8 +1,8 @@
 package com.easycodebox.common.schedule;
 
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.processor.Processor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author WangXiaoJin
@@ -20,10 +20,10 @@ public abstract class AbstractScheduler implements Scheduler, Processor {
 	@Override
 	public void execute() {
 		if(isLog)
-			log.info("Scheduler-begin: {0}", getClass().getSimpleName());
+			log.info("Scheduler-begin: {}", getClass().getSimpleName());
 		this.process();
 		if(isLog)
-			log.info("Scheduler-end: {0}", getClass().getSimpleName());
+			log.info("Scheduler-end: {}", getClass().getSimpleName());
 	}
 
 	public boolean isLog() {

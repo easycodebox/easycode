@@ -1,13 +1,12 @@
 package com.easycodebox.common.zookeeper;
 
-import java.net.SocketException;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.InetAddresses;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.SocketException;
 
 /**
  * zookeeper的节点名制造器，用IP作为节点名。

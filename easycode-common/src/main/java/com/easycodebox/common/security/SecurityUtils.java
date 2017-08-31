@@ -1,8 +1,8 @@
 package com.easycodebox.common.security;
 
 import com.easycodebox.common.lang.dto.UserInfo;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 

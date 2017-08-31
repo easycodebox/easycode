@@ -2,8 +2,8 @@ package com.easycodebox.common.lang.reflect;
 
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -182,7 +182,7 @@ public class Classes extends org.apache.commons.lang.ClassUtils {
 				c.setAccessible(true);
 				return c.newInstance();
 			} catch (Exception e) {
-				log.debug("There is no empty param Constructor in class({0})", clazz);
+				log.debug("There is no empty param Constructor in class({})", clazz);
 			}
 		}
 			

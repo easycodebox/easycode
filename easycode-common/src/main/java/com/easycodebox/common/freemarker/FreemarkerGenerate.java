@@ -1,11 +1,11 @@
 package com.easycodebox.common.freemarker;
 
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.processor.Processor;
 import com.easycodebox.common.validate.Assert;
 import freemarker.template.*;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.*;
 
@@ -44,12 +44,12 @@ public class FreemarkerGenerate implements Processor, ResourceLoaderAware {
 		Assert.notBlank(outputPath);
 		Writer out = null;
 		try {
-			log.info("Start generate file '{0}' by freemarker.", outputPath);
+			log.info("Start generate file '{}' by freemarker.", outputPath);
 			Template tpl = configuration.getTemplate(ftlPath);
 			Resource resource = resourceLoader.getResource(outputPath);
 			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resource.getFile()), encoding));
 			tpl.process(dataModel, out);
-			log.info("Generate file '{0}' successfully by freemarker.", outputPath);
+			log.info("Generate file '{}' successfully by freemarker.", outputPath);
 		} catch (TemplateException | IOException e) {
 			log.error("Freemarker generate file error.", e);
 		} finally {

@@ -1,18 +1,13 @@
 package com.easycodebox.common.zookeeper.zkclient;
 
-import java.util.concurrent.CountDownLatch;
-
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.Watcher.Event.KeeperState;
-import org.apache.zookeeper.ZooKeeper;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.InitializingBean;
-
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
+import org.apache.zookeeper.*;
+import org.apache.zookeeper.Watcher.Event.KeeperState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.*;
+
+import java.util.concurrent.CountDownLatch;
 
 /**
  * 
@@ -75,7 +70,7 @@ public class ZooKeeperFactory implements FactoryBean<ZooKeeper>, InitializingBea
 			Watcher newWatcher = new Watcher() {
 				@Override
 				public void process(WatchedEvent event) {
-					log.info("ZooKeeper trigger event : " + event);
+					log.info("ZooKeeper trigger event : {}", event);
 					if (event.getType() == Event.EventType.None
 							&& event.getState() == KeeperState.SyncConnected) {
 						count.countDown();

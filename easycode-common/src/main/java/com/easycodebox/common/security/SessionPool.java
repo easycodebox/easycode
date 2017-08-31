@@ -1,8 +1,8 @@
 package com.easycodebox.common.security;
 
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpSession;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +23,7 @@ public class SessionPool {
 			return;
 		}
 		dataMap.put(session.getId(), session);
-		log.info("insert session into SessionPool.sessionId:{0}\tsession:{1}", session.getId(), session);
+		log.info("insert session into SessionPool.sessionId:{}\tsession:{}", session.getId(), session);
 	}
 	
 	public static void remove(String sessionId) {
@@ -31,7 +31,7 @@ public class SessionPool {
 		HttpSession session = dataMap.get(sessionId);
 		if (null != session) {
 			dataMap.remove(sessionId);
-			log.info("remove session from SessionPool.sessionId:{0}", session.getId());
+			log.info("remove session from SessionPool.sessionId:{}", session.getId());
 		}
 	}
 	

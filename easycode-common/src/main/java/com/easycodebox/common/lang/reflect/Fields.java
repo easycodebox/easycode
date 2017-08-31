@@ -2,9 +2,9 @@ package com.easycodebox.common.lang.reflect;
 
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.Strings;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -157,25 +157,25 @@ public class Fields extends org.apache.commons.lang.reflect.FieldUtils {
         try {
 			method = clazz.getMethod(methodName);
 		} catch (NoSuchMethodException e) {
-			log.debug(clazz.getName() + " has no {0} method.", methodName);
+			log.debug("{} has no {} method.", clazz.getName(), methodName);
 		} catch (SecurityException e) {
-			log.debug(" SecurityException.", e);
+			log.debug("SecurityException.", e);
 		}
         if(method == null) {
         	methodName = "is" + Strings.capitalize(name);
         	try {
 				method = clazz.getMethod(methodName);
 			} catch (NoSuchMethodException e) {
-				log.debug(clazz.getName() + " has no {0} method.", methodName);
+				log.debug("{} has no {} method.", clazz.getName(), methodName);
 			} catch (SecurityException e) {
-				log.debug(" SecurityException.", e);
+				log.debug("SecurityException.", e);
 			}
         }
         if(method != null) {
         	try {
 				return method.getReturnType();
 			} catch (Exception e) {
-				log.debug(" execute {0} method in class {1}.", methodName, clazz.getName());
+				log.debug("Execute {} method in class {}.", methodName, clazz.getName());
 				accessField = true;
 			} 
         }else
@@ -208,25 +208,25 @@ public class Fields extends org.apache.commons.lang.reflect.FieldUtils {
         try {
 			method = clazz.getMethod(methodName);
 		} catch (NoSuchMethodException e) {
-			log.debug(clazz.getName() + " has no {0} method.", methodName);
+			log.debug("{} has no {} method.", clazz.getName(), methodName);
 		} catch (SecurityException e) {
-			log.debug(" SecurityException.", e);
+			log.debug("SecurityException.", e);
 		}
         if(method == null) {
         	methodName = "is" + Strings.capitalize(name);
         	try {
 				method = clazz.getMethod(methodName);
 			} catch (NoSuchMethodException e) {
-				log.debug(clazz.getName() + " has no {0} method.", methodName);
+				log.debug("{} has no {} method.", clazz.getName(), methodName);
 			} catch (SecurityException e) {
-				log.debug(" SecurityException.", e);
+				log.debug("SecurityException.", e);
 			}
         }
         if(method != null) {
         	try {
 				return method.invoke(target);
 			} catch (Exception e) {
-				log.debug(" execute {0} method in class {1}.", methodName, clazz.getName());
+				log.debug("execute {} method in class {}.", methodName, clazz.getName());
 				accessField = true;
 			} 
         }else
@@ -278,7 +278,7 @@ public class Fields extends org.apache.commons.lang.reflect.FieldUtils {
             Method method = clazz.getMethod(setMethod, type);
             method.invoke(target, value);
         } catch (Exception e) {
-        	log.debug(clazz.getName() + " execute " + setMethod + " error.", e);
+        	log.debug("{} execute {} error.", clazz.getName(), setMethod, e);
             try {
                 Field field = clazz.getDeclaredField(name);
                 if (!Modifier.isPublic(field.getModifiers())) {

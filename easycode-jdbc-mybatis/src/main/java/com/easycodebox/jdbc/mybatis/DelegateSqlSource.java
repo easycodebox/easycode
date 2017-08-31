@@ -1,15 +1,14 @@
 package com.easycodebox.jdbc.mybatis;
 
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.SqlSource;
-
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.enums.EnumClassFactory;
 import com.easycodebox.common.lang.Objects;
 import com.easycodebox.common.lang.StringToken.StringFormatToken;
 import com.easycodebox.common.lang.reflect.Fields;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.SqlSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 处理SQL语句中包含 %{} 占位符， 使其转换成枚举值

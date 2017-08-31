@@ -1,12 +1,12 @@
 package com.easycodebox.common.xml;
 
 import com.easycodebox.common.lang.DataConvert;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.management.modelmbean.XMLParseException;
 import java.util.*;
@@ -89,7 +89,7 @@ public class XmlDataParser {
 			try {
 				return buildTypedStringValue(value , typeClassName, ele);
 			} catch (ClassNotFoundException e) {
-				log.error("Type class [" + typeClassName + "] not found for value " + value, e);
+				log.error("Type class [{}] not found for value {}", typeClassName, value, e);
 				return value;
 			}
 		}else if (subElement != null) {
@@ -140,7 +140,7 @@ public class XmlDataParser {
 		try {
 			return buildTypedStringValue(value, typeClassName, ele);
 		}catch (ClassNotFoundException ex) {
-			log.error("Type class [" + typeClassName + "] not found for <value> element",ex);
+			log.error("Type class [{}] not found for <value> element", typeClassName, ex);
 			return value;
 		}
 	}
@@ -257,7 +257,7 @@ public class XmlDataParser {
 			return buildTypedStringValue(value, defaultTypeClassName, entryEle);
 		}
 		catch (ClassNotFoundException ex) {
-			log.error("Type class [" + defaultTypeClassName + "] not found for Map key/value type" + entryEle, ex);
+			log.error("Type class [{}] not found for Map key/value type {}", defaultTypeClassName, entryEle, ex);
 			return value;
 		}
 	}

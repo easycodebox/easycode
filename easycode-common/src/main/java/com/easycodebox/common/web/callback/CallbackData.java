@@ -3,8 +3,8 @@ package com.easycodebox.common.web.callback;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.Strings;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author WangXiaoJin

@@ -2,13 +2,13 @@ package com.easycodebox.common.cache;
 
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import net.sf.ehcache.*;
 import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.Resource;
@@ -109,13 +109,13 @@ public final class CacheAspect implements Ordered, InitializingBean {
 	        	result = pjp.proceed();
 	            if(result == null || result instanceof Serializable) {
 	            	element = new Element(cacheKey, (Serializable)result);
-	            	log.info("正在缓存{0}对象。", cacheKey);
+	            	log.info("正在缓存{}对象。", cacheKey);
 	            	cache.putIfAbsent(element);
 	            }else {
-	            	log.warn("{0}指定方法返回对象{1}不能被序列化，不能缓存。", cacheKey, result);
+	            	log.warn("{}指定方法返回对象{}不能被序列化，不能缓存。", cacheKey, result);
 	            }
 	        }else {
-	        	log.info("从缓存中获取{0}对象。", cacheKey);
+	        	log.info("从缓存中获取{}对象。", cacheKey);
 	        	result = element.getObjectValue();
 	        }
 		}else if(cacheable.cacheOperation() == CacheOperation.FLUSH_CACHE) {
@@ -123,12 +123,12 @@ public final class CacheAspect implements Ordered, InitializingBean {
 	        for(Class<?> clazz : cacheable.flushGroup()) {
 	        	String groupName = clazz.getName();
 	        	if(!groupName.equals(group)) {
-	        		log.info("删除缓存组{0}所有的缓存对象。", groupName);
+	        		log.info("删除缓存组{}所有的缓存对象。", groupName);
 	        		getCache(group).removeAll();
 	        	}
 	        		
 	        }
-	        log.info("删除缓存组{0}所有的缓存对象。", group);
+	        log.info("删除缓存组{}所有的缓存对象。", group);
 	        //此处应该优化，应该可配置成只删除对应ID的数据，不应该全部删除该类型的缓存
 	        cache.removeAll();
 		}
@@ -162,11 +162,11 @@ public final class CacheAspect implements Ordered, InitializingBean {
 		}
     	Cache cache = null;
 		if (this.cacheManager.cacheExists(group)) {
-			log.debug("获取缓存组{0}对象。", group);
+			log.debug("获取缓存组{}对象。", group);
 			cache = this.cacheManager.getCache(group);
 		}
 		if (cache == null) {
-			log.debug("创建缓存组{0}对象。", group);
+			log.debug("创建缓存组{}对象。", group);
 			cache = createCache(group);
 			Cache back = (Cache)this.cacheManager.addCacheIfAbsent(cache);
 			

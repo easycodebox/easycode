@@ -6,11 +6,11 @@ import com.easycodebox.common.file.*;
 import com.easycodebox.common.idgenerator.support.AlphaNumericIdGenerator;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.upload.config.UploadProperties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -263,7 +263,7 @@ public class UploadHandler {
 						ori.renameTo(new File(deletePath + m.group(4)));
 					count++;
 				} catch (Exception e) {
-					log.error("删除图片" + original + "错误", e);
+					log.error("删除图片{}错误", original, e);
 				}
 			}
 		}

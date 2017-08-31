@@ -1,8 +1,8 @@
 package com.easycodebox.common.web.springmvc;
 
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
@@ -88,7 +88,7 @@ public class DefaultRequestMappingHandlerMapping extends RequestMappingHandlerMa
 				try {
 					controller = getApplicationContext().getBean(className);
 				} catch (Exception e) {
-					log.error("Obtain bean [{0}] error.", e, className);
+					log.error("Obtain bean [{}] error.", className, e);
 				}
 			}
 			if(controller == null || !isHandler(controller.getClass())) {

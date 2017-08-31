@@ -3,13 +3,13 @@ package com.easycodebox.common.file;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.StringToken.StringFormatToken;
 import com.easycodebox.common.lang.reflect.Classes;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.common.xml.XmlDataParser;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.management.modelmbean.XMLParseException;
 import java.io.*;
@@ -35,7 +35,7 @@ public class PropertiesUtils {
 	 */
 	public static void load(Properties properties, String dataStr) throws IOException {
 		Assert.notNull(properties, "'properties' can't be null.");
-		log.debug("properties load data string {0}.", dataStr);
+		log.debug("properties load data string {}.", dataStr);
 		if(StringUtils.isNotBlank(dataStr)) {
 			try (StringReader reader = new StringReader(dataStr)) {
 				properties.load(reader);
@@ -50,7 +50,7 @@ public class PropertiesUtils {
 	 */
 	public static void loadFile(Properties properties, String resource) throws IOException {
 		Assert.notNull(properties, "'properties' can't be null.");
-		log.info("properties load file {0}.", resource);
+		log.info("properties load file {}.", resource);
 		try (InputStream i = Classes.getClassLoader().getResourceAsStream(resource)) {
 			properties.load(i);
 		}
@@ -65,7 +65,7 @@ public class PropertiesUtils {
 	 */
 	public static void loadAbsoluteFile(Properties properties, String absoluteFile) throws IOException {
 		Assert.notNull(properties, "'properties' can't be null.");
-		log.info("properties load file {0}.", absoluteFile);
+		log.info("properties load file {}.", absoluteFile);
 		try (InputStream i = new FileInputStream(absoluteFile)) {
 			properties.load(i);
 		}
@@ -81,7 +81,7 @@ public class PropertiesUtils {
 	 */
 	public static void loadXmlFile(Properties properties, String resource) throws IOException, DocumentException, XMLParseException {
 		Assert.notNull(properties, "'properties' can't be null.");
-		log.info("properties load xml file {0}.", resource);
+		log.info("properties load xml file {}.", resource);
 		try (InputStream is = Classes.getClassLoader().getResourceAsStream(resource)) {
 			loadXmlFile(properties, is);
 		}
@@ -98,7 +98,7 @@ public class PropertiesUtils {
 	 */
 	public static void loadAbsoluteXmlFile(Properties properties, String absoluteFile) throws IOException, DocumentException, XMLParseException {
 		Assert.notNull(properties, "'properties' can't be null.");
-		log.info("properties load file {0}.", absoluteFile);
+		log.info("properties load file {}.", absoluteFile);
 		try (InputStream i = new FileInputStream(absoluteFile)) {
 			loadXmlFile(properties, i);
 		}

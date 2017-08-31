@@ -8,8 +8,6 @@ import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.dto.UserInfo;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.login.shiro.AdvancedAuthorizationInfo;
 import com.easycodebox.login.shiro.ShiroSecurityInfoHandler;
@@ -29,6 +27,8 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.jasig.cas.client.validation.TicketValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.*;
@@ -232,7 +232,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 		AdvancedAuthorizationInfo info = null;
 		
 		if (log.isTraceEnabled()) {
-			log.trace("Retrieving AuthorizationInfo for principals [" + principals + "]");
+			log.trace("Retrieving AuthorizationInfo for principals [{}]", principals);
 		}
 		
 		Cache<Object, AuthorizationInfo> cache = getAvailableAuthorizationCache();
@@ -244,9 +244,9 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 			info = (AdvancedAuthorizationInfo) cache.get(key);
 			if (log.isTraceEnabled()) {
 				if (info == null) {
-					log.trace("No AuthorizationInfo found in cache for principals [" + principals + "]");
+					log.trace("No AuthorizationInfo found in cache for principals [{}]", principals);
 				} else {
-					log.trace("AuthorizationInfo found in cache for principals [" + principals + "]");
+					log.trace("AuthorizationInfo found in cache for principals [{}]", principals);
 				}
 			}
 		}
@@ -274,7 +274,7 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 			// If the info is not null and the cache has been created, then cache the authorization info.
 			if (cache != null) {
 				if (log.isTraceEnabled()) {
-					log.trace("Caching authorization info for principals: [" + principals + "].");
+					log.trace("Caching authorization info for principals: [{}].", principals);
 				}
 				Object key = getAuthorizationCacheKey(principals);
 				cache.put(key, info);
@@ -328,14 +328,13 @@ public class DefaultCasRealm extends CasRealm implements Serializable {
 			if (cacheManager != null) {
 				String cacheName = getAuthorizationCacheName();
 				if (log.isDebugEnabled()) {
-					log.debug("CacheManager [" + cacheManager + "] has been configured.  Building " +
-							"authorization cache named [" + cacheName + "]");
+					log.debug("CacheManager [{}] has been configured.  Building authorization cache named [{}]",
+							cacheManager, cacheName);
 				}
-				setAuthorizationCache(cacheManager.<Object, AuthorizationInfo>getCache(cacheName));
+				setAuthorizationCache(cacheManager.getCache(cacheName));
 			} else {
 				if (log.isInfoEnabled()) {
-					log.info("No cache or cacheManager properties have been set.  Authorization cache cannot " +
-							"be obtained.");
+					log.info("No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.");
 				}
 			}
 		}

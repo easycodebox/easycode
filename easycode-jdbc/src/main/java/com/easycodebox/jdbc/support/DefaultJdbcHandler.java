@@ -1,13 +1,13 @@
 package com.easycodebox.jdbc.support;
 
 import com.easycodebox.common.enums.entity.YesNo;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.security.SecurityUtils;
 import com.easycodebox.jdbc.Property;
 import com.easycodebox.jdbc.entity.*;
 import com.easycodebox.jdbc.grammar.SqlGrammar;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -155,7 +155,7 @@ public class DefaultJdbcHandler implements JdbcHandler {
 					write.invoke(obj, val);
 				}
 			} catch (Exception e) {
-				log.warn("read or write object({0}) property({1}) error.", e, obj, name);
+				log.warn("read or write object({}) property({}) error.", obj, name, e);
 			}
 		}
 	}

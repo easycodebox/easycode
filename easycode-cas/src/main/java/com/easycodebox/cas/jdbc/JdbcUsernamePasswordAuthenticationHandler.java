@@ -1,24 +1,19 @@
 package com.easycodebox.cas.jdbc;
 
-import java.security.GeneralSecurityException;
-import java.util.Map;
-
-import javax.security.auth.login.AccountNotFoundException;
-import javax.security.auth.login.FailedLoginException;
-import javax.validation.constraints.NotNull;
-
+import com.easycodebox.cas.cache.ClearUserCache;
+import com.easycodebox.cas.exception.MultipleUserException;
 import org.jasig.cas.adaptors.jdbc.AbstractJdbcUsernamePasswordAuthenticationHandler;
-import org.jasig.cas.authentication.AccountDisabledException;
-import org.jasig.cas.authentication.HandlerResult;
-import org.jasig.cas.authentication.PreventedException;
-import org.jasig.cas.authentication.UsernamePasswordCredential;
+import org.jasig.cas.authentication.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
-import com.easycodebox.cas.cache.ClearUserCache;
-import com.easycodebox.cas.exception.MultipleUserException;
+import javax.security.auth.login.AccountNotFoundException;
+import javax.security.auth.login.FailedLoginException;
+import javax.validation.constraints.NotNull;
+import java.security.GeneralSecurityException;
+import java.util.Map;
 
 /**
  * @author WangXiaoJin
@@ -60,7 +55,7 @@ public class JdbcUsernamePasswordAuthenticationHandler extends AbstractJdbcUsern
             				try {
 								clearUserCache.clear(id);
 							} catch (Exception e) {
-								log.error("清除user(" + id + ")缓存失败！", e);
+								log.error("清除user({})缓存失败！", id, e);
 							}
             			}
             			return createHandlerResult(credential, 
@@ -75,7 +70,7 @@ public class JdbcUsernamePasswordAuthenticationHandler extends AbstractJdbcUsern
     				try {
 						clearUserCache.clear(id);
 					} catch (Exception e) {
-						log.error("清除user(" + id + ")缓存失败！", e);
+						log.error("清除user({})缓存失败！", id, e);
 					}
             	}
             }

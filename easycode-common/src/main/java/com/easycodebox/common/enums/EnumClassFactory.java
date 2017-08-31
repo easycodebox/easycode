@@ -1,15 +1,14 @@
 package com.easycodebox.common.enums;
 
+import com.easycodebox.common.error.BaseException;
+import com.easycodebox.common.file.Resources;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.springframework.beans.factory.InitializingBean;
-
-import com.easycodebox.common.error.BaseException;
-import com.easycodebox.common.file.Resources;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 
 /**
  * @author WangXiaoJin
@@ -34,14 +33,14 @@ public class EnumClassFactory implements InitializingBean {
 		if(annotatedClasses != null && annotatedClasses.length > 0) {
 			for(Class<? extends Enum<?>> clazz : annotatedClasses) {
 				addEnum(clazz);
-				log.debug("load enum class {0}", clazz);
+				log.debug("load enum class {}", clazz);
 			}
 		}
 		List<Class<?>> classes = Resources.scanClass(packagesToScan);
 		for(Class<?> clazz : classes) {
 			if(Enum.class.isAssignableFrom(clazz)) {
 				addEnum((Class<? extends Enum<?>>)clazz);
-				log.debug("load enum class {0}", clazz);
+				log.debug("load enum class {}", clazz);
 			}
 		}
 	}

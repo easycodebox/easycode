@@ -1,18 +1,17 @@
 package com.easycodebox.common.zookeeper.curator;
 
-import java.util.List;
-
+import com.easycodebox.common.lang.Symbol;
+import com.easycodebox.common.net.InetAddresses;
+import com.easycodebox.common.validate.Assert;
+import com.easycodebox.common.zookeeper.ZkNodeNameMaker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.utils.ZKPaths;
 import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.net.InetAddresses;
-import com.easycodebox.common.validate.Assert;
-import com.easycodebox.common.zookeeper.ZkNodeNameMaker;
+import java.util.List;
 
 /**
  * zookeeper的节点名制造器，节点名根据IP来定位，但是IP值作为数据存储在节点中。

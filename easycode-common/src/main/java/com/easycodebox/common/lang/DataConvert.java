@@ -3,9 +3,9 @@ package com.easycodebox.common.lang;
 import com.easycodebox.common.enums.DetailEnum;
 import com.easycodebox.common.error.BaseException;
 import com.easycodebox.common.lang.reflect.Classes;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;

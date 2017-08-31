@@ -2,9 +2,9 @@ package com.easycodebox.common.tag;
 
 import com.easycodebox.common.lang.DataConvert;
 import com.easycodebox.common.lang.StringToken.OgnlToken;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
@@ -85,7 +85,7 @@ public abstract class TagExt extends BodyTagSupport {
 			try {
 				data = PropertyUtils.getProperty(data, tmpKey);
 			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-				log.warn("Obtain obj({0} -- {1}) property({2}) error.", data.getClass(), data, tmpKey);
+				log.warn("Obtain obj({} -- {}) property({}) error.", data.getClass(), data, tmpKey);
 				return null;
 			}
 		}

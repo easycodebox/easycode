@@ -2,11 +2,11 @@ package com.easycodebox.login.shiro.filter;
 
 import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.error.CodeMsg;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.callback.Callbacks;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -37,8 +37,8 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter {
                 return true;
             }
         } else {
-        	log.trace("Attempting to access a path which requires authentication.  Forwarding to the " +
-                        "Authentication url [{0}]", getLoginUrl());
+        	log.trace("Attempting to access a path which requires authentication.  Forwarding to the Authentication url [{}]",
+			        getLoginUrl());
         	HttpServletRequest req = (HttpServletRequest)request;
         	HttpServletResponse resp = (HttpServletResponse)response;
 			

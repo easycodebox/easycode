@@ -1,8 +1,8 @@
 package com.easycodebox.common.rmi;
 
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.rmi.*;
@@ -24,7 +24,7 @@ public class LookupRemote {
 		try {
 			return (T)Naming.lookup("rmi://" + rmiIp + ":" + port + Symbol.SLASH + result.getSimpleName());
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			log.error("LookupRemote for {0} error.", e, result.getSimpleName());
+			log.error("LookupRemote for {} error.", result.getSimpleName(), e);
 		}
 		return null;
 	}

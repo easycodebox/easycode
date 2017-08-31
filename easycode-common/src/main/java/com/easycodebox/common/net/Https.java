@@ -4,8 +4,6 @@ import com.easycodebox.common.file.MimeTypes;
 import com.easycodebox.common.file.UploadFileInfo;
 import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.lang.*;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -25,6 +23,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.util.WebUtils;
 
@@ -454,7 +454,7 @@ public class Https {
 			out = response.getWriter();
 			out.write(str);
 		} catch (IOException e) {
-			log.error("The method outString in HttpUtil:" + e.getMessage());
+			log.error("Execute outString error.", e);
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
@@ -469,7 +469,7 @@ public class Https {
 				.createGenerator(response.getWriter())) {
 			Jacksons.COMMUNICATE.writeValue(jsonGenerator, obj);
 		} catch (Exception e) {
-			log.error("The method outString in HttpUtil:" + e.getMessage());
+			log.error("Execute outString error.", e);
 		}
 	}
 
@@ -682,7 +682,7 @@ public class Https {
 							return get(url, traditional, params, jsonKeys, charset);
 						} catch (Exception e) {
 							if(log.isErrorEnabled()) {
-								log.error("get " + url + " request error.", e);
+								log.error("get {} request error.", url, e);
 							}
 							throw e;
 						}
@@ -786,7 +786,7 @@ public class Https {
 	    					return post(url, params, jsonKeys, charset);
 						} catch (Exception e) {
 							if(log.isErrorEnabled()) {
-								log.error("post " + url + " request error.", e);
+								log.error("post {} request error.", url, e);
 							}
 							throw e;
 						}

@@ -1,15 +1,19 @@
 package com.easycodebox.common.file;
 
-import com.easycodebox.common.lang.*;
+import com.easycodebox.common.lang.Strings;
+import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.reflect.Classes;
-import com.easycodebox.common.log.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.activation.FileTypeMap;
 import java.io.*;
 import java.net.URL;
-import java.security.*;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * 修改自javax.activation.MimetypesFileTypeMap类 <p>
@@ -124,13 +128,13 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		try(InputStream clis = this.getClass().getResourceAsStream(name)) {
 			if (clis != null) {
 				MimeTypeFile mf = new MimeTypeFile(clis);
-				log.info("MimetypesFileTypeMap: successfully loaded mime types file: " + name);
+				log.info("MimetypesFileTypeMap: successfully loaded mime types file: {}", name);
 				return mf;
 			} else {
-				log.warn("MimetypesFileTypeMap: not loading mime types file: " + name);
+				log.warn("MimetypesFileTypeMap: not loading mime types file: {}", name);
 			}
 		} catch (IOException e) {
-			log.error("MimetypesFileTypeMap: load file ({0}) failed.", e, name);
+			log.error("MimetypesFileTypeMap: load file ({}) failed.", name, e);
 		}
 		return null;
 	}
@@ -167,17 +171,17 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 		if (urls != null) {
 			log.info("MimetypesFileTypeMap: getResources");
 			for (URL url : urls) {
-				log.info("MimetypesFileTypeMap: URL " + url);
+				log.info("MimetypesFileTypeMap: URL {}", url);
 				try (InputStream clis = url.openStream()) {
 					if (clis != null) {
 						v.add(new MimeTypeFile(clis));
 						anyLoaded = true;
-						log.info("MimetypesFileTypeMap: successfully loaded mime types from URL: " + url);
+						log.info("MimetypesFileTypeMap: successfully loaded mime types from URL: {}", url);
 					} else {
-						log.warn("MimetypesFileTypeMap: not loading mime types from URL: " + url);
+						log.warn("MimetypesFileTypeMap: not loading mime types from URL: {}", url);
 					}
 				} catch (IOException e) {
-					log.info("MimetypesFileTypeMap: can't load " + name, e);
+					log.info("MimetypesFileTypeMap: can't load {}", name, e);
 				}
 			}
 		}
@@ -416,7 +420,7 @@ public class MimetypesFileTypeMap extends FileTypeMap {
 							&& lt.hasMoreTokens())
 						value = lt.nextToken();
 					if (value == null) {
-						log.info("Bad .mime.types entry: " + line);
+						log.info("Bad .mime.types entry: {}", line);
 						return;
 					}
 					if (name.equals("type")) {

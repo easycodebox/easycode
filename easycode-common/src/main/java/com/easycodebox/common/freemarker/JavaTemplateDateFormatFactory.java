@@ -1,11 +1,11 @@
 package com.easycodebox.common.freemarker;
 
 import com.easycodebox.common.lang.*;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import freemarker.core.*;
 import freemarker.template.TemplateDateModel;
 import freemarker.template.TemplateModelException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.*;
 import java.text.ParseException;

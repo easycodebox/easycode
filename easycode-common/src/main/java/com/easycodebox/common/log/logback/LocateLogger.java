@@ -1,18 +1,16 @@
 package com.easycodebox.common.log.logback;
 
-import java.io.FileNotFoundException;
-import java.net.URL;
-
-import com.easycodebox.common.lang.Strings;
-import org.slf4j.impl.StaticLoggerBinder;
-import org.springframework.util.ResourceUtils;
-
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
-
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.util.ContextInitializer;
 import ch.qos.logback.core.joran.spi.JoranException;
+import com.easycodebox.common.lang.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.impl.StaticLoggerBinder;
+import org.springframework.util.ResourceUtils;
+
+import java.io.FileNotFoundException;
+import java.net.URL;
 
 /**
  * @author WangXiaoJin

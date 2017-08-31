@@ -1,6 +1,7 @@
 package com.easycodebox.common.log.slf4j;
 
 import com.easycodebox.common.enums.entity.LogLevel;
+import org.slf4j.Logger;
 
 import java.io.Serializable;
 
@@ -20,34 +21,26 @@ public class LogLevelConfig implements Serializable {
 	 * 打印日志
 	 * @return
 	 */
-	public void log(Logger log, Object msg, Object... args) {
-		this.log(log, msg, (Throwable)null, args);
-	}
-	
-	/**
-	 * 打印日志
-	 * @return
-	 */
-	public void log(Logger log, Object msg, Throwable t, Object... args) {
+	public void log(Logger log, String msg, Object... args) {
 		switch(this.logLevel) {
 			
 		case TRACE: 
-			log.trace(msg, t, args);
+			log.trace(msg, args);
 			break;
 		case DEBUG: 
-			log.debug(msg, t, args);
+			log.debug(msg, args);
 			break;
 		case INFO:
-			log.info(msg, t, args);
+			log.info(msg, args);
 			break;
 		case WARN:
-			log.warn(msg, t, args);
+			log.warn(msg, args);
 			break;
 		case ERROR:
-			log.error(msg, t, args);
+			log.error(msg, args);
 			break;
 		default: 
-			log.error(msg, t, args);
+			log.error(msg, args);
 			break;
 		}
 	}

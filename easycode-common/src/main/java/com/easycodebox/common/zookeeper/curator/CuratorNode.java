@@ -1,18 +1,15 @@
 package com.easycodebox.common.zookeeper.curator;
 
+import com.easycodebox.common.validate.Assert;
+import com.easycodebox.common.zookeeper.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.api.CuratorWatcher;
 import org.apache.curator.framework.api.GetDataBuilder;
 import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.validate.Assert;
-import com.easycodebox.common.zookeeper.ZkDeserializer;
-import com.easycodebox.common.zookeeper.ZkNodeNameMaker;
-import com.easycodebox.common.zookeeper.ZkSerializer;
 
 /**
  * zookeeper相关操作
@@ -61,7 +58,7 @@ public class CuratorNode<T> implements InitializingBean {
 		}
 		data = builder.storingStatIn(stat).forPath(name);
 		if(debug) {
-			log.info("ZooKeeper get data. path: {0} --- data: {1}", name, data == null ? null : new String(data));
+			log.info("ZooKeeper get data. path: {} --- data: {}", name, data);
 		}
 		if(deserializer != null) {
 			return deserializer.deserialize(data);
@@ -85,7 +82,7 @@ public class CuratorNode<T> implements InitializingBean {
 		}
 		client.setData().withVersion(version).forPath(name, bytes);
 		if(debug) {
-			log.info("ZooKeeper set data. path: {0} --- data: {1}", name, bytes == null ? null : new String(bytes));
+			log.info("ZooKeeper set data. path: {} --- data: {}", name, bytes);
 		}
 	}
 	

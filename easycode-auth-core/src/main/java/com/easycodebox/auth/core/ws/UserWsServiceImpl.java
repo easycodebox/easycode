@@ -13,11 +13,11 @@ import com.easycodebox.common.error.ErrorContext;
 import com.easycodebox.common.lang.Strings;
 import com.easycodebox.common.lang.Symbol;
 import com.easycodebox.common.lang.dto.DataPage;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
 import com.easycodebox.login.ws.UserWsService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,7 +130,7 @@ public class UserWsServiceImpl implements UserWsService {
 			List<Role> role = roleService.list(OpenClose.OPEN, roleName);
 			if(role.size() > 0) {
 				if(role.size() > 1) {
-					log.error("There are multiple role name {0}", roleName);
+					log.error("There are multiple role name {}", roleName);
 				}
 				Integer roleId = role.get(0).getId();
 				roleService.installRolesOfUser(user.getId(), new Integer[]{roleId});

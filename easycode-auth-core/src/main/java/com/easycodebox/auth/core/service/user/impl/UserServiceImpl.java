@@ -343,7 +343,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 	@Transactional
 	@CacheEvict(cacheNames = Constants.CN.USER)
 	public boolean clearCache(String userId) throws ErrorContext {
-		log.info("清除用户缓存 userId:{0}", userId);
+		log.info("清除用户缓存 userId:{}", userId);
 		return true;
 	}
 	

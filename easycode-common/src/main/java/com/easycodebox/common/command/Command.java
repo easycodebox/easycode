@@ -1,6 +1,7 @@
 package com.easycodebox.common.command;
 
-import com.easycodebox.common.log.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
@@ -19,7 +20,7 @@ public class Command {
 		Process proc;
 		BufferedReader reader = null;
 		try {
-			log.info("命令信息===开始===" + command);
+			log.info("命令信息===开始=={}", command);
 			proc = rt.exec(command);
 			InputStreamReader isr = new InputStreamReader(proc.getErrorStream());
 			reader = new BufferedReader(isr);
@@ -34,7 +35,7 @@ public class Command {
 				log.info(line);
 			}
 			int exitVal = proc.waitFor();  
-			log.info("Process exitValue: " + exitVal);
+			log.info("Process exitValue: {}", exitVal);
 		} catch (IOException | InterruptedException e) {
 			log.error("", e);
 		} finally {

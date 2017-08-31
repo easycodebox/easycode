@@ -1,20 +1,13 @@
 package com.easycodebox.common.zookeeper.zkclient;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.data.Stat;
-import org.springframework.beans.factory.InitializingBean;
-
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.validate.Assert;
-import com.easycodebox.common.zookeeper.ZkDeserializeException;
-import com.easycodebox.common.zookeeper.ZkDeserializer;
-import com.easycodebox.common.zookeeper.ZkNodeNameMaker;
-import com.easycodebox.common.zookeeper.ZkSerializeException;
-import com.easycodebox.common.zookeeper.ZkSerializer;
+import com.easycodebox.common.zookeeper.*;
+import org.apache.commons.lang.StringUtils;
+import org.apache.zookeeper.*;
+import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * zookeeper相关操作
@@ -63,7 +56,7 @@ public class ZkNode<T> implements InitializingBean {
 			data = client.getData(name, watchObj, stat);
 		}
 		if(debug) {
-			log.info("ZooKeeper get data. path: {0} --- data: {1}", name, data == null ? null : new String(data));
+			log.info("ZooKeeper get data. path: {} --- data: {}", name, data);
 		}
 		if(deserializer != null) {
 			return deserializer.deserialize(data);
@@ -89,7 +82,7 @@ public class ZkNode<T> implements InitializingBean {
 		}
 		client.setData(name, bytes, version);
 		if(debug) {
-			log.info("ZooKeeper set data. path: {0} --- data: {1}", name, bytes == null ? null : new String(bytes));
+			log.info("ZooKeeper set data. path: {} --- data: {}", name, bytes);
 		}
 	}
 	

@@ -1,7 +1,8 @@
 package com.easycodebox.common.file;
 
-import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.validate.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -72,7 +73,7 @@ public class PropertiesPool {
 					else
 						PropertiesUtils.loadFile(propertyFile, resource);
 				} catch (IOException e) {
-					log.error("Load file ({0}) to Properties error!!", e, resource);
+					log.error("Load file ({}) to Properties error!!", resource, e);
 				}
 				if(!contains)
 					files.add(resource);
@@ -108,7 +109,7 @@ public class PropertiesPool {
 					else
 						PropertiesUtils.loadXmlFile(propertyFile, resource);
 				} catch (Exception e) {
-					log.error("Load xml file ({0}) to Properties error!!", e, resource);
+					log.error("Load xml file ({}) to Properties error!!", resource, e);
 				}
 				if(!contains)
 					files.add(resource);

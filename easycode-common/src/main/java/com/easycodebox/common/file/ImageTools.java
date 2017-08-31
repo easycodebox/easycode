@@ -3,10 +3,12 @@ package com.easycodebox.common.file;
 import com.easycodebox.common.error.CodeMsg;
 import com.easycodebox.common.file.exception.NonEnlargedException;
 import com.easycodebox.common.lang.*;
-import com.easycodebox.common.log.slf4j.*;
 import com.easycodebox.common.validate.Assert;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.io.*;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
@@ -136,7 +138,7 @@ public class ImageTools {
 		        	String[] exts = MimeTypes.getExtensions(mimeType);
 		        	imgType = exts[0];
 		        }else {
-		        	log.error("未知的图片类型：" + imgType);
+		        	log.error("未知的图片类型：{}", imgType);
 		        }
 		        im.setType(imgType);
 				
@@ -333,9 +335,6 @@ public class ImageTools {
 			if(!newFile.getParentFile().exists())
 				newFile.getParentFile().mkdirs();
 			ImageIO.write(newImg, FilenameUtils.getExtension(descImg).toLowerCase(), newFile);  
-		} catch (FileNotFoundException e) {
-			log.error("read img error.", e);
-			return false;
 		} catch (IOException e) {
 			log.error("read img error.", e);
 			return false;

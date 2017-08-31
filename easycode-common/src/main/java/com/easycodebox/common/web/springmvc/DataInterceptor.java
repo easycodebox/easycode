@@ -2,10 +2,10 @@ package com.easycodebox.common.web.springmvc;
 
 import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.lang.Strings;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.Https;
 import com.easycodebox.common.web.CacheHisUris;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

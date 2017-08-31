@@ -1,9 +1,9 @@
 package com.easycodebox.common.web;
 
 import com.easycodebox.common.lang.Symbol;
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
 import com.easycodebox.common.net.Https;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -81,7 +81,7 @@ public class CacheHisUris {
 					String fullUri = Https.getFullRequestUri(request, 2, traditional);
 					//缓存uri地址
 					uris.add(fullUri);
-					log.debug("cache hisUri = {0}", fullUri);
+					log.debug("cache hisUri = {}", fullUri);
 				}else if(request.getQueryString().contains(BACK_CACHED_URI)) {
 					uris.remove(uris.size() - 1);
 					

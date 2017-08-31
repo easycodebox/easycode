@@ -1,13 +1,12 @@
 package com.easycodebox.common.schedule.quartz;
 
+import com.easycodebox.common.spring.BeanFactory;
+import org.quartz.Scheduler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.quartz.Scheduler;
-
-import com.easycodebox.common.log.slf4j.Logger;
-import com.easycodebox.common.log.slf4j.LoggerFactory;
-import com.easycodebox.common.spring.BeanFactory;
 
 /**
  * quartz 调度 监听器
