@@ -49,7 +49,6 @@ public class LogLevelConfig implements Serializable {
 		default: 
 			log.error(msg, t, args);
 			break;
-			
 		}
 	}
 
