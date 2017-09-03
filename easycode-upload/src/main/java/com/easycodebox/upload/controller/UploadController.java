@@ -31,6 +31,8 @@ public class UploadController extends BaseController {
 	
 	@Autowired
 	private UploadHandler uploadHandler;
+	@Autowired
+	private Jacksons mvnJacksons;
 	
 	@GetMapping("/show")
 	public String show() {
@@ -125,7 +127,7 @@ public class UploadController extends BaseController {
 	 */
 	@RequestMapping("/delete")
 	public void delete(String[] files, FileType fileType, HttpServletResponse resp) throws Exception {
-		CodeMsg error = null;
+		CodeMsg error;
 		
 		if (files.length == 0) {
 			error = CodeMsgExt.PARAM_BLANK.fillArgs("files");
@@ -162,7 +164,7 @@ public class UploadController extends BaseController {
 			Https.outHtml(error, resp);
 		else {
 			//responseUrl 为跨域上传图片的解决方案
-			String backData = "back_data=" + URLEncoder.encode(Jacksons.COMMUNICATE.writeValueAsString(error), "UTF-8");
+			String backData = "back_data=" + URLEncoder.encode(mvnJacksons.toJson(error), "UTF-8");
 			responseUrl = !responseUrl.contains(Symbol.QUESTION) ? responseUrl + Symbol.QUESTION + backData :
 					responseUrl.endsWith(Symbol.AND_MARK) ? responseUrl + backData : responseUrl + Symbol.AND_MARK + backData;
 			resp.sendRedirect(responseUrl);

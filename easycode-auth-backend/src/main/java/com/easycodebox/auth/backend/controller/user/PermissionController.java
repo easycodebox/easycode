@@ -45,6 +45,8 @@ public class PermissionController extends BaseController {
 	private ProjectService projectService;
 	@Autowired
 	private RoleProjectService roleProjectService;
+	@Autowired
+	private Jacksons mvnJacksons;
 
 	/**
 	 * 列表
@@ -173,7 +175,7 @@ public class PermissionController extends BaseController {
 		no.setId(-1L);
 		no.setName("--无--");
 		os.add(0, no);
-		Jacksons j = Jacksons.nonNull().addJsonSerializer(Permission.class, new JsonSerializer<Permission>(){
+		Jacksons j = mvnJacksons.addJsonSerializer(Permission.class, new JsonSerializer<Permission>(){
 
 			@Override
 			public void serialize(Permission value, JsonGenerator gen,
@@ -193,7 +195,7 @@ public class PermissionController extends BaseController {
 	@ResponseBody
 	public String cfgPermissionByRoleId(Integer roleId) throws Exception {
 		List<Permission> os = permissionService.listAllGroupByProject(roleId);
-		Jacksons j = Jacksons.nonNull().addJsonSerializer(Permission.class, new JsonSerializer<Permission>(){
+		Jacksons j = mvnJacksons.addJsonSerializer(Permission.class, new JsonSerializer<Permission>(){
 
 			@Override
 			public void serialize(Permission value, JsonGenerator gen,

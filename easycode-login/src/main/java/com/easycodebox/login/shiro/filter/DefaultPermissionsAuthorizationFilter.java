@@ -51,9 +51,9 @@ public class DefaultPermissionsAuthorizationFilter extends PermissionsAuthorizat
 		
 		if (!Https.isResponseHtml(req)) {
 			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
+			try (JsonGenerator jsonGenerator = Jacksons.instance().getObject().getFactory()
 					.createGenerator(response.getWriter())) {
-				Jacksons.NON_NULL.writeValue(jsonGenerator, CodeMsg.FAIL.msg("您没有权限执行此操作"));
+				Jacksons.instance().getObject().writeValue(jsonGenerator, CodeMsg.FAIL.msg("您没有权限执行此操作"));
 			} catch (Exception e) {
 				throw new BaseException("Could not write JSON string.", e);
 			}

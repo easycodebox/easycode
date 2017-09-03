@@ -2,9 +2,11 @@ package com.easycodebox.upload.config;
 
 import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.error.ErrorContext;
+import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerAdapter;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerMapping;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.ext.jsp.TaglibFactory.ClasspathMetaInfTldSource;
 import freemarker.template.SimpleHash;
 import freemarker.template.TemplateModelException;
@@ -13,7 +15,8 @@ import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.web.*;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,16 @@ import java.util.regex.Pattern;
 @Configuration
 @SuppressWarnings("Duplicates")
 public class SpringMvcConfig {
+	
+	/**
+	 * 创建SpringMVC的Jacksons
+	 * @param jacksonObjectMapper   由spring-boot创建
+	 * @return
+	 */
+	@Bean
+	public Jacksons mvnJacksons(ObjectMapper jacksonObjectMapper) {
+		return new Jacksons(jacksonObjectMapper);
+	}
 	
 	@Bean
 	public WebMvcRegistrations webMvcRegistrations() {

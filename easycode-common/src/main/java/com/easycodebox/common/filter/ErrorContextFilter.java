@@ -259,9 +259,9 @@ public class ErrorContextFilter implements Filter {
 			//判断请求是否为AJAX请求
 			if(!Https.isResponseHtml(request)) {
 				response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-				try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
+				try (JsonGenerator jsonGenerator = Jacksons.instance().getObject().getFactory()
 						.createGenerator(response.getWriter())) {
-					Jacksons.NON_NULL.writeValue(jsonGenerator, error);
+					Jacksons.instance().getObject().writeValue(jsonGenerator, error);
 				} catch (Exception jsonEx) {
 					log.error("Write JSON data error!", jsonEx);
 					throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
@@ -280,7 +280,7 @@ public class ErrorContextFilter implements Filter {
 						} else {
 							//相应错误页面
 							response.setContentType("text/html;charset=UTF-8");
-							String codeMsgStr = Jacksons.NON_NULL.toJson(error);
+							String codeMsgStr = Jacksons.instance().toJson(error);
 							Https.addCookie(errorKey, codeMsgStr, response);
 							//设置status code
 							Integer status = statusMappings.get(errorPage) == null ? defaultStatus : statusMappings.get(errorPage);

@@ -2,9 +2,11 @@ package com.easycodebox.auth.backend.config;
 
 import com.easycodebox.common.CommonProperties;
 import com.easycodebox.common.error.ErrorContext;
+import com.easycodebox.common.jackson.Jacksons;
 import com.easycodebox.common.web.callback.Callbacks;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerAdapter;
 import com.easycodebox.common.web.springmvc.DefaultRequestMappingHandlerMapping;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.ext.jsp.TaglibFactory.ClasspathMetaInfTldSource;
 import freemarker.template.SimpleHash;
 import freemarker.template.TemplateModelException;
@@ -37,6 +39,16 @@ import java.util.regex.Pattern;
 @ComponentScan(basePackages = "com.easycodebox.idgenerator.controller")
 @SuppressWarnings("Duplicates")
 public class SpringMvcConfig {
+	
+	/**
+	 * 创建SpringMVC的Jacksons
+	 * @param jacksonObjectMapper   由spring-boot创建
+	 * @return
+	 */
+	@Bean
+	public Jacksons mvnJacksons(ObjectMapper jacksonObjectMapper) {
+		return new Jacksons(jacksonObjectMapper);
+	}
 	
 	@Bean
 	public WebMvcRegistrations webMvcRegistrations() {

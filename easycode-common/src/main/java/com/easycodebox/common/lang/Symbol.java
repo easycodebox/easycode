@@ -21,6 +21,7 @@ public class Symbol {
 	public static final String OR_MARK = "|";
 	public static final String OR_MARK2 = "||";
 	public static final String ASTERISK = "*";
+	public static final String HASH = "#";
 	public static final String MINUS = "-";
 	public static final String BOTTOM_LINE = "_";
 	public static final String PLUS = "+";

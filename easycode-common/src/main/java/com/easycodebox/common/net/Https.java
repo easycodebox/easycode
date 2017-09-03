@@ -282,7 +282,7 @@ public class Https {
 					}
 				}
 				if(isJsonKey) {
-					value = Jacksons.NON_NULL.toJson(value);
+					value = Jacksons.instance().toJson(value);
 				}else {
 					if(value.getClass().isArray()) {
 						Object[] vals = (Object[])value;
@@ -462,12 +462,11 @@ public class Https {
 	
 	/**
 	 * 把对象输出到客户端
-	 * 
 	 */
 	public static void outObject(Object obj, HttpServletResponse response) {
-		try (JsonGenerator jsonGenerator = Jacksons.COMMUNICATE.getFactory()
+		try (JsonGenerator jsonGenerator = Jacksons.instance().getObject().getFactory()
 				.createGenerator(response.getWriter())) {
-			Jacksons.COMMUNICATE.writeValue(jsonGenerator, obj);
+			Jacksons.instance().getObject().writeValue(jsonGenerator, obj);
 		} catch (Exception e) {
 			log.error("Execute outString error.", e);
 		}
@@ -825,7 +824,7 @@ public class Https {
                 			}
                 		}
                 	}
-                    Object value = isJsonKey ? Jacksons.NON_NULL.toJson(entry.getValue()) 
+                    Object value = isJsonKey ? Jacksons.instance().toJson(entry.getValue())
                     		: entry.getValue();
                     if(value != null) {
                     	if(value.getClass().isArray()) {

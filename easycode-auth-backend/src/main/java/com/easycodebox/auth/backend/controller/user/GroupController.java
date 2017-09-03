@@ -32,6 +32,8 @@ public class GroupController extends BaseController {
 	private UserIdConverter userIdConverter;
 	@Autowired
 	private GroupService groupService;
+	@Autowired
+	private Jacksons mvnJacksons;
 
 	/**
 	 * 列表
@@ -114,7 +116,7 @@ public class GroupController extends BaseController {
 		g.setId(-1);
 		g.setName("--无--");
 		gs.add(0, g);
-		Jacksons j = Jacksons.nonNull().addJsonSerializer(Group.class, new JsonSerializer<Group>(){
+		Jacksons j = mvnJacksons.addJsonSerializer(Group.class, new JsonSerializer<Group>(){
 
 			@Override
 			public void serialize(Group value, JsonGenerator gen,

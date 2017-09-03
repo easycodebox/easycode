@@ -25,8 +25,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		if(!this.caches.initTree) {
 			$.post("/group/listAll.json", function(data) {
 				gb.caches.initTree = true;
-				data = JSON.parse(data);
-				
+				//data = JSON.parse(data);
 				var $tree, setting = {
 						view: {
 							selectedMulti: false

@@ -72,7 +72,7 @@ $(function(){
 		var $btn = $(this),
 			id = $btn.data("id");
 		$.post("/permission/cfgPermissionByRoleId.json", {roleId: id}, function(data) {
-			data = JSON.parse(data);
+			//data = JSON.parse(data);
 			if(!$("#treeUl").length) {
 				$("body").append('<ul id="treeUl" class="ztree" style="display: none;height: 255px;overflow-y: auto;" ></ul>');
 			}

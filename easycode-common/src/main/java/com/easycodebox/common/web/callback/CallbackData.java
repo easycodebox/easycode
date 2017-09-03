@@ -93,7 +93,7 @@ public class CallbackData extends CodeMsg {
 			.append("\"url\"").append(":").append(Strings.valueToString(getUrl()));
 		try {
 			sb.append(",").append("\"data\"").append(":")
-			.append(Jacksons.COMMUNICATE.toJson(getData()));
+			.append(Jacksons.instance().toJson(getData()));
 		} catch (Exception e) {
 			log.error("解析JSON错误", e);
 		}

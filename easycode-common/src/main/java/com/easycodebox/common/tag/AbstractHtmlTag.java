@@ -284,7 +284,7 @@ public abstract class AbstractHtmlTag extends TagExt {
 			tagAttr = tagAttr.trim();
 			if(tagAttr.startsWith(Symbol.L_BRACE)) {
 				try {
-					tagAttrMap = Jacksons.COMMUNICATE.toBean(tagAttr, Map.class);
+					tagAttrMap = Jacksons.instance().toBean(tagAttr, Map.class);
 				} catch (Exception e) {
 					log.warn("Parse json string error.【{}】", tagAttr, e);
 				}

@@ -159,7 +159,7 @@ public class CodeMsg implements Serializable {
 	@Override
 	public String toString() {
 		try {
-			return Jacksons.COMMUNICATE.toJson(this);
+			return Jacksons.instance().toJson(this);
 		} catch (JsonProcessingException e) {
 			throw new BaseException("Transform BaseCodeMsg obj to JSON error.", e);
 		}
@@ -202,7 +202,7 @@ public class CodeMsg implements Serializable {
 		
 		@SuppressWarnings("rawtypes")
 		public static CodeMsg json2Bean(String json) throws IOException {
-			Map map = Jacksons.COMMUNICATE.readValue(json, Map.class);
+			Map map = Jacksons.instance().toBean(json, Map.class);
 			String code = (String)map.get("code"),
 					msg = (String)map.get("msg");
 			Object data = map.get("data");
@@ -211,12 +211,12 @@ public class CodeMsg implements Serializable {
 		
 		public static CodeMsg json2Bean(String json, Class<?> dataValueType) throws IOException {
 			return json2Bean(json, dataValueType == null ? null : 
-				Jacksons.COMMUNICATE.getTypeFactory().constructType(dataValueType));
+				Jacksons.instance().getObject().getTypeFactory().constructType(dataValueType));
 		}
 		
 		public static CodeMsg json2Bean(String json, TypeReference<?> dataValueTypeRef) throws IOException {
 			return json2Bean(json, dataValueTypeRef == null ? null :
-				Jacksons.COMMUNICATE.getTypeFactory().constructType(dataValueTypeRef));
+				Jacksons.instance().getObject().getTypeFactory().constructType(dataValueTypeRef));
 		}
 		
 		public static CodeMsg json2Bean(String json, JavaType dataValueType) throws IOException {
@@ -224,15 +224,15 @@ public class CodeMsg implements Serializable {
 			if(dataValueType == null) {
 				return json2Bean(json);
 			}else {
-				JsonNode jsonNode = Jacksons.COMMUNICATE.readTree(json);
+				JsonNode jsonNode = Jacksons.instance().getObject().readTree(json);
 				String code = jsonNode.get("code").asText(),
 						msg = jsonNode.get("msg").asText();
 				Object data = null;
 				JsonNode dataNode = jsonNode.get("data");
 				
 				if(!dataNode.isNull()) {
-					data = Jacksons.COMMUNICATE.readValue(
-							Jacksons.COMMUNICATE.treeAsTokens(dataNode), 
+					data = Jacksons.instance().getObject().readValue(
+							Jacksons.instance().getObject().treeAsTokens(dataNode),
 							dataValueType);
 				}
 				return new CodeMsg(code, msg, data);

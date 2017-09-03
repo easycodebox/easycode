@@ -348,7 +348,7 @@ public class Strings extends org.apache.commons.lang.StringUtils {
 	private static String convertParam(String keyName, String symbol, Object data, boolean isJson) throws IOException {
 		String val = keyName + symbol;
 		if(isJson) {
-			val += Jacksons.COMMUNICATE.toJson(data);
+			val += Jacksons.instance().toJson(data);
 		}else {
 			if(data != null) {
 				if(data instanceof Date)
@@ -445,7 +445,7 @@ public class Strings extends org.apache.commons.lang.StringUtils {
 	@Deprecated
 	public static <T> T formatExp2Object(String fmtStr, String dataStr, Class<T> dataClass, 
 			Map<String, Class<?>> assignClasses, String keyPrefix, Map<String, List<Map<String, Object>>> enums) throws IOException {
-		Map originalData = Jacksons.NON_NULL.toBean(dataStr, Map.class);
+		Map originalData = Jacksons.instance().toBean(dataStr, Map.class);
 		T data = Classes.newInstance(dataClass);
 		if(isBlank(fmtStr) || isBlank(dataStr))
 			return data;
@@ -512,7 +512,7 @@ public class Strings extends org.apache.commons.lang.StringUtils {
 					for(int i = 0; i < listVal.size(); i++) {
 						Object val = listVal.get(i);
 						if(val == null) continue;
-						Object subData = formatExp2Object(array, Jacksons.NON_NULL.toJson(val), 
+						Object subData = formatExp2Object(array, Jacksons.instance().toJson(val),
 								proClazz == null ? val.getClass() : proClazz, assignClasses, wrapper, enums);
 						Objects.setMappingValue(data, wrapper + "[" + i + "]", subData, assignClasses);
 					}

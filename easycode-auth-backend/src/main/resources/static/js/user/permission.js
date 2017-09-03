@@ -98,7 +98,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 	},
 	listPermissions: function($form, $parentName, projectId) {
 		$.post("/permission/listByProject.json", {projectId: projectId}, function(data) {
-			data = JSON.parse(data);
+			//data = JSON.parse(data);
 			gb.refreshTree($form, $parentName, data);
 		});
 	},

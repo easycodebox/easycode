@@ -44,9 +44,9 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 		
 		if(!Https.isResponseHtml(request)) {
 			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-			try (JsonGenerator jsonGenerator = Jacksons.NON_NULL.getFactory()
+			try (JsonGenerator jsonGenerator = Jacksons.instance().getObject().getFactory()
 					.createGenerator(response.getWriter())) {
-				Jacksons.NON_NULL.writeValue(jsonGenerator, error);
+				Jacksons.instance().getObject().writeValue(jsonGenerator, error);
 				return null;
 			}catch (Exception jsonEx) {
 				throw new BaseException("Could not write JSON: " + jsonEx.getMessage(), jsonEx);
