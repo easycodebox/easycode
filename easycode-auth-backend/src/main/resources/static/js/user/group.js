@@ -60,12 +60,13 @@ $.extend(true, window.gb || (window.gb = {}), {
 		}
 	},
 	existName: function(val) {
-		var exist = false,
+		var exist,
 			$form = $(this).closest("form"),
 			$id = $form.find("input[name=id]");
 		$.ajax({
 			dataType: "json", 
 			async: false,
+            tips: false,
 			type: "POST",
 			url: "/group/existName.json",
 			data: {
@@ -76,7 +77,9 @@ $.extend(true, window.gb || (window.gb = {}), {
 				exist = data.data;
 			}
 		});
-		if(exist)
+		if (exist === undefined)
+			return "服务异常";
+		else if (exist)
 			return "组名已被占用";
 		else
 			return true;

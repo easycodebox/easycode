@@ -26,7 +26,7 @@ public class PropertiesPool {
 
 	static {
 		properties = new String[]{
-			//"/base.properties"
+			//"base.properties"
 		};
 		xmls = new String[]{
 			

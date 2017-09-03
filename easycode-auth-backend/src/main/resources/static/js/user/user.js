@@ -59,11 +59,12 @@ $.extend(true, window.gb || (window.gb = {}), {
 		}
 	},
 	existUsername: function(val) {
-		var exist = false,
+		var exist,
 			$form = $(this).closest("form"),
 			$id = $form.find("input[name=id]");
 		$.ajax({
 			async: false,
+            tips: false,
 			type: "POST",
 			url: "/user/existUsername.json",
 			data: {
@@ -74,17 +75,20 @@ $.extend(true, window.gb || (window.gb = {}), {
 				exist = data.data;
 			}
 		});
-		if(exist)
+        if (exist === undefined)
+            return "服务异常";
+        else if (exist)
 			return "用户名已被占用";
 		else
 			return true;
 	},
 	existNickname: function(val) {
-		var exist = false,
+		var exist,
 			$form = $(this).closest("form"),
 			$id = $form.find("input[name=id]");
 		$.ajax({
 			async: false,
+            tips: false,
 			type: "POST",
 			url: "/user/existNickname.json",
 			data: {
@@ -95,7 +99,9 @@ $.extend(true, window.gb || (window.gb = {}), {
 				exist = data.data;
 			}
 		});
-		if(exist)
+        if (exist === undefined)
+            return "服务异常";
+        else if (exist)
 			return "昵称已被占用";
 		else
 			return true;

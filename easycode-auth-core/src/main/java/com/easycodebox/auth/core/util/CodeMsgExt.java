@@ -19,7 +19,7 @@ public class CodeMsgExt extends CodeMsg {
 	
 	
 	
-	private static final String FILE_PATH = "/code-msg.properties";
+	private static final String FILE_PATH = "code-msg.properties";
 	
 	static {
 		PropertiesPool.loadPropertiesFile(FILE_PATH);

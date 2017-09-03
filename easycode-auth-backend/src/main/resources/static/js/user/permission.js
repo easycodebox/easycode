@@ -103,7 +103,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		});
 	},
 	existName: function(val) {
-		var exist = false,
+		var exist,
 			$form = $(this).closest("form"),
 			$id = $form.find("input[name=id]");
 		if(!$form.find(".projectId").val()) {
@@ -111,6 +111,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		}
 		$.ajax({
 			async: false,
+            tips: false,
 			type: "POST",
 			url: "/permission/existName.json",
 			data: {
@@ -122,13 +123,15 @@ $.extend(true, window.gb || (window.gb = {}), {
 				exist = data.data;
 			}
 		});
-		if(exist)
+        if (exist === undefined)
+            return "服务异常";
+        else if (exist)
 			return "权限名已被占用";
 		else
 			return true;
 	},
 	existUrl: function(val) {
-		var exist = false,
+		var exist,
 			$form = $(this).closest("form"),
 			projectId = $form.find(".projectId").val(),
 			$id = $form.find("input[name=id]");
@@ -137,6 +140,7 @@ $.extend(true, window.gb || (window.gb = {}), {
 		}
 		$.ajax({
 			async: false,
+            tips: false,
 			type: "POST",
 			url: "/permission/existUrl.json",
 			data: {
@@ -148,7 +152,9 @@ $.extend(true, window.gb || (window.gb = {}), {
 				exist = data.data;
 			}
 		});
-		if(exist)
+        if (exist === undefined)
+            return "服务异常";
+        else if (exist)
 			return "url已被占用";
 		else
 			return true;

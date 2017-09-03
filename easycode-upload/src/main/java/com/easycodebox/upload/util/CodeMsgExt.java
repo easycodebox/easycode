@@ -19,7 +19,7 @@ public class CodeMsgExt extends CodeMsg {
 	public static CodeMsg MAX_UPLOAD_ERROR 	= new CodeMsgExt("2002", "上传文件应小于{0}M");
 	public static CodeMsg NO_FILE 			= new CodeMsgExt("2003", "请选择您要上传的文件");
 	
-	private static final String FILE_PATH = "/code-msg.properties";
+	private static final String FILE_PATH = "code-msg.properties";
 	
 	static {
 		PropertiesPool.loadPropertiesFile(FILE_PATH);
