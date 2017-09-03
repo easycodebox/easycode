@@ -64,7 +64,6 @@ $.extend(true, window.gb || (window.gb = {}), {
 			$form = $(this).closest("form"),
 			$id = $form.find("input[name=id]");
 		$.ajax({
-			dataType: "json", 
 			async: false,
             tips: false,
 			type: "POST",
