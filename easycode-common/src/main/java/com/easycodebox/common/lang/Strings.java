@@ -113,7 +113,9 @@ public class Strings extends org.apache.commons.lang.StringUtils {
 						&& !Date.class.isAssignableFrom(clazz)
 						&& !clazz.isArray()
 						&& !Collection.class.isAssignableFrom(clazz)) {
-					maps = new ArrayList<>(4);
+					if (maps == null) {
+						maps = new ArrayList<>(4);
+					}
 					maps.add(arg);
 				}
 			}
