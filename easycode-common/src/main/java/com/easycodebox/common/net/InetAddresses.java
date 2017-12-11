@@ -56,21 +56,34 @@ public class InetAddresses {
 	 */
 	public static List<InetAddress> getLocalAddresses() throws SocketException {
 		List<InetAddress> all = new ArrayList<>();
-        for (Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces(); nis.hasMoreElements();) {
-            NetworkInterface ni = nis.nextElement();
-            if (ni.isLoopback() || ni.isVirtual() || !ni.isUp()) {
-                continue;
-            }
-            for (Enumeration<InetAddress> addrs = ni.getInetAddresses(); addrs.hasMoreElements();) {
-            	InetAddress addr = addrs.nextElement();
-            	if (!addr.isLoopbackAddress() 
-            			&& !addr.isLinkLocalAddress() 
-            			&& !addr.isMulticastAddress()
-            			&& addr.isSiteLocalAddress())
-            		all.add(addr);
-            }
-        }
-        return all;
-    }
+		List<InetAddress> candidates = null;
+		for (Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces(); nis.hasMoreElements();) {
+			NetworkInterface ni = nis.nextElement();
+			if (ni.isLoopback() || ni.isVirtual() || !ni.isUp()) {
+				continue;
+			}
+			for (Enumeration<InetAddress> addrs = ni.getInetAddresses(); addrs.hasMoreElements();) {
+				InetAddress addr = addrs.nextElement();
+				if (!addr.isLoopbackAddress()
+						&& !addr.isLinkLocalAddress()
+						&& !addr.isMulticastAddress()) {
+					if (addr.isSiteLocalAddress()) {
+						all.add(addr);
+					} else {
+						//当IP地址不是SiteLocalAddress时，则作为备选IP放置在IP列表最后面
+						// IP4判断是否是SiteLocalAddress依据：以 10/8、172.16/12、192.168/16开头的IP
+						if (candidates == null) {
+							candidates = new ArrayList<>();
+						}
+						candidates.add(addr);
+					}
+				}
+			}
+		}
+		if (candidates != null) {
+			all.addAll(candidates);
+		}
+		return all;
+	}
 	
 }
