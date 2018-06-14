@@ -66,6 +66,7 @@ public class InetAddresses {
 				InetAddress addr = addrs.nextElement();
 				if (!addr.isLoopbackAddress()
 						&& !addr.isLinkLocalAddress()
+						&& !addr.isAnyLocalAddress()
 						&& !addr.isMulticastAddress()) {
 					if (addr.isSiteLocalAddress()) {
 						all.add(addr);

@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * 
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
-public abstract class Objects extends org.apache.commons.lang.ObjectUtils {
+public class Objects extends org.apache.commons.lang.ObjectUtils {
 	//
 	private static final ConcurrentHashMap<Class<?>, BeanCopier> BEAN_COPIERS = new ConcurrentHashMap<>();
 	
@@ -66,16 +66,20 @@ public abstract class Objects extends org.apache.commons.lang.ObjectUtils {
 	}
 	
 	/**
+	 * 方便类型强转使用
+	 * @param obj
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> T cast(Object obj) {
+		return (T) obj;
+	}
+	
+	/**
 	 * 
 	 */
 	public static <T> boolean isEquals(T lhs, T rhs) {
-		if(lhs == null && rhs == null) {
-			return true;
-		} else if(lhs == null || rhs == null) {
-			return false;
-		} else {
-			return lhs.equals(rhs);
-		}
+		return lhs == null && rhs == null || lhs != null && rhs != null && lhs.equals(rhs);
 	}
 	
 	/**
