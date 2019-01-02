@@ -2,16 +2,20 @@ package com.easycodebox.common.zookeeper.curator;
 
 import com.google.common.base.Preconditions;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.recipes.leader.*;
+import org.apache.curator.framework.recipes.leader.CancelLeadershipException;
+import org.apache.curator.framework.recipes.leader.LeaderSelector;
+import org.apache.curator.framework.recipes.leader.LeaderSelectorListener;
 import org.apache.curator.framework.state.ConnectionState;
 import org.apache.curator.utils.ThreadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -84,7 +88,7 @@ public class LastingLeaderSelector implements Closeable {
     }
     
     @Override
-    public void close() throws IOException {
+    public void close() {
         leaderSelector.close();
         log.debug("Close leaderSelector.");
         if (shutdownExecutorOnClose) {
@@ -132,6 +136,7 @@ public class LastingLeaderSelector implements Closeable {
             Preconditions.checkNotNull(listeners, "listeners cannot be null");
             this.executorService = executorService;
             this.listeners = listeners;
+            this.cancelled = cancelled;
         }
         
         @Override
@@ -151,7 +156,7 @@ public class LastingLeaderSelector implements Closeable {
                     try {
                         log.debug("holding leader...");
                         this.wait();
-                    } catch (Throwable e) {
+                    } catch (Exception e) {
                         ThreadUtils.checkInterrupted(e);
                     }
                 }
@@ -203,7 +208,7 @@ public class LastingLeaderSelector implements Closeable {
     /**
      * Leader状态（获取/释放）的监听器
      */
-    public static abstract class LeaderLifecycleListener {
+    public abstract static class LeaderLifecycleListener {
     
         private final Logger log = LoggerFactory.getLogger(getClass());
         
